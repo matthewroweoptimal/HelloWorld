@@ -237,7 +237,7 @@ void vApplicationStackOverflowHook( xTaskHandle pxTask, signed char *pcTaskName 
 }
 /*-----------------------------------------------------------*/
 
-#if 0
+
 void vApplicationTickHook( void )
 {
     /* This function will be called by each tick interrupt if
@@ -253,7 +253,7 @@ void vApplicationTickHook( void )
     }
 #endif /* mainCREATE_SIMPLE_BLINKY_DEMO_ONLY */
 }
-#endif
+
 
 
 /*-----------------------------------------------------------*/

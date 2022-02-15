@@ -10,6 +10,10 @@ RM := rm -rf
 -include sources.mk
 -include User/subdir.mk
 -include Library/subdir.mk
+-include FreeRTOS/Source/portable/MemMang/subdir.mk
+-include FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
+-include FreeRTOS/Demo/Common/Minimal/subdir.mk
+-include FreeRTOS/subdir.mk
 -include CMSIS/GCC/subdir.mk
 -include CMSIS/subdir.mk
 -include subdir.mk

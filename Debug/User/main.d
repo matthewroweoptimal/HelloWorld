@@ -1,4 +1,31 @@
 User/main.o: ../User/main.c \
+ ../../ThirdParty/FreeRTOS/Source/include/FreeRTOS.h \
+ C:\git\nuvoton\helloworld\User/FreeRTOSConfig.h \
+ ../../ThirdParty/FreeRTOS/Source/include/projdefs.h \
+ ../../ThirdParty/FreeRTOS/Source/include/portable.h \
+ ../../ThirdParty/FreeRTOS/Source/include/deprecated_definitions.h \
+ ../../ThirdParty/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h \
+ ../../ThirdParty/FreeRTOS/Source/include/mpu_wrappers.h \
+ ../../ThirdParty/FreeRTOS/Source/include/task.h \
+ ../../ThirdParty/FreeRTOS/Source/include/list.h \
+ ../../ThirdParty/FreeRTOS/Source/include/timers.h \
+ ../../ThirdParty/FreeRTOS/Source/include/task.h \
+ ../../ThirdParty/FreeRTOS/Source/include/semphr.h \
+ ../../ThirdParty/FreeRTOS/Source/include/queue.h \
+ ../../ThirdParty/FreeRTOS/Demo/Common/include/partest.h \
+ ../../ThirdParty/FreeRTOS/Demo/Common/include/flash.h \
+ ../../ThirdParty/FreeRTOS/Demo/Common/include/flop.h \
+ ../../ThirdParty/FreeRTOS/Demo/Common/include/integer.h \
+ ../../ThirdParty/FreeRTOS/Demo/Common/include/PollQ.h \
+ ../../ThirdParty/FreeRTOS/Demo/Common/include/semtest.h \
+ ../../ThirdParty/FreeRTOS/Demo/Common/include/dynamic.h \
+ ../../ThirdParty/FreeRTOS/Demo/Common/include/BlockQ.h \
+ ../../ThirdParty/FreeRTOS/Demo/Common/include/blocktim.h \
+ ../../ThirdParty/FreeRTOS/Demo/Common/include/countsem.h \
+ ../../ThirdParty/FreeRTOS/Demo/Common/include/GenQTest.h \
+ ../../ThirdParty/FreeRTOS/Demo/Common/include/QueueSet.h \
+ ../../ThirdParty/FreeRTOS/Demo/Common/include/recmutex.h \
+ ../../ThirdParty/FreeRTOS/Demo/Common/include/death.h \
  ../Library/Device/Nuvoton/M480/Include/NuMicro.h \
  ../Library/Device/Nuvoton/M480/Include/M480.h \
  ../Library/CMSIS/Include/core_cm4.h \
@@ -69,6 +96,60 @@ User/main.o: ../User/main.c \
  ../Library/StdDriver/inc/sdh.h ../Library/StdDriver/inc/usbd.h \
  ../Library/StdDriver/inc/hsusbd.h ../Library/StdDriver/inc/otg.h \
  ../Library/StdDriver/inc/hsotg.h
+
+../../ThirdParty/FreeRTOS/Source/include/FreeRTOS.h:
+
+C:\git\nuvoton\helloworld\User/FreeRTOSConfig.h:
+
+../../ThirdParty/FreeRTOS/Source/include/projdefs.h:
+
+../../ThirdParty/FreeRTOS/Source/include/portable.h:
+
+../../ThirdParty/FreeRTOS/Source/include/deprecated_definitions.h:
+
+../../ThirdParty/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h:
+
+../../ThirdParty/FreeRTOS/Source/include/mpu_wrappers.h:
+
+../../ThirdParty/FreeRTOS/Source/include/task.h:
+
+../../ThirdParty/FreeRTOS/Source/include/list.h:
+
+../../ThirdParty/FreeRTOS/Source/include/timers.h:
+
+../../ThirdParty/FreeRTOS/Source/include/task.h:
+
+../../ThirdParty/FreeRTOS/Source/include/semphr.h:
+
+../../ThirdParty/FreeRTOS/Source/include/queue.h:
+
+../../ThirdParty/FreeRTOS/Demo/Common/include/partest.h:
+
+../../ThirdParty/FreeRTOS/Demo/Common/include/flash.h:
+
+../../ThirdParty/FreeRTOS/Demo/Common/include/flop.h:
+
+../../ThirdParty/FreeRTOS/Demo/Common/include/integer.h:
+
+../../ThirdParty/FreeRTOS/Demo/Common/include/PollQ.h:
+
+../../ThirdParty/FreeRTOS/Demo/Common/include/semtest.h:
+
+../../ThirdParty/FreeRTOS/Demo/Common/include/dynamic.h:
+
+../../ThirdParty/FreeRTOS/Demo/Common/include/BlockQ.h:
+
+../../ThirdParty/FreeRTOS/Demo/Common/include/blocktim.h:
+
+../../ThirdParty/FreeRTOS/Demo/Common/include/countsem.h:
+
+../../ThirdParty/FreeRTOS/Demo/Common/include/GenQTest.h:
+
+../../ThirdParty/FreeRTOS/Demo/Common/include/QueueSet.h:
+
+../../ThirdParty/FreeRTOS/Demo/Common/include/recmutex.h:
+
+../../ThirdParty/FreeRTOS/Demo/Common/include/death.h:
 
 ../Library/Device/Nuvoton/M480/Include/NuMicro.h:
 
