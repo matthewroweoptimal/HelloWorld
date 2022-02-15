@@ -88,9 +88,16 @@ Set mainCREATE_SIMPLE_LED_FLASHER_DEMO_ONLY to 0 to create a much more
 comprehensive test application.  See the comments at the top of this file, and
 the documentation page on the http://www.FreeRTOS.org web site for more
 information. */
-#define mainCREATE_SIMPLE_LED_FLASHER_DEMO_ONLY     0
+#define mainCREATE_SIMPLE_LED_FLASHER_DEMO_ONLY     1
 
-#define CHECK_TEST
+
+extern "C" {
+void vApplicationMallocFailedHook( void );
+void vApplicationIdleHook( void );
+void vApplicationTickHook( void );
+}
+
+//#define CHECK_TEST
 
 /*-----------------------------------------------------------*/
 
@@ -122,7 +129,7 @@ int main(void)
     more information. */
     vStartLEDFlashTasks( mainFLASH_TASK_PRIORITY );
 
-    vStartPolledQueueTasks( mainQUEUE_POLL_PRIORITY );
+    //vStartPolledQueueTasks( mainQUEUE_POLL_PRIORITY );
 
     /* The following function will only create more tasks and timers if
     mainCREATE_SIMPLE_LED_FLASHER_DEMO_ONLY is set to 0 (at the top of this
@@ -249,7 +256,7 @@ void vApplicationTickHook( void )
 #if ( mainCREATE_SIMPLE_BLINKY_DEMO_ONLY == 0 )
     {
         /* In this case the tick hook is used as part of the queue set test. */
-        vQueueSetAccessQueueSetFromISR();
+        //vQueueSetAccessQueueSetFromISR();
     }
 #endif /* mainCREATE_SIMPLE_BLINKY_DEMO_ONLY */
 }
