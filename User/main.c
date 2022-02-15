@@ -277,14 +277,3 @@ static void vCheckTask( void *pvParameters )
     }
 }
 #endif
-
-void _exit(int code)
-{
-	while(1);
-}
-
-void _sbrk(int code)
-{
-	while(1);
-}
-
