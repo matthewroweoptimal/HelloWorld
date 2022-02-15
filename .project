@@ -41,6 +41,11 @@
 			<locationURI>PARENT-2-PROJECT_LOC/nuvoton/ThirdParty/FreeRTOS/Source/include</locationURI>
 		</link>
 		<link>
+			<name>User/ParTest.c</name>
+			<type>1</type>
+			<locationURI>copy_PARENT1/ParTest.c</locationURI>
+		</link>
+		<link>
 			<name>FreeRTOS/Demo/Common</name>
 			<type>2</type>
 			<locationURI>virtual:/virtual</locationURI>
@@ -125,6 +130,10 @@
 		<variable>
 			<name>copy_PARENT</name>
 			<value>$%7BPARENT-2-PROJECT_LOC%7D/nuvoton</value>
+		</variable>
+		<variable>
+			<name>copy_PARENT1</name>
+			<value>$%7Bcopy_PARENT%7D/SampleCode/FreeRTOS</value>
 		</variable>
 	</variableList>
 </projectDescription>
