@@ -6,7 +6,6 @@
  */
 
 #include "threads.h"
-#include "queue.hpp"
 
 /* Priorities for the demo application tasks. */
 #define mainFLASH_TASK_PRIORITY             ( tskIDLE_PRIORITY + 1UL )
@@ -26,13 +25,14 @@ void Threads::StartThreads()
     secondTimer = new SecondTimer();
     secondTimer->Start();
 
-    mainThread = new MainThread(mainCHECK_TASK_STACK_SIZE, mainCREATOR_TASK_PRIORITY);
+    // This main thread only present to get the scheduler going and immediately suspends
+    mainThread = new MainThread(configMINIMAL_STACK_SIZE, mainCREATOR_TASK_PRIORITY);
     mainThread->Start();
 }
 
 void Threads::StartScheduler()
 {
-	printf("running FreeRTOS. Start scheduler...\n");
+	printf("Running FreeRTOS. Start scheduler...\n");
 	mainThread->StartScheduler();
 }
 

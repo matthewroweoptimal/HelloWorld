@@ -10,6 +10,7 @@
 
 #include "timer.hpp"
 #include <stdbool.h>
+#include "NuMicro.h"
 
 using Timer = cpp_freertos::Timer;
 
@@ -22,9 +23,13 @@ public:
 protected:
 	void Run()
 	{
-		printf("SecondTimer tick\n");
+		//printf("SecondTimer tick\n");
 		// toggle an led
+		PH->DOUT = ledState ? 1:0;
+		ledState = !ledState;
 	}
+
+	bool ledState = 0;
 };
 
 

@@ -30,9 +30,6 @@
 
 /* Kernel includes. */
 #include "FreeRTOS.h"
-#include "task.h"
-#include "timers.h"
-#include "semphr.h"
 
 /* Demo application includes. */
 #include "partest.h"
@@ -104,34 +101,11 @@ static void vCheckTask( void *pvParameters );
 
 int main(void)
 {
-    /* Configure the hardware ready to run the test. */
+    /* Configure the hardware */
     prvSetupHardware();
-
     printf("Hardware setup\n");
 
-#ifdef CHECK_TEST
-    xTaskCreate( vCheckTask, "Check", mainCHECK_TASK_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
-#endif
-
-
-    /* Start standard demo/test application flash tasks.  See the comments at
-    the top of this file.  The LED flash tasks are always created.  The other
-    tasks are only created if mainCREATE_SIMPLE_LED_FLASHER_DEMO_ONLY is set to
-    0 (at the top of this file).  See the comments at the top of this file for
-    more information. */
     //vStartLEDFlashTasks( mainFLASH_TASK_PRIORITY );
-
-    //vStartPolledQueueTasks( mainQUEUE_POLL_PRIORITY );
-
-    /* The following function will only create more tasks and timers if
-    mainCREATE_SIMPLE_LED_FLASHER_DEMO_ONLY is set to 0 (at the top of this
-    file).  See the comments at the top of this file for more information. */
-    //prvOptionallyCreateComprehensveTestApplication();
-
-    //printf("FreeRTOS is starting ...\n");
-
-    /* Start the scheduler. */
-    //vTaskStartScheduler();
 
     Threads *threads = new Threads();
     threads->StartThreads();
@@ -241,43 +215,3 @@ void vApplicationStackOverflowHook( xTaskHandle pxTask, signed char *pcTaskName 
 }
 /*-----------------------------------------------------------*/
 
-#ifdef rtos_c
-void vApplicationTickHook( void )
-{
-    /* This function will be called by each tick interrupt if
-    configUSE_TICK_HOOK is set to 1 in FreeRTOSConfig.h.  User code can be
-    added here, but the tick hook is called from an interrupt context, so
-    code must not attempt to block, and only the interrupt safe FreeRTOS API
-    functions can be used (those that end in FromISR()).  */
-
-#if ( mainCREATE_SIMPLE_BLINKY_DEMO_ONLY == 0 )
-    {
-        /* In this case the tick hook is used as part of the queue set test. */
-        //vQueueSetAccessQueueSetFromISR();
-    }
-#endif /* mainCREATE_SIMPLE_BLINKY_DEMO_ONLY */
-}
-#endif
-
-
-/*-----------------------------------------------------------*/
-#ifdef CHECK_TEST
-static void vCheckTask( void *pvParameters )
-{
-    portTickType xLastExecutionTime;
-
-    xLastExecutionTime = xTaskGetTickCount();
-
-    printf("Check Task is running ...\n");
-
-    for( ;; )
-    {
-        /* Perform this check every mainCHECK_DELAY milliseconds. */
-        vTaskDelayUntil( &xLastExecutionTime, mainCHECK_DELAY );
-        if( xArePollingQueuesStillRunning() != pdTRUE )
-        {
-            printf( "ERROR IN POLL Q\n" );
-        }
-    }
-}
-#endif
