@@ -11,6 +11,7 @@
 #include "timer.hpp"
 #include <stdbool.h>
 #include "NuMicro.h"
+#include "board.h"
 
 using Timer = cpp_freertos::Timer;
 
@@ -18,19 +19,14 @@ class SecondTimer : public Timer
 {
 public:
 	SecondTimer() :
-		Timer("SecondTimer", 1000, true) {};
+		Timer("SecondTimer", 1000 / portTICK_RATE_MS , true) {};
 
 protected:
 	void Run()
 	{
-		//printf("SecondTimer tick\n");
 		// toggle an led
-		PH->DOUT = ledState ? 1:0;
-		ledState = !ledState;
+		GPIO_TOGGLE(GREEN_LED);
 	}
-
-	bool ledState = 0;
 };
-
 
 #endif /* SECONDTIMER_H_ */

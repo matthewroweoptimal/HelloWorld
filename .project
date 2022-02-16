@@ -41,11 +41,6 @@
 			<locationURI>PARENT-2-PROJECT_LOC/nuvoton/ThirdParty/FreeRTOS/Source/include</locationURI>
 		</link>
 		<link>
-			<name>User/ParTest.c</name>
-			<type>1</type>
-			<locationURI>copy_PARENT1/ParTest.c</locationURI>
-		</link>
-		<link>
 			<name>freertos-addons/Doxyfile</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/breeze/firmware/freertos-addons/Doxyfile</locationURI>

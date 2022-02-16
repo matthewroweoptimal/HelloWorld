@@ -34,6 +34,6 @@ FreeRTOS/Source/portable/GCC/ARM_CM4F \
 FreeRTOS/Source/portable/MemMang \
 FreeRTOS \
 Library \
-User \
 freertos-addons \
+source \
 

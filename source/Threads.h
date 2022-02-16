@@ -8,8 +8,8 @@
 #ifndef THREADS_H_
 #define THREADS_H_
 
-#include "SecondTimer.h"
 #include "MainThread.h"
+#include "SecondTimer.h"
 
 class Threads
 {
@@ -18,13 +18,11 @@ public:
     void StartScheduler();
 
 private:
-
     /* Threads */
     MainThread *mainThread;
 
     /* Timers */
     SecondTimer *secondTimer;
-
 
 };
 

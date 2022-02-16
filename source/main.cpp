@@ -31,63 +31,16 @@
 /* Kernel includes. */
 #include "FreeRTOS.h"
 
-/* Demo application includes. */
-#include "partest.h"
-#include "flash.h"
-#include "flop.h"
-#include "integer.h"
-#include "PollQ.h"
-#include "semtest.h"
-#include "dynamic.h"
-#include "BlockQ.h"
-#include "blocktim.h"
-#include "countsem.h"
-#include "GenQTest.h"
-#include "QueueSet.h"
-#include "recmutex.h"
-#include "death.h"
-
 /* Hardware and starter kit includes. */
 #include "NuMicro.h"
+#include "../source/Threads.h"
 
-#include "Threads.h"
-
-/* The time between cycles of the 'check' task. */
-#define mainCHECK_DELAY                     ( ( portTickType ) 5000 / portTICK_RATE_MS )
-
-/* The LED used by the check timer. */
-#define mainCHECK_LED                       ( 3UL )
-
-/* A block time of zero simply means "don't block". */
-#define mainDONT_BLOCK                      ( 0UL )
-
-/* The period after which the check timer will expire, in ms, provided no errors
-have been reported by any of the standard demo tasks.  ms are converted to the
-equivalent in ticks using the portTICK_RATE_MS constant. */
-#define mainCHECK_TIMER_PERIOD_MS           ( 3000UL / portTICK_RATE_MS )
-
-/* The period at which the check timer will expire, in ms, if an error has been
-reported in one of the standard demo tasks.  ms are converted to the equivalent
-in ticks using the portTICK_RATE_MS constant. */
-#define mainERROR_CHECK_TIMER_PERIOD_MS     ( 200UL / portTICK_RATE_MS )
-
-/* Set mainCREATE_SIMPLE_LED_FLASHER_DEMO_ONLY to 1 to create a simple demo.
-Set mainCREATE_SIMPLE_LED_FLASHER_DEMO_ONLY to 0 to create a much more
-comprehensive test application.  See the comments at the top of this file, and
-the documentation page on the http://www.FreeRTOS.org web site for more
-information. */
-#define mainCREATE_SIMPLE_LED_FLASHER_DEMO_ONLY     1
-
-
+/*-----------------------------------------------------------*/
 extern "C" {
 void vApplicationMallocFailedHook( void );
 void vApplicationIdleHook( void );
 void vApplicationTickHook( void );
 }
-
-//#define CHECK_TEST
-
-/*-----------------------------------------------------------*/
 
 /*
  * Set up the hardware ready to run this demo.
@@ -95,17 +48,10 @@ void vApplicationTickHook( void );
 static void prvSetupHardware( void );
 /*-----------------------------------------------------------*/
 
-#ifdef CHECK_TEST
-static void vCheckTask( void *pvParameters );
-#endif
-
 int main(void)
 {
     /* Configure the hardware */
     prvSetupHardware();
-    printf("Hardware setup\n");
-
-    //vStartLEDFlashTasks( mainFLASH_TASK_PRIORITY );
 
     Threads *threads = new Threads();
     threads->StartThreads();
