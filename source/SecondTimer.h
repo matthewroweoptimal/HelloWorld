@@ -24,7 +24,8 @@ protected:
 	void Run()
 	{
 		// toggle an led
-		GPIO_TOGGLE(GREEN_LED);
+		Leds::toggleLed(GREEN_LED);
+		Leds::setLed(RED_LED, Buttons::readButton(SW2));
 	}
 };
 
