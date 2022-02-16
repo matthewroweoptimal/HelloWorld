@@ -7,6 +7,7 @@
 
 #ifndef HARDWARE_BOARD_H_
 #define HARDWARE_BOARD_H_
+#include "NuMicro.h"
 #include "gpio.h"
 
 #define RED_LED PH0

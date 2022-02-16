@@ -10,6 +10,7 @@
 
 #include "MainThread.h"
 #include "SecondTimer.h"
+#include "MonitoringTimer.h"
 
 class Threads
 {
@@ -20,6 +21,7 @@ public:
 private:
     /* Threads */
     MainThread *mainThread;
+    MonitoringTimer *monitoring;
 
     /* Timers */
     SecondTimer *secondTimer;

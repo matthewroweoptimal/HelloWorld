@@ -10,7 +10,6 @@
 
 #include "timer.hpp"
 #include <stdbool.h>
-#include "NuMicro.h"
 #include "board.h"
 
 using Timer = cpp_freertos::Timer;

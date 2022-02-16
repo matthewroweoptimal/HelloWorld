@@ -8,7 +8,13 @@
 #include "Threads.h"
 
 /* Priorities for application tasks. */
-#define mainCREATOR_TASK_PRIORITY           ( tskIDLE_PRIORITY + 3UL )
+#define MONITORING_TASK_PRIORITY        ( tskIDLE_PRIORITY + 2UL )
+#define MAIN_TASK_PRIORITY          	( tskIDLE_PRIORITY + 3UL )
+
+#define MONITORING_TIMER_STACKSIZE configMINIMAL_STACK_SIZE + 100
+
+#define MONITORING_TIMER_TICK (500 / portTICK_RATE_MS)
+
 
 void Threads::StartThreads()
 {
@@ -17,8 +23,11 @@ void Threads::StartThreads()
     secondTimer->Start();
 
     // This main thread only present to get the scheduler going and immediately suspends
-    mainThread = new MainThread(configMINIMAL_STACK_SIZE, mainCREATOR_TASK_PRIORITY);
+    mainThread = new MainThread(configMINIMAL_STACK_SIZE, MAIN_TASK_PRIORITY);
     mainThread->Start();
+
+    monitoring = new MonitoringTimer(MONITORING_TIMER_STACKSIZE, MONITORING_TASK_PRIORITY, MONITORING_TIMER_TICK);
+    monitoring->Start();
 }
 
 void Threads::StartScheduler()
