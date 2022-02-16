@@ -8,6 +8,7 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include freertos-addons/subdir.mk
 -include User/subdir.mk
 -include Library/subdir.mk
 -include FreeRTOS/Source/portable/MemMang/subdir.mk

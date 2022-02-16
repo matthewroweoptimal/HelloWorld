@@ -53,16 +53,7 @@
 /* Hardware and starter kit includes. */
 #include "NuMicro.h"
 
-/* Priorities for the demo application tasks. */
-#define mainFLASH_TASK_PRIORITY             ( tskIDLE_PRIORITY + 1UL )
-#define mainQUEUE_POLL_PRIORITY             ( tskIDLE_PRIORITY + 2UL )
-#define mainSEM_TEST_PRIORITY               ( tskIDLE_PRIORITY + 1UL )
-#define mainBLOCK_Q_PRIORITY                ( tskIDLE_PRIORITY + 2UL )
-#define mainCREATOR_TASK_PRIORITY           ( tskIDLE_PRIORITY + 3UL )
-#define mainFLOP_TASK_PRIORITY              ( tskIDLE_PRIORITY )
-#define mainCHECK_TASK_PRIORITY             ( tskIDLE_PRIORITY + 3UL )
-
-#define mainCHECK_TASK_STACK_SIZE           ( configMINIMAL_STACK_SIZE )
+#include "Threads.h"
 
 /* The time between cycles of the 'check' task. */
 #define mainCHECK_DELAY                     ( ( portTickType ) 5000 / portTICK_RATE_MS )
@@ -116,6 +107,7 @@ int main(void)
     /* Configure the hardware ready to run the test. */
     prvSetupHardware();
 
+    printf("Hardware setup\n");
 
 #ifdef CHECK_TEST
     xTaskCreate( vCheckTask, "Check", mainCHECK_TASK_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
@@ -127,7 +119,7 @@ int main(void)
     tasks are only created if mainCREATE_SIMPLE_LED_FLASHER_DEMO_ONLY is set to
     0 (at the top of this file).  See the comments at the top of this file for
     more information. */
-    vStartLEDFlashTasks( mainFLASH_TASK_PRIORITY );
+    //vStartLEDFlashTasks( mainFLASH_TASK_PRIORITY );
 
     //vStartPolledQueueTasks( mainQUEUE_POLL_PRIORITY );
 
@@ -136,10 +128,14 @@ int main(void)
     file).  See the comments at the top of this file for more information. */
     //prvOptionallyCreateComprehensveTestApplication();
 
-    printf("FreeRTOS is starting ...\n");
+    //printf("FreeRTOS is starting ...\n");
 
     /* Start the scheduler. */
-    vTaskStartScheduler();
+    //vTaskStartScheduler();
+
+    Threads *threads = new Threads();
+    threads->StartThreads();
+    threads->StartScheduler();
 
     /* If all is well, the scheduler will now be running, and the following line
     will never be reached.  If the following line does execute, then there was
@@ -200,6 +196,7 @@ static void prvSetupHardware( void )
 }
 /*-----------------------------------------------------------*/
 
+
 void vApplicationMallocFailedHook( void )
 {
     /* vApplicationMallocFailedHook() will only be called if
@@ -244,7 +241,7 @@ void vApplicationStackOverflowHook( xTaskHandle pxTask, signed char *pcTaskName 
 }
 /*-----------------------------------------------------------*/
 
-
+#ifdef rtos_c
 void vApplicationTickHook( void )
 {
     /* This function will be called by each tick interrupt if
@@ -260,7 +257,7 @@ void vApplicationTickHook( void )
     }
 #endif /* mainCREATE_SIMPLE_BLINKY_DEMO_ONLY */
 }
-
+#endif
 
 
 /*-----------------------------------------------------------*/
