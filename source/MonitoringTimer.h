@@ -28,11 +28,8 @@ protected:
 	void OtherEvent(EventBits_t eventBits);
 
 private:
-	void processAlarmMute(void);
-	void setPowerLedState(void);
 
 	EventGroup monitoringEventGroup;
-
 };
 
 #endif /* MONITORINGTIMER_H_ */

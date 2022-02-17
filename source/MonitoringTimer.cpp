@@ -5,14 +5,6 @@
  *      Author: Matthew.Rowe
  */
 
-
-/*
- * MonitoringTimer.cpp
- *
- *  Created on: 25 Mar 2021
- *      Author: Matthew.Rowe
- */
-
 #include "MonitoringTimer.h"
 #include "board.h"
 
@@ -20,7 +12,7 @@
 MonitoringTimer::MonitoringTimer(uint16_t usStackDepth, UBaseType_t uxPriority, TickType_t periodInTicks)
 	: EventTimerTask(&monitoringEventGroup, "Monitoring", usStackDepth, uxPriority, periodInTicks)
 {
-	RegisterEventBits(ALL_EVENTS);	// register SPI event message queue event with base class
+	RegisterEventBits(ALL_EVENTS);	// register events with the base class for OtherEvent callback
 }
 
 void MonitoringTimer::Run()
