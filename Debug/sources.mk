@@ -29,7 +29,6 @@ CPP_DEPS :=
 SUBDIRS := \
 CMSIS/GCC \
 CMSIS \
-FreeRTOS/Demo/Common/Minimal \
 FreeRTOS/Source/portable/GCC/ARM_CM4F \
 FreeRTOS/Source/portable/MemMang \
 FreeRTOS \

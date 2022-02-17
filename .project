@@ -216,11 +216,6 @@
 			<locationURI>PARENT-2-PROJECT_LOC/breeze/firmware/freertos-addons/include/workqueue.hpp</locationURI>
 		</link>
 		<link>
-			<name>FreeRTOS/Demo/Common/Minimal</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>FreeRTOS/Demo/Common/ReadMe.txt</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/nuvoton/ThirdParty/FreeRTOS/Demo/Common/ReadMe.txt</locationURI>
@@ -239,21 +234,6 @@
 			<name>FreeRTOS/Source/portable/readme.txt</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/nuvoton/ThirdParty/FreeRTOS/Source/portable/readme.txt</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/Demo/Common/Minimal/PollQ.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/nuvoton/ThirdParty/FreeRTOS/Demo/Common/Minimal/PollQ.c</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/Demo/Common/Minimal/QueueSet.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/nuvoton/ThirdParty/FreeRTOS/Demo/Common/Minimal/QueueSet.c</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/Demo/Common/Minimal/flash.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/nuvoton/ThirdParty/FreeRTOS/Demo/Common/Minimal/flash.c</locationURI>
 		</link>
 		<link>
 			<name>FreeRTOS/Source/portable/GCC/ARM_CM4F</name>
