@@ -51,49 +51,53 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.601421066" name="Cross ARM GNU Assembler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.usepreprocessor.1758927508" name="Use preprocessor" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.usepreprocessor" value="true" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths.1978922030" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/include"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable/GCC/ARM_CM4F"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable/MemMang"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/Library/CMSIS/Include"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/Library/Device/Nuvoton/M480/Include"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/Library/StdDriver/inc"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HelloWorld/HelloWorld/freertos-addons/include}&quot;"/>
-									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/hardware"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/OSExtensions"/>
-									<listOptionValue builtIn="false" value="C:/git/nuvoton/ThirdParty/FreeRTOS/Source/portable/GCC/ARM_CM4F"/>
-									<listOptionValue builtIn="false" value="C:/git/nuvoton/ThirdParty/FreeRTOS/Source/include"/>
-									<listOptionValue builtIn="false" value="C:/git/nuvoton/ThirdParty/FreeRTOS/Demo/Common/include"/>
-									<listOptionValue builtIn="false" value="C:/git/nuvoton/ThirdParty/FreeRTOS/Demo/Common/Minimal"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos-addons/include"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source/hardware"/>
+									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.974729338" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.217388011" name="Cross ARM GNU C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths.13077593" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" useByScannerDiscovery="true" valueType="includePath">
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/include"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable/GCC/ARM_CM4F"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable/MemMang"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/Library/CMSIS/Include"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/Library/Device/Nuvoton/M480/Include"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/Library/StdDriver/inc"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HelloWorld/HelloWorld/freertos-addons/include}&quot;"/>
-									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/hardware"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/OSExtensions"/>
-									<listOptionValue builtIn="false" value="C:/git/nuvoton/ThirdParty/FreeRTOS/Source/portable/GCC/ARM_CM4F"/>
-									<listOptionValue builtIn="false" value="C:/git/nuvoton/ThirdParty/FreeRTOS/Source/include"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos-addons/include"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source/hardware"/>
+									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.539672754" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.2145466818" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.271442930" name="Cross ARM GNU C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths.928323742" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" useByScannerDiscovery="true" valueType="includePath">
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/include"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable/GCC/ARM_CM4F"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable/MemMang"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/Library/CMSIS/Include"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/Library/Device/Nuvoton/M480/Include"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/Library/StdDriver/inc"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HelloWorld/HelloWorld/freertos-addons/include}&quot;"/>
-									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/hardware"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/OSExtensions"/>
-									<listOptionValue builtIn="false" value="C:/git/nuvoton/ThirdParty/FreeRTOS/Source/portable/GCC/ARM_CM4F"/>
-									<listOptionValue builtIn="false" value="C:/git/nuvoton/ThirdParty/FreeRTOS/Source/include"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos-addons/include"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source/hardware"/>
+									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.797759580" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
 							</tool>
@@ -112,7 +116,7 @@
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.scriptfile.2134554268" name="Script files (-T)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.scriptfile" valueType="stringList">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/CMSIS/GCC/gcc_arm.ld}&quot;"/>
 								</option>
-								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.usenewlibnano.796369712" name="Use newlib-nano (--specs=nano.specs)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.usenewlibnano" value="true" valueType="boolean"/>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.usenewlibnano.796369712" name="Use newlib-nano (--specs=nano.specs)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.usenewlibnano" value="false" valueType="boolean"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.input.768282247" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -134,11 +138,10 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CMSIS"/>
-						<entry excluding="Source|Demo/Common/Minimal" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="FreeRTOS"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="FreeRTOS/Source"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Library"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="OSExtensions"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos-addons"/>
+						<entry excluding="portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_5.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/MemMang/heap_1.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 					</sourceEntries>
 				</configuration>
@@ -196,6 +199,11 @@
 									<listOptionValue builtIn="false" value="&quot;../Library/StdDriver/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HelloWorld/freertos-addons/include}&quot;"/>
 									<listOptionValue builtIn="false" value="../hardware"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HelloWorld/freertos/freertos_kernel/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:\git\breeze\firmware\freertos\freertos_kernel\include&quot;"/>
+									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/source"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable/MemMang"/>
+									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/freertos/freertos_kernel"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.807186812" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
@@ -206,6 +214,10 @@
 									<listOptionValue builtIn="false" value="&quot;../Library/StdDriver/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HelloWorld/freertos-addons/include}&quot;"/>
 									<listOptionValue builtIn="false" value="../hardware"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/include"/>
+									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/source"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable/MemMang"/>
+									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/freertos/freertos_kernel"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.756523729" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -216,6 +228,10 @@
 									<listOptionValue builtIn="false" value="&quot;../Library/StdDriver/inc&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/HelloWorld/freertos-addons/include}&quot;"/>
 									<listOptionValue builtIn="false" value="../hardware"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/include"/>
+									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/source"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable/MemMang"/>
+									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/freertos/freertos_kernel"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.808968253" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
 							</tool>
@@ -316,4 +332,5 @@
 			<resource resourceType="PROJECT" workspacePath="/HelloWorld"/>
 		</configuration>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>

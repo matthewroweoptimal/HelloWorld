@@ -9,11 +9,12 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include source/subdir.mk
+-include freertos_kernel/portable/MemMang/subdir.mk
+-include freertos_kernel/portable/GCC/ARM_CM4F/subdir.mk
+-include freertos_kernel/portable/Common/subdir.mk
+-include freertos_kernel/subdir.mk
 -include freertos-addons/subdir.mk
 -include Library/subdir.mk
--include FreeRTOS/Source/portable/MemMang/subdir.mk
--include FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
--include FreeRTOS/subdir.mk
 -include CMSIS/GCC/subdir.mk
 -include CMSIS/subdir.mk
 -include subdir.mk
@@ -63,7 +64,7 @@ all: HelloWorld.elf secondary-outputs
 HelloWorld.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross ARM GNU C++ Linker'
-	arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "C:\git\nuvoton\helloworld\CMSIS\GCC\gcc_arm.ld" -Xlinker --gc-sections -Wl,-Map,"HelloWorld.map" --specs=nano.specs -o "HelloWorld.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "C:\git\nuvoton\helloworld\CMSIS\GCC\gcc_arm.ld" -Xlinker --gc-sections -Wl,-Map,"HelloWorld.map" -o "HelloWorld.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

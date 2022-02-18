@@ -29,10 +29,11 @@ CPP_DEPS :=
 SUBDIRS := \
 CMSIS/GCC \
 CMSIS \
-FreeRTOS/Source/portable/GCC/ARM_CM4F \
-FreeRTOS/Source/portable/MemMang \
-FreeRTOS \
 Library \
 freertos-addons \
+freertos_kernel \
+freertos_kernel/portable/Common \
+freertos_kernel/portable/GCC/ARM_CM4F \
+freertos_kernel/portable/MemMang \
 source \
 

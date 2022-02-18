@@ -13,7 +13,7 @@
 
 #define MONITORING_TIMER_STACKSIZE (configMINIMAL_STACK_SIZE + 100)
 
-#define MONITORING_TIMER_TICK (500 / portTICK_RATE_MS)
+#define MONITORING_TIMER_TICK  ( pdMS_TO_TICKS(500))
 
 
 void Threads::StartThreads()

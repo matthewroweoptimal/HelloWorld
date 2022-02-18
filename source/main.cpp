@@ -27,21 +27,25 @@
  */
 
 #include <stdio.h>
+#include <UserInterrupts.h>
 
 /* Kernel includes. */
 #include "FreeRTOS.h"
 
 /* Hardware and starter kit includes. */
 #include "NuMicro.h"
-#include "../source/Threads.h"
+#include "Threads.h"
 
-/*-----------------------------------------------------------*/
 extern "C" {
+
 void vApplicationMallocFailedHook( void );
 void vApplicationIdleHook( void );
 void vApplicationTickHook( void );
+void vApplicationStackOverflowHook( TaskHandle_t pxTask, signed char *pcTaskName );
+
 }
 
+/*-----------------------------------------------------------*/
 /*
  * Set up the hardware ready to run this demo.
  */
@@ -116,7 +120,6 @@ static void prvSetupHardware( void )
 }
 /*-----------------------------------------------------------*/
 
-
 void vApplicationMallocFailedHook( void )
 {
     /* vApplicationMallocFailedHook() will only be called if
@@ -148,7 +151,8 @@ void vApplicationIdleHook( void )
 }
 /*-----------------------------------------------------------*/
 
-void vApplicationStackOverflowHook( xTaskHandle pxTask, signed char *pcTaskName )
+
+void vApplicationStackOverflowHook( TaskHandle_t pxTask, signed char *pcTaskName )
 {
     ( void ) pcTaskName;
     ( void ) pxTask;
@@ -159,5 +163,6 @@ void vApplicationStackOverflowHook( xTaskHandle pxTask, signed char *pcTaskName 
     taskDISABLE_INTERRUPTS();
     for( ;; );
 }
+
 /*-----------------------------------------------------------*/
 

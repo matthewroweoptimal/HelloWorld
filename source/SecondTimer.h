@@ -18,7 +18,7 @@ class SecondTimer : public Timer
 {
 public:
 	SecondTimer() :
-		Timer("SecondTimer", 1000 / portTICK_RATE_MS , true) {};
+		Timer("SecondTimer", pdMS_TO_TICKS(1000), true) {};
 
 protected:
 	void Run()

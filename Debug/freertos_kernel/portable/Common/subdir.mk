@@ -4,34 +4,20 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../CMSIS/GCC/_syscalls.c 
-
-S_UPPER_SRCS += \
-../CMSIS/GCC/startup_M480.S 
+C:/git/breeze/firmware/freertos/freertos_kernel/portable/Common/mpu_wrappers.c 
 
 OBJS += \
-./CMSIS/GCC/_syscalls.o \
-./CMSIS/GCC/startup_M480.o 
-
-S_UPPER_DEPS += \
-./CMSIS/GCC/startup_M480.d 
+./freertos_kernel/portable/Common/mpu_wrappers.o 
 
 C_DEPS += \
-./CMSIS/GCC/_syscalls.d 
+./freertos_kernel/portable/Common/mpu_wrappers.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
-CMSIS/GCC/%.o: ../CMSIS/GCC/%.c
+freertos_kernel/portable/Common/mpu_wrappers.o: C:/git/breeze/firmware/freertos/freertos_kernel/portable/Common/mpu_wrappers.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: Cross ARM GNU C Compiler'
 	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -IC:/git/breeze/firmware/freertos/freertos_kernel/include -IC:/git/breeze/firmware/freertos/freertos_kernel/portable -IC:/git/breeze/firmware/freertos/freertos_kernel/portable/GCC/ARM_CM4F -IC:/git/breeze/firmware/freertos/freertos_kernel/portable/MemMang -IC:/git/nuvoton/helloworld/Library/CMSIS/Include -IC:/git/nuvoton/helloworld/Library/Device/Nuvoton/M480/Include -IC:/git/nuvoton/helloworld/Library/StdDriver/inc -IC:/git/nuvoton/helloworld/OSExtensions -IC:/git/breeze/firmware/freertos-addons/include -IC:/git/nuvoton/helloworld/source/hardware -IC:/git/nuvoton/helloworld/source -IC:/git/breeze/firmware/freertos/freertos_kernel -std=gnu11 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -c -o "$@" "$<"
-	@echo 'Finished building: $<'
-	@echo ' '
-
-CMSIS/GCC/%.o: ../CMSIS/GCC/%.S
-	@echo 'Building file: $<'
-	@echo 'Invoking: Cross ARM GNU Assembler'
-	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -x assembler-with-cpp -IC:/git/breeze/firmware/freertos/freertos_kernel/include -IC:/git/breeze/firmware/freertos/freertos_kernel/portable -IC:/git/breeze/firmware/freertos/freertos_kernel/portable/GCC/ARM_CM4F -IC:/git/breeze/firmware/freertos/freertos_kernel/portable/MemMang -IC:/git/nuvoton/helloworld/Library/CMSIS/Include -IC:/git/nuvoton/helloworld/Library/Device/Nuvoton/M480/Include -IC:/git/nuvoton/helloworld/Library/StdDriver/inc -IC:/git/nuvoton/helloworld/OSExtensions -IC:/git/breeze/firmware/freertos-addons/include -IC:/git/nuvoton/helloworld/source/hardware -IC:/git/nuvoton/helloworld/source -IC:/git/breeze/firmware/freertos/freertos_kernel -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -c -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

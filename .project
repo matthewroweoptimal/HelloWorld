@@ -26,19 +26,9 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>FreeRTOS/Demo</name>
+			<name>freertos_kernel</name>
 			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/Source</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/include</name>
-			<type>2</type>
-			<locationURI>PARENT-2-PROJECT_LOC/nuvoton/ThirdParty/FreeRTOS/Source/include</locationURI>
+			<location>C:/git/breeze/firmware/freertos/freertos_kernel</location>
 		</link>
 		<link>
 			<name>freertos-addons/Doxyfile</name>
@@ -121,26 +111,6 @@
 			<locationURI>PARENT-2-PROJECT_LOC/breeze/firmware/freertos-addons/run-cppcheck.sh</locationURI>
 		</link>
 		<link>
-			<name>FreeRTOS/Demo/Common</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/Demo/links_to_doc_pages_for_these_demos.url</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/nuvoton/ThirdParty/FreeRTOS/Demo/links_to_doc_pages_for_these_demos.url</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/Demo/readme.txt</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/nuvoton/ThirdParty/FreeRTOS/Demo/readme.txt</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/Source/portable</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
 			<name>freertos-addons/include/condition_variable.hpp</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/breeze/firmware/freertos-addons/include/condition_variable.hpp</locationURI>
@@ -214,46 +184,6 @@
 			<name>freertos-addons/include/workqueue.hpp</name>
 			<type>1</type>
 			<locationURI>PARENT-2-PROJECT_LOC/breeze/firmware/freertos-addons/include/workqueue.hpp</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/Demo/Common/ReadMe.txt</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/nuvoton/ThirdParty/FreeRTOS/Demo/Common/ReadMe.txt</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/Source/portable/GCC</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/Source/portable/MemMang</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/Source/portable/readme.txt</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/nuvoton/ThirdParty/FreeRTOS/Source/portable/readme.txt</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/Source/portable/GCC/ARM_CM4F</name>
-			<type>2</type>
-			<locationURI>virtual:/virtual</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/Source/portable/MemMang/heap_2.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/nuvoton/ThirdParty/FreeRTOS/Source/portable/MemMang/heap_2.c</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/nuvoton/ThirdParty/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c</locationURI>
-		</link>
-		<link>
-			<name>FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h</name>
-			<type>1</type>
-			<locationURI>PARENT-2-PROJECT_LOC/nuvoton/ThirdParty/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h</locationURI>
 		</link>
 	</linkedResources>
 	<variableList>
