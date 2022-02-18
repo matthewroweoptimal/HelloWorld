@@ -27,7 +27,7 @@
  */
 
 #include <stdio.h>
-#include <UserInterrupts.h>
+#include "UserInterrupts.h"
 
 /* Kernel includes. */
 #include "FreeRTOS.h"

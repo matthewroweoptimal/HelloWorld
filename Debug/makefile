@@ -9,6 +9,16 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include source/subdir.mk
+-include lwip/src/netif/ppp/polarssl/subdir.mk
+-include lwip/src/netif/ppp/subdir.mk
+-include lwip/src/netif/subdir.mk
+-include lwip/src/core/ipv6/subdir.mk
+-include lwip/src/core/ipv4/subdir.mk
+-include lwip/src/core/subdir.mk
+-include lwip/src/apps/mdns/subdir.mk
+-include lwip/src/api/subdir.mk
+-include lwip/port/netif/subdir.mk
+-include lwip/port/subdir.mk
 -include freertos_kernel/portable/MemMang/subdir.mk
 -include freertos_kernel/portable/GCC/ARM_CM4F/subdir.mk
 -include freertos_kernel/portable/Common/subdir.mk

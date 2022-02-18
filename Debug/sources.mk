@@ -35,5 +35,15 @@ freertos_kernel \
 freertos_kernel/portable/Common \
 freertos_kernel/portable/GCC/ARM_CM4F \
 freertos_kernel/portable/MemMang \
+lwip/port/netif \
+lwip/port \
+lwip/src/api \
+lwip/src/apps/mdns \
+lwip/src/core \
+lwip/src/core/ipv4 \
+lwip/src/core/ipv6 \
+lwip/src/netif \
+lwip/src/netif/ppp \
+lwip/src/netif/ppp/polarssl \
 source \
 
