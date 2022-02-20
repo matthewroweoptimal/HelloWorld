@@ -76,7 +76,7 @@
 #define configSUPPORT_STATIC_ALLOCATION         0
 #define configSUPPORT_DYNAMIC_ALLOCATION        1
 /*#define configTOTAL_HEAP_SIZE                   0  not used by heap_3.c allocator */
-#define configTOTAL_HEAP_SIZE                   ((size_t)(112 * 1024))
+#define configTOTAL_HEAP_SIZE                   ((size_t)(64 * 1024))
 #define configAPPLICATION_ALLOCATED_HEAP        0
 
 /* Hook function related definitions. */
