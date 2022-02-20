@@ -39,7 +39,7 @@ extern void ethernetif_loopback_input(struct pbuf *p);
 #define DEFAULT_INC    0xD7
 #endif
 
-extern portBASE_TYPE xInsideISR;
+//extern portBASE_TYPE xInsideISR;
 
 
 static void mdio_write(u8_t addr, u8_t reg, u16_t val)
@@ -237,7 +237,7 @@ void EMAC_RX_IRQHandler(void)
 {
     unsigned int status;
 
-    xInsideISR = pdTRUE;
+    //xInsideISR = pdTRUE;
     status = EMAC->INTSTS & 0xFFFF;
     EMAC->INTSTS = status;
     if (status & EMAC_INTSTS_RXBEIF_Msk)
@@ -279,7 +279,7 @@ void EMAC_RX_IRQHandler(void)
     while (1);
 
     ETH_TRIGGER_RX();
-    xInsideISR = pdFALSE;
+   //xInsideISR = pdFALSE;
 }
 
 void EMAC_TX_IRQHandler(void)
@@ -287,7 +287,7 @@ void EMAC_TX_IRQHandler(void)
     unsigned int cur_entry, status;
 
 
-    xInsideISR = pdTRUE;
+    //xInsideISR = pdTRUE;
     status = EMAC->INTSTS & 0xFFFF0000;
     EMAC->INTSTS = status;
 #ifdef    TIME_STAMPING
@@ -327,7 +327,7 @@ void EMAC_TX_IRQHandler(void)
 #endif
         fin_tx_desc_ptr = fin_tx_desc_ptr->next;
     }
-    xInsideISR = pdFALSE;
+    //xInsideISR = pdFALSE;
 }
 
 u8_t *ETH_get_tx_buf(void)
