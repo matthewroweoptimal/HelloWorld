@@ -27,23 +27,13 @@
  */
 
 #include <stdio.h>
-#include "UserInterrupts.h"
-
 /* Kernel includes. */
 #include "FreeRTOS.h"
+#include "UserInterrupts.h"
 
 /* Hardware and starter kit includes. */
 #include "NuMicro.h"
 #include "Threads.h"
-
-extern "C" {
-
-void vApplicationMallocFailedHook( void );
-void vApplicationIdleHook( void );
-void vApplicationTickHook( void );
-void vApplicationStackOverflowHook( TaskHandle_t pxTask, signed char *pcTaskName );
-
-}
 
 /*-----------------------------------------------------------*/
 /*
@@ -93,10 +83,13 @@ static void prvSetupHardware( void )
     /* Enable IP clock */
     CLK_EnableModuleClock(UART0_MODULE);
     CLK_EnableModuleClock(TMR0_MODULE);
+    CLK_EnableModuleClock(EMAC_MODULE);
 
     /* Select IP clock source */
     CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART0SEL_HXT, CLK_CLKDIV0_UART0(1));
     CLK_SetModuleClock(TMR0_MODULE, CLK_CLKSEL1_TMR0SEL_HXT, 0);
+    // Configure MDC clock rate to HCLK / (127 + 1) = 1.5 MHz if system is running at 192 MHz
+    CLK_SetModuleClock(EMAC_MODULE, 0, CLK_CLKDIV3_EMAC(127));
 
     /* Update System Core Clock */
     /* User can use SystemCoreClockUpdate() to calculate SystemCoreClock. */
@@ -112,6 +105,8 @@ static void prvSetupHardware( void )
                (GPIO_MODE_OUTPUT << GPIO_MODE_MODE1_Pos) |
                (GPIO_MODE_OUTPUT << GPIO_MODE_MODE2_Pos);  // Set to output mode
 
+    initEthernetHardware();
+
     /* Lock protected registers */
     SYS_LockReg();
 
@@ -119,50 +114,3 @@ static void prvSetupHardware( void )
     UART_Open(UART0, 115200);
 }
 /*-----------------------------------------------------------*/
-
-void vApplicationMallocFailedHook( void )
-{
-    /* vApplicationMallocFailedHook() will only be called if
-    configUSE_MALLOC_FAILED_HOOK is set to 1 in FreeRTOSConfig.h.  It is a hook
-    function that will get called if a call to pvPortMalloc() fails.
-    pvPortMalloc() is called internally by the kernel whenever a task, queue,
-    timer or semaphore is created.  It is also called by various parts of the
-    demo application.  If heap_1.c or heap_2.c are used, then the size of the
-    heap available to pvPortMalloc() is defined by configTOTAL_HEAP_SIZE in
-    FreeRTOSConfig.h, and the xPortGetFreeHeapSize() API function can be used
-    to query the size of free heap space that remains (although it does not
-    provide information on how the remaining heap might be fragmented). */
-    taskDISABLE_INTERRUPTS();
-    for( ;; );
-}
-/*-----------------------------------------------------------*/
-
-void vApplicationIdleHook( void )
-{
-    /* vApplicationIdleHook() will only be called if configUSE_IDLE_HOOK is set
-    to 1 in FreeRTOSConfig.h.  It will be called on each iteration of the idle
-    task.  It is essential that code added to this hook function never attempts
-    to block in any way (for example, call xQueueReceive() with a block time
-    specified, or call vTaskDelay()).  If the application makes use of the
-    vTaskDelete() API function (as this demo application does) then it is also
-    important that vApplicationIdleHook() is permitted to return to its calling
-    function, because it is the responsibility of the idle task to clean up
-    memory allocated by the kernel to any task that has since been deleted. */
-}
-/*-----------------------------------------------------------*/
-
-
-void vApplicationStackOverflowHook( TaskHandle_t pxTask, signed char *pcTaskName )
-{
-    ( void ) pcTaskName;
-    ( void ) pxTask;
-
-    /* Run time stack overflow checking is performed if
-    configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2.  This hook
-    function is called if a stack overflow is detected. */
-    taskDISABLE_INTERRUPTS();
-    for( ;; );
-}
-
-/*-----------------------------------------------------------*/
-

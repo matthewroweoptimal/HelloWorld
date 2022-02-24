@@ -62,7 +62,7 @@
 
 
 struct netif *_netif;
-extern u8_t my_mac_addr[6];
+extern u8_t macAddr[6];
 
 /**
  * Helper struct to hold private data used to operate your ethernet interface.
@@ -92,12 +92,12 @@ low_level_init(struct netif *netif)
     netif->hwaddr_len = ETHARP_HWADDR_LEN;
 
     /* set MAC hardware address */
-    netif->hwaddr[0] = my_mac_addr[0];
-    netif->hwaddr[1] = my_mac_addr[1];
-    netif->hwaddr[2] = my_mac_addr[2];
-    netif->hwaddr[3] = my_mac_addr[3];
-    netif->hwaddr[4] = my_mac_addr[4];
-    netif->hwaddr[5] = my_mac_addr[5];
+    netif->hwaddr[0] = macAddr[0];
+    netif->hwaddr[1] = macAddr[1];
+    netif->hwaddr[2] = macAddr[2];
+    netif->hwaddr[3] = macAddr[3];
+    netif->hwaddr[4] = macAddr[4];
+    netif->hwaddr[5] = macAddr[5];
 
     /* maximum transfer unit */
     netif->mtu = 1500;

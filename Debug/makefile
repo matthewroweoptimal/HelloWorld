@@ -24,9 +24,9 @@ RM := rm -rf
 -include freertos_kernel/portable/Common/subdir.mk
 -include freertos_kernel/subdir.mk
 -include freertos-addons/subdir.mk
+-include Library/Device/Nuvoton/GCC/subdir.mk
+-include Library/Device/Nuvoton/subdir.mk
 -include Library/subdir.mk
--include CMSIS/GCC/subdir.mk
--include CMSIS/subdir.mk
 -include subdir.mk
 -include objects.mk
 

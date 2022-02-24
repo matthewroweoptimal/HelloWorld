@@ -334,6 +334,8 @@ Some MCU allow computing and verifying the IP, UDP, TCP and ICMP checksums by ha
 //#define SOCKETS_DEBUG  LWIP_DBG_ON
 //#define INET_DEBUG  LWIP_DBG_ON
 //#define PBUF_DEBUG LWIP_DBG_ON
+//#define DHCP_DEBUG LWIP_DBG_ON
+
 
 #if (LWIP_DNS || LWIP_IGMP || LWIP_IPV6) && !defined(LWIP_RAND)
     /* When using IGMP or IPv6, LWIP_RAND() needs to be defined to a random-function returning an u32_t random value*/

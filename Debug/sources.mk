@@ -27,8 +27,8 @@ CPP_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
-CMSIS/GCC \
-CMSIS \
+Library/Device/Nuvoton/GCC \
+Library/Device/Nuvoton \
 Library \
 freertos-addons \
 freertos_kernel \

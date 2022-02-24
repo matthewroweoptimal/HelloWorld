@@ -63,11 +63,13 @@
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source/hardware"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel"/>
+									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port/netif"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.974729338" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.217388011" name="Cross ARM GNU C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths.13077593" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" useByScannerDiscovery="true" valueType="includePath">
+									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/include"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable/GCC/ARM_CM4F"/>
@@ -78,15 +80,16 @@
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/OSExtensions"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos-addons/include"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source/hardware"/>
-									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel"/>
 									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port/include"/>
 									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port"/>
 									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/lwip/src"/>
 									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/lwip/src/include"/>
+									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port/netif"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.539672754" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
+									<listOptionValue builtIn="false" value="LWIP_DEBUG=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.2145466818" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
@@ -106,7 +109,11 @@
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/include"/>
 									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/lwip/"/>
+									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port/include"/>
 									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port"/>
+									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/lwip/src/include"/>
+									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/lwip/src"/>
+									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port/netif"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.784720751" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
@@ -150,7 +157,6 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CMSIS"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Library"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="OSExtensions"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos-addons"/>
@@ -219,6 +225,7 @@
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable/MemMang"/>
 									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/freertos/freertos_kernel"/>
 									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/lwip/src/includes"/>
+									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port/netif"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.807186812" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
@@ -234,6 +241,7 @@
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable/MemMang"/>
 									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/freertos/freertos_kernel"/>
 									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/lwip/src/includes"/>
+									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port/netif"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.756523729" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -249,6 +257,7 @@
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable/MemMang"/>
 									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/freertos/freertos_kernel"/>
 									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/lwip/src/includes"/>
+									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port/netif"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.808968253" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
 							</tool>
@@ -289,7 +298,6 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="CMSIS"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Library"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 					</sourceEntries>

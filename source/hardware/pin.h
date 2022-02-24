@@ -25,7 +25,8 @@ class Pin
 {
 public:
 	Pin(uint32_t port, uint32_t pin)
-	  : m_port(port), m_pin(pin << 2) {}
+	  : m_port(port),
+		m_pin(pin << 2) {}
 
 	uint32_t Read() {
 		uint32_t uiRead = *(volatile uint32_t *)(m_port + m_pin);
@@ -36,6 +37,7 @@ public:
 		*(volatile uint32_t *)(m_port + m_pin) = output;
 	}
 
+protected:
 	uint32_t 	m_port;
 	uint32_t 	m_pin;
 };
