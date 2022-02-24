@@ -7,8 +7,11 @@
 
 #include "TcpThread.h"
 #include "server.h"
+#include "lwip/apps/mdns.h"
 
 unsigned char macAddr[6] = {0x00, 0x00, 0x00, 0x55, 0x66, 0x77};
+const char mdnsName[] = "cddlive";
+
 NETIF_DECLARE_EXT_CALLBACK(netif_callback)
 
 static void netifStatusCallback(struct netif *netif, netif_nsc_reason_t reason, const netif_ext_callback_args_t *args)
@@ -25,6 +28,12 @@ static void netifStatusCallback(struct netif *netif, netif_nsc_reason_t reason, 
 
 	  printf("Netif IP change: %s\n", ip_ntoa(&(netif->ip_addr)));
   }
+}
+
+static void srv_txt(struct mdns_service *service, void *txt_userdata)
+{
+    int res = mdns_resp_add_service_txtitem(service, "path=/", 6);
+    LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
 }
 
 TcpThread::TcpThread(uint16_t usStackDepth, UBaseType_t uxPriority) : Thread("TCP Thread", usStackDepth, uxPriority) {}
@@ -50,6 +59,10 @@ void TcpThread::Run()
 
     // register a callback for interface changes
     netif_add_ext_callback(&netif_callback, netifStatusCallback);
+
+    mdns_resp_init();
+    mdns_resp_add_netif(&netif, mdnsName);
+    mdns_resp_add_service(&netif, "cddlive", "_http", DNSSD_PROTO_TCP, 80, srv_txt, NULL);
 
     dhcp_start(&netif);
 
