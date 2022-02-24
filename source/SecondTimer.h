@@ -13,6 +13,16 @@
 #include "board.h"
 
 using Timer = cpp_freertos::Timer;
+const uint32_t MEMORY_DISPLAY_TICKS = 10;
+
+static void printFreeRTOSHeapStats()
+{
+	static xHeapStats stats = {0};
+	vPortGetHeapStats( &stats );
+	printf("FreeRTOS heap\n  Free = %u, biggest = %u, smallest = %u\n",
+		   stats.xAvailableHeapSpaceInBytes, stats.xSizeOfLargestFreeBlockInBytes, stats.xSizeOfSmallestFreeBlockInBytes );
+}
+
 
 class SecondTimer : public Timer
 {
@@ -26,7 +36,15 @@ protected:
 		// toggle an led
 		Leds::toggleLed(GREEN_LED);
 		Leds::setLed(RED_LED, Buttons::readButton(SW2));
+
+		if (!tickCounter--)
+		{
+			printFreeRTOSHeapStats();
+			tickCounter = MEMORY_DISPLAY_TICKS;
+		}
 	}
+
+	uint32_t tickCounter = MEMORY_DISPLAY_TICKS;
 };
 
 #endif /* SECONDTIMER_H_ */

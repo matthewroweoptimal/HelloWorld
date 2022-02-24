@@ -36,29 +36,28 @@ void tcp_echoserver_serve(struct netconn *conn)
     struct netbuf *inbuf;
     char* buf;
     u16_t buflen;
-    char string_pass[] = "Hello World!!";
-    char string_fail[] = "Wrong Password!!";
 
-    printf("Wait for TCP data       ...");
+    char stringResponse[] = "HTTP/1.0 200 OK\r\n\r\n \
+    		<html><body> \
+    		<h1>Nuvoton CDD Live build</h1> \
+    		" __DATE__ " " __TIME__ \
+    		"</body></html>";
+
+
+    printf("TCP socket connected...");
 
     /* Read the data from the port, blocking if nothing yet there.
      We assume the request (the part we care about) is in one netbuf */
     netconn_recv(conn,&inbuf);
 
-    printf(" [OK] ...\n");
-    if (inbuf != NULL)
-    {
-        if (netconn_err(conn) == ERR_OK)
-        {
-            netbuf_data(inbuf, (void**)&buf, &buflen);
-            if (strncmp(buf, "nuvoton", 7) == 0)
-                netconn_write(conn, (const unsigned char*)string_pass, (size_t)strlen(string_pass), NETCONN_NOCOPY);
-            else
-                netconn_write(conn, (const unsigned char*)string_fail, (size_t)strlen(string_fail), NETCONN_NOCOPY);
-        }
-    }
+    printf(" [OK]\n");
 
-    printf("Close TCP connection    ...");
+	if (netconn_err(conn) == ERR_OK)
+	{
+		netconn_write(conn, (const unsigned char*)stringResponse, (size_t)strlen(stringResponse), NETCONN_NOCOPY);
+	}
+
+    printf("TCP close connection...");
 
     /* Close the connection */
     netconn_close(conn);
@@ -67,7 +66,7 @@ void tcp_echoserver_serve(struct netconn *conn)
      so we have to make sure to deallocate the buffer) */
     netbuf_delete(inbuf);
 
-    printf(" [OK] ...\n");
+    printf(" [OK]\n");
 }
 
 
