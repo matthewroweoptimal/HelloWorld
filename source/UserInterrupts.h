@@ -9,24 +9,30 @@
 #define USERINTERRUPTS_H_
 
 #include "task.h"
-
-//#include "fsl_ftm.h"
-
-// TODO: Fix microsecond timer for Nuvoton port
+#include "timer.h"
 
 extern "C" {
+
 static uint32_t RTOS_RunTimeCounter; /* runtime counter, used for configGENERATE_RUNTIME_STATS */
 
-void FTM0_IRQHandler(void) {
-  /* Clear interrupt flag.*/
-  //FTM_ClearStatusFlags(FTM0, kFTM_TimeOverflowFlag);
-  //RTOS_RunTimeCounter++; /* increment runtime counter */
+void TMR0_IRQHandler(void)
+{
+    if(TIMER_GetIntFlag(TIMER0) == 1)
+    {
+        /* Clear Timer0 time-out interrupt flag */
+        TIMER_ClearIntFlag(TIMER0);
+        RTOS_RunTimeCounter++;
+    }
 }
-
 
 void RTOS_AppConfigureTimerForRuntimeStats(void) {
   RTOS_RunTimeCounter = 0;
-  //EnableIRQ(FTM0_IRQn);
+
+  // initialise microsecond timer
+  TIMER_Open(TIMER0, TIMER_PERIODIC_MODE, 1000000);
+  TIMER_EnableInt(TIMER0);
+  NVIC_EnableIRQ(TMR0_IRQn);
+  TIMER_Start(TIMER0);
 }
 
 uint32_t RTOS_AppGetRuntimeCounterValueFromISR(void) {

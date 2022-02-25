@@ -13,7 +13,7 @@
 #include "board.h"
 
 using Timer = cpp_freertos::Timer;
-const uint32_t MEMORY_DISPLAY_TICKS = 10;
+const uint32_t MEMORY_DISPLAY_TICKS = 5;
 
 static void printFreeRTOSHeapStats()
 {
@@ -21,6 +21,7 @@ static void printFreeRTOSHeapStats()
 	vPortGetHeapStats( &stats );
 	printf("FreeRTOS heap\n  Free = %u, biggest = %u, smallest = %u\n",
 		   stats.xAvailableHeapSpaceInBytes, stats.xSizeOfLargestFreeBlockInBytes, stats.xSizeOfSmallestFreeBlockInBytes );
+	printf("  systime: %d\n", RTOS_AppGetRuntimeCounterValueFromISR());
 }
 
 
@@ -37,7 +38,7 @@ protected:
 		Leds::toggleLed(GREEN_LED);
 		Leds::setLed(RED_LED, Buttons::readButton(SW2));
 
-		if (!tickCounter--)
+		if (!--tickCounter)
 		{
 			printFreeRTOSHeapStats();
 			tickCounter = MEMORY_DISPLAY_TICKS;
