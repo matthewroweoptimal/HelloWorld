@@ -18,7 +18,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 #define TCPECHOSERVER_THREAD_PRIO    ( tskIDLE_PRIORITY + 2UL )
-#define TCPECHOSERVER_THREAD_STACKSIZE  200
+#define TCPECHOSERVER_THREAD_STACKSIZE  300
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 
@@ -34,14 +34,15 @@
 void tcp_echoserver_serve(struct netconn *conn)
 {
     struct netbuf *inbuf;
-    char* buf;
-    u16_t buflen;
+    char buf[50];
 
     char stringResponse[] = "HTTP/1.0 200 OK\r\n\r\n \
     		<html><body> \
     		<h1>Nuvoton CDD Live build</h1> \
-    		" __DATE__ " " __TIME__ \
-    		"</body></html>";
+    		<p> \
+    		" __DATE__ " " __TIME__ "<br/>";
+
+    char endResponse[] = "</p></body></html>";
 
 
     printf("TCP socket connected...");
@@ -55,6 +56,9 @@ void tcp_echoserver_serve(struct netconn *conn)
 	if (netconn_err(conn) == ERR_OK)
 	{
 		netconn_write(conn, (const unsigned char*)stringResponse, (size_t)strlen(stringResponse), NETCONN_NOCOPY);
+		sprintf(buf, "Uptime: %dus", RTOS_AppGetRuntimeCounterValueFromISR());
+		netconn_write(conn, (const unsigned char*)buf, (size_t)strlen(buf), NETCONN_NOCOPY);
+		netconn_write(conn, (const unsigned char*)endResponse, (size_t)strlen(endResponse), NETCONN_NOCOPY);
 	}
 
     printf("TCP close connection...");
