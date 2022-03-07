@@ -59,24 +59,24 @@
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.217388011" name="Cross ARM GNU C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths.13077593" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" useByScannerDiscovery="true" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/Library/StdDriver/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/source&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/Library/CMSIS/Include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/Library/Device/Nuvoton/M480/Include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/OSExtensions&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/freertos-addons/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/source/hardware&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/port/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/port&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/port/netif&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/freertos_kernel/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/freertos_kernel/portable&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/freertos_kernel/portable/GCC/ARM_CM4F&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/freertos_kernel/portable/MemMang&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/freertos_kernel&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/src&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/src/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Library/StdDriver/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Library/CMSIS/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Library/Device/Nuvoton/M480/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/OSExtensions&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/freertos-addons/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/hardware&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip/port/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip/port&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip/port/netif&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/freertos_kernel/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/freertos_kernel/portable&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/freertos_kernel/portable/GCC/ARM_CM4F&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/freertos_kernel/portable/MemMang&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/freertos_kernel&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip/src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip/src/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.539672754" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
@@ -86,24 +86,24 @@
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.271442930" name="Cross ARM GNU C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths.928323742" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" useByScannerDiscovery="true" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/Library/StdDriver/inc&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/source&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/Library/CMSIS/Include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/Library/Device/Nuvoton/M480/Include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/OSExtensions&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/freertos-addons/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/source/hardware&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/port/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/port&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/port/netif&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/freertos_kernel/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/freertos_kernel/portable&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/freertos_kernel/portable/GCC/ARM_CM4F&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/freertos_kernel/portable/MemMang&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/freertos_kernel&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/src&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/src/include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Library/StdDriver/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Library/CMSIS/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Library/Device/Nuvoton/M480/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/OSExtensions&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/freertos-addons/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/hardware&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip/port/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip/port&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip/port/netif&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/freertos_kernel/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/freertos_kernel/portable&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/freertos_kernel/portable/GCC/ARM_CM4F&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/freertos_kernel/portable/MemMang&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/freertos_kernel&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip/src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip/src/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.784720751" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
