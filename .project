@@ -28,7 +28,7 @@
 		<link>
 			<name>freertos_kernel</name>
 			<type>2</type>
-			<location>C:/git/breeze/firmware/freertos/freertos_kernel</location>
+			<locationURI>PARENT-1-PROJECT_LOC/optimal-audio-zone-processor/firmware/freertos/freertos_kernel</locationURI>
 		</link>
 		<link>
 			<name>freertos-addons/Doxyfile</name>

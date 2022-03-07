@@ -63,14 +63,36 @@
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source/hardware"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel"/>
-									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port/netif"/>
+									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/lwip/port/netif"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/Library/StdDriver/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/source&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos/freertos_kernel/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos/freertos_kernel/portable&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos/freertos_kernel/portable/GCC/ARM_CM4F&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos/freertos_kernel/portable/MemMang&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/Library/CMSIS/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/Library/Device/Nuvoton/M480/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/OSExtensions&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/freertos-addons/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/source/hardware&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos/freertos_kernel&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/port/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/port&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/lwip/src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/lwip/src/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/port/netif&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos-addons/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/lwip&quot;"/>
+								</option>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.135102731" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
+									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.974729338" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.217388011" name="Cross ARM GNU C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths.13077593" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" useByScannerDiscovery="true" valueType="includePath">
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/Library/StdDriver/inc"/>
-									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/include"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable/GCC/ARM_CM4F"/>
@@ -80,12 +102,28 @@
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/OSExtensions"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos-addons/include"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source/hardware"/>
+									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel"/>
-									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port/include"/>
-									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port"/>
-									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/lwip/src"/>
-									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/lwip/src/include"/>
-									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port/netif"/>
+									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/lwip/port/netif"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/Library/StdDriver/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/source&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos/freertos_kernel/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos/freertos_kernel/portable&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos/freertos_kernel/portable/GCC/ARM_CM4F&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos/freertos_kernel/portable/MemMang&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/Library/CMSIS/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/Library/Device/Nuvoton/M480/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/OSExtensions&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/freertos-addons/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/source/hardware&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos/freertos_kernel&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/port/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/port&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/lwip/src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/lwip/src/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/port/netif&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos-addons/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/lwip&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.539672754" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
@@ -96,6 +134,7 @@
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.271442930" name="Cross ARM GNU C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler">
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths.928323742" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" useByScannerDiscovery="true" valueType="includePath">
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/Library/StdDriver/inc"/>
+									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/include"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable/GCC/ARM_CM4F"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/portable/MemMang"/>
@@ -106,13 +145,26 @@
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source/hardware"/>
 									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/source"/>
 									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel"/>
-									<listOptionValue builtIn="false" value="C:/git/breeze/firmware/freertos/freertos_kernel/include"/>
-									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/lwip/"/>
-									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port/include"/>
-									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port"/>
-									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/lwip/src/include"/>
-									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/lwip/src"/>
-									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port/netif"/>
+									<listOptionValue builtIn="false" value="C:/git/nuvoton/helloworld/lwip/port/netif"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/Library/StdDriver/inc&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/source&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos/freertos_kernel/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos/freertos_kernel/portable&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos/freertos_kernel/portable/GCC/ARM_CM4F&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos/freertos_kernel/portable/MemMang&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/Library/CMSIS/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/Library/Device/Nuvoton/M480/Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/OSExtensions&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/freertos-addons/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/source/hardware&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos/freertos_kernel&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/port/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/port&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/lwip/src&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/lwip/src/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/HelloWorld/lwip/port/netif&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/freertos-addons/include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;C:/Users/Iain.Quarmby/OneDrive - Focusrite Group/Documents/GitHub/optimal-audio-zone-processor/firmware/lwip&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.784720751" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
@@ -159,8 +211,8 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Library"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="OSExtensions"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos-addons"/>
-						<entry excluding="portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_5.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/MemMang/heap_1.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
-						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="lwip"/>
+						<entry excluding="portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_5.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/MemMang/heap_1.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="freertos_kernel"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 					</sourceEntries>
 				</configuration>
