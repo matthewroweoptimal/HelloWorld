@@ -61,38 +61,38 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 SECONDARY_FLASH += \
-HelloWorld.hex \
+CDDLive.hex \
 
 SECONDARY_SIZE += \
-HelloWorld.siz \
+CDDLive.siz \
 
 
 # All Target
-all: HelloWorld.elf secondary-outputs
+all: CDDLive.elf secondary-outputs
 
 # Tool invocations
-HelloWorld.elf: $(OBJS) $(USER_OBJS)
+CDDLive.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross ARM GNU C++ Linker'
-	arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "C:\Users\Iain.Quarmby\OneDrive - Focusrite Group\Documents\GitHub\HelloWorld\CMSIS\GCC\gcc_arm.ld" -Xlinker --gc-sections -Wl,-Map,"HelloWorld.map" -o "HelloWorld.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "C:\Users\Iain.Quarmby\OneDrive - Focusrite Group\Documents\GitHub\HelloWorld\CMSIS\GCC\gcc_arm.ld" -Xlinker --gc-sections -Wl,-Map,"CDDLive.map" -o "CDDLive.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-HelloWorld.hex: HelloWorld.elf
+CDDLive.hex: CDDLive.elf
 	@echo 'Invoking: Cross ARM GNU Create Flash Image'
-	arm-none-eabi-objcopy -O ihex "HelloWorld.elf"  "HelloWorld.hex"
+	arm-none-eabi-objcopy -O ihex "CDDLive.elf"  "CDDLive.hex"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-HelloWorld.siz: HelloWorld.elf
+CDDLive.siz: CDDLive.elf
 	@echo 'Invoking: Cross ARM GNU Print Size'
-	arm-none-eabi-size --format=berkeley "HelloWorld.elf"
+	arm-none-eabi-size --format=berkeley "CDDLive.elf"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(CC_DEPS)$(C++_DEPS)$(OBJS)$(C_UPPER_DEPS)$(CXX_DEPS)$(SECONDARY_FLASH)$(SECONDARY_SIZE)$(ASM_DEPS)$(S_UPPER_DEPS)$(C_DEPS)$(CPP_DEPS) HelloWorld.elf
+	-$(RM) $(CC_DEPS)$(C++_DEPS)$(OBJS)$(C_UPPER_DEPS)$(CXX_DEPS)$(SECONDARY_FLASH)$(SECONDARY_SIZE)$(ASM_DEPS)$(S_UPPER_DEPS)$(C_DEPS)$(CPP_DEPS) CDDLive.elf
 	-@echo ' '
 
 secondary-outputs: $(SECONDARY_FLASH) $(SECONDARY_SIZE)
