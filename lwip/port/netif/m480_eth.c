@@ -66,6 +66,12 @@ static int reset_phy(void)
     u16_t reg;
     u32_t delay;
 
+#if USE_CDD_DEV_ETHERNET
+
+    printf("100 full\n");
+    EMAC->CTL |= (EMAC_CTL_OPMODE_Msk | EMAC_CTL_FUDUP_Msk);
+
+#else
 
     mdio_write(CONFIG_PHY_ADDR, MII_BMCR, BMCR_RESET);
 
@@ -131,6 +137,8 @@ static int reset_phy(void)
             EMAC->CTL &= ~(EMAC_CTL_OPMODE_Msk | EMAC_CTL_FUDUP_Msk);
         }
     }
+
+#endif
 
     return(0);
 }
