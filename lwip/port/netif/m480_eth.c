@@ -66,7 +66,7 @@ static int reset_phy(void)
     u16_t reg;
     u32_t delay;
 
-#if USE_CDD_DEV_ETHERNET
+#if USE_CDD_DEV_ETHERNET | USE_MARVEL_SWITCH
 
     printf("100 full\n");
     EMAC->CTL |= (EMAC_CTL_OPMODE_Msk | EMAC_CTL_FUDUP_Msk);

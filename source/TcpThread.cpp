@@ -8,6 +8,15 @@
 #include "TcpThread.h"
 #include "server.h"
 #include "lwip/apps/mdns.h"
+#include "network.h"
+
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+#define MANDO_THREAD_PRIO    ( tskIDLE_PRIORITY + 2UL )
+#define MANDO_THREAD_STACKSIZE  300
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+
 
 unsigned char macAddr[6] = {0x00, 0x00, 0x00, 0x55, 0x66, 0x77};
 const char mdnsName[] = "cddlive";
@@ -71,7 +80,8 @@ void TcpThread::Run()
     NVIC_SetPriority(EMAC_RX_IRQn, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1);
     NVIC_EnableIRQ(EMAC_RX_IRQn);
 
-    tcp_echoserver_netconn_init();
+//    tcp_echoserver_netconn_init();
+    network_UseStaticIP((uint32 *) &ipaddr,(uint32 *)  &gw,(uint32 *)  &netmask);
 
     Suspend();
 }
