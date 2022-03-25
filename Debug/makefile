@@ -8,8 +8,6 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include source/Common/subdir.mk
--include source/Comm/subdir.mk
 -include source/subdir.mk
 -include lwip/src/netif/ppp/polarssl/subdir.mk
 -include lwip/src/netif/ppp/subdir.mk

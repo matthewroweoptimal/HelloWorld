@@ -52,11 +52,15 @@
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.usepreprocessor.1758927508" name="Use preprocessor" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.usepreprocessor" value="true" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths.1978922030" name="Include paths (-I)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Comm&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Common/Mandolin&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Common/Mandolin&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/OutputFiles&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../OutputFiles\OLYspeaker1&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.135102731" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
+									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.974729338" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
@@ -80,14 +84,18 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip/src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip/src/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Common/Mandolin&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Common/Mandolin&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/OutputFiles&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Comm&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/OutputFiles/OLYspeaker1&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs.539672754" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
+									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.2145466818" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -111,14 +119,18 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip/src&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip/src/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/lwip&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Common/Mandolin&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Common/Mandolin&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/OutputFiles&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Comm&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/OutputFiles/OLYspeaker1&quot;"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.784720751" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
+									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.797759580" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
 							</tool>
@@ -163,7 +175,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH" kind="sourcePath" name="freertos-addons"/>
 						<entry excluding="portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_5.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
-						<entry excluding="Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
+						<entry excluding="server.c|Comm|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -227,6 +239,9 @@
 									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/freertos/freertos_kernel"/>
 									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/lwip/src/includes"/>
 									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port/netif"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/OutputFiles&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../OutputFiles\OLYspeaker1&quot;"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.807186812" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
@@ -243,6 +258,9 @@
 									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/freertos/freertos_kernel"/>
 									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/lwip/src/includes"/>
 									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port/netif"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/OutputFiles&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../OutputFiles\OLYspeaker1&quot;"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.756523729" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -259,6 +277,9 @@
 									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/freertos/freertos_kernel"/>
 									<listOptionValue builtIn="false" value="c:/git/breeze/firmware/lwip/src/includes"/>
 									<listOptionValue builtIn="false" value="c:/git/nuvoton/helloworld/lwip/port/netif"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/Common&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/OutputFiles&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;../OutputFiles\OLYspeaker1&quot;"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.808968253" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
 							</tool>
@@ -300,7 +321,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Library"/>
-						<entry excluding="Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
+						<entry excluding="server.c|Comm|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

@@ -6,9 +6,9 @@
  */
 
 #include "TcpThread.h"
-#include "server.h"
 #include "lwip/apps/mdns.h"
 #include "network.h"
+
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -71,7 +71,7 @@ void TcpThread::Run()
 
     mdns_resp_init();
     mdns_resp_add_netif(&netif, mdnsName);
-    mdns_resp_add_service(&netif, "cddlive", "_http", DNSSD_PROTO_TCP, 80, srv_txt, NULL);
+    mdns_resp_add_service(&netif, "cddlive", "_tcp", DNSSD_PROTO_TCP, 50001, srv_txt, NULL);
 
     dhcp_start(&netif);
 
@@ -80,11 +80,7 @@ void TcpThread::Run()
     NVIC_SetPriority(EMAC_RX_IRQn, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1);
     NVIC_EnableIRQ(EMAC_RX_IRQn);
 
-//    tcp_echoserver_netconn_init();
-    network_UseStaticIP((uint32 *) &ipaddr,(uint32 *)  &gw,(uint32 *)  &netmask);
+    network_UseDHCP();
 
     Suspend();
 }
-
-
-
