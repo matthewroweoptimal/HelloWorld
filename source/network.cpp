@@ -26,6 +26,7 @@ extern "C" {
 /* Private define ------------------------------------------------------------*/
 #define TCPECHOSERVER_THREAD_PRIO    ( tskIDLE_PRIORITY + 2UL )
 #define TCPECHOSERVER_THREAD_STACKSIZE  300
+#define NETCON_RECIEVE_TIMEOUT_MS		10000
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 
@@ -64,6 +65,7 @@ static void tcp_mandolin_thread(void *arg)
     // Create a new connection identifier
     conn = netconn_new(NETCONN_TCP);
 
+    //sets IP address and port for connection, NULL lets IP address be determined by networking system.
     netconn_bind(conn, NULL, MANDOLIN_PORT_TCP);
 
     // Tell connection to go into listening mode
@@ -82,37 +84,28 @@ static void tcp_mandolin_thread(void *arg)
             uint8_t * data;
             uint16_t len;
 
-            netconn_set_recvtimeout(newconn, 10);
+            netconn_set_recvtimeout(newconn, NETCON_RECIEVE_TIMEOUT_MS);
             connected = true;
             printf("Connection established on port %d\n", MANDOLIN_PORT_TCP);
 
+            //we would like to keep the connection open until it timesout (i.e. 5S with no message.)
             while (connected)
             {
-            	err = netconn_recv(newconn, &buf);	// Blocking until data received or timeout
+            	err = netconn_recv(newconn, &buf);	// Blocking until data received or timeout (what is timeout?)
             	if (err == ERR_OK)
             	{
+            		// do will run until there is nothing left in buf to recieve
 					do {
 						// Data received, copy packet to Rx FIFO
 						netbuf_data(buf, (void **)&data, &len);
 						if (MANDOLIN_FIFO_bytes_empty(&netRxFifo) > len)
+						{
 							MANDOLIN_FIFO_enqueue_bytes(&netRxFifo, data, len);
+							printf("Message received, length = %d\n", len);
+						}
 						else
 							printf("Network Mandolin FIFO overfull\n");
-
-						for (i=0; i< len;i++) {
-							if (!MANDOLIN_FIFO_is_full(&netRxFifo))
-							{
-								MANDOLIN_FIFO_enqueue_byte(&netRxFifo, data[i]);
-								printf("Message received\n");
-							}
-							else
-							{
-								printf("Network Mandolin FIFO overfull\n");
-							}
-
-						}
 					}
-
 					while (netbuf_next(buf) >= 0);
 					{
 					netbuf_delete(buf);
@@ -122,14 +115,14 @@ static void tcp_mandolin_thread(void *arg)
             	{
             			int nErr;
                  		/* Close connection and discard connection identifier. */
-						//nErr = netconn_close(newconn);
-						//printf("time out triggered\n");
+						nErr = netconn_close(newconn);
+						printf("netcon receive time out triggered\n");
 
-						//nErr = netconn_delete(newconn);
-						//printf("netconn-delete: %s\n", lwip_strerr(nErr));
+						nErr = netconn_delete(newconn);
+						printf("netconn-delete: %s\n", lwip_strerr(nErr));
 
 						/* lwip wiki states it could be there may be issues if attempt to bind to same address. although address not specified so may not be issue... */
-						//connected = false;
+						connected = false;
 
 
 
@@ -147,6 +140,7 @@ static void tcp_mandolin_thread(void *arg)
         }
         else if(err == ERR_TIMEOUT)
         {// Haven't received any information in TIMEOUT, check if it's because the network has disconnected.
+        	printf("netcon_accept time out triggered\n");
         }
     }
 }
