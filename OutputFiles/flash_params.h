@@ -9,7 +9,7 @@
 #define FLASH_PARAMS_H_
 
 #include "board.h"
-#include "SSD_FTFx.h"
+//#include "SSD_FTFx.h"
 #include "oly.h"
 
 
@@ -20,7 +20,7 @@
 /* Program Flash block information */
 #define P_FLASH_SIZE            (FSL_FEATURE_FLASH_PFLASH_BLOCK_SIZE * FSL_FEATURE_FLASH_PFLASH_BLOCK_COUNT)
 #define P_BLOCK_NUM             FSL_FEATURE_FLASH_PFLASH_BLOCK_COUNT
-#define P_SECTOR_SIZE           FSL_FEATURE_FLASH_PFLASH_BLOCK_SECTOR_SIZE	// 4k for K64
+#define P_SECTOR_SIZE           (4096)  // FSL_FEATURE_FLASH_PFLASH_BLOCK_SECTOR_SIZE	// 4k for K64
 /* Data Flash block information */
 #define FLEXNVM_BASE            FSL_FEATURE_FLASH_FLEX_NVM_START_ADDRESS
 #define FLEXNVM_SECTOR_SIZE     FSL_FEATURE_FLASH_FLEX_NVM_BLOCK_SECTOR_SIZE

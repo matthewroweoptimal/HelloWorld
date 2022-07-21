@@ -10,13 +10,13 @@
 
 #include "oly.h"
 #include "mandolin.h"
-#include <mqx.h>
-#include <message.h>
+#include "MQX_to_FreeRTOS.h"
+//#include <message.h>
 #include "LOUD_defines.h"
 
 // for SPI Flash Validation
-#include "Drivers/spi_aux.h"
-#include "Drivers/SpiFlash/spi_memory.h"
+//#include "Drivers/spi_aux.h"
+//#include "Drivers/SpiFlash/spi_memory.h"
 
 #define ROUND(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))	// round float to nearest whole value
 

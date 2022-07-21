@@ -9,12 +9,8 @@
 #define SOURCES_NETWORK_H_
 
 #include "oly.h"
-//#include "CommMandolin.h"
-//#include "InputHandler.h"
-extern "C" {
-#include "mandolin.h"
-}
-
+#include "CommMandolin.h"
+#include "InputHandler.h"
 
 void network_init(void);
 void network_test(void);

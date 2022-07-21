@@ -27,11 +27,18 @@
 
 // FIFO Size Switches
 #define MANDOLIN_FIFO_IS_POWER_OF_TWO   0      // 0 -> any FIFO size is OK, 1 -> all FIFO sizes must be powers of two
-#define MANDOLIN_MAX_PAYLOAD_DATA_WORDS 512u    // 2^16 - 1 data words - the maximum words the current protocol supports
+
+
+#define MANDOLIN_MAX_PAYLOAD_DATA_WORDS 1040u    // 2^16 - 1 data words - the maximum words the current protocol supports
                                                // You may want to shrink this (significantly) if you don't anticipate using 16-bits of length
                                                // or if you have set MANDOLIN_FIFO_IS_POWER_OF_TWO, and want to use MANDOLIN_FIFO_BYTES in your code.
-#define MANDOLIN_BUFFER_SLOP_BYTES      8u    // The current structure of the FIFO means that we lose the use of one byte,
+#define MANDOLIN_BUFFER_SLOP_BYTES      16u    // The current structure of the FIFO means that we lose the use of one byte,
                                                // so this should always be at least one.
                                                // Just rounding it up to a round 262200 bytes for now...
+
+#define MAX_MANDOLIN_MSG_SIZE	(MANDOLIN_HEADER_CHECKSUM_BYTES+(MANDOLIN_MAX_PAYLOAD_DATA_WORDS*MANDOLIN_BYTES_PER_WORD))
+
+#define MANDOLIN_NOTIFY_WHEN_CHANGED 	0xFFFFFFFF
+#define MANDOLIN_FLAG_WORD_OFFSET		1		// Index of Flag word in parameter message
 
 #endif // __MANDOLIN_CONFIG_H__

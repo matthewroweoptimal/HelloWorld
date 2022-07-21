@@ -367,6 +367,7 @@ typedef enum {
 
 // System State
 typedef enum {
+    MANDOLIN_SS_ERROR_CODE          =  0,
     MANDOLIN_SS_BOOT_CODE           =  1,
     MANDOLIN_SS_MAX_MSG_WORDS,
     MANDOLIN_SS_SYSTEM_LABEL,
@@ -377,7 +378,8 @@ typedef enum {
     MANDOLIN_SS_REC_PLAY_TRANSPORT  =  8,
     MANDOLIN_SS_REC_PLAY_MULTITRACK,
     MANDOLIN_SS_REC_PLAY_MUSIC,
-    
+    MANDOLIN_SS_DANTE_CONFIG        = 11,
+
     MANDOLIN_SS_MIXER               = 16,
     MANDOLIN_SS_MIXERLIST
 } mandolin_query_id;

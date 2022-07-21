@@ -1,7 +1,6 @@
 // mandolin.c - A parser for the MANDOLIN audio control protocol.
 //              ASSUMES LITTLE-ENDIAN HOST BYTE ORDER!
 
-#include "LOUD_types.h" // standard types - #define any compile switches either in the project options or above this line
 #include <assert.h>
 
 #if 0
@@ -647,99 +646,6 @@ void MANDOLIN_MSG_erase(mandolin_fifo *bfp)
     MANDOLIN_FIFO_dump_bytes(bfp,MANDOLIN_HEADER_BYTES + MANDOLIN_BYTES_PER_WORD*(mandolin_fifo_type) payload_length);
 }
 
-
-mandolin_fifo_type MANDOLIN_MSG_readbuffer(mandolin_byte_type **pBuffer, uint16* nByteLength, mandolin_message *bmp, mandolin_byte_type *payload_ptr)
-{
-	 mandolin_byte_type byte;
-
-	 mandolin_byte_type *buffer;
-
-	 if (*nByteLength < MANDOLIN_HEADER_BYTES)
-	 {
-		 return 0;
-	 }
-	 buffer = *pBuffer;
-
-    // Read in header one byte at a time
-
-    // Read sync
-    bmp->sync = *buffer++;
-	if (bmp->sync != MANDOLIN_SYNC_WORD) return 0;
-
-
-    // Read sequence
-    bmp->sequence = *buffer++;
-
-    // Assemble length
-    byte = *buffer++;
-    bmp->length = PACK_SHORT(byte,*buffer++);
-	if (bmp->length > MANDOLIN_MAX_PAYLOAD_DATA_WORDS) 
-		return 0;
-
-    // Read transport flags
-    bmp->transport = *buffer++;
-
-    // Read message ID
-    bmp->id = *buffer++;
-
-    // Assemble header checksum
-    byte = *buffer++;
-    bmp->checksum = PACK_SHORT(byte,*buffer++);
-
-	// validity check
-	if ( (bmp->checksum & 0x0ffff) != 
-		((~( (bmp->sync+bmp->sequence+
-		  ((bmp->length>>8) & 0x0ff) + (bmp->length & 0x0ff) +
-		   (bmp->transport) + (bmp->id) ) ) & 0x0ffff)) )
-	{
-		return 0;
-	}
-
-    if(bmp->length) 
-	{
-        mandolin_fifo_type i;
-		mandolin_fifo_type payload_bytes = MANDOLIN_BYTES_PER_WORD*(1 + (mandolin_fifo_type) bmp->length);
-		int32 checksum = 0;
-		int32 checksum_calc = 0;
-
-        // Assign payload
-        bmp->payload = payload_ptr;
-
-        // Read in payload + checksum one byte at a time, unscrambling network byte order into host byte order
-        for(i=0; i<(payload_bytes-4); i+=4) 
-		{
-            payload_ptr[i+3] = *buffer++;
-            payload_ptr[i+2] = *buffer++;
-            payload_ptr[i+1] = *buffer++;
-            payload_ptr[i+0] = *buffer++;
-
-			checksum += (payload_ptr[i+3] + payload_ptr[i+2] + payload_ptr[i+1] + payload_ptr[i+0]);
-        }
-		// Mandolin payload
-        payload_ptr[i+3] = *buffer++;
-        payload_ptr[i+2] = *buffer++;
-        payload_ptr[i+1] = *buffer++;
-        payload_ptr[i+0] = *buffer++;
-
-		checksum_calc = ((payload_ptr[i+3] & 0x0ff)<<24) + ((payload_ptr[i+2] & 0x0ff)<<16) + 
-			((payload_ptr[i+1] & 0x0ff)<<8) + ((payload_ptr[i+0] & 0x0ff)<<0);
-		checksum_calc = ~checksum_calc;
-		if (checksum_calc  != checksum )
-		{
-			return 0;
-		}
-    }
-    else
-        bmp->payload = NULL;
-
-	if (*nByteLength < (buffer - *pBuffer))
-	{
-		return 0;
-	}
-	*nByteLength -= (buffer - *pBuffer); 
-	*pBuffer = buffer;
-    return MANDOLIN_MSG_bytes(bmp);
-}
 
 // Read a valid MANDOLIN message from the tail of the FIFO and into its own structure.
 // Caller should provide both a message (header) structure and a (payload) buffer of appropriate length.
