@@ -10,8 +10,11 @@
 //#include "IRDAUartPort.h"
 //#include "IRDA_Task.h"
 
-extern "C" {
 #include "CommMandolin.h"
+#include "network.h"
+#include "TimeKeeper.h"
+
+extern "C" {
 #include "flash_params.h"
 //#include "Drivers/SpiFlash/spi_flash_fs.h"
 //#include "pascal_spro2.h"
@@ -19,14 +22,12 @@ extern "C" {
 #ifndef _SECONDARY_BOOT
 #include "Voicing_Info.h"
 #endif	//	_SECONDARY_BOOT
-//#include "TimeKeeper.h"
-#include "network.h"
 //#include "SpeakerConfiguration.h"
 //#include "AmpMonitor.h"
 //#include "MMA8653FC.h"
 //#include "ftm_lcdbacklight.h"
 #include "OLYspeaker1_map.h"
-//#include "oly_logo.h"
+#include "oly_logo.h"
 //#include "UltimoPort.h"
 //#include "IRDAManager.h"
 //#include "uart_irda.h"
@@ -64,7 +65,7 @@ bool g_ScreenInTransition = false;
 
 namespace oly {
 
-#if 0
+#if 1
 
 #ifndef _SECONDARY_BOOT
 
@@ -271,6 +272,7 @@ namespace oly {
     
     void Config::SetActivePreset(OLY_target group, uint32_t instance)
     {
+#ifdef SC_COMMENTED_OUT
     	switch (group) {
     	case eTARGET_USER:
     		if (instance < USER_PRESETS) {
@@ -373,9 +375,10 @@ namespace oly {
     		break;
     	}
     	StoreParams();
+#endif // SC_COMMENTED_OUT
     }
     
-    #if 0
+    #if 1
     void Config::SetInputSelectMode(LOUD_audio_mode mode)
     {
     	olyParams.Device->Input_Mode = mode;
@@ -970,6 +973,7 @@ namespace oly {
     }
     
     void Config::RefreshLogoState() {
+#ifdef SC_COMMENTED_OUT
     #if !MFG_TEST_EAW && !MFG_TEST_MARTIN
     #if USE_OLY_UI
     	if (olyStatus.Amp_Fault)
@@ -1000,6 +1004,7 @@ namespace oly {
     #elif MFG_TEST_MARTIN
     	LogoSetState(LOGO_OFF);
     #endif // !MFG_TEST_EAW && !MFG_TEST_MARTIN
+#endif //  SC_COMMENTED_OUT
     }
     
     void Config::DSPErrorTimer_Cancel()
@@ -1727,8 +1732,9 @@ namespace oly {
     
     	printf("Restoring parameters to factory defaults.\n");
     	GlobalMute = 0;
-    
-    	amp_init();	// Mutes output
+
+// TODO : SC Commented out
+//    	amp_init();	// Mutes output
     
     #if OLY_UI_MODE_RSX18 && OLY_UI_MODE_HIDDEN_MENU
     	bool use_revA_woofer = GetAmpRoutingHasChanged();
@@ -2008,13 +2014,16 @@ namespace oly {
     
     	SetSelfTestMode(eTEST_MODE_DISABLED);
     	OnDanteMuteChanged();
-    
+
+// TODO : SC Commented out
+#ifdef SC_COMENTED_OUT
     	_lwevent_set(&irda_lwevent, irda_event_array_status_update);	//notify IR task of changes
-    
+
     	init_codec(CODEC_CH1_INVERT, CODEC_CH2_INVERT, CODEC_CH3_INVERT, CODEC_CH4_INVERT);
     
     	if (!startup)
     		amp_mute(false);
+#endif // SC_COMENTED_OUT
     
     	olyStoredParams.Version.u32 = OLY_FW_VERSION;
     	olyStoredParams.XML_Version = OLYspeaker1_XML_VERSION;
@@ -2026,8 +2035,9 @@ namespace oly {
     
     void Config::RestoreIPAddresses()
     {
-    	if(g_pUltimoPort) // Send Dante IP Reset message (Ultimo switch to DHCP and reboot)
-    		g_pUltimoPort->TriggerIpReset();
+// TODO : SC Commented out
+//    	if(g_pUltimoPort) // Send Dante IP Reset message (Ultimo switch to DHCP and reboot)
+//    		g_pUltimoPort->TriggerIpReset();
     
     	SwitchToDHCP(); // Switch Network IP to DHCP
     	if(m_pUpgrade->SetLaunchType(OLY_REGION_APPLICATION)) // Make sure that the launch type is application
@@ -2038,7 +2048,9 @@ namespace oly {
     {
     	int i;
     	printf("OLY Params size = %d\n", sizeof(oly_flash_params_t));
-    
+
+// TODO : SC Commented out
+#if SC_COMENTED_OUT
     	system_flash_init(&olyStoredParams);
     	//memcpy(&olyStoredParams, p_CurrentParamMemLoc, sizeof(oly_flash_params_t));
     	printf("Load Params From Slot#%i\n", emptyMemorySlotIndex+1);
@@ -2130,10 +2142,13 @@ namespace oly {
     	LogoSetState(LOGO_ON_RED);
     	olyParams.Device->Logo_Mode = eLOGO_MODE_OFF;
     #endif
+#endif // SC_COMENTED_OUT
     }
     
     void Config::OnDanteMuteChanged()
     {
+// TODO : SC Commented out
+#ifdef SC_COMENTED_OUT
     	uint16_t tempInt;
     
     	DanteMute = get_dante_mute_state();
@@ -2166,6 +2181,7 @@ namespace oly {
     		g_pUltimoPort->GetLinkFlags(&tempInt);
     		OnDanteChange_LinkFlags(tempInt);		// Update Network Indicator
     	}
+#endif // SC_COMENTED_OUT
     }
     
     void Config::SetGlobalMute(bool mute)
@@ -2202,18 +2218,23 @@ namespace oly {
     
     void Config::WriteParamsToFlash()
     {
+#ifdef SC_COMENTED_OUT
     	// Actually writes to flash
     	system_flash_write_oly_params(&olyStoredParams);
+#endif // SC_COMENTED_OUT
     }
     
     float Config::GetCurrentAmpTemp(amp_instance_t amp)
     {
+#ifdef SC_COMENTED_OUT
     	int32_t rounded = ROUND(ReadAmpTemperature(amp));
     	return (float)rounded;
+#endif //  SC_COMENTED_OUT
     }
     
     void Config::UpdateCurrentTiltAngle(void)
     {
+#ifdef SC_COMENTED_OUT
     	int32 tempVar = (int32) GetRawTilt();
     
     	if (olyStatus.Angle != tempVar)
@@ -2227,6 +2248,7 @@ namespace oly {
     		olyUI.UpdateAutoTilt(CalcCorrectedTilt(tempVar));
     #endif	// USE_OLY_UI
     	}
+#endif //  SC_COMENTED_OUT
     }
     
     #endif // _SECONDARY_BOOT
@@ -2246,6 +2268,7 @@ namespace oly {
     
     void Config::RampLcdBrightness(bool set_ramp, uint32_t level)
     {
+#ifdef SC_COMENTED_OUT
     	static uint32_t target;
     	static uint32_t count = 0;
     
@@ -2265,7 +2288,7 @@ namespace oly {
     		if( target != GetAppliedBrightnessLevel() )
     			_lwevent_set(&user_event, event_brightness_change);
     	}
-    
+#endif // SC_COMENTED_OUT
     }
     
     uint32_t Config::GetStoredBrightness( void )
@@ -2275,7 +2298,9 @@ namespace oly {
     
     uint32_t Config::GetActiveBrightness( void )
     {
-    	return GetAppliedBrightnessLevel();
+    	// SC_COMMENTED_OUT
+    	return 0;
+    	//return GetAppliedBrightnessLevel();
     }
     
     void Config::DimLcdBrightness(bool isDim)
@@ -2409,7 +2434,8 @@ namespace oly {
     }
     
     void Config::InitStatusParams() {
-    	olyStatus.Angle = GetRawTilt();
+    	// SC_COMMENTED_OUT
+    	//olyStatus.Angle = 0; // SC : GetRawTilt();
     	olyStatus.Amp1_Temp = GetCurrentAmpTemp(sPro2_amp1);
     	olyStatus.Amp2_Temp = GetCurrentAmpTemp(sPro2_amp2);
     	//olyStatus.Identify = eIDENTIFY_MODE_OFF;
@@ -2453,6 +2479,7 @@ namespace oly {
     
     void Config::SetFanEnabled(bool fan_on)
     {
+#ifdef SC_COMMENTED_OUT
     #if !MFG_TEST_EAW && !MFG_TEST_MARTIN
     
     	if (fan_on != olyStatus.Fan_Enabled)
@@ -2467,10 +2494,12 @@ namespace oly {
     	GPIO_DRV_WritePinOutput(FAN_CONTROL, fan_on);
     	olyStatus.Fan_Enabled = fan_on;
     #endif // !MFG_TEST_EAW && !MFG_TEST_MARTIN
+#endif //  SC_COMMENTED_OUT
     }
     
     void Config::UpdateNeighbourHardwareStatus(void)
     {
+#ifdef SC_COMMENTED_OUT
     	int8_t ports;
     	position_hw_data_t *pPortData = 0;
     	uint32_t array_ids[e_num_irda_ports];
@@ -2534,6 +2563,7 @@ namespace oly {
     		olyUI.DebugLineOut(0,temp);
     	}
     #endif	// USE_BACKPANEL_DEBUG
+#endif //  SC_COMMENTED_OUT
     }
     
     
@@ -2575,9 +2605,11 @@ namespace oly {
     		olyUI.UpdateAutoPosition(device_index, array_size);
     	}
     #endif
-    
+
+#ifdef SC_COMMENTED_OUT
     	IRDATask_OnArrayMismatchChange(((olyParams.Device->Array_Size_Last == array_size) && (olyParams.Device->Array_Index_Last == device_index)) ? false : true);
-    
+#endif //  SC_COMMENTED_OUT
+
     #if USE_BACKPANEL_DEBUG & USE_DEBUG_OPTIMIZE
     	{
     		char temp[25];
@@ -2615,13 +2647,14 @@ namespace oly {
     		m_pUpgrade->SetIpSettings(0,0,0);  //force static IP to zero to make it dhcp permanently
     	}
     }
+#endif // 0
     
     //	Messy having this in Config object, won't be necessary when Network.cpp combined with NetworkPort.cpp
     bool Config::GetForceNetworkPortClose(int nPort)
     {
     	return(olyNetworkPort.GetForceClose());
     }
-#endif // 0
+
     
 //	Messy having this in Config object, won't be necessary when Network.cpp combined with NetworkPort.cpp
 void Config::OpenNetworkPort(bool bOpen, int nPort)
@@ -2629,7 +2662,7 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
 	olyNetworkPort.OpenPort(bOpen);
 }
   
-#if 0  
+#if 1
     void Config::SetArrayMismatch(bool mismatch)
     {
     	if (olyStatus.Array_Mismatch != mismatch) {
@@ -2802,6 +2835,7 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     // i.e. if the dante config IP address is 0.0.0.0 (Dante is DHCP) the current Dante IP address will be something else (DHCP assigned).
     void Config::OnDanteChange_ConfigIpAddress(uint32_t ipAddress, uint32_t ipGateway, uint32_t ipMask)
     {
+#ifdef SC_COMMENTED_OUT
     	if(!g_pUltimoPort)
     		return;
     
@@ -2862,6 +2896,7 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     		}
     	}
     #endif
+#endif // SC_COMMENTED_OUT
     }
     
     void Config::OnDanteChange_IpAddress(uint32_t ipAddress)
@@ -3055,10 +3090,12 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     
     olyDspPort(NULL),
     #if !USES_FOUR_IRDA
-    olyVoicingPort(&UartVoiceRxFifo),
+    olyVoicingPort(&UartVoiceRxFifo) // SC_COMMENTED_OUT : ,
     #endif
+#ifdef SC_COMMENTED_OUT
     olyIrdaPortA(COMM_IRDA_A, irdaTopPortTask), olyIrdaPortB(COMM_IRDA_B, irdaBottomPortTask),
     olyIrdaPortC(COMM_IRDA_C, irdaTopRearPortTask),  olyIrdaPortD(COMM_IRDA_D, irdaBottomRearPortTask)
+#endif // SC_COMMENTED_OUT
     {
     	int i;
     	m_pUpgrade = new Region;

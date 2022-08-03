@@ -8,12 +8,13 @@
 #ifndef CONFIGMANAGER_H_
 #define CONFIGMANAGER_H_
 
+#include "MQX_To_FreeRTOS.h"
+
 extern "C" {
 #include "oly.h"
-#include "MQX_To_FreeRTOS.h"
 #include "timer.h"
 #ifndef _SECONDARY_BOOT
-//#include "CurrentSense.h"
+#include "CurrentSense.h"
 #endif
 }
 
@@ -25,8 +26,8 @@ extern "C" {
 #endif
 
 
-//#include "SpiSharcPort.h"
-//#include "UartPort.h"
+#include "SpiSharcPort.h"
+#include "UartPort.h"
 //#include "uart_voice.h"
 //#include "uart_irda.h"
 #include "NetworkPort.h"
@@ -122,10 +123,10 @@ public:
 #if USE_CDD_UI
 	cddlMembraneUI		cddlUI;
 #endif
-//	SpiSharcPort	olyDspPort;
+	SpiSharcPort	olyDspPort;
 
 #if !USES_FOUR_IRDA
-//	UartPort		olyVoicingPort;
+	UartPort		olyVoicingPort;
 #endif
 	NetworkPort		olyNetworkPort;
 #ifndef _SECONDARY_BOOT
@@ -151,7 +152,7 @@ public:
 	oly_status_t *GetStatusParamsDatabase();
 	void SetActivePreset(OLY_target group, uint32_t instance);
 	
-#if 0
+#if 1
 	void SetInputSelectMode(LOUD_audio_mode mode);
 	uint8_t GetInputSelectMode();
 	void SetDisplayUserMode(LOUD_disp_mode display_mode);
@@ -175,7 +176,7 @@ public:
 	void SetSelfTestMode(LOUD_test_mode test_mode);
 	LOUD_test_mode GetSelfTestMode(void);
 
-#if 0
+#if 1
 	void ResetSelfTestTimer();
 	void DestroySelfTestTimer();
 	void SelfTestSequence();
@@ -201,7 +202,7 @@ public:
 	void OnAmpFaultStatusChanged(bool fault);
 	void OnLimiterStatusChanged(bool limiting);
 
-#if 0	
+#if 1	
 	void OnArrayConfigurationChanged(void);
 	void OnFanStatusChanged(bool fan_on);
 	void OnAmpTempChanged(amp_instance_t amp, float32 temp);
@@ -218,7 +219,7 @@ public:
 
 	void KillAllSubscriptions(void);
 	
-#if 0
+#if 1
 	void GetCurrentMeter();
 	float GetCurrentUIMeter();
 	bool MeterRangeCheck(float min, float max);
@@ -234,7 +235,7 @@ public:
 	void CheckInitialOrientation();
 
 	float CurrentSenseGetOutputMeter(uint32_t channelNumber);
-//	void CurrentSenseGetImpedanceLimits(current_sense_Z_limits_t * current_sense_Z_limits);
+	void CurrentSenseGetImpedanceLimits(current_sense_Z_limits_t * current_sense_Z_limits);
 	void OnCurrentSenseImpedanceChanged(uint32_t channelNumber);
 
 	/* Parameter Controls - UI only */
@@ -269,7 +270,7 @@ public:
 
 	void Controls_RestoreDefaults(void);
 
-#if 0
+#if 1
 	void Controls_RestoreIPAddresses(void);
 
 	void Controls_SetLogoMode(LOUD_logo_mode mode);
@@ -290,13 +291,13 @@ public:
 	
 	void StoreParams();			// Starts the countdown before writing to flash
 	
-#if 0	
+#if 1
 	void WriteParamsToFlash();	// Actually writes to flash
 #endif // 0
 	
 	void RestoreDefaults(bool startup);
 	
-#if 0	
+#if 1	
 	void RestoreIPAddresses();
 	void RestoreUserEQ(int instance);
 #endif // 0
@@ -311,7 +312,7 @@ public:
 	float ParamXoverGetValue(uint32_t instance, OLYspeaker1_XOVER_pid PID);
 	mandolin_error_code ParamValidate(OLY_target group, uint32_t PID, mandolin_parameter_value * pValue);
 	
-#if 0	
+#if 1	
 	void SetAudioSource(oly_audio_source_t source);
 	oly_audio_source_t GetAudioSource(void);
 	void EvaluateFanControl();
@@ -326,7 +327,7 @@ public:
 	void DSPErrorTimer_Reset(void); 
 #endif // _SECONDARY_BOOT
 	
-#if 0
+#if 1
 	void SendGetHardwareInfo(MandolinPort * srcPort);
 
 	void SetLcdBrightness(int level);
@@ -355,7 +356,7 @@ public:
 	void MandolinProcess(int nTaskId);
 	void MandolinHandle(MandolinPort * srcPort, mandolin_mqx_message * msg_ptr);
 	bool IsInitialized();
-#if 0	
+#if 1
 	uint32_t GetUserParamsValidIndicator();
 	bool32 ComputeAutoOptimize(void);
 	void OptiCalcAndSetAirloss(uint32_t compEQ);

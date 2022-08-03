@@ -8,9 +8,9 @@
  *	These are Mandolin commands specific to OLY / CDDP.
  *	In production builds test functions may be disabled.
  */
+#include "CommMandolin.h"
 
 extern "C" {
-#include "CommMandolin.h"
 #include "flash_params.h"
 //#include "TimeKeeper.h"
 //#include "lwevent.h"
@@ -19,7 +19,7 @@ extern "C" {
 //#include "CurrentSense.h"
 //#include "AUX_Spi_task.h"
 #include "OLYspeaker1_map.h"
-//#include "Model_Info.h"
+#include "Model_Info.h"
 #endif	//	_SECONDARY_BOOT
 }
 
@@ -30,7 +30,7 @@ extern "C" {
 //#include "UltimoPort.h"
 
 #include "Region.h"
-//#include "oly_logo.h"
+#include "oly_logo.h"
 #ifndef _SECONDARY_BOOT
 //#include "CurrentSense.h"
 //#include "IRDA_Task.h"
@@ -1032,8 +1032,10 @@ void Config::SoftwareReset(MandolinPort * srcPort, mandolin_message * pMsg)
 			//	Change launch type in flash
 			if (m_pUpgrade)
 			{
+#ifdef SC_COMMENTED_OUT
 				bool bSuccess = m_pUpgrade->SetLaunchType((uiRebootType==OLY_APPID_BOOTLOADER)?OLY_REGION_SECONDARY_BOOT:OLY_REGION_APPLICATION);
-				error =  bSuccess?MANDOLIN_NO_ERROR:MANDOLIN_ERROR_INVALID_DATA;
+#endif //  SC_COMMENTED_OUT
+				error =  MANDOLIN_ERROR_INVALID_DATA; // SC : bSuccess?MANDOLIN_NO_ERROR:MANDOLIN_ERROR_INVALID_DATA;
 			}
 
 			//	 only schedule reset if everything worked

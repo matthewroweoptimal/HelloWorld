@@ -4,6 +4,9 @@
 #include "FreeRTOS.h"
 #include "semphr.h"
 #include "queue.h"
+#include "timers.h"
+#include <stdbool.h>
+#include "event_groups.hpp"
 
 
 
@@ -50,8 +53,11 @@ _pool_id _msgpool_create(uint16_t message_size, uint16_t num_messages, uint16_t 
 //          NULL (failure)
 void *_msg_alloc(_pool_id pool_id);
 
+// pool_id [IN] A pool ID from _msgpool_create()
+//				>>>> NEW parameter introduced to make things work. Code changes for this function therefore required. <<<<
 // msg_ptr [IN] — Pointer to the message to be freed
-void _msg_free(void* msg_ptr);
+void _msg_free(_pool_id pool_id, void* msg_ptr);
+// ORIGINAL Prototype : void _msg_free(void* msg_ptr);
 
 
 
@@ -137,10 +143,13 @@ _queue_id _msgq_open( _queue_number queue_number, uint16_t max_queue_size );
 //          NULL (failure)
 void *_msgq_poll( _queue_id queue_id );
 
+// queue_id [IN] 	Private message queue from which to receive a message
+//                  >>>> NOTE : New addition to prototype, therefore code changes required. <<<<
 // msg_ptr IN] � Pointer to the message to be sent
 // Returns  TRUE (success: see description)
 //          FALSE (failure)
-bool _msgq_send(void *msg_ptr);
+bool _msgq_send(_queue_id queue_id, void *msg_ptr);
+// ORIGINAL Prototype : bool _msgq_send(void *msg_ptr);
 
 // queue_id [IN] � One of the following:
 //                  private message queue from which to receive a message
@@ -161,6 +170,11 @@ void*_msgq_receive(_queue_id queue_id, uint32_t ms_timeout);
 //		0 (failure)
 _mqx_uint _msgq_get_count(_queue_id);
 
+
+
+
+/// MUTEX FUNCTIONS :
+///==================
 // -----------------------------------------------------------------------------------------------
 /*!
  * \brief Mutex attributes, which are used to initialize a mutex : Not used by FreeRTOS, so just a dummy structure
@@ -198,10 +212,34 @@ _mqx_uint _mutex_lock(MUTEX_STRUCT_PTR pMutex);
 _mqx_uint _mutex_unlock(MUTEX_STRUCT_PTR pMutex);
 
 
-typedef _mqx_uint  _timer_id;
+/// SEMAPHORE FUNCTIONS :
+///======================
+/*                         LWSEM STRUCTURE */
+
+// Map MQX to FreeRTOS Semaphore
+#define LWSEM_STRUCT     struct QueueDefinition
+#define LWSEM_STRUCT_PTR SemaphoreHandle_t
+
+_mqx_uint _lwsem_create(LWSEM_STRUCT_PTR sem_ptr, _mqx_int initial_number);
+_mqx_uint _lwsem_wait(LWSEM_STRUCT_PTR sem_ptr);
+_mqx_uint _lwsem_post(LWSEM_STRUCT_PTR sem_ptr);
+
+
+
+/// TIMER FUNCTIONS :
+///==================
+//typedef _mqx_uint  _timer_id;
+typedef TimerHandle_t	_timer_id;
+
 #define MQX_INT_SIZE_IN_BITS (32)
 #define MQX_MIN_BITS_IN_TICK_STRUCT (64)
 #define MQX_NUM_TICK_FIELDS  ((MQX_MIN_BITS_IN_TICK_STRUCT + MQX_INT_SIZE_IN_BITS-1) / MQX_INT_SIZE_IN_BITS)
+
+/*
+ * This mode tells the timer to use the elapsed time when calculating time
+ * (_time_get_elapsed)
+ */
+#define TIMER_ELAPSED_TIME_MODE       (1)
 
 /*!
  * \brief This structure defines how time is maintained in the system.
@@ -212,21 +250,13 @@ typedef _mqx_uint  _timer_id;
  * ticks (timer interrupts).
  */
 typedef struct mqx_tick_struct
-{    /*!
-     * \brief Ticks since MQX started.
-     *
-     * The field is a minimum of 64 bits; the exact size depends on the PSP.
-     */
-    _mqx_uint TICKS[MQX_NUM_TICK_FIELDS];
-
-    /*!
-     * \brief Hardware ticks (timer counter increments) between ticks.
-     *
-     * The field increases the accuracy over counting the time simply in ticks.
-     */
-    uint32_t   HW_TICKS;
+{
+	TickType_t ticks;		// Simplified to match FreeRTOS - NOTE : Only ms resolution supported
 } MQX_TICK_STRUCT, * MQX_TICK_STRUCT_PTR;
-typedef void (* TIMER_NOTIFICATION_TICK_FPTR)( _timer_id, void *, MQX_TICK_STRUCT_PTR);
+
+
+//typedef void (* TIMER_NOTIFICATION_TICK_FPTR)( _timer_id, void *, MQX_TICK_STRUCT_PTR);
+typedef void (* TIMER_NOTIFICATION_TICK_FPTR)( _timer_id );
 
 _timer_id  _timer_start_periodic_every_ticks(TIMER_NOTIFICATION_TICK_FPTR, void *, _mqx_uint, MQX_TICK_STRUCT_PTR);
 _mqx_uint  _timer_cancel(_timer_id);
@@ -242,6 +272,10 @@ void _time_delay(uint32_t);
 bool _klog_display(void);
 
 
+
+/// EVENT FUNCTIONS :
+///==================
+#if 0
 typedef struct queue_element_struct
 {
     /*! \brief Pointer to the next element in the queue. */
@@ -274,54 +308,40 @@ typedef struct queue_struct
     uint16_t                           MAX;
 
 } QUEUE_STRUCT, * QUEUE_STRUCT_PTR;
+#endif
 
-/*!
- * \brief This structure defines a lightweight event.
- *
- * Tasks can wait on and set event bits.
- *
- * \see _lwevent_clear
- * \see _lwevent_create
- * \see _lwevent_destroy
- * \see _lwevent_set
- * \see _lwevent_set_auto_clear
- * \see _lwevent_usr_check
- * \see _lwevent_wait_for
- * \see _lwevent_wait_ticks
- * \see _lwevent_wait_until
- * \see _usr_lwevent_clear
- * \see _usr_lwevent_create
- * \see _usr_lwevent_destroy
- * \see _usr_lwevent_set
- * \see _usr_lwevent_set_auto_clear
- * \see _usr_lwevent_wait_for
- * \see _usr_lwevent_wait_ticks
- * \see _usr_lwevent_wait_until
- */
+/* Creation flags */
+#define LWEVENT_AUTO_CLEAR          (0x00000001)
+
+/* Error code */
+#define EVENT_ERROR_BASE       		(MQX_ERROR_BASE | 0x0300)
+#define LWEVENT_WAIT_TIMEOUT        (EVENT_ERROR_BASE|0x10)
+
 typedef struct lwevent_struct
-{    /*! \brief Queue data structures. */
-    QUEUE_ELEMENT_STRUCT LINK;
-
-    /*! \brief Queue of tasks waiting for event bits to be set. */
-    QUEUE_STRUCT WAITING_TASKS;
-
-    /*! \brief Validation stamp. */
-    _mqx_uint VALID;
-
-    /*! \brief Current bit value of the lightweight event. */
-    _mqx_uint VALUE;
-
-    /*! \brief Flags associated with the light weight event. */
-    _mqx_uint FLAGS;
-
-    /*! \brief Mask specifying lightweight event bits that are configured as auto-clear. */
-    _mqx_uint AUTO;
+{
+	cpp_freertos::EventGroup	*pEventGroup;	// Mapping to FreeRTOS equivalent
+	_mqx_uint 					flags; 			//	LWEVENT_AUTO_CLEAR - all bits in the lightweight event group are made autoclearing
+												//	0 - lightweight event bits are not set as autoclearing by default
 }LWEVENT_STRUCT, * LWEVENT_STRUCT_PTR;
 
+_mqx_uint _lwevent_create(LWEVENT_STRUCT_PTR lwevent_group_ptr, _mqx_uint flags);
 _mqx_uint _lwevent_wait_ticks(LWEVENT_STRUCT_PTR, _mqx_uint, bool, _mqx_uint);
 _mqx_uint _lwevent_get_signalled(void);
 _mqx_uint _lwevent_set(LWEVENT_STRUCT_PTR, _mqx_uint);
 _mqx_uint _lwevent_clear(LWEVENT_STRUCT_PTR, _mqx_uint);
+
+/* The maximum name size for a name component name */
+#define NAME_MAX_NAME_SIZE          (32)
+
+#define NAME_ERROR_BASE        		(MQX_ERROR_BASE | 0x0F00)
+#define NAME_NOT_FOUND         		(NAME_ERROR_BASE|0x02)
+
+typedef struct event_struct
+{
+	char            			name[NAME_MAX_NAME_SIZE];
+	cpp_freertos::EventGroup	*pEventGroup;	// Mapping to FreeRTOS equivalent
+	bool 						autoClear; 		//	true - all bits in the lightweight event group are made autoclearing
+}EVENT_STRUCT, * EVENT_STRUCT_PTR;
 
 _mqx_uint _event_create(char *);
 _mqx_uint _event_open(char *, void **);
@@ -330,64 +350,6 @@ _mqx_uint _event_get_value(void *, _mqx_uint_ptr);
 
 _mqx_uint _task_set_error(_mqx_uint);
 
-
-/*                         LWSEM STRUCTURE */
-/*!
- * \brief Lightweight semaphore.
- *
- * This structure defines a lightweight semaphore.
- * \n These sempahores implement a simple counting semaphore.
- * \n Tasks wait on these semaphores in a FIFO manner.
- * \n Priority inheritance is NOT implemented for these semaphores.
- * \n The semaphores can be embedded into data structures similarly to mutexes.
- *
- * \see _lwsem_create
- * \see _lwsem_create_hidden
- * \see _lwsem_destroy
- * \see _lwsem_poll
- * \see _lwsem_post
- * \see _lwsem_usr_check
- * \see _lwsem_wait
- * \see _lwsem_wait_for
- * \see _lwsem_wait_ticks
- * \see _lwsem_wait_until
- * \see _usr_lwsem_create
- * \see _usr_lwsem_destroy
- * \see _usr_lwsem_poll
- * \see _usr_lwsem_post
- * \see _usr_lwsem_wait
- * \see _usr_lwsem_wait_for
- * \see _usr_lwsem_wait_ticks
- * \see _usr_lwsem_wait_until
- */
-typedef struct lwsem_struct
-{    /* The next two fields are used to maintain a list of all LWSEMS */
-
-    /*! \brief Pointer to the next lightweight semaphore in the list of lightweight
-     *  semaphores. */
-    struct lwsem_struct       *NEXT;
-
-    /*! \brief Pointer to the previous lightweight semaphore in the list of
-     *  lightweight semaphores. */
-    struct lwsem_struct       *PREV;
-
-    /*! \brief  Manages the queue of tasks that are waiting for the lightweight
-     *  semaphore. The NEXT and PREV fields in the task descriptors link the tasks. */
-    QUEUE_STRUCT               TD_QUEUE;
-
-    /*! \brief When MQX creates the lightweight semaphore, it initializes the field.
-     *  When MQX destroys the lightweight semaphore, it clears the field. */
-    _mqx_uint                  VALID;
-
-    /*! \brief Count of the semaphore. MQX decrements the field when a task waits
-     *  for the semaphore. If the field is not 0, the task gets the semaphore. If
-     *  the field is 0, MQX puts the task in the lightweight semaphore queue until
-     *  the count is a non-zero value.the semaphore value. */
-    _mqx_int                   VALUE;
-} LWSEM_STRUCT, * LWSEM_STRUCT_PTR;
-
-_mqx_uint _lwsem_wait(LWSEM_STRUCT_PTR);
-_mqx_uint _lwsem_post(LWSEM_STRUCT_PTR);
 
 
 // TASK FUNCTIONS :

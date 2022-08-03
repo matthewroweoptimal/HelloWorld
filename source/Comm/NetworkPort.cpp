@@ -10,12 +10,13 @@
 
 #include <NetworkPort.h>
 
+#include "network.h"
+#include "CommMandolin.h"
+
 extern "C" {
 //#include "gpio_pins.h"
 //#include "uart_voice.h"
-#include "network.h"
 //#include "timekeeper.h"
-#include "CommMandolin.h"
 }
 
 #include <stdio.h>
@@ -47,18 +48,18 @@ void NetworkPort::WriteMessage(mandolin_message * pMsg, bool bRequireConnection)
 
 			if (pMsg->length > MAX_MANDOLIN_MSG_SIZE)
 			{
-				MSG_FREE(mqx_msg_ptr);
+				MSG_FREE(_msgq_get_id(0,TCP_QUEUE), mqx_msg_ptr);
 
 			}
 			else
 			{
 				mqx_msg_ptr->length = MANDOLIN_MSG_write(mqx_msg_ptr->data, pMsg);
 
-				if (!MSGQ_SEND(mqx_msg_ptr)) {
+				if (!MSGQ_SEND(_msgq_get_id(0,TCP_QUEUE), mqx_msg_ptr)) {
 					printf("Network MSGQ error: 0x%lx\n", _task_errno);
 					_task_set_error(MQX_OK); // Reset error so not blocked when overfull
 
-					 MSG_FREE(mqx_msg_ptr);
+					 MSG_FREE(_msgq_get_id(0,TCP_QUEUE), mqx_msg_ptr);
 
 				}
 			}

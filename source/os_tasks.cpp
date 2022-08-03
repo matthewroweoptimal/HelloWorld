@@ -11,18 +11,18 @@
 #include "ConfigManager.h"
 //#include "IRDA_Task.h"
 
+#include "os_tasks.h"
+#include "network.h"
 
 extern "C" {
-#include "os_tasks.h"
 //#include "gpio_pins.h"
 //#include "uart_voice.h"
 //#include "uart_ultimo.h"
 //#include "uart_irda.h"
 #include "inputhandler.h"
-//#include "oly_logo.h"
+#include "oly_logo.h"
 #include <stdio.h>
 //#include "UltimoPort.h"
-#include "network.h"
 //#include "Discovery.h"
 //#include <timer.h>
 //#include "TimeKeeper.h"
@@ -42,9 +42,9 @@ extern "C" {
 //#include "IRDAManager.h"
 //#include "sys.h"
 }
-extern "C" {
+
 #include "MQX_To_FreeRTOS.h"
-}
+
 
 
 using namespace oly;
@@ -454,7 +454,7 @@ void Config_Task(uint32_t button_state)
 			}
 			TASKDEBUG_POS(TASK_CONFIG,3)
 
-			MSG_FREE(msg_ptr);
+			MSG_FREE(config_qid, msg_ptr);
 
 			msg_ptr = (mandolin_mqx_message_ptr)_msgq_poll(config_qid);  // returns NULL if no message ready
 			nCount++;

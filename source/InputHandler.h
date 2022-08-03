@@ -10,12 +10,13 @@
 
 #define EVENTS_ALL 		0xFF
 
+#include "MQX_To_FreeRTOS.h"
+
 #ifdef _cplusplus
 extern "C" {
 #endif
 
 #include "oly.h"
-#include "MQX_To_FreeRTOS.h"
 //#include "lwevent.h"
 #include <timer.h>
 #ifdef _cplusplus
@@ -84,11 +85,20 @@ typedef struct {
 uint8_t init_inputs(void);
 void poll_inputs(void);
 void poll_encoder(void);
-void TriggerIdentifyStop( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr );
+
+#ifdef FREERTOS_CONFIG_H
+	void TriggerIdentifyStop( _timer_id id );
+#else
+	void TriggerIdentifyStop( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr );
+#endif
 void EngageSpeakerProfile( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr );
 void OptimizingDone( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr );
 void UIHandleAlertScreen( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr );
-void TriggerDSPError( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr );
+#ifdef FREERTOS_CONFIG_H
+	void TriggerDSPError( _timer_id id );
+#else
+	void TriggerDSPError( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr );
+#endif
 
 uint8_t get_amp_fault_state();
 uint8_t get_amp_clip_state();

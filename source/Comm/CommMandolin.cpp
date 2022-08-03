@@ -740,18 +740,18 @@ void ParseMandolinMQX(_queue_id source_qid, comm_method comm_type, mandolin_fifo
 					_task_set_error(MQX_OK); // Reset error so not blocked when overfull
 					TASKDEBUG_POS(nTaskId,62)
 
-					MSG_FREE(rx_msg);
+					MSG_FREE(_msgq_get_id(0,CONFIG_QUEUE), rx_msg);
 
 				}
 
 //			if (comm_type != COMM_SPI)	// don't print meters
 //				printf("message of length %d received on %s\n", rx_msg->length, comm_types[comm_type]);
-				else if (!MSGQ_SEND(rx_msg)) {
+				else if (!MSGQ_SEND(_msgq_get_id(0,CONFIG_QUEUE), rx_msg)) {
 					printf("Network MSGQ error: 0x%lx\n", _task_errno);
 					_task_set_error(MQX_OK); // Reset error so not blocked when overfull
 
 					TASKDEBUG_POS(nTaskId,63)
-					MSG_FREE(rx_msg);
+					MSG_FREE(_msgq_get_id(0,CONFIG_QUEUE), rx_msg);
 				}
 				TASKDEBUG_POS(nTaskId,53)
 

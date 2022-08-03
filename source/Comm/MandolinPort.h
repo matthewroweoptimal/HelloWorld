@@ -8,8 +8,9 @@
 #ifndef SOURCES_MANDOLINPORT_H_
 #define SOURCES_MANDOLINPORT_H_
 
-extern "C" {
 #include "CommMandolin.h"
+
+extern "C" {
 #include <timer.h>
 }
 #include <list>

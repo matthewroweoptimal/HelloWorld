@@ -8,11 +8,12 @@
 #ifndef __os_tasks_H
 #define __os_tasks_H
 
+#include "MQX_To_FreeRTOS.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#include "MQX_To_FreeRTOS.h"
 #include "timer.h"
 
 
@@ -93,10 +94,15 @@ extern bool MsgQ_Send(void* pMsg);
 
 #else
 #define MSGQ_INIT()
-#define MSGQ_GET_COUNT(config_qid)    _msgq_get_count(config_qid)
+#define MSGQ_GET_COUNT(config_qid)   _msgq_get_count(config_qid)
 #define MSG_ALLOC(message_pool) 	 _msg_alloc(message_pool)
-#define MSG_FREE(pMsg)				 _msg_free(pMsg)
-#define MSGQ_SEND(pMsg)				 _msgq_send(pMsg)
+#ifdef FREERTOS_CONFIG_H
+	#define MSG_FREE(qid, pMsg)			 _msg_free(qid, pMsg)
+	#define MSGQ_SEND(qid, pMsg)		 _msgq_send(qid, pMsg)
+#else
+	#define MSG_FREE(qid, pMsg)			 _msg_free(pMsg)
+	#define MSGQ_SEND(qid, pMsg)		 _msgq_send(pMsg)
+#endif
 
 #endif
 

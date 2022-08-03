@@ -195,16 +195,16 @@ static void tcp_mandolin_thread(void *arg)
 							if (nErr=netconn_write(newconn, tx_msg->data, tx_msg->length, NETCONN_COPY))
 							{
 								TASKDEBUG_POS(TASK_NETWORK, 10)
-								MSG_FREE(tx_msg);
+								MSG_FREE(tcp_qid, tx_msg);
 								if(nErr == ERR_TIMEOUT)	{
 									while (tx_msg = (mandolin_mqx_msg_packed_ptr)_msgq_poll(tcp_qid))
-										MSG_FREE(tx_msg);
+										MSG_FREE(tcp_qid, tx_msg);
 									olyConfig->olyNetworkPort.SetForceClose();
 								}
 							}
 							else
 #endif
-								MSG_FREE(tx_msg);
+								MSG_FREE(tcp_qid, tx_msg);
 //							printf("%s\n", lwip_strerr(nErr));
 
 
@@ -252,14 +252,14 @@ static void tcp_mandolin_thread(void *arg)
 						if (nErr=netconn_write(newconn, tx_msg->data, tx_msg->length, NETCONN_COPY))
 						{
 							TASKDEBUG_POS(TASK_NETWORK, 17);
-							MSG_FREE(tx_msg);
+							MSG_FREE(tcp_qid, tx_msg);
 							if(nErr == ERR_TIMEOUT) {
 								while (tx_msg = (mandolin_mqx_msg_packed_ptr)_msgq_poll(tcp_qid))
-									MSG_FREE(tx_msg);
+									MSG_FREE(tcp_qid, tx_msg);
 								olyConfig->olyNetworkPort.SetForceClose();
 							}
 						}
-						else MSG_FREE(tx_msg);
+						else MSG_FREE(tcp_qid, tx_msg);
 						//printf("Writing NET msg of length (poll) %d\n", tx_msg->length);
 //						printf(" %s\n", lwip_strerr(nErr));
 

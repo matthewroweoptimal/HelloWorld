@@ -28,6 +28,8 @@ RM := rm -rf
 -include Library/StdDriver/src/subdir.mk
 -include Library/Device/Nuvoton/GCC/subdir.mk
 -include Library/Device/Nuvoton/subdir.mk
+-include Common/Mandolin/subdir.mk
+-include Common/subdir.mk
 -include subdir.mk
 -include objects.mk
 

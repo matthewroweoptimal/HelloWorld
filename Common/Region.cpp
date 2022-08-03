@@ -15,7 +15,7 @@
 #include <string.h>
 #include <assert.h>
 #include <errno.h>
-#include "mqx.h"
+#include "MQX_To_FreeRTOS.h"
 #include "network.h"
 
 extern "C" {
@@ -364,7 +364,10 @@ bool Region::ValidateMAC(uint8 mac[6])
 //	Load region data from Flash
 void Region::Load()
 {
+#ifdef SC_COMMENTED_OUT
+	// Need the proper Flash layout for this to work on Nuvoton board
 	memcpy(&olyBlock, OLY_BLOCK_LOCATION, sizeof(olyBlock));
+#endif
 }
 
 //	Verify the RAM version is valid
@@ -516,12 +519,13 @@ void Region::SetIpSettings(uint32_t uiIp, uint32_t uiGateway, uint32_t uiMask)
 void Region::Save()
 {
 	printf("Saving Region Block to Flash.\r\n");
-
+#ifdef SC_COMMENTED_OUT
 	uint32_t uiFlashAdddress = (unsigned int)OLY_BLOCK_LOCATION;
 
 	olyBlock.generation++;
 
 	write_sector((unsigned int)uiFlashAdddress, (uint8_t*)&olyBlock);
+#endif // SC_COMMENTED_OUT
 }
 
 //	Search RAM copy of Region Table for matching region type
@@ -596,8 +600,9 @@ bool Region::WriteRegion(int nRegion, P_OLY_REGION pOlyRegion)
 bool Region::WriteChunk(uint32_t uiFlashAdddress, uint8_t *pChunk)
 {
 	uint32_t uiResult;
-
+#ifdef SC_COMMENTED_OUT
 	uiResult = write_sector(uiFlashAdddress, pChunk);
+#endif // SC_COMMENTED_OUT
 
 	return(!uiResult);
 }
@@ -1006,8 +1011,10 @@ void Region::WriteIdentity(uint8_t mac[6], int32_t nBrand, int32_t nModel, uint1
 		}
 
 		printf("Saving Identity Sector, hold on...");
+#ifdef SC_COMMENTED_OUT
 		write_sector_zero(pSectorZero);
 		printf("Success.\r\n");
+#endif // SC_COMMENTED_OUT
 		delete pSectorZero;
 	}
 }

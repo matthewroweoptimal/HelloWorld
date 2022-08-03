@@ -1,8 +1,14 @@
 /* Linker script to configure memory regions. */
 MEMORY
 {
+/* Matt's original : */
   FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 256K
   RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 128K 
+
+  /* M487 datasheet states : 512k Flash, 160k RAM :
+  FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 512K
+  RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 160K 
+  */
 }
 
 /* Library configurations */

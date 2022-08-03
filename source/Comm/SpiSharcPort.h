@@ -10,10 +10,9 @@
 
 #include <MandolinPort.h>
 
-extern "C" {
-#include "CommMandolin.h"
 #include "MQX_To_FreeRTOS.h"
-}
+#include "CommMandolin.h"
+
 
 // DSP has different size limit in mandolin_config.h
 #define SHARC_MAX_MESSAGE_SIZE		(MANDOLIN_HEADER_CHECKSUM_BYTES + (512u * MANDOLIN_BYTES_PER_WORD))

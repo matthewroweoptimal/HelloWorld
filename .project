@@ -24,6 +24,13 @@
 		<nature>org.eclipse.cdt.managedbuilder.core.managedBuildNature</nature>
 		<nature>org.eclipse.cdt.managedbuilder.core.ScannerConfigNature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>source/OLYspeaker1_map.c</name>
+			<type>1</type>
+			<location>C:/DEVELOPMENT/MatthewRoweOptimal/OutputFiles/OLYspeaker1/OLYspeaker1_map.c</location>
+		</link>
+	</linkedResources>
 	<variableList>
 		<variable>
 			<name>copy_PARENT</name>

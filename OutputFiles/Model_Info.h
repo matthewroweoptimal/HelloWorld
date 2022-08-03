@@ -42,4 +42,6 @@
 #define USE_CDD_NOISEGATE       1
 
 /* UI Definitions */
-#define USE_CDD_UI				1
+#ifdef SC_COMMENTED_OUT
+	#define USE_CDD_UI				1
+#endif // SC_COMMENTED_OUT

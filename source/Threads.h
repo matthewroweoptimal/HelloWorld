@@ -12,6 +12,7 @@
 #include "SecondTimer.h"
 #include "MonitoringTimer.h"
 #include "TcpThread.h"
+#include "ConfigThread.h"
 
 class Threads
 {
@@ -21,12 +22,13 @@ public:
 
 private:
     /* Threads */
-    MainThread *mainThread;
-    MonitoringTimer *monitoring;
-    TcpThread *tcpThread;
+    MainThread 		*_mainThread;
+    MonitoringTimer *_monitoring;
+    TcpThread 		*_tcpThread;
+    ConfigThread	*_configThread;
 
     /* Timers */
-    SecondTimer *secondTimer;
+    SecondTimer 	*_secondTimer;
 
 };
 
