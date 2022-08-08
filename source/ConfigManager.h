@@ -418,6 +418,6 @@ private:
 #endif // MFG_TEST_EAW || MFG_TEST_MARTIN
 };
 
-} /* namespace params */
+} /* namespace oly */
 
 #endif /* CONFIGMANAGER_H_ */

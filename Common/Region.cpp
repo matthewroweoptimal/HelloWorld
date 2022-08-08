@@ -374,6 +374,9 @@ void Region::Load()
 //	In future, will have to deal with changes to structure for backwards compatibility
 bool Region::Verify()
 {
+#if 1
+	return false;	// SC : Force Verification fail to ensure Region initialised to defaults in RAM by Initialize()
+#else	// SC_COMMENTED_OUT
 	bool bValid = true;
 
 #ifdef _SECONDARY_BOOT
@@ -431,6 +434,7 @@ bool Region::Verify()
 	}
 	printf(bValid?"System block valid.\r\n":"System block invalid!\r\n");
 	return(bValid);
+#endif	// SC_COMMENTED_OUT
 }
 
 //	Initialize an invalid region database
@@ -460,6 +464,7 @@ void Region::Initialize()
 	olyBlock.rgn[0].vectorTable = m_uiDefaultStart;
 	olyBlock.rgn[0].stackPtr = OLY_DEFAULT_STACK_PTR;
 
+#ifdef SC_COMMENTED_OUT
 	//	Calculate CRC
 	unsigned char *pCrcPtr = (unsigned char *)olyBlock.rgn[0].address;
 	unsigned short crcCalc;
@@ -468,6 +473,7 @@ void Region::Initialize()
 	Crc16Update(&rgnCrc, pCrcPtr, olyBlock.rgn[0].length);
 	Crc16Finalize(&rgnCrc, &crcCalc);
 	olyBlock.rgn[0].crc =crcCalc;
+#endif // SC_COMMENTED_OUT
 }
 
 void Region::SetStaticIp(uint32_t uiIp)
@@ -543,6 +549,7 @@ int Region::FindFirst(OLY_REGION_TYPE type)
 
 bool Region::VerifyRegion(int nRegion)
 {
+#ifdef SC_COMMENTED_OUT
 	if ((nRegion>=0) && (nRegion<OLY_MAX_REGIONS))
 	{
 		if ((olyBlock.rgn[nRegion].length) && (0xFFFFFFFF!=olyBlock.rgn[nRegion].length))
@@ -569,6 +576,8 @@ bool Region::VerifyRegion(int nRegion)
 	else
 		printf("Region number invalid!\r\n");
 	return(false);
+#endif // SC_COMMENTED_OUT
+	return true;
 }
 
 //	Clear out a region that will be upgraded

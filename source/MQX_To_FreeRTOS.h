@@ -8,6 +8,11 @@
 #include <stdbool.h>
 #include "event_groups.hpp"
 
+// Map new / delete operators to use the FreeRTOS heap - See main.cpp
+extern void * operator new( size_t size );
+extern void * operator new[]( size_t size );
+extern void operator delete( void * ptr );
+extern void operator delete[]( void * ptr );
 
 
 typedef int32_t   _mqx_int, * _mqx_int_ptr;

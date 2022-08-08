@@ -35,12 +35,37 @@
 #include "NuMicro.h"
 #include "Threads.h"
 
+using namespace std;
+
 /*-----------------------------------------------------------*/
 /*
  * Set up the hardware ready to run this demo.
  */
 static void prvSetupHardware( void );
 /*-----------------------------------------------------------*/
+
+// Map new / delete operators to use the FreeRTOS heap.
+void * operator new( size_t size )
+{
+	printf( "new( %d )\n", size );
+    return pvPortMalloc(size);
+}
+
+void * operator new[]( size_t size )
+{
+	printf( "new[]( %d )\n", size );
+    return pvPortMalloc( size );
+}
+
+void operator delete( void * ptr )
+{
+    vPortFree( ptr );
+}
+
+void operator delete[]( void * ptr )
+{
+    vPortFree( ptr );
+}
 
 int main(void)
 {
