@@ -7,20 +7,6 @@
 
 #include "Threads.h"
 
-/* Priorities for application tasks. */
-
-#define MAIN_TASK_PRIORITY          	( tskIDLE_PRIORITY + 1UL )
-#define MONITORING_TASK_PRIORITY        ( tskIDLE_PRIORITY + 2UL )
-#define TCP_THREAD_PRIORITY				( tskIDLE_PRIORITY + 5UL )
-#define CONFIG_THREAD_PRIORITY			( tskIDLE_PRIORITY + 10UL )		// TODO : Review priorities. Higher has bigger priority
-
-#define MONITORING_TIMER_STACKSIZE (configMINIMAL_STACK_SIZE + 100)
-#define TCPTHREAD_STACKSIZE 	   (configMINIMAL_STACK_SIZE + 512)
-#define CONFIG_THREAD_STACKSIZE	   (configMINIMAL_STACK_SIZE + 512)
-
-#define MONITORING_TIMER_TICK  ( pdMS_TO_TICKS(500))
-
-
 void Threads::StartThreads()
 {
 	// heartbeat timer thread
@@ -36,9 +22,6 @@ void Threads::StartThreads()
 
     _tcpThread = new TcpThread(TCPTHREAD_STACKSIZE, TCP_THREAD_PRIORITY);
     _tcpThread->Start();
-
-    _configThread = new ConfigThread(CONFIG_THREAD_STACKSIZE, CONFIG_THREAD_PRIORITY);
-    _configThread->Start();
 }
 
 void Threads::StartScheduler()

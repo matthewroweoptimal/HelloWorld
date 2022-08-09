@@ -127,7 +127,7 @@ static void tcp_mandolin_thread(void *arg)
             while (connected)
             {
             	err = netconn_recv(newconn, &buf);	// Blocking until data received or timeout
-//            	printf("Rx:%s ", lwip_strerr(err));
+            	printf("Rx:%s ", lwip_strerr(err));
             	TASKDEBUG_IN(TASK_NETWORK)
             	if (err == ERR_OK)
             	{
@@ -187,7 +187,7 @@ static void tcp_mandolin_thread(void *arg)
 
 			            	TASKDEBUG_POS(TASK_NETWORK, 9)
 
-//							printf("\nTx: %08x ", tx_msg);
+							printf("\nTx: %08x ", tx_msg);
 
 #if 0
 			            	nErr = netconn_write(newconn, tx_msg->data, tx_msg->length, NETCONN_COPY);//NETCONN_NOCOPY);
@@ -357,12 +357,12 @@ void network_UseStaticIP(uint32_t * ipaddr, uint32_t * gateway, uint32_t * mask)
 
 	netif_set_up(&fsl_netif0);
 #endif // 0
-	sys_thread_new("tcp_mandolin_thread", tcp_mandolin_thread, NULL, 5000, 6);
+	sys_thread_new("tcp_mandolin_thread", tcp_mandolin_thread, NULL, TCP_MANDOLIN_STACK_SIZE, TCP_MANDOLIN_THREAD_PRIORITY);
 }
 
 void network_UseDHCP(void)
 {
-#if 0
+#if 0 // Handled in TcpThread::Run()
 	ip_addr_t fsl_netif0_ipaddr, fsl_netif0_netmask, fsl_netif0_gateway;
 
 	LWIP_DEBUGF(PING_DEBUG,("TCP/IP initializing...\r\n"));
@@ -385,7 +385,7 @@ void network_UseDHCP(void)
 #endif
 
 	network_init();
-	sys_thread_new("tcp_mandolin_thread", tcp_mandolin_thread, NULL, 5000, 6);
+	sys_thread_new("tcp_mandolin_thread", tcp_mandolin_thread, NULL, TCP_MANDOLIN_STACK_SIZE, TCP_MANDOLIN_THREAD_PRIORITY);
 
 }
 

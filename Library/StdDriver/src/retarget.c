@@ -10,6 +10,8 @@
 
 #include <stdio.h>
 #include "NuMicro.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 #if defined ( __CC_ARM   )
 #if (__ARMCC_VERSION < 400000)
@@ -49,6 +51,7 @@ FILE __stdin;
 
 
 enum { r0, r1, r2, r3, r12, lr, pc, psr};
+static TaskStatus_t xTaskDetails;
 
 /**
  * @brief       Helper function to dump register while hard fault occurred
@@ -79,6 +82,15 @@ void Hard_Fault_Handler(uint32_t stack[])
     printf("In Hard Fault Handler\n");
 
     stackDump(stack);
+
+	// Use the handle to obtain further information about the task.
+	vTaskGetInfo( NULL, &xTaskDetails, 1/*pdTRUE*/, eInvalid );
+	printf("Task '%s': Stack base %p, highWaterMark = %d\n",
+				xTaskDetails.pcTaskName, xTaskDetails.pxStackBase , xTaskDetails.usStackHighWaterMark );
+
+#ifndef NDEBUG
+    __BKPT(3);    // Stack will be available for examination under debugger
+#endif
     /* Replace while(1) with chip reset if WDT is not enabled for end product */
     while(1);
     /* SYS->IPRST0 = SYS_IPRST0_CHIPRST_Msk; */
@@ -354,6 +366,10 @@ void HardFault_Handler(void)
         "B       Hard_Fault_Handler            \n"    
         ::[Hard_Fault_Handler] "r" (Hard_Fault_Handler) // input
     );
+
+#ifndef NDEBUG
+    __BKPT(3);    // Stack will be available for examination under debugger
+#endif
     while(1);
 }
 

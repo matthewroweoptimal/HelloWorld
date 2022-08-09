@@ -8,6 +8,7 @@
 #include "TcpThread.h"
 #include "lwip/apps/mdns.h"
 #include "network.h"
+#include "os_tasks.h"
 
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,7 +46,7 @@ static void srv_txt(struct mdns_service *service, void *txt_userdata)
     LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
 }
 
-TcpThread::TcpThread(uint16_t usStackDepth, UBaseType_t uxPriority) : Thread("TCP Thread", usStackDepth, uxPriority) {}
+TcpThread::TcpThread(uint16_t usStackDepth, UBaseType_t uxPriority) : Thread("TCP Config Thread", usStackDepth, uxPriority) {}
 
 void TcpThread::Run()
 {
@@ -80,7 +81,9 @@ void TcpThread::Run()
     NVIC_SetPriority(EMAC_RX_IRQn, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1);
     NVIC_EnableIRQ(EMAC_RX_IRQn);
 
-    network_UseDHCP();
+//    network_UseDHCP();
+	Config_Task( 0 );	// In CDD code os_tasks.cpp, this ends up calling network_UseDHCP() which spawns TCP thread
+	//--- Above will process messages until terminated ---
 
     Suspend();
 }

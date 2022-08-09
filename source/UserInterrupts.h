@@ -40,7 +40,7 @@ uint32_t RTOS_AppGetRuntimeCounterValueFromISR(void) {
 }
 
 
-void vApplicationMallocFailedHook( void )
+void vApplicationMallocFailedHook(size_t requestedSize)
 {
     /* vApplicationMallocFailedHook() will only be called if
     configUSE_MALLOC_FAILED_HOOK is set to 1 in FreeRTOSConfig.h.  It is a hook
@@ -52,6 +52,10 @@ void vApplicationMallocFailedHook( void )
     FreeRTOSConfig.h, and the xPortGetFreeHeapSize() API function can be used
     to query the size of free heap space that remains (although it does not
     provide information on how the remaining heap might be fragmented). */
+    printf("MallocFailedHook( %d bytes )\n", requestedSize);
+#ifndef NDEBUG
+    __BKPT(3);    // Stack will be available for examination under debugger
+#endif
     taskDISABLE_INTERRUPTS();
     for( ;; );
 }
@@ -74,12 +78,13 @@ void vApplicationIdleHook( void )
 
 void vApplicationStackOverflowHook( TaskHandle_t pxTask, signed char *pcTaskName )
 {
-    ( void ) pcTaskName;
-    ( void ) pxTask;
-
     /* Run time stack overflow checking is performed if
     configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2.  This hook
     function is called if a stack overflow is detected. */
+    printf("StackOverflowHook : TaskHandle %p (%s)\n", pxTask, pcTaskName );
+#ifndef NDEBUG
+    __BKPT(3);    // Stack will be available for examination under debugger
+#endif
     taskDISABLE_INTERRUPTS();
     for( ;; );
 }

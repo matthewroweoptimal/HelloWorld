@@ -8,13 +8,6 @@
 #include <stdbool.h>
 #include "event_groups.hpp"
 
-// Map new / delete operators to use the FreeRTOS heap - See main.cpp
-extern void * operator new( size_t size );
-extern void * operator new[]( size_t size );
-extern void operator delete( void * ptr );
-extern void operator delete[]( void * ptr );
-
-
 typedef int32_t   _mqx_int, * _mqx_int_ptr;
 typedef uint32_t  _mqx_uint, * _mqx_uint_ptr;
 
@@ -37,6 +30,9 @@ typedef uint32_t  _mqx_uint, * _mqx_uint_ptr;
 ///================
 typedef void   *_pool_id;           /* what a pool_id looks like */
 typedef uint16_t _msg_size;          /* what a message size looks like */
+// typedef uint16_t _queue_id;          /* What a queue_id looks like */
+// Need to make _queue_id 32 bits to be able to hold pointers
+typedef QueueHandle_t _queue_id;          /* What a queue_id looks like */
 /* What a NULL pool id looks like.  Used for error returns from functions */
 #define MSGPOOL_NULL_POOL_ID     ((_pool_id)0)
 
@@ -58,10 +54,10 @@ _pool_id _msgpool_create(uint16_t message_size, uint16_t num_messages, uint16_t 
 //          NULL (failure)
 void *_msg_alloc(_pool_id pool_id);
 
-// pool_id [IN] A pool ID from _msgpool_create()
+// msgQId [IN] A message Q ID which can be used to identify the message pool
 //				>>>> NEW parameter introduced to make things work. Code changes for this function therefore required. <<<<
 // msg_ptr [IN] — Pointer to the message to be freed
-void _msg_free(_pool_id pool_id, void* msg_ptr);
+void _msg_free(_queue_id msgQId, void* msg_ptr);
 // ORIGINAL Prototype : void _msg_free(void* msg_ptr);
 
 
@@ -70,9 +66,7 @@ void _msg_free(_pool_id pool_id, void* msg_ptr);
 ///=================
 typedef uint16_t _processor_number;  /* what a processor number is */
 typedef uint16_t _queue_number;      /* what a queue number is         */
-// typedef uint16_t _queue_id;          /* What a queue_id looks like */
-// Need to make _queue_id 32 bits to be able to hold pointers
-typedef QueueHandle_t _queue_id;          /* What a queue_id looks like */
+
 
 /* MESSAGE HEADER STRUCT */
 /*!

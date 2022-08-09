@@ -11,6 +11,7 @@
 #include "oly.h"
 #include "CommMandolin.h"
 #include "InputHandler.h"
+#include "Threads.h"
 
 
 void network_init(void);

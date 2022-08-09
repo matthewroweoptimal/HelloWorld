@@ -71,10 +71,10 @@ void IRDA_Transmit_B_Task(uint32_t task_init_data);
 void IRDA_Transmit_C_Task(uint32_t task_init_data);
 void IRDA_Transmit_D_Task(uint32_t task_init_data);
 
-#ifdef DEBUG
-#define USE_MSGQ_MUTEX
-#define USE_MEMPOOL_MONITOR
-#endif
+//#ifdef DEBUG
+//#define USE_MSGQ_MUTEX
+//#define USE_MEMPOOL_MONITOR
+//#endif
 
 
 #ifdef USE_MSGQ_MUTEX

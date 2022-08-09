@@ -34,8 +34,11 @@
 /* Hardware and starter kit includes. */
 #include "NuMicro.h"
 #include "Threads.h"
+#include "InputHandler.h"
+#include "TimeKeeper.h"
 
 using namespace std;
+
 
 /*-----------------------------------------------------------*/
 /*
@@ -47,7 +50,7 @@ static void prvSetupHardware( void );
 // Map new / delete operators to use the FreeRTOS heap.
 void * operator new( size_t size )
 {
-	printf( "new( %d )\n", size );
+//	printf( "new( %d )\n", size );
     return pvPortMalloc(size);
 }
 
@@ -72,6 +75,14 @@ int main(void)
     /* Configure the hardware */
     prvSetupHardware();
 
+	 /* Create OS Events */
+	_lwevent_create(&sys_event,0);
+	_lwevent_create(&user_event,0);
+	_lwevent_create(&timer_event,0);
+//	_lwevent_create(&aux_spi_event,0);
+//	_lwevent_create(&irda_lwevent, 0);
+
+    printf("\nCreating Threads\n");
     Threads *threads = new Threads();
     threads->StartThreads();
     threads->StartScheduler();

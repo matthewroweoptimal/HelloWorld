@@ -23,52 +23,7 @@ static struct
 	uint16_t	msgPoolItemSize;
 } s_msgPoolDetails[MAX_MSG_POOLS] = {0};
 
-// Creates a private message pool.
-// message_size [IN]    Size (in single-addressable units) of the messages (including the message header)
-//                      to be created for the message pool
-// num_messages [IN]    Initial number of messages to be created for the message pool
-// grow_number [IN]     Number of messages to be added if all the messages are allocated
-// grow_limit [IN]      If grow_number is not equal to 0; one of the following:
-//                          maximum number of messages that the pool can have
-//                          0 (unlimited growth)
-// Returns
-//   Pool ID to access the message pool (success)
-//   0 (failure)
-_pool_id _msgpool_create(uint16_t message_size, uint16_t num_messages, uint16_t grow_number, uint16_t grow_limit)
-{
-    // Use MemoryPool from mem_pool.hpp ?
-    int itemSize = message_size;
-    int itemCount = num_messages;
-    int alignment = 4;
-    s_msgPoolDetails[s_poolIndex].msgPoolId = new cpp_freertos::MemoryPool( itemSize, itemCount, alignment );
-    s_msgPoolDetails[s_poolIndex].msgPoolItemSize = message_size;
-    s_poolIndex++;
-    return s_msgPoolDetails[s_poolIndex].msgPoolId;
-}
 
-// pool_id [IN] A pool ID from _msgpool_create()
-// Returns  Pointer to a message (success)
-//          NULL (failure)
-void *_msg_alloc(_pool_id pool_id)
-{
-	cpp_freertos::MemoryPool* pMemPool = static_cast<cpp_freertos::MemoryPool*>( pool_id );
-    return pMemPool->Allocate();
-}
-
-// pool_id [IN] A pool ID from _msgpool_create()
-//				>>>> NEW parameter introduced to make things work. Code changes for this function therefore required. <<<<
-// msg_ptr [IN]	Pointer to the message to be freed
-void _msg_free(_pool_id pool_id, void* msg_ptr)
-{
-	cpp_freertos::MemoryPool* pMemPool = static_cast<cpp_freertos::MemoryPool*>( pool_id );
-	pMemPool->Free( msg_ptr );
-}
-
-
-
-// -----------------------------------------------------------------------------------------------
-/// MESSAGE QUEUES :
-///=================
 // We support 9 Q's : TCP_QUEUE, CONFIG_QUEUE, NET_TX_QUEUE, DSP_QUEUE, IRDA_A_QUEUE, IRDA_B_QUEUE, IRDA_C_QUEUE, IRDA_D_QUEUE, UART_QUEUE
 #define MAX_MSG_QUEUES			9
 /* Message Queues */
@@ -99,6 +54,54 @@ static _pool_id getPoolFromQId( _queue_id msgQId )
 	configASSERT( 0 );	// Not found
 	return 0;
 }
+
+
+// Creates a private message pool.
+// message_size [IN]    Size (in single-addressable units) of the messages (including the message header)
+//                      to be created for the message pool
+// num_messages [IN]    Initial number of messages to be created for the message pool
+// grow_number [IN]     Number of messages to be added if all the messages are allocated
+// grow_limit [IN]      If grow_number is not equal to 0; one of the following:
+//                          maximum number of messages that the pool can have
+//                          0 (unlimited growth)
+// Returns
+//   Pool ID to access the message pool (success)
+//   0 (failure)
+_pool_id _msgpool_create(uint16_t message_size, uint16_t num_messages, uint16_t grow_number, uint16_t grow_limit)
+{
+    // Use MemoryPool from mem_pool.hpp ?
+    int itemSize = message_size;
+    int itemCount = num_messages;
+    int alignment = 4;
+    s_msgPoolDetails[s_poolIndex].msgPoolId = new cpp_freertos::MemoryPool( itemSize, itemCount, alignment );
+    s_msgPoolDetails[s_poolIndex].msgPoolItemSize = message_size;
+    return s_msgPoolDetails[s_poolIndex++].msgPoolId;
+}
+
+// pool_id [IN] A pool ID from _msgpool_create()
+// Returns  Pointer to a message (success)
+//          NULL (failure)
+void *_msg_alloc(_pool_id pool_id)
+{
+	cpp_freertos::MemoryPool* pMemPool = static_cast<cpp_freertos::MemoryPool*>( pool_id );
+    return pMemPool->Allocate();
+}
+
+// msgQId [IN] A message Q ID which can be used to identify the message pool
+//				>>>> NEW parameter introduced to make things work. Code changes for this function therefore required. <<<<
+// msg_ptr [IN]	Pointer to the message to be freed
+void _msg_free(_queue_id msgQId, void* msg_ptr)
+{
+	_pool_id pool_id = getPoolFromQId( msgQId );
+	cpp_freertos::MemoryPool* pMemPool = static_cast<cpp_freertos::MemoryPool*>( pool_id );
+	pMemPool->Free( msg_ptr );
+}
+
+
+
+// -----------------------------------------------------------------------------------------------
+/// MESSAGE QUEUES :
+///=================
 
 // processor_number [IN] One of the following:
 //          processor on which the message queue resides
@@ -188,7 +191,7 @@ void *_msgq_poll( _queue_id queue_id )
     BaseType_t result = xQueueReceive( xQueue, pvBuffer, xTicksToWait );
     if ( result != pdPASS )
     {	// Queue is empty, free buffer and return NULL result
-    	_msg_free( poolId, pvBuffer );
+    	_msg_free( queue_id, pvBuffer );
     	return NULL;
     }
     return pvBuffer;
@@ -232,7 +235,7 @@ void*_msgq_receive(_queue_id queue_id, uint32_t ms_timeout)
     // pvBuffer  A pointer to the memory into which the received data will be copied.
     //           The size of each data item that the queue holds is set when the queue is created. The memory pointed to by pvBuffer must be at least large enough to hold that many bytes.
     // xTicksToWait  The maximum amount of time the task should remain in the Blocked state to wait for data to become available on the queue, should the queue already be empty.
-    //               If xTicksToWait is zero, then xQueueReceive() will return immediately if the queue is already empty.
+    //               If xTicksToWait is zer1.10o, then xQueueReceive() will return immediately if the queue is already empty.
     // RETURNS :  pdPASS    pdPASS will be returned only if data was successfully read from the queue.
     //                      If a block time was specified (xTicksToWait was not zero), then it is possible the calling task was placed into the Blocked state, to wait for data to become available on the queue, but data was successfully read from the queue before the block time expired.
     //            errQUEUE_EMPTY    errQUEUE_EMPTY will be returned if data cannot be read from the queue because the queue is already empty.
@@ -243,7 +246,7 @@ void*_msgq_receive(_queue_id queue_id, uint32_t ms_timeout)
     BaseType_t result = xQueueReceive( xQueue, pvBuffer, xTicksToWait );
     if ( result != pdPASS )
     {	// Queue is empty, free buffer and return NULL result
-    	_msg_free( poolId, pvBuffer );
+    	_msg_free( queue_id, pvBuffer );
     	return NULL;
     }
     return pvBuffer;

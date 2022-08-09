@@ -730,7 +730,8 @@ void ParseMandolinMQX(_queue_id source_qid, comm_method comm_type, mandolin_fifo
 			rx_msg->mqx_header.SIZE = sizeof(MESSAGE_HEADER_STRUCT) + sizeof(comm_method) + 8 + (len * MANDOLIN_BYTES_PER_WORD);
 			TASKDEBUG_POS(nTaskId,51)
 
-			if (rx_msg->length = MANDOLIN_MSG_read(pFifo, &rx_msg->message, rx_msg->payload)){
+			if (rx_msg->length = MANDOLIN_MSG_read(pFifo, &rx_msg->message, rx_msg->payload))
+			{
 				rx_msg->sender_type = comm_type;
 				TASKDEBUG_POS(nTaskId,52)
 
@@ -741,22 +742,21 @@ void ParseMandolinMQX(_queue_id source_qid, comm_method comm_type, mandolin_fifo
 					TASKDEBUG_POS(nTaskId,62)
 
 					MSG_FREE(_msgq_get_id(0,CONFIG_QUEUE), rx_msg);
-
 				}
-
-//			if (comm_type != COMM_SPI)	// don't print meters
-//				printf("message of length %d received on %s\n", rx_msg->length, comm_types[comm_type]);
-				else if (!MSGQ_SEND(_msgq_get_id(0,CONFIG_QUEUE), rx_msg)) {
+				else if (!MSGQ_SEND(_msgq_get_id(0,CONFIG_QUEUE), rx_msg))
+				{
 					printf("Network MSGQ error: 0x%lx\n", _task_errno);
 					_task_set_error(MQX_OK); // Reset error so not blocked when overfull
 
 					TASKDEBUG_POS(nTaskId,63)
 					MSG_FREE(_msgq_get_id(0,CONFIG_QUEUE), rx_msg);
 				}
+				else if (comm_type != COMM_SPI)	// don't print meters
+				{
+					printf("MSG length %d, Rx on %s, sent to CONFIG MSG Q\n", rx_msg->length, comm_types[comm_type]);
+				}
 				TASKDEBUG_POS(nTaskId,53)
-
 			}
-
 		}
 		else
 		{
