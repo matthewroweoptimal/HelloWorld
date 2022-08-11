@@ -172,6 +172,9 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1790202927.35679818" name="spi_sharc.c" rcbsApplicability="disable" resourcePath="source/Drivers/spi_sharc.c" toolsToInvoke="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.217388011.942069908">
+						<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.217388011.942069908" name="Cross ARM GNU C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.217388011"/>
+					</fileInfo>
 					<sourceEntries>
 						<entry excluding="Region - Copy.cpp|Mandolin/mandolin.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Common"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Library"/>
@@ -179,7 +182,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos-addons"/>
 						<entry excluding="portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_5.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
-						<entry excluding="FatalError.cpp|OLD_InputHandler.c|OLD_InputHandler.cpp|OLD_TimeKeeper.c|OLD_mandolin.c|Comm/OLD_CommMandolin.c|cddl_leds.c|CddlMembraneUI.cpp|Common|server.c|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
+						<entry excluding="Drivers/spi_sharc.c|FatalError.cpp|OLD_InputHandler.c|OLD_InputHandler.cpp|OLD_TimeKeeper.c|OLD_mandolin.c|Comm/OLD_CommMandolin.c|cddl_leds.c|CddlMembraneUI.cpp|Common|server.c|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -348,10 +351,13 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.release.978410599.755530345" name="spi_sharc.c" rcbsApplicability="disable" resourcePath="source/Drivers/spi_sharc.c" toolsToInvoke="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.2034417297.1977637775">
+						<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.2034417297.1977637775" name="Cross ARM GNU C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.2034417297"/>
+					</fileInfo>
 					<sourceEntries>
 						<entry excluding="Region - Copy.cpp|Mandolin/mandolin.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Common"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Library"/>
-						<entry excluding="FatalError.cpp|OLD_InputHandler.c|OLD_InputHandler.cpp|OLD_TimeKeeper.c|OLD_mandolin.c|Comm/OLD_CommMandolin.c|cddl_leds.c|ConfigManager.cpp|CddlMembraneUI.cpp|Common|server.c|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
+						<entry excluding="Drivers/spi_sharc.c|FatalError.cpp|OLD_InputHandler.c|OLD_InputHandler.cpp|OLD_TimeKeeper.c|OLD_mandolin.c|Comm/OLD_CommMandolin.c|cddl_leds.c|ConfigManager.cpp|CddlMembraneUI.cpp|Common|server.c|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

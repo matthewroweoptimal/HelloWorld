@@ -753,7 +753,7 @@ void ParseMandolinMQX(_queue_id source_qid, comm_method comm_type, mandolin_fifo
 				}
 				else if (comm_type != COMM_SPI)	// don't print meters
 				{
-					printf("MSG length %d, Rx on %s, sent to CONFIG MSG Q\n", rx_msg->length, comm_types[comm_type]);
+//					printf("MSG length %d, Rx on %s, sent to CONFIG MSG Q\n", rx_msg->length, comm_types[comm_type]);
 				}
 				TASKDEBUG_POS(nTaskId,53)
 			}

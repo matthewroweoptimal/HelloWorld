@@ -84,7 +84,7 @@ void Hard_Fault_Handler(uint32_t stack[])
     stackDump(stack);
 
 	// Use the handle to obtain further information about the task.
-	vTaskGetInfo( NULL, &xTaskDetails, 1/*pdTRUE*/, eInvalid );
+	vTaskGetInfo( NULL, &xTaskDetails, pdTRUE, eInvalid );
 	printf("Task '%s': Stack base %p, highWaterMark = %d\n",
 				xTaskDetails.pcTaskName, xTaskDetails.pxStackBase , xTaskDetails.usStackHighWaterMark );
 

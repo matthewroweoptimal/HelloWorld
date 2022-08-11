@@ -22,13 +22,11 @@
 #define MAIN_TASK_PRIORITY          	( tskIDLE_PRIORITY + 1UL )
 #define MONITORING_TASK_PRIORITY        ( tskIDLE_PRIORITY + 2UL )
 #define TCP_THREAD_PRIORITY				( TCPIP_THREAD_PRIO - 2 )
-//#define CONFIG_THREAD_PRIORITY			( tskIDLE_PRIORITY + 10UL )		// TODO : Review priorities. Higher has bigger priority
 #define TCP_MANDOLIN_THREAD_PRIORITY	( TCPIP_THREAD_PRIO - 1 )
 
 #define MONITORING_TIMER_STACKSIZE (configMINIMAL_STACK_SIZE + 100)
-#define TCPTHREAD_STACKSIZE 	   (configMINIMAL_STACK_SIZE + 1536)
-//#define CONFIG_THREAD_STACKSIZE	   (configMINIMAL_STACK_SIZE + 512)
-#define TCP_MANDOLIN_STACK_SIZE    (configMINIMAL_STACK_SIZE + 1536)    	// FreeRTOS stack size for Mandolin TCP thread
+#define TCPTHREAD_STACKSIZE 	   (1664)		// FreeRTOS stack size for TCP CONFIG thread - seen 1518 HWM
+#define TCP_MANDOLIN_STACK_SIZE    (1664)    	// FreeRTOS stack size for MANDOLIN thread - seen 1580 HWM
 
 
 

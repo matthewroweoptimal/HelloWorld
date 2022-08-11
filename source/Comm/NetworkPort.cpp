@@ -45,6 +45,7 @@ void NetworkPort::WriteMessage(mandolin_message * pMsg, bool bRequireConnection)
 			mqx_msg_ptr->mqx_header.TARGET_QID = _msgq_get_id(0,TCP_QUEUE);
 			mqx_msg_ptr->mqx_header.SIZE = sizeof(comm_method) + 8 + MANDOLIN_MSG_bytes(pMsg);
 			mqx_msg_ptr->sender_type = COMM_ETHERNET_TCP;
+//			printf("WriteMessage( Id %d )\n", pMsg->id);
 
 			if (pMsg->length > MAX_MANDOLIN_MSG_SIZE)
 			{

@@ -8,9 +8,13 @@
 #include <SpiSharcPort.h>
 #include <stdio.h>
 
+#define TODO_SPI_COMMS_TO_SHARC_DSP	0	// Still to sort out SPI comms to SHARC DSP (was using a Freescale spi_sharc driver)
+
 extern "C" {
 //#include "gpio_pins.h"
-//#include "spi_sharc.h"
+#if TODO_SPI_COMMS_TO_SHARC_DSP
+//#include "spi_sharc.h"	// TODO : SPI Driver comms to SHARC to be done
+#endif
 }
 #include "os_tasks.h"
 
@@ -103,8 +107,9 @@ bool SpiSharcPort::dspWriteData(uint8_t * pTxData, uint32_t length_bytes) {
 
 	TASKDEBUG_POS(TASK_SPISHARC,0x77)
 
-//	nBytesTransferred = CallMasterTransferBlocking(FSL_SPI_SHARC,pTxData,tmpRxBuffer,length_bytes,500);
-
+#if TODO_SPI_COMMS_TO_SHARC_DSP
+	nBytesTransferred = CallMasterTransferBlocking(FSL_SPI_SHARC,pTxData,tmpRxBuffer,length_bytes,500);
+#endif
 	if (nBytesTransferred == 0) // check if transfer worked
 	{
 		gdspWriteDataErrorCount++;
@@ -313,7 +318,7 @@ uint32 SpiSharcPort::CallMasterTransferBlocking(uint32_t instance,
         size_t transferByteCount,
         uint32_t timeout)
 {
-#if 0
+#if TODO_SPI_COMMS_TO_SHARC_DSP
 	dspi_status_t result;
 	static int nDebugErrorCount = 0;
 

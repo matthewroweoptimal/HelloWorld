@@ -55,9 +55,9 @@ void Config::MandolinHandle(MandolinPort * srcPort, mandolin_mqx_message * msg_p
 
 	srcPort->KickDog();
 
+	printf( "Process Mandonlin MSG Id %d\n", pMsg->id );
 	if (IS_MANDOLIN_REPLY(pMsg->transport)){
 		//TODO: Update ACK tracker
-
 		switch (pMsg->id) {
 #ifndef _SECONDARY_BOOT
 			case MANDOLIN_MSG_GET_APPLICATION_PARAMETER:

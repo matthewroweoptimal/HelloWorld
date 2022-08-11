@@ -308,6 +308,7 @@ void Config_Task(uint32_t button_state)
 	static int nMaxMsgCount = 0;
 
 	printf("Config task created\n");
+	init_message_pool();				// Had to move message pool creation to BEFORE Config object creation (as this opens message Qs)
 
 	olyConfig = new Config();
 
@@ -327,7 +328,6 @@ void Config_Task(uint32_t button_state)
 #else
 //	olyConfig->SetFanEnabled(false);
 #endif
-	init_message_pool();
 
 	MSGQ_INIT()
 
@@ -405,7 +405,6 @@ void Config_Task(uint32_t button_state)
 		nCount = 0; // count to see how many messages are processed from the pool
 		while(msg_ptr)	// do more than one message if more than one are ready
 		{
-			printf( "Rx on CONFIG MSG Q\n");
 			if (msg_ptr->sender_type == COMM_RS232_UART) {
 				TASKDEBUG_POS(TASK_CONFIG,11)
 #if !USES_FOUR_IRDA

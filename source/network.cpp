@@ -127,7 +127,7 @@ static void tcp_mandolin_thread(void *arg)
             while (connected)
             {
             	err = netconn_recv(newconn, &buf);	// Blocking until data received or timeout
-            	printf("Rx:%s ", lwip_strerr(err));
+//            	printf("Rx:%s ", lwip_strerr(err));
             	TASKDEBUG_IN(TASK_NETWORK)
             	if (err == ERR_OK)
             	{
@@ -187,7 +187,7 @@ static void tcp_mandolin_thread(void *arg)
 
 			            	TASKDEBUG_POS(TASK_NETWORK, 9)
 
-							printf("\nTx: %08x ", tx_msg);
+//							printf("TCP Tx MSG during Rx : %08x\n", tx_msg);
 
 #if 0
 			            	nErr = netconn_write(newconn, tx_msg->data, tx_msg->length, NETCONN_COPY);//NETCONN_NOCOPY);
@@ -247,7 +247,7 @@ static void tcp_mandolin_thread(void *arg)
 
 		            	TASKDEBUG_POS(TASK_NETWORK, 16)
 
-//						printf("\nTx: %08x ", tx_msg);
+//						printf("TCP Tx MSG : %08x\n", tx_msg);
 
 						if (nErr=netconn_write(newconn, tx_msg->data, tx_msg->length, NETCONN_COPY))
 						{

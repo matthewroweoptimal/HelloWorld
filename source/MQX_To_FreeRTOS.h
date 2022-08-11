@@ -196,7 +196,7 @@ _mqx_uint _mutatr_init(MUTEX_ATTR_STRUCT_PTR attr_ptr);
 // Returns
 //      MQX_OK (success)
 //      MQX_OUT_OF_MEMORY (failure)
-_mqx_uint _mutex_init(MUTEX_STRUCT_PTR pMutex, MUTEX_ATTR_STRUCT_PTR attr_ptr);
+_mqx_uint _mutex_init(MUTEX_STRUCT_PTR& pMutex, MUTEX_ATTR_STRUCT_PTR attr_ptr);
 
 // mutex_ptr [IN] — Pointer to the mutex to be locked
 // Returns

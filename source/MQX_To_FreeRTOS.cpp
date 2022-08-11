@@ -3,7 +3,11 @@
 #include "string.h"
 
 
-
+//#define DEBUG_RTOS_TRANSLATION		1       // For Debug output on translation functions
+#define POINTERS_PASSED_IN_MSG_QS	1		// Much more efficient for memory usage and speed (avoids copying of data)
+#if DEBUG_RTOS_TRANSLATION
+	static TaskStatus_t xTaskDetails;
+#endif
 
 // -----------------------------------------------------------------------------------------------
 /// MESSAGE POOLS :
@@ -17,10 +21,12 @@
 #define POOL_IRDA_D				4
 
 static uint16_t s_poolIndex = 0;
-static struct
+static struct PoolDetails
 {	// Remember details of message POOLs created. (First will be Mandolin Pool, followed by 4 x IRDA pools)
+	// TODO : Scope for simplification if the 4 IRDA pools aren't required, so then just 1 pool in the system (MANDOLIN_POOL).
 	_pool_id	msgPoolId;
 	uint16_t	msgPoolItemSize;
+	uint16_t	msgPoolItemCount;
 } s_msgPoolDetails[MAX_MSG_POOLS] = {0};
 
 
@@ -37,22 +43,36 @@ static struct
 #define X_IRDA_D_QUEUE		15
 #define X_UART_QUEUE		16
 
-#define MAX_Q_SIZE_SUPPORTED	50	// TODO : Review what Q size we can handle
+#define MAX_Q_SIZE_SUPPORTED	10	// TODO : Review what Q size we can handle
 static struct
 {	// Remember details of message Qs created
 	_queue_id	msgQId;
 	_pool_id	msgPoolId;
 } s_msgQDetails[MAX_MSG_QUEUES] = {0};
 
-static _pool_id getPoolFromQId( _queue_id msgQId )
+
+static struct PoolDetails* getPoolFromQIndex( uint16_t qIndex )
 {
-	for ( uint32_t i = 0; i < MAX_MSG_QUEUES; i++ )
+	for ( uint32_t pool = 0; pool < MAX_MSG_POOLS; pool++ )
 	{
-		if ( s_msgQDetails[i].msgQId == msgQId )
-			return s_msgQDetails[i].msgPoolId;
+		if ( s_msgPoolDetails[pool].msgPoolId == s_msgQDetails[qIndex].msgPoolId )
+			return &s_msgPoolDetails[pool];
 	}
 	configASSERT( 0 );	// Not found
-	return 0;
+	return NULL;
+}
+
+static struct PoolDetails* getPoolFromQId( _queue_id msgQId )
+{
+	for ( uint32_t q = 0; q < MAX_MSG_QUEUES; q++ )
+	{
+		if ( s_msgQDetails[q].msgQId == msgQId )
+		{
+			return getPoolFromQIndex( q );
+		}
+	}
+	configASSERT( 0 );	// Not found
+	return NULL;
 }
 
 
@@ -74,7 +94,13 @@ _pool_id _msgpool_create(uint16_t message_size, uint16_t num_messages, uint16_t 
     int itemCount = num_messages;
     int alignment = 4;
     s_msgPoolDetails[s_poolIndex].msgPoolId = new cpp_freertos::MemoryPool( itemSize, itemCount, alignment );
-    s_msgPoolDetails[s_poolIndex].msgPoolItemSize = message_size;
+    s_msgPoolDetails[s_poolIndex].msgPoolItemSize = itemSize;
+    s_msgPoolDetails[s_poolIndex].msgPoolItemCount = itemCount;
+#if DEBUG_RTOS_TRANSLATION
+	// Use the handle to obtain further information about the task.
+	vTaskGetInfo( NULL, &xTaskDetails, pdTRUE, eInvalid );
+	printf("Task '%s' (HWM %d): MSG POOL %p CREATE, size %d, count %d\n", xTaskDetails.pcTaskName, xTaskDetails.usStackHighWaterMark, s_msgPoolDetails[s_poolIndex].msgPoolId, itemSize, itemCount );
+#endif
     return s_msgPoolDetails[s_poolIndex++].msgPoolId;
 }
 
@@ -84,7 +110,13 @@ _pool_id _msgpool_create(uint16_t message_size, uint16_t num_messages, uint16_t 
 void *_msg_alloc(_pool_id pool_id)
 {
 	cpp_freertos::MemoryPool* pMemPool = static_cast<cpp_freertos::MemoryPool*>( pool_id );
-    return pMemPool->Allocate();
+    void *pMem = pMemPool->Allocate();
+#if 0 // DEBUG_RTOS_TRANSLATION
+	// Use the handle to obtain further information about the task.
+	vTaskGetInfo( NULL, &xTaskDetails, pdTRUE, eInvalid );
+	printf("Task '%s' (HWM %d): MSG POOL %p ALLOC %p\n", xTaskDetails.pcTaskName, xTaskDetails.usStackHighWaterMark, pool_id, pMem );
+#endif
+	return pMem;
 }
 
 // msgQId [IN] A message Q ID which can be used to identify the message pool
@@ -92,9 +124,15 @@ void *_msg_alloc(_pool_id pool_id)
 // msg_ptr [IN]	Pointer to the message to be freed
 void _msg_free(_queue_id msgQId, void* msg_ptr)
 {
-	_pool_id pool_id = getPoolFromQId( msgQId );
+	struct PoolDetails *pPoolDetails = getPoolFromQId( msgQId );
+	_pool_id pool_id = pPoolDetails->msgPoolId;
 	cpp_freertos::MemoryPool* pMemPool = static_cast<cpp_freertos::MemoryPool*>( pool_id );
 	pMemPool->Free( msg_ptr );
+#if 0 // DEBUG_RTOS_TRANSLATION
+	// Use the handle to obtain further information about the task.
+	vTaskGetInfo( NULL, &xTaskDetails, pdTRUE, eInvalid );
+	printf("Task '%s' (HWM %d): MSG POOL %p FREE %p\n", xTaskDetails.pcTaskName, xTaskDetails.usStackHighWaterMark, pool_id, msg_ptr );
+#endif
 }
 
 
@@ -132,13 +170,11 @@ _queue_id _msgq_open( _queue_number queue_number, uint16_t max_queue_size )
     //                  to allocate the queue data structures and storage area.
     //                  A non-NULL value being returned indicates that the queue has been created successfully. The returned value should be stored as the handle to the created queue.
 	if ( max_queue_size == 0 )
-	{	// 0 is unlimited size. FreeRTOS has no equivalent, so set to Max we support
+	{	// TODO : 0 is unlimited size. FreeRTOS has no equivalent, so set to Max we support
 		max_queue_size = MAX_Q_SIZE_SUPPORTED;
 	}
-	UBaseType_t uxQueueLength = max_queue_size;
-	UBaseType_t uxItemSize = sizeof(void*);	// TODO : Message Q item size is fixed as size of POINTER
-	QueueHandle_t handle = xQueueCreate( uxQueueLength, uxItemSize );	// handle is 32 bit pointer !!
-	s_msgQDetails[queue_number-X_TCP_QUEUE].msgQId = handle;
+
+	struct PoolDetails* pPoolDetails = NULL;
 	switch ( queue_number )
 	{	// Manually matching MQX message queues to their associated Message pools
 	case X_TCP_QUEUE :
@@ -146,26 +182,42 @@ _queue_id _msgq_open( _queue_number queue_number, uint16_t max_queue_size )
 	case X_NET_TX_QUEUE :
 	case X_DSP_QUEUE :
 	case X_UART_QUEUE :
-		s_msgQDetails[queue_number-X_TCP_QUEUE].msgPoolId = s_msgPoolDetails[POOL_MANDOLIN].msgPoolId;
+		pPoolDetails = &s_msgPoolDetails[POOL_MANDOLIN];
 		break;
 
 	case X_IRDA_A_QUEUE :
-		s_msgQDetails[queue_number-X_TCP_QUEUE].msgPoolId = s_msgPoolDetails[POOL_IRDA_A].msgPoolId;
+		pPoolDetails = &s_msgPoolDetails[POOL_IRDA_A];
 		break;
 	case X_IRDA_B_QUEUE :
-		s_msgQDetails[queue_number-X_TCP_QUEUE].msgPoolId = s_msgPoolDetails[POOL_IRDA_B].msgPoolId;
+		pPoolDetails = &s_msgPoolDetails[POOL_IRDA_B];
 		break;
 	case X_IRDA_C_QUEUE :
-		s_msgQDetails[queue_number-X_TCP_QUEUE].msgPoolId = s_msgPoolDetails[POOL_IRDA_C].msgPoolId;
+		pPoolDetails = &s_msgPoolDetails[POOL_IRDA_C];
 		break;
 	case X_IRDA_D_QUEUE :
-		s_msgQDetails[queue_number-X_TCP_QUEUE].msgPoolId = s_msgPoolDetails[POOL_IRDA_D].msgPoolId;
+		pPoolDetails = &s_msgPoolDetails[POOL_IRDA_D];
 		break;
 
 	default:
 		configASSERT( 0 );
 	}
 
+	uint16_t msgQIndex = queue_number - X_TCP_QUEUE;
+	UBaseType_t uxQueueLength = pPoolDetails->msgPoolItemCount;			// Q length matches associated Memory pool
+#if POINTERS_PASSED_IN_MSG_QS
+	UBaseType_t uxItemSize = sizeof (void*);							// Q Item Size is a pointer
+#else
+	UBaseType_t uxItemSize = pPoolDetails->msgPoolItemSize;				// Q Item Size matches associated Memory pool
+#endif
+	QueueHandle_t handle = xQueueCreate( uxQueueLength, uxItemSize );	// handle is 32 bit pointer !!
+	s_msgQDetails[msgQIndex].msgQId = handle;
+	s_msgQDetails[msgQIndex].msgPoolId = pPoolDetails->msgPoolId;
+
+#if DEBUG_RTOS_TRANSLATION
+	// Use the handle to obtain further information about the task.
+	vTaskGetInfo( NULL, &xTaskDetails, pdTRUE, eInvalid );
+	printf("Task '%s' (HWM %d): MSGQ %p OPEN, size %d, count %d\n", xTaskDetails.pcTaskName, xTaskDetails.usStackHighWaterMark, handle, uxItemSize, uxQueueLength );
+#endif
 	return handle;
 }
 
@@ -185,15 +237,30 @@ void *_msgq_poll( _queue_id queue_id )
     //                      If a block time was specified (xTicksToWait was not zero), then it is possible the calling task was placed into the Blocked state, to wait for data to become available on the queue, but data was successfully read from the queue before the block time expired.
     //            errQUEUE_EMPTY    errQUEUE_EMPTY will be returned if data cannot be read from the queue because the queue is already empty.
 	QueueHandle_t xQueue = queue_id;
-	_pool_id poolId = getPoolFromQId(queue_id);
-	void * pvBuffer = _msg_alloc( poolId );
+	struct PoolDetails *pPoolDetails = getPoolFromQId( queue_id );
+	_pool_id poolId = pPoolDetails->msgPoolId;
 	TickType_t xTicksToWait = 0;
+#if POINTERS_PASSED_IN_MSG_QS
+	void * pvBuffer;
+    BaseType_t result = xQueueReceive( xQueue, &pvBuffer, xTicksToWait );
+#else
+	void * pvBuffer = _msg_alloc( poolId );
     BaseType_t result = xQueueReceive( xQueue, pvBuffer, xTicksToWait );
+#endif
+
+
     if ( result != pdPASS )
     {	// Queue is empty, free buffer and return NULL result
-    	_msg_free( queue_id, pvBuffer );
+	#if !POINTERS_PASSED_IN_MSG_QS
+	_msg_free( queue_id, pvBuffer );
+	#endif
     	return NULL;
     }
+#if DEBUG_RTOS_TRANSLATION
+	// Use the handle to obtain further information about the task.
+	vTaskGetInfo( NULL, &xTaskDetails, pdTRUE, eInvalid );
+	printf("Task '%s' (HWM %d): MSGQ %p POLL, item %p\n", xTaskDetails.pcTaskName, xTaskDetails.usStackHighWaterMark, xQueue, pvBuffer );
+#endif
     return pvBuffer;
 }
 
@@ -214,9 +281,18 @@ bool _msgq_send(_queue_id queue_id, void *msg_ptr)
     //                  If a block time was specified (xTicksToWait was not zero), then it is possible the calling task was placed into the Blocked state, to wait for space to become available in the queue, before the function returned, but data was successfully written to the queue before the block time expired.
     //                  errQUEUE_FULL   errQUEUE_FULL will be returned if data could not be written to the queue because the queue was already full.
 	QueueHandle_t xQueue = queue_id;
+#if POINTERS_PASSED_IN_MSG_QS
+	const void * pvItemToQueue = &msg_ptr;
+#else
 	const void * pvItemToQueue = msg_ptr;
+#endif
     TickType_t xTicksToWait = 0;
     BaseType_t result = xQueueSendToBack( xQueue, pvItemToQueue, xTicksToWait );
+#if DEBUG_RTOS_TRANSLATION
+	// Use the handle to obtain further information about the task.
+	vTaskGetInfo( NULL, &xTaskDetails, pdTRUE, eInvalid );
+	printf("Task '%s' (HWM %d): MSGQ %p SEND, '%s', item %p\n", xTaskDetails.pcTaskName, xTaskDetails.usStackHighWaterMark, xQueue, (result == pdPASS)?"PASS":"FAIL", pvItemToQueue );
+#endif
     return (result == pdPASS) ? TRUE : FALSE;
 }
 
@@ -240,15 +316,29 @@ void*_msgq_receive(_queue_id queue_id, uint32_t ms_timeout)
     //                      If a block time was specified (xTicksToWait was not zero), then it is possible the calling task was placed into the Blocked state, to wait for data to become available on the queue, but data was successfully read from the queue before the block time expired.
     //            errQUEUE_EMPTY    errQUEUE_EMPTY will be returned if data cannot be read from the queue because the queue is already empty.
 	QueueHandle_t xQueue = queue_id;
-	_pool_id poolId = getPoolFromQId(queue_id);
-	void * pvBuffer = _msg_alloc( poolId );
+	struct PoolDetails *pPoolDetails = getPoolFromQId( queue_id );
+	_pool_id poolId = pPoolDetails->msgPoolId;
     TickType_t xTicksToWait = pdMS_TO_TICKS(ms_timeout);
+#if POINTERS_PASSED_IN_MSG_QS
+	void * pvBuffer;
+    BaseType_t result = xQueueReceive( xQueue, &pvBuffer, xTicksToWait );
+#else
+	void * pvBuffer = _msg_alloc( poolId );
     BaseType_t result = xQueueReceive( xQueue, pvBuffer, xTicksToWait );
+#endif
+
     if ( result != pdPASS )
     {	// Queue is empty, free buffer and return NULL result
+	#if !POINTERS_PASSED_IN_MSG_QS
     	_msg_free( queue_id, pvBuffer );
+	#endif
     	return NULL;
     }
+#if DEBUG_RTOS_TRANSLATION
+	// Use the handle to obtain further information about the task.
+	vTaskGetInfo( NULL, &xTaskDetails, pdTRUE, eInvalid );
+	printf("Task '%s' (HWM %d): MSGQ %p RECEIVE, '%s', item %p\n", xTaskDetails.pcTaskName, xTaskDetails.usStackHighWaterMark, xQueue, (result == pdPASS)?"PASS":"FAIL", pvBuffer );
+#endif
     return pvBuffer;
 }
 
@@ -284,7 +374,7 @@ _mqx_uint _mutatr_init(MUTEX_ATTR_STRUCT_PTR attr_ptr)
 // Returns
 //      MQX_OK (success)
 //      MQX_OUT_OF_MEMORY (failure)
-_mqx_uint _mutex_init(MUTEX_STRUCT_PTR pMutex, MUTEX_ATTR_STRUCT_PTR attr_ptr)
+_mqx_uint _mutex_init(MUTEX_STRUCT_PTR& pMutex, MUTEX_ATTR_STRUCT_PTR attr_ptr)
 {
     pMutex = xSemaphoreCreateMutex();
     if (pMutex == NULL)
