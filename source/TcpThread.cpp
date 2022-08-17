@@ -46,11 +46,18 @@ static void srv_txt(struct mdns_service *service, void *txt_userdata)
     LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
 }
 
-TcpThread::TcpThread(uint16_t usStackDepth, UBaseType_t uxPriority) : Thread("TCP Config Thread", usStackDepth, uxPriority) {}
+TcpThread::TcpThread(uint16_t usStackDepth, UBaseType_t uxPriority, SemaphoreHandle_t& semMainThreadComplete)
+     : Thread("TCP Config Thread", usStackDepth, uxPriority),
+       _semMainThreadComplete(semMainThreadComplete)
+{
+}
 
 void TcpThread::Run()
 {
-	printf("TCP thread startup\n");
+	printf("TCP thread waiting on MainThread completing...\n");
+	//--- Wait until MainThread complete ---
+    xSemaphoreTake(_semMainThreadComplete, portMAX_DELAY);
+    printf("TCP thread running\n");
 
 	ip_addr_t ipaddr;
     ip_addr_t netmask;

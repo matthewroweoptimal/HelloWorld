@@ -1053,7 +1053,8 @@ namespace oly {
     	}
     
     	printf("Identify stopped\n");
-    	_timer_cancel( identify_timer );
+    	if ( identify_timer )
+    		_timer_cancel( identify_timer );
     
     	RefreshLogoState();
     }

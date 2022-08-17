@@ -15,18 +15,13 @@ using Thread = cpp_freertos::Thread;
 class MainThread : public Thread
 {
 public:
-	MainThread(uint16_t usStackDepth, UBaseType_t uxPriority) :
-		Thread("MainThread", usStackDepth, uxPriority) {
-		printf("MainThread created\n");
-	};
+	MainThread(uint16_t usStackDepth, UBaseType_t uxPriority, SemaphoreHandle_t& semMainThreadComplete);
 
 protected:
-	void Run()
-	{
-		printf("MainThread run. Suspend\n");
-		// go to sleep
-		Suspend();
-	}
+	void Run();
+
+private:
+    SemaphoreHandle_t   _semMainThreadComplete;
 };
 
 #endif /* MAINTHREAD_H_ */

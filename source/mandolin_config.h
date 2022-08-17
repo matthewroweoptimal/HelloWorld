@@ -33,7 +33,7 @@
                                                // You may want to shrink this (significantly) if you don't anticipate using 16-bits of length
                                                // or if you have set MANDOLIN_FIFO_IS_POWER_OF_TWO, and want to use MANDOLIN_FIFO_BYTES in your code.
 #else
-#define MANDOLIN_MAX_PAYLOAD_DATA_WORDS 130u    // 2^16 - 1 data words - the maximum words the current protocol supports
+#define MANDOLIN_MAX_PAYLOAD_DATA_WORDS 65u    // 2^16 - 1 data words - the maximum words the current protocol supports
                                                // You may want to shrink this (significantly) if you don't anticipate using 16-bits of length
                                                // or if you have set MANDOLIN_FIFO_IS_POWER_OF_TWO, and want to use MANDOLIN_FIFO_BYTES in your code.
 #endif // SC_COMMENTED_OUT

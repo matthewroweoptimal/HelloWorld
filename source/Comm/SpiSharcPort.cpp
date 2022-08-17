@@ -8,14 +8,11 @@
 #include <SpiSharcPort.h>
 #include <stdio.h>
 
-#define TODO_SPI_COMMS_TO_SHARC_DSP	0	// Still to sort out SPI comms to SHARC DSP (was using a Freescale spi_sharc driver)
-
 extern "C" {
 //#include "gpio_pins.h"
-#if TODO_SPI_COMMS_TO_SHARC_DSP
-//#include "spi_sharc.h"	// TODO : SPI Driver comms to SHARC to be done
-#endif
 }
+
+#include "spi_sharc.h"	// TODO : SPI Driver comms to SHARC to be done
 #include "os_tasks.h"
 
 namespace oly {
@@ -107,9 +104,7 @@ bool SpiSharcPort::dspWriteData(uint8_t * pTxData, uint32_t length_bytes) {
 
 	TASKDEBUG_POS(TASK_SPISHARC,0x77)
 
-#if TODO_SPI_COMMS_TO_SHARC_DSP
 	nBytesTransferred = CallMasterTransferBlocking(FSL_SPI_SHARC,pTxData,tmpRxBuffer,length_bytes,500);
-#endif
 	if (nBytesTransferred == 0) // check if transfer worked
 	{
 		gdspWriteDataErrorCount++;
@@ -318,7 +313,6 @@ uint32 SpiSharcPort::CallMasterTransferBlocking(uint32_t instance,
         size_t transferByteCount,
         uint32_t timeout)
 {
-#if TODO_SPI_COMMS_TO_SHARC_DSP
 	dspi_status_t result;
 	static int nDebugErrorCount = 0;
 
@@ -331,7 +325,8 @@ uint32 SpiSharcPort::CallMasterTransferBlocking(uint32_t instance,
 	{
 		gMaxTransferCount = transferByteCount;
 	}
-	result = DSPI_DRV_MasterTransferBlocking(instance,NULL,sendBuffer,receiveBuffer,transferByteCount,timeout);
+
+	result = DSPI_DRV_MasterTransferBlocking(instance, sendBuffer, receiveBuffer, transferByteCount, timeout);
 #ifndef _SECONDARY_BOOT
 	if(kStatus_DSPI_Success != result)	{
 		printf("ERR: DSP Write Error: kStatus: %d ... Resetting Driver \n", result);
@@ -346,8 +341,6 @@ uint32 SpiSharcPort::CallMasterTransferBlocking(uint32_t instance,
 	{
 		return 0;
 	}
-
-#endif
 }
 
 } /* namespace oly */

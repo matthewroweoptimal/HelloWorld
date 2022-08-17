@@ -10,6 +10,7 @@
 
 #include "task.h"
 #include "timer.h"
+#include "spi_sharc.h"
 
 extern "C" {
 
@@ -23,6 +24,11 @@ void TMR0_IRQHandler(void)
         TIMER_ClearIntFlag(TIMER0);
         RTOS_RunTimeCounter++;
     }
+}
+
+void SPI0_IRQHandler(void)
+{   // SHARC connected on SPI0
+    DSPI_DRV_IRQHandler(FSL_SPI_SHARC);
 }
 
 void RTOS_AppConfigureTimerForRuntimeStats(void) {

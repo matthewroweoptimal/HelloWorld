@@ -18,12 +18,15 @@ using Thread = cpp_freertos::Thread;
 class TcpThread : public Thread
 {
 public:
-	TcpThread(uint16_t usStackDepth, UBaseType_t uxPriority);
+	TcpThread(uint16_t usStackDepth, UBaseType_t uxPriority, SemaphoreHandle_t& semMainThreadComplete);
 
 protected:
     void Run();
 
     struct netif netif;
+    
+private:
+    SemaphoreHandle_t   _semMainThreadComplete;    
 };
 
 #endif /* TCPTHREAD_H_ */

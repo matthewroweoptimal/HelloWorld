@@ -14,13 +14,14 @@ void Threads::StartThreads()
     _secondTimer->Start();
 
     // This main thread only present to get the scheduler going and immediately suspends
-    _mainThread = new MainThread(configMINIMAL_STACK_SIZE, MAIN_TASK_PRIORITY);
+    _semMainThreadComplete = xSemaphoreCreateBinary();
+    _mainThread = new MainThread(MAIN_THREAD_STACKSIZE, MAIN_TASK_PRIORITY,_semMainThreadComplete);
     _mainThread->Start();
 
     _monitoring = new MonitoringTimer(MONITORING_TIMER_STACKSIZE, MONITORING_TASK_PRIORITY, MONITORING_TIMER_TICK);
     _monitoring->Start();
 
-    _tcpThread = new TcpThread(TCPTHREAD_STACKSIZE, TCP_THREAD_PRIORITY);
+    _tcpThread = new TcpThread(TCPTHREAD_STACKSIZE, TCP_THREAD_PRIORITY,_semMainThreadComplete);
     _tcpThread->Start();
 }
 

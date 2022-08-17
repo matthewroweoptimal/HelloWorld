@@ -24,6 +24,7 @@
 #define TCP_THREAD_PRIORITY				( TCPIP_THREAD_PRIO - 2 )
 #define TCP_MANDOLIN_THREAD_PRIORITY	( TCPIP_THREAD_PRIO - 1 )
 
+#define MAIN_THREAD_STACKSIZE      (configMINIMAL_STACK_SIZE + 256)
 #define MONITORING_TIMER_STACKSIZE (configMINIMAL_STACK_SIZE + 100)
 #define TCPTHREAD_STACKSIZE 	   (1664)		// FreeRTOS stack size for TCP CONFIG thread - seen 1518 HWM
 #define TCP_MANDOLIN_STACK_SIZE    (1664)    	// FreeRTOS stack size for MANDOLIN thread - seen 1580 HWM
@@ -49,6 +50,7 @@ private:
     /* Timers */
     SecondTimer 	*_secondTimer;
 
+    SemaphoreHandle_t _semMainThreadComplete;   // Signal that mainThread has completed it's setup work
 };
 
 #endif /* THREADS_H_ */
