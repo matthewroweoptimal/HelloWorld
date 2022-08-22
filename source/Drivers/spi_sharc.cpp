@@ -88,6 +88,7 @@ void dsp_sharc_SetMode_Host(void)
 
 	DSPI_DRV_MasterInit(FSL_SPI_SHARC, &spi_sharc_MasterState, &spi_sharc_MasterConfig_host, &spi_sharc_hostConfig);
 
+// Below commented out as for Nuvoton, everything is configured in above DSPI_DRV_MasterInit() call.
 //	DSPI_DRV_MasterConfigureBus(FSL_SPI_SHARC, &spi_sharc_hostConfig, &spi_sharc_calculatedBaudRate);
 //    DSPI_DRV_MasterSetDelay(FSL_SPI_SHARC, kDspiPcsToSck, 64, &retval);
 //    DSPI_DRV_MasterSetDelay(FSL_SPI_SHARC, kDspiLastSckToPcs, 64, &retval);

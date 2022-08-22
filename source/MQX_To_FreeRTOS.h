@@ -274,41 +274,6 @@ bool _klog_display(void);
 
 /// EVENT FUNCTIONS :
 ///==================
-#if 0
-typedef struct queue_element_struct
-{
-    /*! \brief Pointer to the next element in the queue. */
-    struct queue_element_struct      *NEXT;
-
-    /*! \brief Pointer to the previous element in the queue. */
-    struct queue_element_struct      *PREV;
-} QUEUE_ELEMENT_STRUCT, * QUEUE_ELEMENT_STRUCT_PTR;
-typedef struct queue_struct
-{
-    /*!
-     * \brief Pointer to the next element in the queue. If there are no elements
-     * in the queue, the field is a pointer to the structure itself.
-     */
-    struct queue_element_struct      *NEXT;
-
-    /*
-     * \brief Pointer to the last element in the queue. If there are no elements
-     * in the queue, the field is a pointer to the structure itself.
-     */
-    struct queue_element_struct      *PREV;
-
-    /*! \brief Number of elements in the queue. */
-    uint16_t                           SIZE;
-
-    /*!
-     * \brief Maximum number of elements that the queue can hold. If the field
-     * is 0, the number is unlimited.
-     */
-    uint16_t                           MAX;
-
-} QUEUE_STRUCT, * QUEUE_STRUCT_PTR;
-#endif
-
 /* Creation flags */
 #define LWEVENT_AUTO_CLEAR          (0x00000001)
 

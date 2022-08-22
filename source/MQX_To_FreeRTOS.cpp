@@ -1,3 +1,18 @@
+/*
+ * MQX_To_FreeRTOS.cpp
+ *
+ *  This file provides a basic translation of MQX RTOS services used by the CDDLive project
+ *  onto equivalent FreeRTOS calls. This allows for minimal code chanegs to the CDDLive project
+ *  in order to reduce risks with too much re-coding.
+ *
+ *  Most MQX calls are unmodified, but there are a couple of instances where slight modification
+ *  has been made in order to work with FreeRTOS :
+ *      _msg_free					 : Added parameter to reference associated message pool
+ *      Timer notification callbacks : Prototype simplified to take 1 parameter
+ *
+ *  It has been necessary to code in Some knowledge of the CDDLive system for message pools,
+ *  however this could be simplified if only a single message pool is ever used (i.e. no IRDA pools)
+ */
 #include "MQX_to_FreeRTOS.h"
 #include "mem_pool.hpp"
 #include "string.h"

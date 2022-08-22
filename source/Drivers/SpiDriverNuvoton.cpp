@@ -1,8 +1,43 @@
-
+/*
+ * This module is based on the Freescale driver from CDDLive project in file fsl_dspi_master_driver.c
+ * It has been modified for the Nuvoton M480 processor, taking into account the Nuvoton
+ * example project OpenNuvoton\SampleCode\StdDriver\SPI_MasterFIFOMode\
+ *
+ *
+ * -----------------------------------------------------------------------------------
+ *
+ * Copyright (c) 2013 - 2014, Freescale Semiconductor, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *
+ * o Redistributions of source code must retain the above copyright notice, this list
+ *   of conditions and the following disclaimer.
+ *
+ * o Redistributions in binary form must reproduce the above copyright notice, this
+ *   list of conditions and the following disclaimer in the documentation and/or
+ *   other materials provided with the distribution.
+ *
+ * o Neither the name of Freescale Semiconductor, Inc. nor the names of its
+ *   contributors may be used to endorse or promote products derived from this
+ *   software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+ * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
+ * ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 #include "SpiDriverNuvoton.h"
 #include <cstring>
 
-// #define DEBUG_SPI	1   // Define for Debug output
+//#define DEBUG_SPI	1   // Define for Debug output (Note will affect ISR timing, but gives an idea of SPI transactions)
 
 /*!
  * @brief Table to save DSPI IRQ enum numbers defined in CMSIS files.
@@ -16,7 +51,15 @@ const IRQn_Type g_dspiIrqId[SPI_INSTANCE_COUNT] = { SPI0_IRQn, SPI1_IRQn, SPI2_I
 dspi_master_state_t* g_dspiStatePtr[SPI_INSTANCE_COUNT] = {NULL, NULL, NULL, NULL};
 
 /*! @brief Table of SPI FIFO sizes per instance. */
-const uint32_t g_dspiFifoSize[SPI_INSTANCE_COUNT] = { 2, 2, 2, 2 }; // TODO : Check best FIFO sizes to use
+// The transmitting and receiving threshold can be configured by setting TXTH (SPIx_FIFOCTL[30:28])
+// and RXTH (SPIx_FIFOCTL[26:24]). When the count of valid data stored in transmit FIFO buffer is less
+// than or equal to TXTH (SPIx_FIFOCTL[30:28]) setting, TXTHIF (SPIx_STATUS[18]) will be set to 1.
+// When the count of valid data stored in receive FIFO buffer is larger than RXTH
+// (SPIx_FIFOCTL[26:24]) setting, RXTHIF (SPIx_STATUS[10]) will be set to 1.
+//
+// 8 is the Max FIFO size for 8 to 16 bit width transfers, so we use this for max efficiency.
+// Note : The TXTH and RXTH values set are actually 1 less than the sizes below (0..7)
+const uint32_t g_dspiFifoSize[SPI_INSTANCE_COUNT] = { 8, 8, 8, 8 };
 
 
 
@@ -156,7 +199,7 @@ dspi_status_t DSPI_DRV_MasterInit(uint32_t instance, dspi_master_state_t * dspiS
     }
     SPI_EnableAutoSS(pSPI_INSTANCE, SPI_SS, slaveSelectPolarity);
     
-    SPI_SetFIFO(pSPI_INSTANCE, g_dspiFifoSize[instance], g_dspiFifoSize[instance]);    
+    SPI_SetFIFO(pSPI_INSTANCE, g_dspiFifoSize[instance]-1, g_dspiFifoSize[instance]-1);
         
 
     /* Initialize the DSPI module with user config */
