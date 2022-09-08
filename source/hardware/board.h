@@ -10,36 +10,15 @@
 #include "NuMicro.h"
 #include "Pin.h"
 
+#define HIGH 0
+#define LOW 1
+
 
 static void initEthernetHardware(void)
 {
 	  /* Set GPB multi-function pins for UART0 RXD and TXD */
 	    SYS->GPB_MFPH &= ~(SYS_GPB_MFPH_PB12MFP_Msk | SYS_GPB_MFPH_PB13MFP_Msk);
 	    SYS->GPB_MFPH |= (SYS_GPB_MFPH_PB12MFP_UART0_RXD | SYS_GPB_MFPH_PB13MFP_UART0_TXD);
-
-#if USE_CDD_DEV_ETHERNET
-
-	    // Configure RMII pins
-	    SYS->GPB_MFPL |= 	SYS_GPB_MFPL_PB1MFP_EMAC_RMII_RXERR |
-	    					SYS_GPB_MFPL_PB2MFP_EMAC_RMII_CRSDV |
-							SYS_GPB_MFPL_PB3MFP_EMAC_RMII_RXD1	|
-							SYS_GPB_MFPL_PB4MFP_EMAC_RMII_RXD0	|
-							SYS_GPB_MFPL_PB5MFP_EMAC_RMII_REFCLK |
-							SYS_GPB_MFPL_PB7MFP_EMAC_RMII_TXEN;
-
-
-
-	    SYS->GPB_MFPH |= 	SYS_GPB_MFPH_PB8MFP_EMAC_RMII_TXD1 |
-	    					SYS_GPB_MFPH_PB9MFP_EMAC_RMII_TXD0 |
-							SYS_GPB_MFPH_PB10MFP_EMAC_RMII_MDIO |
-							SYS_GPB_MFPH_PB11MFP_EMAC_RMII_MDC;
-
-	    // Enable high slew rate on all RMII TX output pins
-	    PB->SLEWCTL = (GPIO_SLEWCTL_HIGH << GPIO_SLEWCTL_HSREN7_Pos) |
-	                  (GPIO_SLEWCTL_HIGH << GPIO_SLEWCTL_HSREN8_Pos) |
-	                  (GPIO_SLEWCTL_HIGH << GPIO_SLEWCTL_HSREN9_Pos);
-
-#else
 
 		    // Configure RMII pins
 		    SYS->GPA_MFPL |= SYS_GPA_MFPL_PA6MFP_EMAC_RMII_RXERR | SYS_GPA_MFPL_PA7MFP_EMAC_RMII_CRSDV;
@@ -56,22 +35,19 @@ static void initEthernetHardware(void)
 		                  (GPIO_SLEWCTL_HIGH << GPIO_SLEWCTL_HSREN11_Pos) |
 		                  (GPIO_SLEWCTL_HIGH << GPIO_SLEWCTL_HSREN12_Pos);
 
-#endif
-
 
 }
 
+
 enum LED_t {
-	RED_LED,
-	YELLOW_LED,
-	GREEN_LED,
+	GREEN_LED1,
+	GREEN_LED2,
 	NUM_LEDS
 };
 
 static Pin ledPins[NUM_LEDS] = {
-	{GPIOH_PIN_BASE, 0},	// red led on H0
-	{GPIOH_PIN_BASE, 1},	// yellow led on H1
-	{GPIOH_PIN_BASE, 2}		// green led on H2
+	{GPIOH_PIN_BASE, 0},	// led1 on H0
+	{GPIOH_PIN_BASE, 1},	// led2 on H1
 };
 
 enum BUTTON_t {
@@ -83,6 +59,35 @@ enum BUTTON_t {
 static Pin buttonPins[NUM_SWITCHES] = {
 	{GPIOG_PIN_BASE, 15},	// sw2 on G15
 	{GPIOF_PIN_BASE, 11}	// sw3 on F11
+};
+
+
+
+enum GPIO_t {
+	SHARC_RESET,
+	ULTIMO_RESET,
+	ADC_RESET,
+	DAC_RESET,
+	AMP1_MUTE,
+	AMP2_MUTE,
+	AMP_STANDBY,
+	AMP_BTL4R_CTL,
+	AMP1_TEMP_SEL,
+	AMP2_TEMP_SEL,
+	NUM_GPIO
+};
+
+static Pin gpioPins[NUM_GPIO] = {
+	{GPIOH_PIN_BASE, 2},	// sharc reset on H2
+	{GPIOB_PIN_BASE, 15},	// ultimo reset on B15;
+	{GPIOD_PIN_BASE, 3},	// sharc reset on D3
+	{GPIOE_PIN_BASE, 7},	// DAC reset on E7
+	{GPIOG_PIN_BASE, 0},	// AMP1_MUTE on G0
+	{GPIOG_PIN_BASE, 2},	// AMP1_MUTE on G2
+	{GPIOG_PIN_BASE, 1},	// AMP_STANDBY on G1
+	{GPIOG_PIN_BASE, 3},	// AMP_BTL4R_CTL on G3
+	{GPIOF_PIN_BASE, 5},	// AMP1_TEMP_SEL on F5
+	{GPIOF_PIN_BASE, 6},	// AMP2_TEMP_SEL on F6
 };
 
 class Leds
@@ -99,6 +104,17 @@ public:
 	}
 };
 
+class Gpio
+{
+	Gpio();
+
+public:
+	static void setGpio(GPIO_t device, bool state) {
+		gpioPins[device].Write(state ? 0:1);
+	};
+
+};
+
 class Buttons
 {
 	Buttons();
@@ -109,4 +125,5 @@ public:
 	}
 };
 
-#endif /* HARDWARE_BOARD_H_ */
+
+#endif //HARDWARE_BOARD_H_

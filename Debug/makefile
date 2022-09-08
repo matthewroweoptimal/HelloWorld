@@ -89,7 +89,7 @@ all: CDDLive.elf secondary-outputs
 CDDLive.elf: $(OBJS) $(USER_OBJS) makefile objects.mk $(OPTIONAL_TOOL_DEPS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross ARM GNU C++ Linker'
-	arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "C:\DEVELOPMENT\MatthewRoweOptimal\CMSIS\GCC\gcc_arm.ld" -Xlinker --gc-sections -Wl,-Map,"CDDLive.map" -o "CDDLive.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "C:\Users\Iain.Quarmby\OneDrive - Focusrite Group\Documents\GitHub\HelloWorld\CMSIS\GCC\gcc_arm.ld" -Xlinker --gc-sections -Wl,-Map,"CDDLive.map" -o "CDDLive.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

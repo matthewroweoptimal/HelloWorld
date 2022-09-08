@@ -7,7 +7,7 @@
 
 
 /*! @brief Device instance number */
-#define FSL_SPI_SHARC 0
+#define FSL_SPI_SHARC 1
 /*! @brief spi_sharc component mode */
 #define SPI_SHARC_DMA_MODE 0U
 

@@ -26,7 +26,7 @@ void TMR0_IRQHandler(void)
     }
 }
 
-void SPI0_IRQHandler(void)
+void SPI1_IRQHandler(void)
 {   // SHARC connected on SPI0
     DSPI_DRV_IRQHandler(FSL_SPI_SHARC);
 }

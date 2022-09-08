@@ -189,7 +189,7 @@ dspi_status_t DSPI_DRV_MasterInit(uint32_t instance, dspi_master_state_t * dspiS
     }
     
     /* Configure as a MASTER, clock polarity and phase, transaction width, etc */
-    uint32_t actualSpiHz = SPI_Open(pSPI_INSTANCE, SPI_MASTER, SPI_MODE_0, dspiState->bitsPerFrame, busConfig->bitsPerSec);
+    uint32_t actualSpiHz = SPI_Open(pSPI_INSTANCE, SPI_MASTER, u32SPIMode, dspiState->bitsPerFrame, busConfig->bitsPerSec);
 
     /* Enable the automatic hardware slave select function. Select the SS pin and configure polarity. */
     uint32_t slaveSelectPolarity = SPI_SS_ACTIVE_HIGH;
@@ -202,10 +202,25 @@ dspi_status_t DSPI_DRV_MasterInit(uint32_t instance, dspi_master_state_t * dspiS
     SPI_SetFIFO(pSPI_INSTANCE, g_dspiFifoSize[instance]-1, g_dspiFifoSize[instance]-1);
         
 
+    if (busConfig->dataBusConfig.direction == kDspiMsbFirst)
+    {
+    	SPI_SET_MSB_FIRST(pSPI_INSTANCE);
+    } else
+    {
+    	SPI_SET_LSB_FIRST(pSPI_INSTANCE);
+    }
+
+
     /* Initialize the DSPI module with user config */
-    // TODO : Could take into account (?) : .isSckContinuous, .dataBusConfig.direction, .isChipSelectContinuous, 
+    // TODO : Could take into account (?) : .isSckContinuous, .isChipSelectContinuous,
+
+
+
+
+
 
     return errorCode;
+
 }
 
 /*FUNCTION**********************************************************************

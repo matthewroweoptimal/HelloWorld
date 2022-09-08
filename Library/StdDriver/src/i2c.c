@@ -1116,6 +1116,96 @@ uint32_t I2C_WriteMultiBytesTwoRegs(I2C_T *i2c, uint8_t u8SlaveAddr, uint16_t u1
 }
 
 /**
+  * @brief      Specify three bytes register address and will write a control byte (0x00) and then the byte to the Slave
+  *
+  * @param[in]  *i2c            Point to I2C peripheral
+  * @param[in]  u8SlaveAddr     Access Slave address(7-bit)
+  * @param[in]  u16DataAddr     Specify a address (2 byte) of data write to
+  * @param[in]  data            Write a byte data to Slave
+  *
+  * @retval     0               Write data success
+  * @retval     1               Write data fail, or bus occurs error events
+  *
+  * @details    The function is used for I2C Master specify two bytes address that data write to in Slave.
+  *
+  */
+
+uint8_t I2C_WriteByteThreeRegsPlus(I2C_T *i2c, uint8_t u8SlaveAddr, uint32_t u32DataAddr, uint8_t data)
+{
+    uint8_t u8Xfering = 1u, u8Err = 0u, u8Addr = 3u, u8Ctrl = 0u;
+    uint32_t u32txLen = 0u;
+
+    g_I2C_i32ErrCode = 0;
+
+    I2C_START(i2c);                                                         /* Send START */
+    while(u8Xfering && (u8Err == 0u))
+    {
+        uint32_t u32TimeOutCount = SystemCoreClock; // 1 second timeout
+        I2C_WAIT_READY(i2c)
+        {
+            u32TimeOutCount--;
+            if(u32TimeOutCount == 0)
+            {
+                g_I2C_i32ErrCode = I2C_TIMEOUT_ERR;
+                break;
+            }
+        }
+
+        switch(I2C_GET_STATUS(i2c))
+        {
+        case 0x08u:
+            I2C_SET_DATA(i2c, (uint8_t)(u8SlaveAddr << 1u | 0x00u));               /* Write SLA+W to Register I2CDAT */
+            u8Ctrl = I2C_CTL_SI;                                      /* Clear SI */
+            break;
+        case 0x18u:                                                      /* Slave Address ACK */
+            I2C_SET_DATA(i2c, (uint8_t)((u32DataAddr & 0xFF0000u) >> 16u));    /* Write Hi byte address of register */
+            break;
+        case 0x20u:                                                      /* Slave Address NACK */
+        case 0x30u:                                                      /* Master transmit data NACK */
+            u8Ctrl = I2C_CTL_STO_SI;                                  /* Clear SI and send STOP */
+            u8Err = 1u;
+            break;
+        case 0x28u:
+            if(u8Addr == 3u)
+            {
+                I2C_SET_DATA(i2c, (uint8_t)((u32DataAddr & 0xFF00u) >> 8u));       /* Write Mid byte address of register */
+                u8Addr = 2u;
+            }
+            else if(u8Addr == 2u)
+            {
+                I2C_SET_DATA(i2c, (uint8_t)(u32DataAddr & 0xFFu));       /* Write Lo byte address of register */
+                u8Addr = 1u;
+            }
+            else if(u8Addr == 1u)
+            {
+                I2C_SET_DATA(i2c, 0x00);       /* Write control byte for the DAC*/
+                u8Addr = 0u;
+            }
+            else if((u32txLen < 1u) && (u8Addr == 0u))
+            {
+                I2C_SET_DATA(i2c, data);
+                u32txLen++;
+            }
+            else
+            {
+                u8Ctrl = I2C_CTL_STO_SI;                              /* Clear SI and send STOP */
+                u8Xfering = 0u;
+            }
+            break;
+        case 0x38u:                                                      /* Arbitration Lost */
+        default:                                                        /* Unknow status */
+            I2C_SET_CONTROL_REG(i2c, I2C_CTL_STO_SI);                   /* Clear SI and send STOP */
+            u8Ctrl = I2C_CTL_SI;
+            u8Err = 1u;
+            break;
+        }
+        I2C_SET_CONTROL_REG(i2c, u8Ctrl);                                   /* Write controlbit to I2C_CTL register */
+    }
+    return (u8Err | u8Xfering);                                             /* return (Success)/(Fail) status */
+}
+
+
+/**
   * @brief      Read a byte from Slave
   *
   * @param[in]  *i2c            Point to I2C peripheral
@@ -1621,6 +1711,102 @@ uint32_t I2C_ReadMultiBytesTwoRegs(I2C_T *i2c, uint8_t u8SlaveAddr, uint16_t u16
     }
     return u32rxLen;                                                        /* Return bytes length that have been received */
 }
+
+/**
+  * @brief      Specify three bytes register address and read a byte from Slave
+  *
+  * @param[in]  *i2c            Point to I2C peripheral
+  * @param[in]  u8SlaveAddr     Access Slave address(7-bit)
+  * @param[in]  u16DataAddr     Specify an address(2 bytes) of data read from
+  *
+  * @return     Read a byte data from Slave
+  *
+  * @details    The function is used for I2C Master specify two bytes address that a data byte read from Slave.
+  *
+  *
+  */
+uint8_t I2C_ReadByteThreeRegs(I2C_T *i2c, uint8_t u8SlaveAddr, uint32_t u32DataAddr)
+{
+    uint8_t u8Xfering = 1u, u8Err = 0u, rdata = 0u, u8Addr = 2u, u8Ctrl = 0u;
+
+    g_I2C_i32ErrCode = 0;
+
+    I2C_START(i2c);                                                         /* Send START */
+    while(u8Xfering && (u8Err == 0u))
+    {
+        uint32_t u32TimeOutCount = SystemCoreClock; // 1 second timeout
+        I2C_WAIT_READY(i2c)
+        {
+            u32TimeOutCount--;
+            if(u32TimeOutCount == 0)
+            {
+                g_I2C_i32ErrCode = I2C_TIMEOUT_ERR;
+                break;
+            }
+        }
+
+        switch(I2C_GET_STATUS(i2c))
+        {
+        case 0x08u:
+            I2C_SET_DATA(i2c, (uint8_t)(u8SlaveAddr << 1u | 0x00u));               /* Write SLA+W to Register I2CDAT */
+            u8Ctrl = I2C_CTL_SI;                                      /* Clear SI */
+            break;
+        case 0x18u:                                                      /* Slave Address ACK */
+            I2C_SET_DATA(i2c, (uint8_t)((u32DataAddr & 0xFF0000u) >> 16u));    /* Write Hi byte address of register */
+            break;
+        case 0x20u:                                                      /* Slave Address NACK */
+        case 0x30u:                                                      /* Master transmit data NACK */
+            u8Ctrl = I2C_CTL_STO_SI;                                  /* Clear SI and send STOP */
+            u8Err = 1u;
+            break;
+        case 0x28u:
+            if(u8Addr == 2u)
+            {
+            	I2C_SET_DATA(i2c, (uint8_t)((u32DataAddr & 0xFF00u) >> 8u));    /* Write Mid byte address of register */
+                u8Addr = 1u;
+            }
+            else if(u8Addr == 1u)
+            {
+                I2C_SET_DATA(i2c, (uint8_t)(u32DataAddr & 0xFFu));       /* Write Lo byte address of register */
+                u8Addr = 0u;
+            }
+            else
+            {
+                u8Ctrl = I2C_CTL_STA_SI;                              /* Clear SI and send repeat START */
+            }
+            break;
+        case 0x10u:
+            I2C_SET_DATA(i2c, (uint8_t)((u8SlaveAddr << 1u) | 0x01u));             /* Write SLA+R to Register I2CDAT */
+            u8Ctrl = I2C_CTL_SI;                                      /* Clear SI */
+            break;
+        case 0x40u:                                                      /* Slave Address ACK */
+            u8Ctrl = I2C_CTL_SI;                                      /* Clear SI */
+            break;
+        case 0x48u:                                                      /* Slave Address NACK */
+            u8Ctrl = I2C_CTL_STO_SI;                                  /* Clear SI and send STOP */
+            u8Err = 1u;
+            break;
+        case 0x58u:
+            rdata = (unsigned char) I2C_GET_DATA(i2c);                  /* Receive Data */
+            u8Ctrl = I2C_CTL_STO_SI;                                  /* Clear SI and send STOP */
+            u8Xfering = 0u;
+            break;
+        case 0x38u:                                                      /* Arbitration Lost */
+        default:                                                        /* Unknow status */
+            I2C_SET_CONTROL_REG(i2c, I2C_CTL_STO_SI);                 /* Clear SI and send STOP */
+            u8Ctrl = I2C_CTL_SI;
+            u8Err = 1u;
+            break;
+        }
+        I2C_SET_CONTROL_REG(i2c, u8Ctrl);                                   /* Write controlbit to I2C_CTL register */
+    }
+    if(u8Err)
+    {
+        rdata = 0u;                                                          /* If occurs error, return 0 */
+    }
+    return rdata;                                                           /* Return read data */
+}
+
 
 
 /*@}*/ /* end of group I2C_EXPORTED_FUNCTIONS */

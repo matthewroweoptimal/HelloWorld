@@ -37,8 +37,8 @@ protected:
 	void Run()
 	{
 		// toggle an led
-		Leds::toggleLed(GREEN_LED);
-		Leds::setLed(RED_LED, Buttons::readButton(SW2));
+		Leds::toggleLed(GREEN_LED1);
+		//Leds::setLed(RED_LED, Buttons::readButton(SW2)); only on dev board.
 
 		if (!--tickCounter)
 		{
