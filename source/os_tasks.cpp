@@ -329,6 +329,12 @@ void Config_Task(uint32_t button_state)
 //	olyConfig->SetFanEnabled(false);
 #endif
 
+//	IQ - We need to setup olyParams and olyStoredParams to the CDD defaults (specified in voiceing.h). The user settable bits will need to be stored in flash. There are not many params that are user changable. Suggest we only use onboard flash!
+
+//  IQ -  RestoreDefaults has been adjusted to just copy in the defaults. We do not look for saved changes, no interactino with flash at all!
+	olyConfig->RestoreDefaults(true);
+
+
 	MSGQ_INIT()
 
 	config_qid = _msgq_open(CONFIG_QUEUE, 0);

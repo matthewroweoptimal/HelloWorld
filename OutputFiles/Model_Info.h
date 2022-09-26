@@ -1,5 +1,5 @@
 
-/* Model Type = CDDL-12 */
+/* Model Type = CDDL-15 */
 
 #define CODEC_CH1_INVERT	0
 #define CODEC_CH2_INVERT	1
@@ -41,7 +41,5 @@
 
 #define USE_CDD_NOISEGATE       1
 
-/* UI Definitions */
-#ifdef SC_COMMENTED_OUT
-	#define USE_CDD_UI				1
-#endif // SC_COMMENTED_OUT
+/* UI Definitions QI COMMENTED OUT*/
+//#define USE_CDD_UI				1
