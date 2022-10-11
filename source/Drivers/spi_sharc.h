@@ -11,7 +11,7 @@
 /*! @brief spi_sharc component mode */
 #define SPI_SHARC_DMA_MODE 0U
 
-/*! @brief Driver state structure. Generated due to enabled auto initialization */
+/*! @brief Driver state structure. Generated due to enabled auto initialization - this is declared in spi_sharc.cpp!!*/
 extern dspi_master_state_t spi_sharc_MasterState;
 
 /*! @brief Driver calculated baudrate is returned from DSPI_DRV_MasterInit() call.

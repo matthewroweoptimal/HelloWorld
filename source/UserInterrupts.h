@@ -11,6 +11,7 @@
 #include "task.h"
 #include "timer.h"
 #include "spi_sharc.h"
+#include "uart_ultimo.h"
 
 extern "C" {
 
@@ -29,6 +30,11 @@ void TMR0_IRQHandler(void)
 void SPI1_IRQHandler(void)
 {   // SHARC connected on SPI0
     DSPI_DRV_IRQHandler(FSL_SPI_SHARC);
+}
+
+void UART1_IRQHandler(void)
+{   // SHARC connected on SPI0
+    UART_DRV_IRQHandler(NU_UART_ULTIMO);
 }
 
 void RTOS_AppConfigureTimerForRuntimeStats(void) {

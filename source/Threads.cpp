@@ -23,6 +23,11 @@ void Threads::StartThreads()
 
     _tcpThread = new TcpThread(TCPTHREAD_STACKSIZE, TCP_THREAD_PRIORITY,_semMainThreadComplete);
     _tcpThread->Start();
+
+    _danteThread = new DanteThread(DANTETHREAD_STACKSIZE, DANTE_THREAD_PRIORITY,_semMainThreadComplete);
+    _danteThread->Start();
+
+
 }
 
 void Threads::StartScheduler()

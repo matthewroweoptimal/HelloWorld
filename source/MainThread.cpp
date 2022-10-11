@@ -78,7 +78,7 @@ void MainThread::Run()
 
     I2C2_Init();
     /* Setup the DAC */
-    /* TODO : tidy this up! */
+    /* TODO : tidy this up! inint function in hardware setup, below setup in its own function*/
     uint8_t l=0;
     printf("TXing 1st byte\n");
     l=I2C_WriteByteThreeRegsPlus(I2C2, DAC_I2C_ADDR, POW_DOWN_REG, POWER_DOWN_CTL);

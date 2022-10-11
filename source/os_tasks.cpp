@@ -22,7 +22,7 @@ extern "C" {
 #include "inputhandler.h"
 #include "oly_logo.h"
 #include <stdio.h>
-//#include "UltimoPort.h"
+#include "UltimoPort.h"
 //#include "Discovery.h"
 //#include <timer.h>
 //#include "TimeKeeper.h"
@@ -44,14 +44,14 @@ extern "C" {
 }
 
 #include "MQX_To_FreeRTOS.h"
-
+#define FSL_UART_ULTIMO 1
 
 
 using namespace oly;
 
 Config *	   		olyConfig;
 
-//UltimoPort *		g_pUltimoPort = 0;
+UltimoPort *		g_pUltimoPort = 0;
 //Discovery *			g_pDiscovery = 0;
 
 bool logo_enabled = false;
@@ -564,6 +564,7 @@ void GUI_Task(uint32_t task_init_data)
 	}
 }
 
+#endif
 
 /* Solely for monitoring the Ultimo UART. */
 void Dante_Task(uint32_t task_init_data)
@@ -583,7 +584,6 @@ void Dante_Task(uint32_t task_init_data)
 
 		 _time_get_elapsed_ticks(&startTicks);
 
-		while (1) {
 
 			MQX_TICK_STRUCT ticks;
 			bool bWrap;
@@ -613,7 +613,7 @@ void Dante_Task(uint32_t task_init_data)
 	}
 }
 
-
+#if 0
 /* Handles User Interface Events */
 void UserEvents_Task(uint32_t task_init_data)
 {

@@ -38,6 +38,7 @@
 #include "TimeKeeper.h"
 #include "spi_sharc.h"
 #include "board.h"
+#include "uart_ultimo.h"
 
 using namespace std;
 
@@ -51,10 +52,10 @@ using namespace std;
 #define SPI2_HANDLER_PRIORITY 	12U   // master so can be delayed
 #define I2C0_HANDLER_PRIORITY 	12U   // master so can be delayed
 #define UART0_HANDLER_PRIORITY 	6U    //voicing  115k -not used by customer, so can keep low for test
-#define UART1_HANDLER_PRIORITY 	6U    //irda 14.4k
-#define UART3_HANDLER_PRIORITY 	4U    //ultimo  115k  - this needs service within 86usec
-#define UART4_HANDLER_PRIORITY 	6U    //irda 14.4k
-#define UART5_HANDLER_PRIORITY 	6U    //irda 14.4k
+//#define UART1_HANDLER_PRIORITY 	6U    //irda 14.4k
+#define UART1_HANDLER_PRIORITY 	4U    //ultimo  115k  - this needs service within 86usec
+//#define UART4_HANDLER_PRIORITY 	6U    //irda 14.4k
+//#define UART5_HANDLER_PRIORITY 	6U    //irda 14.4k
 #define FTM2_HANDLER_PRIORITY 	12U
 #define FTM3_HANDLER_PRIORITY 	12U
 #define ETHERNET_HANDLER_PRIORITY 8U  //transfer this manually to ethernet driver
@@ -150,12 +151,17 @@ static void prvSetupHardware( void )
     CLK_EnableModuleClock(EMAC_MODULE);
     /* Enable I2C0 peripheral clock */
     CLK_EnableModuleClock(I2C2_MODULE);
+    CLK_EnableModuleClock(UART1_MODULE);
 
     /* Select IP clock source */
+    /*TODO these are actually activated in the individual init functions */
     CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART0SEL_HXT, CLK_CLKDIV0_UART0(1));
+    CLK_SetModuleClock(UART1_MODULE, CLK_CLKSEL1_UART1SEL_HXT, CLK_CLKDIV0_UART1(1));
+
     CLK_SetModuleClock(TMR0_MODULE, CLK_CLKSEL1_TMR0SEL_HXT, 0);
     // Configure MDC clock rate to HCLK / (127 + 1) = 1.5 MHz if system is running at 192 MHz
     CLK_SetModuleClock(EMAC_MODULE, 0, CLK_CLKDIV3_EMAC(127));
+
 
     // SPI1_CONFIGURATION
     /* Configure SPI1 related multi-function pins. GPH[7:4] : SPI1_MISO, SPI1_MOSI, SPI1_CLK, SPI1_SS. */
@@ -184,14 +190,21 @@ static void prvSetupHardware( void )
     /* User can use SystemCoreClockUpdate() to calculate SystemCoreClock. */
     SystemCoreClockUpdate();
 
-    /* Set GPB multi-function pins for UART0 RXD and TXD */
+    /* Set GPB multi-function pins for UART0 RXD (PB.12) and TXD (PB.13) */
     SYS->GPB_MFPH &= ~(SYS_GPB_MFPH_PB12MFP_Msk | SYS_GPB_MFPH_PB13MFP_Msk);
     SYS->GPB_MFPH |= (SYS_GPB_MFPH_PB12MFP_UART0_RXD | SYS_GPB_MFPH_PB13MFP_UART0_TXD);
 
-    PH->MODE = (PH->MODE & ~(GPIO_MODE_MODE0_Msk | GPIO_MODE_MODE1_Msk | GPIO_MODE_MODE2_Msk)) |
+    /*LEDs (PH.0 & PH.1) */
+    PH->MODE = (PH->MODE & ~(GPIO_MODE_MODE0_Msk | GPIO_MODE_MODE1_Msk)) |
                (GPIO_MODE_OUTPUT << GPIO_MODE_MODE0_Pos) |
-               (GPIO_MODE_OUTPUT << GPIO_MODE_MODE1_Pos) |
-               (GPIO_MODE_OUTPUT << GPIO_MODE_MODE2_Pos);  // Set to output mode
+               (GPIO_MODE_OUTPUT << GPIO_MODE_MODE1_Pos);  // Set to output mode
+
+    /* Set GPB multi-function pins for UART1 TXD (PB.7), RXD (PB.6), CTS (PB.9) and RTS (PB.8)*/
+    SYS->GPB_MFPL &= ~(SYS_GPB_MFPL_PB6MFP_Msk | SYS_GPB_MFPL_PB7MFP_Msk);
+    SYS->GPB_MFPH &= ~(SYS_GPB_MFPH_PB8MFP_Msk | SYS_GPB_MFPH_PB9MFP_Msk);
+
+    SYS->GPB_MFPL |= (SYS_GPB_MFPL_PB6MFP_UART1_RXD | SYS_GPB_MFPL_PB7MFP_UART1_TXD);
+    SYS->GPB_MFPH |= (SYS_GPB_MFPH_PB8MFP_UART1_nRTS | SYS_GPB_MFPH_PB9MFP_UART1_nCTS);
 
 
     /* Set I2C0 multi-function pins */
@@ -223,7 +236,8 @@ static void prvSetupHardware( void )
 
     GPIO_SetMode(PB, BIT2|BIT3, GPIO_MODE_OUTPUT);
     GPIO_SetMode(PB, BIT5, GPIO_MODE_QUASI);
-    GPIO_SetMode(PC, BIT10|BIT11|BIT12, GPIO_MODE_OUTPUT);
+    GPIO_SetMode(PC, BIT10|BIT11|BIT12, GPIO_MODE_OUTPUT);		//
+    GPIO_SetMode(PH, BIT2, GPIO_MODE_OUTPUT);    				//sharc reset
 
     Gpio::setGpio(SHARC_RESET,LOW);
     Gpio::setGpio(ULTIMO_RESET,LOW);
@@ -257,13 +271,16 @@ static void peripherals_init(void)
 
 	//Init I2C for ADC - Does it need any init or do we just do the setup?
 
-	/* TODO : DSP SPI2 boot config */
+	/* TODO : Accelerometer I2C NOT USED BY NUCDDL*/
 
-	/* TODO : Accelerometer I2C */
-
-	/* TODO : Voice UART */
+	/* TODO : Voice UART NOT USED BY NUCDDL*/
 
     /* TODO : Ultimo UART */
+    UART_DRV_Init(NU_UART_ULTIMO,&uart_ultimo_State,&uart_ultimo_Config);
+    /* enable the interrupts */
+    /* >>>>>>>>>>>> Set TX FIFO threshold, enable TX FIFO threshold interrupt and RX FIFO time-out interrupt */
+    UART_EnableInt(UART1, (UART_INTEN_RDAIEN_Msk | UART_INTEN_THREIEN_Msk | UART_INTEN_RXTOIEN_Msk));
+    NVIC_EnableIRQ(UART1_IRQn);
 
     /* TODO : FTM2 Encoder */
 

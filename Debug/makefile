@@ -9,6 +9,8 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include source/Drivers/subdir.mk
+-include source/Dante/src/subdir.mk
+-include source/Dante/subdir.mk
 -include source/Comm/subdir.mk
 -include source/subdir.mk
 -include lwip/src/netif/ppp/polarssl/subdir.mk

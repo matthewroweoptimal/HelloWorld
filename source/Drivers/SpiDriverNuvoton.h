@@ -6,7 +6,7 @@
 
 #define SPI_INSTANCE_COUNT   4       // SPI0..3, but in CDDLive we only use : SPI_0 (SHARC) and SPI_2 (AUX) ?
 
-#define FSL_SPI_SHARC   0   // SPI0
+//#define FSL_SPI_SHARC   0   // SPI0
 //#define FSL_SPI_AUX     2   // SPI2  Needed ??
 
 
@@ -125,11 +125,6 @@ extern void DSPI_DRV_IRQHandler(uint32_t instance);
 extern dspi_status_t DSPI_DRV_MasterInit(uint32_t instance, dspi_master_state_t * dspiState, const dspi_master_user_config_t * userConfig, const dspi_device_t * busConfig);
 extern dspi_status_t DSPI_DRV_MasterDeinit(uint32_t instance);
 extern dspi_status_t DSPI_DRV_MasterTransferBlocking( uint32_t instance, const uint8_t *sendBuffer, uint8_t *receiveBuffer, size_t transferByteCount, uint32_t msTimeout );
-
-
-
-
-
 
 
 #endif // __SPIDRIVERNUVOTON
