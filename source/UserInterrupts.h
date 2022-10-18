@@ -11,9 +11,10 @@
 #include "task.h"
 #include "timer.h"
 #include "spi_sharc.h"
-#include "uart_ultimo.h"
+
 
 extern "C" {
+#include "uart_ultimo.h"
 
 static uint32_t RTOS_RunTimeCounter; /* runtime counter, used for configGENERATE_RUNTIME_STATS */
 
@@ -33,8 +34,8 @@ void SPI1_IRQHandler(void)
 }
 
 void UART1_IRQHandler(void)
-{   // SHARC connected on SPI0
-    UART_DRV_IRQHandler(NU_UART_ULTIMO);
+{   // ULTIMO connected on UART1
+	ULTIMO_UART_IRQHandler();
 }
 
 void RTOS_AppConfigureTimerForRuntimeStats(void) {

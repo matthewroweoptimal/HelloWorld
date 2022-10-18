@@ -6,13 +6,13 @@
  */
 
 #include "UltimoPort.h"
-#include "nuvoton_uart_driver.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
 #include <string.h>
 
 extern "C" {
+
 #include <oly_logo.h>
 #include <uhip.h>
 #include <uhip_structures.h>
@@ -26,6 +26,7 @@ extern "C" {
 //#include "fsl_uart_driver_modified.h"
 #include "rx_ddp.h"
 #include "SpeakerConfiguration.h"
+#include "uart_ultimo.h"
 #if USE_OLY_UI
 #include "LcdCoordinates.h"
 #endif
@@ -41,7 +42,13 @@ extern uint32_t g_irC_rx_overflow;
 extern uint32_t g_irD_rx_overflow;
 #endif	//	DEBUG
 
-uint32_t m_ServerQueue[ULT_NUM_MESSAGES * ULT_MSG_SIZE];
+/* circular buffer from the UART */
+extern uint8_t g_u8RecData[ULT_RX_BUF_SIZE];
+extern volatile uint32_t g_u32comRbytes;
+extern volatile uint32_t g_u32comRhead;
+extern volatile uint32_t g_u32comRtail;
+extern volatile int32_t g_bWait;
+
 
 extern "C" {
 	int hostcpu_uhip_Initialize(int nfdDriver);
@@ -57,6 +64,7 @@ extern "C" {
 	void check_uhip_timers(void);
 	void handle_uhip_tx(void);
 	unsigned char process_cobs_rx_packet(uint8_t* rx_pkt_buffer, uint16_t rx_buff_size);
+
 }
 
 
@@ -185,7 +193,7 @@ void UltimoPort::HandleRx()
 	size_t i;
 	bool bValid;
 
-	//read bytes received from the transport layer one UHIP_CHUNK_SIZE at a time
+	//read bytes received from the transport layer one UHIP_CHUNK_SIZE at a time (IQ - UHIP_CHUNK_SIZE is the max this function will return)
 	bytesRead = DoRead(tempRxBuffer, UHIP_CHUNK_SIZE, &bValid);
 	if ((bytesRead==0) && (!bValid))
 	{
@@ -242,7 +250,7 @@ void UltimoPort::HandleRx()
 		printf("\n");
 #endif	//	DANTE_DEBUG_FINE
 
-		//get the next chunk
+		//get the next chunk (IQ??)
 		bytesRead = DoRead(tempRxBuffer, UHIP_CHUNK_SIZE, &bValid);
 		if ((bytesRead==0) && (!bValid))
 		{
@@ -275,15 +283,36 @@ uint16_t UltimoPort::DoRead(uint8_t* pBuffer, uint16_t maxBytesToRead, bool* bVa
 
 		if (-1!=m_nPort)
 		{
-			for(int nByte=0;nByte<ULT_RX_BUF_SIZE;nByte++)			//IQ the expectaion is that at least one CHUNK has been received and is waiting.
+			for(int nByte=0;nByte<ULT_RX_BUF_SIZE;nByte++)			//IQ this is 1024 bytes. a chunk is 32 bytes?
 			{
 				_mqx_uint uiMsg;
 				_mqx_uint uiReturnStatus;
 
 				//uiReturnStatus = _lwmsgq_receive((void *)m_ServerQueue, &uiMsg, 0, 0, 0);	//	LWMSGQ_RECEIVE_BLOCK_ON_EMPTY IQ - Nuvoton can't use this, do we add to translation layer?
+				/*get something from the circular buffer. I am confused if this is blocking or not! -  just a byte I think! */
+				/*for now I am implementing this a bit squiffy*/
+				/* circular buffer from the UART */
+			    //while(g_bWait);	//suspend() would be better. we are blocking until something arrives in the rx buffer. what if we need to tx first?
+				//suspect at the least I should wait in this loop until we have collected a chunk, or timeout?
+
+			    uint32_t tmp = g_u32comRtail;
+
+			    if((g_u32comRhead != tmp) && (nBytesRead < (int) maxBytesToRead))
+			    {
+			    	int8_t tempByte = g_u8RecData[g_u32comRhead];
+			    	s_RxInBuffer[s_TotalRx++] = tempByte;
+			    	nBytesRead++;
+			    	g_u32comRhead = (g_u32comRhead == (ULT_RX_BUF_SIZE - 1)) ? 0 : (g_u32comRhead + 1);
+			    	g_u32comRbytes--;
+			    	uiReturnStatus == MQX_OK;
+			    }
+			    else
+			    {
+			    	break;		//we have got all that is there so far!
+			    }
 
 
-				if ((uiReturnStatus == MQX_OK) && (uiMsg & 0xff000000))				//IQ - does this somehow signify there is nothing new in the buffer if we have something set in upper byte?
+				/*if ((uiReturnStatus == MQX_OK) && (uiMsg & 0xff000000))				//IQ - this checks for the end of a set of recieved bytes. Will unlikely be
 				{
 					*bValid = false;	// process what we have already received so break out of loop but tell cob to reset after processing this stuff.
 					break;
@@ -297,7 +326,7 @@ uint16_t UltimoPort::DoRead(uint8_t* pBuffer, uint16_t maxBytesToRead, bool* bVa
 				else
 				{
 					break;
-				}
+				}*/
 			}
 		}
 	}
@@ -664,13 +693,13 @@ void UltimoPort::Check(int nMSec)
 
 			if (usChannelActive && usChannelAvail)
 			{
-				AutoSelectAudioSource( usChannelStatus ); // could be Dante
+				//AutoSelectAudioSource( usChannelStatus ); // could be Dante TODO reimplement
 				pConfig->OnDanteChange_ChannelStatus(m_usChannelStatus);
 
 			}
 			else
 			{
-				AutoSelectAudioSource( 0 );		// can not be Dante
+				//AutoSelectAudioSource( 0 );		// can not be Dante TODO reimplement
 				pConfig->OnDanteChange_ChannelStatus(0);
 
 			}

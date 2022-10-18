@@ -2,7 +2,8 @@
 #define _DDP_PACKET_H
 
 #include "ddp.h"
-//#include "mqx.h"
+#include "lwip/def.h"
+
 
 #ifdef __cplusplus
 extern "C" {

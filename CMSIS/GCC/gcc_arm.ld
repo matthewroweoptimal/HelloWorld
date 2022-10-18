@@ -8,7 +8,7 @@ MEMORY
 
   /* M487 datasheet states : 512k Flash, 160k RAM (but this includes 32kB cache for external SPI Flash) */
   FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 512K
-  RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 128K 
+  RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 160K   /* how do we extend?!*/
 }
 
 /* Library configurations */

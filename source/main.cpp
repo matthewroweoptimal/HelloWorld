@@ -262,6 +262,8 @@ static void prvSetupHardware( void )
 }
 /*-----------------------------------------------------------*/
 
+
+
 static void peripherals_init(void)
 {
 	/* DSP SPI1 boot config */
@@ -276,11 +278,7 @@ static void peripherals_init(void)
 	/* TODO : Voice UART NOT USED BY NUCDDL*/
 
     /* TODO : Ultimo UART */
-    UART_DRV_Init(NU_UART_ULTIMO,&uart_ultimo_State,&uart_ultimo_Config);
-    /* enable the interrupts */
-    /* >>>>>>>>>>>> Set TX FIFO threshold, enable TX FIFO threshold interrupt and RX FIFO time-out interrupt */
-    UART_EnableInt(UART1, (UART_INTEN_RDAIEN_Msk | UART_INTEN_THREIEN_Msk | UART_INTEN_RXTOIEN_Msk));
-    NVIC_EnableIRQ(UART1_IRQn);
+    ULTIMO_UART_Init();
 
     /* TODO : FTM2 Encoder */
 

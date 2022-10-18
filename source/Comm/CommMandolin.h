@@ -188,7 +188,7 @@ int GetNextSequence(void);
 #define UART_QUEUE			16
 
 
-#define MAX_MSG_COUNT		10
+#define MAX_MSG_COUNT		10	//IQ change to get ultimo comms working... this might screw up the initial
 #define NUM_CLIENTS			6
 
 extern _pool_id				message_pool;

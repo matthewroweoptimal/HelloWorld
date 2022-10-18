@@ -11,7 +11,7 @@
  */
 
 #include "uhip_packet_write.h"
-//#include "mqx.h"
+#include "lwip/def.h"
 
 /**
 * Initialises the UHIP packet write stucture

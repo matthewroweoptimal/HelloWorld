@@ -19,7 +19,7 @@
 #include <sys/time.h>
 //#include "fsl_uart_hal.h"
 //#include "fsl_os_abstraction.h"
-#include "nuvoton_uart_driver.h"
+#include "uart_ultimo.h"
 #define PC_COM_PORT 1
 
 
@@ -74,8 +74,18 @@ uint16_t hostcpu_transport_write(uint8_t const * buffer, uint16_t num_bytes)
 #ifdef ULTIMO_UART_EDMA
 			UART_DRV_EdmaSendDataBlocking(g_nUltimoPort, &buffer[i * UHIP_CHUNK_SIZE], UHIP_CHUNK_SIZE, OSA_WAIT_FOREVER);
 #else	//	ULTIMO_UART_EDMA
-			UART_DRV_SendDataBlocking(g_nUltimoPort, &buffer[i * UHIP_CHUNK_SIZE], UHIP_CHUNK_SIZE, OSA_WAIT_FOREVER);
+		//	UART_DRV_SendDataBlocking(g_nUltimoPort, &buffer[i * UHIP_CHUNK_SIZE], UHIP_CHUNK_SIZE, OSA_WAIT_FOREVER);
 #endif	//	ULTIMO_UART_EDMA
+
+			//IQ - attempt to direct code the sending of one chunck out the nuvoton uart.
+
+			for(nByte=0;nByte<UHIP_CHUNK_SIZE;nByte++)
+			{
+            while(UART_IS_TX_FULL(UART1));  /* Wait Tx is not full to transmit data */
+            UART_WRITE(UART1, buffer[(i * UHIP_CHUNK_SIZE)+nByte]);
+			}
+
+
 
 //			if (num_bytes_written>UHIP_CHUNK_SIZE)
 //			{
@@ -100,7 +110,7 @@ uint16_t hostcpu_transport_write(uint8_t const * buffer, uint16_t num_bytes)
 		printf("\n");
 #endif	//	 DANTE_DEBUG_FINE
 //		num_bytes_written = write(g_nUltimoPort, buffer, num_bytes);
-		UART_DRV_SendDataBlocking(g_nUltimoPort, buffer, num_bytes, OSA_WAIT_FOREVER);
+		//UART_DRV_SendDataBlocking(g_nUltimoPort, buffer, num_bytes, OSA_WAIT_FOREVER);
 //		if (num_bytes_written>UHIP_CHUNK_SIZE)
 //		{
 //			printf("Unable to write data, errno = %d\n", errno);

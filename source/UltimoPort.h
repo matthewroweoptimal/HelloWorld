@@ -18,9 +18,8 @@
 #define ULT_STARTUP_DELAY	8000	//	How long to wait after boot before trying to send a command to the Ultimo
 #define ULT_CMD_TIMEOUT		1000	//	How long to wait after sending command and not getting response before trying or giving up.
 #define ULT_STATUS_REFRESH_TIMEOUT	10000	//	How long to wait while link status is supposedly known but unlinked before polling to make sure we didn't miss it.
-#define ULT_NUM_MESSAGES	1024
+#define ULT_NUM_MESSAGES	64
 #define ULT_MSG_SIZE		1
-#define ULT_RX_BUF_SIZE 	1024
 
 typedef struct structUltimoVersion {
 	unsigned char v1;

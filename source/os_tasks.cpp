@@ -584,6 +584,7 @@ void Dante_Task(uint32_t task_init_data)
 
 		 _time_get_elapsed_ticks(&startTicks);
 
+		while (1) {
 
 			MQX_TICK_STRUCT ticks;
 			bool bWrap;

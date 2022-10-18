@@ -11,7 +11,7 @@
  */
 
 #include "uhip_packet_read.h"
-//#include "mqx.h"
+#include "lwip/def.h"
 
 /**
 * Initialises the read of a UHIP packet (NOTE: this must be after COBS decoding)

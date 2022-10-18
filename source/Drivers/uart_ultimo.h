@@ -68,10 +68,13 @@
 #ifndef __uart_ultimo_H
 #define __uart_ultimo_H
 /* MODULE uart_ultimo. */
-#include "nuvoton_uart_driver.h"
+#include <stdio.h>
+#include <stdbool.h>
+#include "M480.h"
 
 
 #define NU_UART_ULTIMO	1
+#define ULT_RX_BUF_SIZE 1024
 
 /*! Device instance number */
 #define FSL_UART_ULTIMO UART3_IDX
@@ -89,19 +92,17 @@ extern const edma_user_config_t			uart_ultimo_EdmaConfig;
 #else	//	ULTIMO_UART_EDMA
 
 /*! Driver state structure without DMA */
-extern uart_state_t uart_ultimo_State;
+//extern uart_state_t uart_ultimo_State;
 /*! @brief UART configuration declaration */
-extern const uart_user_config_t uart_ultimo_Config;
 
-void uart_ultimo_rx_cb(uint32_t instance, void * uartState, bool bRxOverflow);
-extern uint8_t uart_ultimo_rx_byte;
+//extern uint8_t uart_ultimo_rx_byte;
 
 #endif	//	ULTIMO_UART_EDMA
 
-/*! Interrupt service routine (ISR) prototype */    
-void uart_ultimo_IRQHandler(void);    
-void edmaTx_ultimo_IRQHandler(void);
-void edmaRx_ultimo_IRQHandler(void);
+/*! Interrupt service routine (ISR) prototype & init function */
+void ULTIMO_UART_IRQHandler();
+void ULTIMO_UART_Init();
+
   
     
 #endif
