@@ -297,7 +297,7 @@ uint16_t UltimoPort::DoRead(uint8_t* pBuffer, uint16_t maxBytesToRead, bool* bVa
 
 			    uint32_t tmp = g_u32comRtail;
 
-			    if((g_u32comRhead != tmp) && (nBytesRead < (int) maxBytesToRead))
+			    if(g_u32comRhead != tmp)
 			    {
 			    	int8_t tempByte = g_u8RecData[g_u32comRhead];
 			    	s_RxInBuffer[s_TotalRx++] = tempByte;

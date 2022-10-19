@@ -55,13 +55,6 @@ void ULTIMO_UART_IRQHandler()
             /* Get the character from UART Buffer */
     		u8InByte = UART_READ(UART1);
 
-    		if (isFirst) {
-    			printf("Input: ");
-    			isFirst = false;
-    		}
-
-    		printf("%c ", u8InByte);
-
     		/* Check if buffer full - TODO what happends when RX buffer overflows?*/
     		if(g_u32comRbytes < ULT_RX_BUF_SIZE)
     		{
@@ -70,11 +63,9 @@ void ULTIMO_UART_IRQHandler()
     			g_u32comRtail = (g_u32comRtail == (ULT_RX_BUF_SIZE - 1)) ? 0 : (g_u32comRtail + 1);
     			g_u32comRbytes++;
     		}
-    		g_bWait = FALSE;
+
     	}
     }
-
-    printf("\n Int Counter = %d \n", g_intCounter);
 
     //IQ - I do not understand the purpose of this!?!
     if(UART1->FIFOSTS & (UART_FIFOSTS_BIF_Msk | UART_FIFOSTS_FEF_Msk | UART_FIFOSTS_PEF_Msk | UART_FIFOSTS_RXOVIF_Msk))

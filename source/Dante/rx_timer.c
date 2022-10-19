@@ -35,7 +35,7 @@ void uhip_hostcpu_rx_timer_init()
 
 void uhip_hostcpu_rx_timer_start(int num_milliseconds)
 {
-	printf("UHIP:Start Rx Timer %d ms\n", num_milliseconds);
+	//printf("UHIP:Start Rx Timer %d ms\n", num_milliseconds);
 	//_time_get_elapsed_ticks(&g_rxUhipTickStart);
 	g_rxUhipTickStart = xTaskGetTickCount();
 	g_uiRxUhipMs = (unsigned int)num_milliseconds;
@@ -44,7 +44,7 @@ void uhip_hostcpu_rx_timer_start(int num_milliseconds)
 
 void uhip_hostcpu_rx_timer_stop()
 {
-	printf("UHIP:Stop Rx Timer\n");
+	//printf("UHIP:Stop Rx Timer\n");
 	memset(&g_rxUhipTickStart, 0, sizeof(TickType_t));
 	g_uiRxUhipMs = 0;
 	g_nRxTimerStarted = 0;
