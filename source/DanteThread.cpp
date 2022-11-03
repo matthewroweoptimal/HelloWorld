@@ -27,6 +27,8 @@ void DanteThread::Run()
 	printf("Dante thread waiting on MainThread completing...\n");
 	//--- Wait until MainThread complete ---
     xSemaphoreTake(_semMainThreadComplete, portMAX_DELAY);
+    xSemaphoreGive(_semMainThreadComplete);
+
     printf("Dante thread running\n");
 
     Dante_Task(0);		//runs the code from original NXP version...
