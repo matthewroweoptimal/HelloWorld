@@ -92,6 +92,7 @@ void operator delete[]( void * ptr )
 }
 
 int main(void)
+
 {
     /* Configure the hardware */
     prvSetupHardware();

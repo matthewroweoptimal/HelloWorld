@@ -61,8 +61,8 @@ void MainThread::Run()
     /* TODO : Bring ultimo & DSP out of reset */
     //GPIO_DRV_SetPinOutput(ULTIMO_FACTORY);
     _time_delay(50);
-    //GPIO_DRV_SetPinOutput(SHARC_RESET);
-    Gpio::setGpio(SHARC_RESET,HIGH);
+    GPIO_DRV_SetPinOutput(SHARC_RESET);
+    //Gpio::setGpio(SHARC_RESET,HIGH);
     
     /* Load DSP boot code */
     _time_delay(50);
@@ -138,7 +138,7 @@ void MainThread::Run()
     readByte = I2C_ReadByteThreeRegs(I2C2, DAC_I2C_ADDR, ASP_CLK_CNFG_REG);
 	printf("asp cnfg reg... 0x%02x\n", readByte);
 
-	/* unmnute the amps! */
+	/* unmnute the amps! maybe fade up the DSP? The logic here is inverted by the transistors!*/
     Gpio::setGpio(AMP1_MUTE,LOW);
     Gpio::setGpio(AMP2_MUTE,LOW);
     Gpio::setGpio(AMP_STANDBY,LOW);

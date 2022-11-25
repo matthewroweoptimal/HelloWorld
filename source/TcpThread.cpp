@@ -57,6 +57,7 @@ void TcpThread::Run()
 	printf("TCP thread waiting on MainThread completing...\n");
 	//--- Wait until MainThread complete ---
     xSemaphoreTake(_semMainThreadComplete, portMAX_DELAY);
+    xSemaphoreGive(_semMainThreadComplete);						//this feels dodgy, any thread that picks up the semaphore gives again for other threads to start.
     printf("TCP thread running\n");
 
 	ip_addr_t ipaddr;

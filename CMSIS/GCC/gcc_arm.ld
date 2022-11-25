@@ -1,15 +1,20 @@
 /* Linker script to configure memory regions. */
 MEMORY
 {
-/* Matt's original : 
-  FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 256K
-  RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 128K 
-  */
+
 
   /* M487 datasheet states : 512k Flash, 160k RAM (but this includes 32kB cache for external SPI Flash) */
-  FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 512K
-  RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 160K   /* IQ - This is there unless it is set to be used as SPI flash cache!*/
+  FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 448K	/* 64k for data flash - address 0x00070000 - 0x0007FFFF
+  RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 160K   /* IQ - The 32kB extra is included*/
 }
+
+/* 
+*	To activate the 64k dataflash, the following use configuration registers must be loaded when preogramming
+*	
+*
+*
+*
+*/
 
 /* Library configurations */
 GROUP(libgcc.a libc.a libm.a libnosys.a)

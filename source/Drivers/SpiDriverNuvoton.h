@@ -9,8 +9,6 @@
 //#define FSL_SPI_SHARC   0   // SPI0
 //#define FSL_SPI_AUX     2   // SPI2  Needed ??
 
-
-
 typedef struct DspiMasterState {
 //    dspi_ctar_selection_t   whichCtar;              /*!< Desired Clock and Transfer Attributes Register (CTAR)*/
     uint32_t                bitsPerFrame;           /*!< Desired number of bits per frame */

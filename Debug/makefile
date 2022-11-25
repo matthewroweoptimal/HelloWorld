@@ -8,6 +8,8 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include source/Drivers/SpiFlash/subdir.mk
+-include source/Drivers/Flash/subdir.mk
 -include source/Drivers/subdir.mk
 -include source/Dante/src/subdir.mk
 -include source/Dante/subdir.mk
