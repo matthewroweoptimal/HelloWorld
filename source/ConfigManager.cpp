@@ -13,6 +13,7 @@
 #include "CommMandolin.h"
 #include "network.h"
 #include "TimeKeeper.h"
+#include "spi_flash_nu.h"
 
 extern "C" {
 #include "flash_params.h"
@@ -2084,7 +2085,7 @@ namespace oly {
     	printf("OLY Params size = %d\n", sizeof(oly_flash_params_t));
 
 // TODO : SC Commented out
-#if SC_COMENTED_OUT
+
     	system_flash_init(&olyStoredParams);
     	//memcpy(&olyStoredParams, p_CurrentParamMemLoc, sizeof(oly_flash_params_t));
     	printf("Load Params From Slot#%i\n", emptyMemorySlotIndex+1);
@@ -2168,7 +2169,7 @@ namespace oly {
     
     		RefreshLogoState();
     
-    		init_codec(CODEC_CH1_INVERT, CODEC_CH2_INVERT, CODEC_CH3_INVERT, CODEC_CH4_INVERT);
+    		//init_codec(CODEC_CH1_INVERT, CODEC_CH2_INVERT, CODEC_CH3_INVERT, CODEC_CH4_INVERT);
     //		amp_mute(false);
     	}
     #if USE_CDD_UI
@@ -2176,7 +2177,7 @@ namespace oly {
     	LogoSetState(LOGO_ON_RED);
     	olyParams.Device->Logo_Mode = eLOGO_MODE_OFF;
     #endif
-#endif // SC_COMENTED_OUT
+
     }
     
     void Config::OnDanteMuteChanged()
@@ -2252,10 +2253,9 @@ namespace oly {
     
     void Config::WriteParamsToFlash()
     {
-#ifdef SC_COMENTED_OUT
     	// Actually writes to flash
     	system_flash_write_oly_params(&olyStoredParams);
-#endif // SC_COMENTED_OUT
+
     }
     
     float Config::GetCurrentAmpTemp(amp_instance_t amp)

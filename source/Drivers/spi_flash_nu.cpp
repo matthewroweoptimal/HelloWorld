@@ -237,7 +237,7 @@ uint32_t system_flash_init(oly_flash_params_t * olyStoredParams)
 			printf("SPI Flash Load OK -  Params size = %d\n", sizeof(oly_flash_params_t));
 		}
 		else {
-			//this would force defaults to be loaded
+			//this would force defaults to be loaded - IQ this is commented out in the NXP code
 			//memset(olyStoredParams, 0, sizeof(oly_flash_params_t));
 
 			//this will copy over internal flash if a backup copy is found there
@@ -272,7 +272,7 @@ void system_flash_param_reinit()
 {
 	if(use_spi_flash)
 		spi_flash_param_reinit();
-	//always re-init internal flash	- need to look into
+	//always re-init internal flash	- need to look into - WHAT!!
 	flash_param_reinit();
 	system_flash_write_counter=0;
 }

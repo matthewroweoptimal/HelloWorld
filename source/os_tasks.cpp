@@ -318,7 +318,7 @@ void Config_Task(uint32_t button_state)
 //	olyConfig->SetLcdBrightness(0);
 
 	/* Load stored DSP parameters */
-//	olyConfig->LoadAllFromFlash();			// (Also inits codec)
+	olyConfig->LoadAllFromFlash();			// (Also inits codec)
 
 //	if ((!olyConfig->IsInitialized()) || (!(button_state & event_EncoderSW)) || (!(button_state & event_SW2))) { 	// First time boot, flash not programmed or Encoder button held at boot
 //		olyConfig->RestoreDefaults(true);
@@ -328,12 +328,6 @@ void Config_Task(uint32_t button_state)
 #else
 //	olyConfig->SetFanEnabled(false);
 #endif
-
-//	IQ - We need to setup olyParams and olyStoredParams to the CDD defaults (specified in voiceing.h). The user settable bits will need to be stored in flash. There are not many params that are user changable. Suggest we only use onboard flash!
-
-//  IQ -  RestoreDefaults has been adjusted to just copy in the defaults. We do not look for saved changes, no interactino with flash at all!
-	olyConfig->RestoreDefaults(true);
-
 
 	MSGQ_INIT()
 

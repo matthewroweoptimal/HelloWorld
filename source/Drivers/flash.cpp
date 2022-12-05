@@ -10,7 +10,8 @@
 //#include "SSD_FTFx.h"
 //#include "mqx.h"
 #include "crc16.h"	//we can change to the crc32 native to nuvoton?
-
+#include "FreeRTOS.h"
+#include "task.h"
 
 //oly_flash_params_t	__attribute__ ((section(".flash_params"))) g_flash_params;		// Global NV params block - IQ this was commented out, even in the NXP version.
 
@@ -31,6 +32,7 @@ void flash_driver_init()
 	uint32_t result;
 	uint32_t UserConfig[2];
 
+	SYS_UnlockReg();
 	//result = FlashInit(pFlashSSDConfig);
     FMC_Open();                        /* Enable FMC ISP function */
 
@@ -67,6 +69,8 @@ void flash_driver_init()
     	printf("Data Flash Base Address as expected : [0x%08x]\n", result);
     }
 
+
+    //we now need to copy critical command sequence to RAM. The following is how the original driver worked. I can't just use it but might be able to re-write!
 	//IQ ?!? pFlashCommandSequence = (pFLASHCOMMANDSEQUENCE)RelocateFunction((uint32_t)__ram_for_launch_cmd , LAUNCH_CMD_SIZE ,(uint32_t)FlashCommandSequence);
 }
 
@@ -165,6 +169,7 @@ uint32_t flash_param_reinit(void)
 	uint32_t i, result;
 	uint32_t sectors = FLASH_PARAMS_SIZE / P_SECTOR_SIZE;					//16 sectors, 4k each
 
+
 	for (i=0; i<sectors; i++) {
 		//_int_disable();
 		result = FMC_Erase(FLASH_PARAMS_ADDR + (i * P_SECTOR_SIZE));		//erases 4kbytes
@@ -176,14 +181,14 @@ uint32_t flash_param_reinit(void)
 
 		result = FMC_CheckAllOne((FLASH_PARAMS_ADDR + (i * P_SECTOR_SIZE)), P_SECTOR_SIZE);
 
-		if (result != FMC_RESULT_OK) {
+		if (result != READ_ALLONE_YES) {
 			printf("Param Flash Verify error = %x\n", result);
 			return result;
 		}
 	}
 
 	emptyMemorySlotIndex = 0;
-	p_CurrentParamMemLoc = (void*) FLASH_PARAMS_ADDR + HEADER_BLOCK_SIZE; //this now points to 0xff ?? not best way to do this?
+	p_CurrentParamMemLoc = (void*) FLASH_PARAMS_ADDR + HEADER_BLOCK_SIZE; //this now points to 0xff ?? not best way to do this? IQ - I do not get this, not 0xff
 	printf("Param Memory Reinitialized\n");
 	flashFileAge = 0;
 	return 0;
@@ -199,16 +204,15 @@ uint32_t write_oly_params(oly_flash_params_t * pParams)
 	uint32_t fileWriteSize = paramsWriteSize + CRC_BLOCK_SIZE + HEADER_BLOCK_SIZE;		// Round up to nearest 64-bit boundary (8 byte address boundary)
 	uint32_t sectorsPerSlot = (fileWriteSize + (P_SECTOR_SIZE-1))/P_SECTOR_SIZE;
 	uint32_t numMemorySlots = sectors / sectorsPerSlot;
-	uint32_t header[2];
 	flashFileAge++;
-	header[0] = HEADER_SIGNATURE;
-	header[1] = flashFileAge;
 
 	crc16_data_t flash_Crc_Desc;
 	uint32_t flashDestination = FLASH_PARAMS_ADDR + ((sectorsPerSlot*emptyMemorySlotIndex) * P_SECTOR_SIZE);
 	uint32_t dest, src, count, flashBlocksize, blocksToWrite;
 
 	uint16_t crcBlock[CRC_BLOCK_SIZE/2] = {0};
+
+
 
 	//	Erase current empty slot	//
 	for (i=0; i< sectorsPerSlot; i++) {
@@ -224,21 +228,24 @@ uint32_t write_oly_params(oly_flash_params_t * pParams)
 		result = FMC_CheckAllOne(FLASH_PARAMS_ADDR + ((i + (sectorsPerSlot*emptyMemorySlotIndex)) * P_SECTOR_SIZE), P_SECTOR_SIZE);
 		//_int_enable();
 
-		if (result != FMC_RESULT_OK) {
+		if (result != READ_ALLONE_YES) {
 			printf("Param Flash Verify error = %x\n", result);
 			return result;
 		}
 	}
 
 	//	write signature and age (write cycle count)	//
+	//	FMC_WriteMultiple has querks. Will not write less than 16 bytes and the number of bytes to program needs 8 taking from it!
+	//  Must use different function if less than 16 bytes.
 	//_int_disable();
-    result = FMC_WriteMultiple(flashDestination, header, HEADER_BLOCK_SIZE);
+    //result = FMC_WriteMultiple(flashDestination, header, HEADER_BLOCK_SIZE);
+    //result = FMC_Write8Bytes(flashDestination, HEADER_SIGNATURE, flashFileAge);
 
 	//_int_enable();
-	if (result != FMC_RESULT_OK) {
-		printf("Param Flash Program error = %x\n", result);
-		return result;
-	}
+//	if (result != FMC_RESULT_OK) {
+//		printf("Param Flash Program error = %x\n", result);
+//		return result;
+//	}
 
 	//Write the parameter data
 	//break into blocks to avoid long interrupt disable - IQ why do we disable interrupts?
@@ -250,16 +257,17 @@ uint32_t write_oly_params(oly_flash_params_t * pParams)
 		if(count >= FLASH_WRITE_BLOCK_SIZE) flashBlocksize = FLASH_WRITE_BLOCK_SIZE;
 		else flashBlocksize = count;
 
-		//_int_disable();
-	    result = FMC_WriteMultiple(dest, &src, flashBlocksize);
-		//_int_enable();
+		taskDISABLE_INTERRUPTS();
+		//FMC_WriteMultiple will write 8 more bytes than you ask it to!
+	    result = FMC_WriteMultiple(dest, (uint32_t *) src, flashBlocksize);
+	    taskENABLE_INTERRUPTS();
 
 		dest = dest + FLASH_WRITE_BLOCK_SIZE;
 		src = src + FLASH_WRITE_BLOCK_SIZE;
 		count = count - FLASH_WRITE_BLOCK_SIZE;
 
 
-		if (result != FMC_RESULT_OK) {
+		if (result != flashBlocksize) {
 			printf("Param Flash Program error = %x\n", result);
 			return result;
 		}
@@ -270,7 +278,7 @@ uint32_t write_oly_params(oly_flash_params_t * pParams)
 	crc16_update(&flash_Crc_Desc, (uint8_t *) flashDestination, fileWriteSize - CRC_BLOCK_SIZE);
 	crc16_finalize(&flash_Crc_Desc, crcBlock);
 	//_int_disable();
-    result = FMC_WriteMultiple(flashDestination + fileWriteSize - CRC_BLOCK_SIZE, (uint32_t*) &crcBlock, CRC_BLOCK_SIZE);
+    result = FMC_WriteMultiple(flashDestination + fileWriteSize - CRC_BLOCK_SIZE, (uint32_t*) &crcBlock, CRC_BLOCK_SIZE-8);
 	//_int_enable();
 	if (result != FMC_RESULT_OK) {
 		printf("Param CRC Flash Program error = %x\n", result);
@@ -309,7 +317,7 @@ uint32_t write_sector(uint32_t uiFlashAddress, uint8 *pData)
 	//result = FlashVerifySection(&FlashSSDConfig, uiFlashAddress, FTFx_PSECTOR_SIZE/FSL_FEATURE_FLASH_PFLASH_SECTION_CMD_ADDRESS_ALIGMENT, 0, pFlashCommandSequence);
 	result = FMC_CheckAllOne(uiFlashAddress, P_SECTOR_SIZE);
 	//_int_enable();
-	if (result != FMC_RESULT_OK)
+	if (result != READ_ALLONE_YES)
 	{
 		printf("Region Flash Verify error = %x\n", result);
 		return result;
@@ -328,7 +336,7 @@ uint32_t write_sector(uint32_t uiFlashAddress, uint8 *pData)
 		else flashBlocksize = count;
 
 		//_int_disable();
-	    result = FMC_WriteMultiple(dest, &src, flashBlocksize);
+	    result = FMC_WriteMultiple(dest, &src, flashBlocksize-8);
 		//_int_enable();
 
 		dest = dest + FLASH_WRITE_BLOCK_SIZE;

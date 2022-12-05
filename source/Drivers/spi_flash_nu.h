@@ -5,8 +5,8 @@
  *      Author: ben.huber
  */
 
-#ifndef SPI_FLASH_H_
-#define SPI_FLASH_H_
+#ifndef SPI_FLASH_NU_H_
+#define SPI_FLASH_NU_H_
 
 //#include "board.h" is c file
 //#include "oly.h"

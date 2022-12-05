@@ -25,7 +25,7 @@
 /* Program Flash block information */
 #define P_FLASH_SIZE            (256* ONE_KB * P_BLOCK_NUM)		/* 2 banks of 256 for the M487 */
 #define P_BLOCK_NUM             2
-#define P_SECTOR_SIZE           4*ONE_KB							/* 4k for M487 */
+#define P_SECTOR_SIZE           0x1000							/* 4k for M487 */
 
 /* Data Flash block information */
 #define FLEXNVM_BASE            DATA_FLASH_ADDR
@@ -55,7 +55,7 @@
 #define CRC_BLOCK_SIZE			8
 #define HEADER_BLOCK_SIZE		8
 #define HEADER_SIGNATURE		0xAA55A55A
-#define FLASH_WRITE_BLOCK_SIZE  0x100						//256 bytes
+#define FLASH_WRITE_BLOCK_SIZE  0x100						//512 bytes
 #define ONE_KB                  1024                        //0x400:  10 zeros
 #define TWO_KB                  (2*ONE_KB)
 #define THREE_KB                (3*ONE_KB)
@@ -69,8 +69,8 @@
 #define ONE_MB                  (ONE_KB*ONE_KB)             //0x100000:     20 zeros
 #define ONE_GB                  (ONE_KB*ONE_KB*ONE_KB)      //0x40000000:   30 zeros
 
-#define EnableInterrupts asm(" CPSIE i");
-#define DisableInterrupts asm(" CPSID i");
+//#define EnableInterrupts asm(" CPSIE i");
+//#define DisableInterrupts asm(" CPSID i");
 
 
 void flash_init();
@@ -82,6 +82,6 @@ uint32_t write_sector(uint32_t uiFlashAddress, uint8 *pData);
 uint32_t write_sector_zero(uint8 *pData);
 
 extern void* p_CurrentParamMemLoc;
-extern uint32_t emptyMemorySlotIndex;
+
 
 #endif /* FLASH_PARAMS_H_ */

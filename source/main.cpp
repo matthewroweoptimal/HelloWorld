@@ -39,6 +39,7 @@
 #include "spi_sharc.h"
 #include "board.h"
 #include "uart_ultimo.h"
+#include "flash_params.h"
 
 using namespace std;
 
@@ -134,7 +135,7 @@ static void prvSetupHardware( void )
     CLK_WaitClockReady( CLK_STATUS_HXTSTB_Msk);
 
     /* Set core clock as PLL_CLOCK from PLL */
-    CLK_SetCoreClock(FREQ_192MHZ);
+    CLK_SetCoreClock(FREQ_160MHZ);
 
     /* Set both PCLK0 and PCLK1 as HCLK/2 */
     CLK->PCLKDIV = CLK_PCLKDIV_APB0DIV_DIV2 | CLK_PCLKDIV_APB1DIV_DIV2;
@@ -153,6 +154,8 @@ static void prvSetupHardware( void )
     /* Enable I2C0 peripheral clock */
     CLK_EnableModuleClock(I2C2_MODULE);
     CLK_EnableModuleClock(UART1_MODULE);
+    CLK_EnableModuleClock(SPIM_MODULE);
+
 
     /* Select IP clock source */
     /*TODO these are actually activated in the individual init functions */
@@ -189,7 +192,8 @@ static void prvSetupHardware( void )
 
     /* Update System Core Clock */
     /* User can use SystemCoreClockUpdate() to calculate SystemCoreClock. */
-    SystemCoreClockUpdate();
+    /* Enable SPIM module clock */
+
 
     /* Set GPB multi-function pins for UART0 RXD (PB.12) and TXD (PB.13) */
     SYS->GPB_MFPH &= ~(SYS_GPB_MFPH_PB12MFP_Msk | SYS_GPB_MFPH_PB13MFP_Msk);
@@ -235,6 +239,25 @@ static void prvSetupHardware( void )
      *	#define DISPLAY_LED5  				PC10
      */
 
+    /* Enable SPIM module clock */
+    CLK_EnableModuleClock(SPIM_MODULE);
+
+    /* Init SPIM multi-function pins, MOSI(PC.0), MISO(PC.1), CLK(PC.2), SS(PC.3), D3(PC.4), and D2(PC.5) */
+    SYS->GPC_MFPL &= ~(SYS_GPC_MFPL_PC0MFP_Msk | SYS_GPC_MFPL_PC1MFP_Msk | SYS_GPC_MFPL_PC2MFP_Msk |
+                       SYS_GPC_MFPL_PC3MFP_Msk | SYS_GPC_MFPL_PC4MFP_Msk | SYS_GPC_MFPL_PC5MFP_Msk);
+    SYS->GPC_MFPL |= SYS_GPC_MFPL_PC0MFP_SPIM_MOSI | SYS_GPC_MFPL_PC1MFP_SPIM_MISO |
+                     SYS_GPC_MFPL_PC2MFP_SPIM_CLK | SYS_GPC_MFPL_PC3MFP_SPIM_SS |
+                     SYS_GPC_MFPL_PC4MFP_SPIM_D3 | SYS_GPC_MFPL_PC5MFP_SPIM_D2;
+    PC->SMTEN |= GPIO_SMTEN_SMTEN2_Msk;
+
+    /* Set SPIM I/O pins as high slew rate up to 80 MHz. */
+    PC->SLEWCTL = (PC->SLEWCTL & 0xFFFFF000) |
+                  (0x1<<GPIO_SLEWCTL_HSREN0_Pos) | (0x1<<GPIO_SLEWCTL_HSREN1_Pos) |
+                  (0x1<<GPIO_SLEWCTL_HSREN2_Pos) | (0x1<<GPIO_SLEWCTL_HSREN3_Pos) |
+                  (0x1<<GPIO_SLEWCTL_HSREN4_Pos) | (0x1<<GPIO_SLEWCTL_HSREN5_Pos);
+
+
+
     GPIO_SetMode(PB, BIT2|BIT3, GPIO_MODE_OUTPUT);
     GPIO_SetMode(PB, BIT5, GPIO_MODE_QUASI);
     GPIO_SetMode(PC, BIT10|BIT11|BIT12, GPIO_MODE_OUTPUT);		//
@@ -259,6 +282,14 @@ static void prvSetupHardware( void )
     /* Init UART to 115200-8n1 for print message */
     UART_Open(UART0, 115200);
 
+    /* some SPIM init */
+    SPIM_SET_CLOCK_DIVIDER(1);        /* Set SPIM clock as HCLK divided by 2 */
+
+    SPIM_SET_RXCLKDLY_RDDLYSEL(0);    /* Insert 0 delay cycle. Adjust the sampling clock of received data to latch the correct data. */
+    SPIM_SET_RXCLKDLY_RDEDGE();       /* Use SPI input clock rising edge to sample received data. */
+
+    SPIM_SET_DCNUM(8);                /* Set 8 dummy cycle. */
+
 
 }
 /*-----------------------------------------------------------*/
@@ -273,6 +304,9 @@ static void peripherals_init(void)
 	DSPI_DRV_MasterInit(FSL_SPI_SHARC, &spi_sharc_MasterState, &spi_sharc_MasterConfig_boot, &spi_sharc_bootConfig);
 
 	//Init I2C for ADC - Does it need any init or do we just do the setup?
+
+	/* Initialize Flash */
+	flash_init();
 
 	/* TODO : Accelerometer I2C NOT USED BY NUCDDL*/
 
