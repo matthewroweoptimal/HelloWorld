@@ -38,7 +38,7 @@ public:
 		*(volatile uint32_t *)(m_port + m_pin) = output;
 	}
 
-protected:
+//protected:
 	uint32_t 	m_port;
 	uint32_t 	m_pin;
 };
@@ -54,31 +54,33 @@ static Pin ledPins[NUM_LEDS] = {
 	{GPIOH_PIN_BASE, 1},	// led2 on H1
 };
 
-enum BUTTON_t {
-	SW2,
-	SW3,
-	NUM_SWITCHES
-};
-
-static Pin buttonPins[NUM_SWITCHES] = {
-	{GPIOG_PIN_BASE, 15},	// sw2 on G15
-	{GPIOF_PIN_BASE, 11}	// sw3 on F11
-};
-
-
 
 enum GPIO_t {
 	SHARC_RESET,
 	ULTIMO_RESET,
 	ADC_RESET,
 	DAC_RESET,
-	AMP1_MUTE,
-	AMP2_MUTE,
-	AMP_STANDBY,
-	AMP_BTL4R_CTL,
-	AMP1_TEMP_SEL,
-	AMP2_TEMP_SEL,
+	AMP1_DISABLE_MUTE_CNTRL,
+	AMP2_DISABLE_MUTE_CNTRL,
+	AMP1_2_STANDBY_CNTRL,
+	BTL4R_CONTROL,
+	AMP1_TEMP_VAC_SEL,
+	AMP2_TEMP_VAC_SEL,
 	FLASH_SPI_SS,
+	SW2,
+	AMP1_CH1_CLIP,
+	AMP1_CH2_CLIP,
+	AMP2_CH1_CLIP,
+	AMP2_CH2_CLIP,
+	AMP1_PROTECT,
+	AMP2_PROTECT,
+	DANTE_MUTE,
+	SHARC_SPI_READY,
+	DISPLAY_D2,
+	DISPLAY_D3,
+	DISPLAY_D4,
+	DISPLAY_D5,
+	DISPLAY_D6,
 	NUM_GPIO
 };
 
@@ -94,6 +96,20 @@ static Pin gpioPins[NUM_GPIO] = {
 	{GPIOF_PIN_BASE, 5},	// AMP1_TEMP_SEL on F5
 	{GPIOF_PIN_BASE, 6},	// AMP2_TEMP_SEL on F6
 	{GPIOC_PIN_BASE, 3},	// FLASH_SPI_SS on C3
+	{GPIOB_PIN_BASE, 5},	// Membrane Switch B5
+	{GPIOF_PIN_BASE, 9},	// AMP1_CH1_CLIP on F9
+	{GPIOF_PIN_BASE, 10},	// AMP1_CH2_CLIP on F10
+	{GPIOF_PIN_BASE, 11},	// AMP2_CH1_CLIP on F11
+	{GPIOG_PIN_BASE, 4},	// AMP2_CH2_CLIP on G4
+	{GPIOF_PIN_BASE, 7},	// AMP1_CH1_CLIP on F7
+	{GPIOF_PIN_BASE, 8},	// AMP1_CH1_CLIP on F8
+	{GPIOC_PIN_BASE, 14},	// DANTE_MUTE on C14 - ULTIMO_PDP_UNLOCKED
+	{GPIOH_PIN_BASE, 3},	// SHARC_SPI_READY on H3
+	{GPIOB_PIN_BASE, 3},	// DISPLAY_D2 on B3
+	{GPIOB_PIN_BASE, 2},	// DISPLAY_D3 on B2
+	{GPIOC_PIN_BASE, 12},	// DISPLAY_D4 on C12
+	{GPIOC_PIN_BASE, 11},	// DISPLAY_D5 on C11
+	{GPIOC_PIN_BASE, 10},	// DISPLAY_D5 on C10
 };
 
 class Leds
@@ -121,16 +137,6 @@ public:
 
 };
 
-class Buttons
-{
-	Buttons();
-
-public:
-	static bool readButton(BUTTON_t button) {
-		return !buttonPins[button].Read();
-	}
-};
-
 
 /* Adding driver functions used in the original CDD/OLY code
 **         GPIO_DRV_Init            - void GPIO_DRV_Init(const gpio_input_pin_user_config_t * inputPins,const...
@@ -148,6 +154,6 @@ public:
 #define GPIO_DRV_WritePinOutput(pinName,output)		gpioPins[pinName].Write(output)
 #define GPIO_DRV_SetPinOutput(pinName)				gpioPins[pinName].Write(HIGH)
 #define GPIO_DRV_ClearPinOutput(pinName)			gpioPins[pinName].Write(LOW)
-#define GPIO_DRV_ReadPinInput(pinName)				gpioPins[pinName].Read
+#define GPIO_DRV_ReadPinInput(pinName)				*(volatile uint32_t *)(gpioPins[pinName].m_port + gpioPins[pinName].m_pin);
 
 #endif /* HARDWARE_PIN_H_ */

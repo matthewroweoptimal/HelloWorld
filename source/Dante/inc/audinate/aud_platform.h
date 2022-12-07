@@ -13,7 +13,7 @@
 #ifndef __AUD_PLATFORM_H__
 #define __AUD_PLATFORM_H__
 
-#define DANTE_DEBUG 1
+//#define DANTE_DEBUG 1
 //#define DANTE_DEBUG_FINE 1
 
 /**

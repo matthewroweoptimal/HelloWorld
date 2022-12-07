@@ -27,6 +27,10 @@ void Threads::StartThreads()
     _danteThread = new DanteThread(DANTETHREAD_STACKSIZE, DANTE_THREAD_PRIORITY,_semMainThreadComplete);
     _danteThread->Start();
 
+    _guiThread = new GuiThread(GUITHREAD_STACKSIZE, GUI_THREAD_PRIORITY,_semMainThreadComplete);
+    _guiThread->Start();
+
+
 
 }
 

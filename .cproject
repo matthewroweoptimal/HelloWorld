@@ -65,7 +65,7 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
-									<listOptionValue builtIn="false" value="USE_CDD_UI=0"/>
+									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.974729338" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
@@ -112,7 +112,7 @@
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
-									<listOptionValue builtIn="false" value="USE_CDD_UI=0"/>
+									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.2145466818" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -154,7 +154,7 @@
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
-									<listOptionValue builtIn="false" value="USE_CDD_UI=0"/>
+									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.171425854" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.797759580" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
@@ -201,7 +201,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos-addons"/>
 						<entry excluding="portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_5.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
-						<entry excluding="Drivers/spi_sharc.c|FatalError.cpp|OLD_InputHandler.c|OLD_InputHandler.cpp|OLD_TimeKeeper.c|OLD_mandolin.c|Comm/OLD_CommMandolin.c|cddl_leds.c|CddlMembraneUI.cpp|Common|server.c|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
+						<entry excluding="Drivers/spi_sharc.c|FatalError.cpp|OLD_InputHandler.c|OLD_InputHandler.cpp|OLD_TimeKeeper.c|OLD_mandolin.c|Comm/OLD_CommMandolin.c|cddl_leds.c|Common|server.c|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -395,7 +395,7 @@
 					<sourceEntries>
 						<entry excluding="Region - Copy.cpp|Mandolin/mandolin.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Common"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Library"/>
-						<entry excluding="Drivers/spi_sharc.c|FatalError.cpp|OLD_InputHandler.c|OLD_InputHandler.cpp|OLD_TimeKeeper.c|OLD_mandolin.c|Comm/OLD_CommMandolin.c|cddl_leds.c|ConfigManager.cpp|CddlMembraneUI.cpp|Common|server.c|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
+						<entry excluding="Drivers/spi_sharc.c|FatalError.cpp|OLD_InputHandler.c|OLD_InputHandler.cpp|OLD_TimeKeeper.c|OLD_mandolin.c|Comm/OLD_CommMandolin.c|cddl_leds.c|ConfigManager.cpp|Common|server.c|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

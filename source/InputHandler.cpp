@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include "InputHandler.h"
 //#include "ftm_encoder.h"
-//#include "gpio_pins.h"
+#include "pin.h"
 #include "MQX_to_FreeRTOS.h"
 //#include "lwevent.h"
 
@@ -37,20 +37,20 @@ void PORTA_IRQHandler()
 }
 
 uint8_t init_inputs(void){
-#ifdef SC_COMMENTED_OUT
+
 	/* Read current state of all GPIO inputs */
 	oly_inputs.Buttons.bits.SW2 = GPIO_DRV_ReadPinInput(SW2);
-	oly_inputs.Buttons.bits.EncoderSW = GPIO_DRV_ReadPinInput(UI_PB_1);
+	//oly_inputs.Buttons.bits.EncoderSW = GPIO_DRV_ReadPinInput(UI_PB_1);
 	oly_inputs.Logic.bits.amp1_ch1_clip = GPIO_DRV_ReadPinInput(AMP1_CH1_CLIP);
 	oly_inputs.Logic.bits.amp1_ch2_clip = GPIO_DRV_ReadPinInput(AMP1_CH2_CLIP);
 	oly_inputs.Logic.bits.amp2_ch1_clip = GPIO_DRV_ReadPinInput(AMP2_CH1_CLIP);
 	oly_inputs.Logic.bits.amp2_ch2_clip = GPIO_DRV_ReadPinInput(AMP2_CH2_CLIP);
 	oly_inputs.Logic.bits.amp1_fault = GPIO_DRV_ReadPinInput(AMP1_PROTECT);
 	oly_inputs.Logic.bits.amp2_fault = GPIO_DRV_ReadPinInput(AMP2_PROTECT);
-	oly_inputs.Logic.bits.dante_mute = GPIO_DRV_ReadPinInput(DANTE_MUTE);
+	oly_inputs.Logic.bits.dante_mute = GPIO_DRV_ReadPinInput(DANTE_MUTE);		//IQ - ULTIMO_PDP_UNLOCKED
 
 	oly_inputs_last = oly_inputs;
-#endif // SC_COMMENTED_OUT
+
 	return oly_inputs.Buttons.reg;
 }
 
@@ -99,10 +99,10 @@ void UIHandleAlertScreen( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tic
 	_lwevent_set( &sys_event, event_DSPError );
 }
 void poll_inputs(void){
-#ifdef SC_COMMENTED_OUT
+
 	/* Read current state of all GPIO inputs */
 	oly_inputs.Buttons.bits.SW2 = GPIO_DRV_ReadPinInput(SW2);
-	oly_inputs.Buttons.bits.EncoderSW = GPIO_DRV_ReadPinInput(UI_PB_1);
+	//oly_inputs.Buttons.bits.EncoderSW = GPIO_DRV_ReadPinInput(UI_PB_1);
 	oly_inputs.Logic.bits.amp1_ch1_clip = GPIO_DRV_ReadPinInput(AMP1_CH1_CLIP);
 	oly_inputs.Logic.bits.amp1_ch2_clip = GPIO_DRV_ReadPinInput(AMP1_CH2_CLIP);
 	oly_inputs.Logic.bits.amp2_ch1_clip = GPIO_DRV_ReadPinInput(AMP2_CH1_CLIP);
@@ -111,13 +111,13 @@ void poll_inputs(void){
 	oly_inputs.Logic.bits.amp2_fault = GPIO_DRV_ReadPinInput(AMP2_PROTECT);
 	oly_inputs.Logic.bits.dsp_tx_ready = GPIO_DRV_ReadPinInput(SHARC_SPI_READY);
 	oly_inputs.Logic.bits.dante_mute = GPIO_DRV_ReadPinInput(DANTE_MUTE);
-#endif // SC_COMMENTED_OUT
+
 
 	/* Create events for any new changes */
 #if USE_CDD_UI
 	/* keep track of long button presses for SW2 for CDDL*/
 	if(oly_inputs.Buttons.bits.SW2 == 0)
-		oly_inputs_sw_timers.SW2++;  //don't worry about rollover -it is years away
+		oly_inputs_sw_timers.SW2++;  						//don't worry about rollover -it is years away
 	if(oly_inputs_sw_timers.SW2 == LONG_PRESS_TIMEOUT){		//activate long press without release
 		_lwevent_set(&user_event, event_SW2_LONG);
 	}

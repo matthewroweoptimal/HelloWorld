@@ -139,9 +139,9 @@ void MainThread::Run()
 	printf("asp cnfg reg... 0x%02x\n", readByte);
 
 	/* unmnute the amps! maybe fade up the DSP? The logic here is inverted by the transistors!*/
-    Gpio::setGpio(AMP1_MUTE,LOW);
-    Gpio::setGpio(AMP2_MUTE,LOW);
-    Gpio::setGpio(AMP_STANDBY,LOW);
+    Gpio::setGpio(AMP1_DISABLE_MUTE_CNTRL,LOW);
+    Gpio::setGpio(AMP2_DISABLE_MUTE_CNTRL,LOW);
+    Gpio::setGpio(AMP1_2_STANDBY_CNTRL,LOW);
 
     // Signal that other Threads can now start
     xSemaphoreGive(_semMainThreadComplete);

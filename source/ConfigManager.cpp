@@ -443,7 +443,7 @@ namespace oly {
     	olyUI.UpdateInputSource(source);
     #endif
     #if USE_CDD_UI
-    	cddlUI.UpdateInputSource(source);
+    	//cddlUI.UpdateInputSource(source);
     #endif
     }
     
@@ -2174,7 +2174,7 @@ namespace oly {
     	}
     #if USE_CDD_UI
     	//FORCE LED on for CDD at startup - on time depends on sysEvents task startup for now
-    	LogoSetState(LOGO_ON_RED);
+    	//LogoSetState(LOGO_ON_RED);
     	olyParams.Device->Logo_Mode = eLOGO_MODE_OFF;
     #endif
 
@@ -3127,7 +3127,7 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     cddlUI(this),
     #endif
     
-    olyDspPort(NULL),
+    olyDspPort(NULL),	//,
     #if !USES_FOUR_IRDA
     olyVoicingPort(&UartVoiceRxFifo) // SC_COMMENTED_OUT : ,
     #endif

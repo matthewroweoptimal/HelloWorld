@@ -13,6 +13,9 @@
 
 #include "os_tasks.h"
 #include "network.h"
+#include "cddl_leds.h"
+
+
 
 extern "C" {
 //#include "gpio_pins.h"
@@ -32,10 +35,6 @@ extern "C" {
 //#include "AUX_Spi_task.h"
 //#include "pascal_spro2.h"
 
-
-#if USE_CDD_UI
-//#include "cddl_leds.h"
-#endif
 //#include "AmpMonitor.h"
 //#include "Region.h"
 //#include "MMA8653FC.h"
@@ -515,8 +514,6 @@ void Config_Task(uint32_t button_state)
 	}
 }
 
-#if 0	// EXCLUDE OTHER TASKS FOR THE MOMENT
-
 /* Background task for refreshing the display */
 void GUI_Task(uint32_t task_init_data)
 {
@@ -535,8 +532,8 @@ void GUI_Task(uint32_t task_init_data)
 		TASKDEBUG_IN(TASK_GUI)
 
 		poll_inputs();
-		poll_encoder();
-		poll_logo(20);
+		//poll_encoder();
+		//poll_logo(20);
 #if USE_OLY_UI
 		olyConfig->olyUI.UpdateActiveScreen();
 		olyConfig->olyUI.UpdateStatusIndicator(GPIO_DRV_ReadPinInput(DEBUG_LED_A));
@@ -558,7 +555,6 @@ void GUI_Task(uint32_t task_init_data)
 	}
 }
 
-#endif
 
 /* Solely for monitoring the Ultimo UART. */
 void Dante_Task(uint32_t task_init_data)

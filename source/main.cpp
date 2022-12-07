@@ -267,12 +267,12 @@ static void prvSetupHardware( void )
     Gpio::setGpio(ULTIMO_RESET,LOW);
     Gpio::setGpio(ADC_RESET,LOW);
     Gpio::setGpio(DAC_RESET,LOW);
-    Gpio::setGpio(AMP1_MUTE,HIGH);
-    Gpio::setGpio(AMP2_MUTE,HIGH);
-    Gpio::setGpio(AMP_STANDBY,HIGH);
-    Gpio::setGpio(AMP_BTL4R_CTL,HIGH);
-    Gpio::setGpio(AMP1_TEMP_SEL,HIGH);
-    Gpio::setGpio(AMP2_TEMP_SEL,HIGH);
+    Gpio::setGpio(AMP1_DISABLE_MUTE_CNTRL,HIGH);
+    Gpio::setGpio(AMP2_DISABLE_MUTE_CNTRL,HIGH);
+    Gpio::setGpio(AMP1_2_STANDBY_CNTRL,HIGH);
+    Gpio::setGpio(BTL4R_CONTROL,HIGH);
+    Gpio::setGpio(AMP1_TEMP_VAC_SEL,HIGH);
+    Gpio::setGpio(AMP2_TEMP_VAC_SEL,HIGH);
 
     initEthernetHardware();
 
@@ -315,9 +315,9 @@ static void peripherals_init(void)
     /* TODO : Ultimo UART */
     ULTIMO_UART_Init();
 
-    /* TODO : FTM2 Encoder */
+    /* TODO : FTM2 Encoder NOT USED BY NUCDD*/
 
-    /* TODO : FTM3 LCD Backlight */
+    /* TODO : FTM3 LCD Backlight NOT USED BY NUCDD*/
 
-    /* TODO : Init ADC for Amp Monitoring */
+    /* TODO : Init ADC for Amp Monitoring NOT USED BY NUCDD*/
 }
