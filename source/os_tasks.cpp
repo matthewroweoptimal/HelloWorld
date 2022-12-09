@@ -604,7 +604,6 @@ void Dante_Task(uint32_t task_init_data)
 	}
 }
 
-#if 0
 /* Handles User Interface Events */
 void UserEvents_Task(uint32_t task_init_data)
 {
@@ -616,7 +615,7 @@ void UserEvents_Task(uint32_t task_init_data)
 	printf("UI task created\n");
 
 	while (1) {
-		_lwevent_wait_ticks(&user_event,0xFFFFFFFF,FALSE,0);
+		_lwevent_wait_ticks(&user_event,0x00FFFFFF,FALSE,0);	//Must not use control bytes in bit mask (0xff000000) as causes a config assert.
 		ui_bits = _lwevent_get_signalled();
 
 		TASKDEBUG_IN(TASK_USER)
@@ -723,6 +722,7 @@ void UserEvents_Task(uint32_t task_init_data)
 	}
 }
 
+#if 0
 /* Handles Amplifier events */
 uint32 gSPIReadMessageNotRequiredCount=0;
 void SysEvents_Task(uint32_t task_init_data)

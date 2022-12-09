@@ -273,7 +273,7 @@ namespace oly {
     
     void Config::SetActivePreset(OLY_target group, uint32_t instance)
     {
-#ifdef SC_COMMENTED_OUT
+
     	switch (group) {
     	case eTARGET_USER:
     		if (instance < USER_PRESETS) {
@@ -376,7 +376,7 @@ namespace oly {
     		break;
     	}
     	StoreParams();
-#endif // SC_COMMENTED_OUT
+
     }
     
     #if 1

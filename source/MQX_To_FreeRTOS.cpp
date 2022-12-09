@@ -693,7 +693,7 @@ _mqx_uint _lwevent_get_signalled(void)
 _mqx_uint _lwevent_set(LWEVENT_STRUCT_PTR lwevent_group_ptr, _mqx_uint flags)
 {
 	EventBits_t uxBitsToSet = flags;
-	EventBits_t bits = lwevent_group_ptr->pEventGroup->ClearBits( uxBitsToSet );
+	EventBits_t bits = lwevent_group_ptr->pEventGroup->SetBits( uxBitsToSet );
 	return MQX_OK;
 }
 
@@ -707,7 +707,7 @@ _mqx_uint _lwevent_set(LWEVENT_STRUCT_PTR lwevent_group_ptr, _mqx_uint flags)
 _mqx_uint _lwevent_clear(LWEVENT_STRUCT_PTR event_group_ptr, _mqx_uint bit_mask)
 {
 	EventBits_t uxBitsToClear = bit_mask;
-	EventBits_t bits = event_group_ptr->pEventGroup->SetBits( uxBitsToClear );
+	EventBits_t bits = event_group_ptr->pEventGroup->ClearBits( uxBitsToClear );
 	return MQX_OK;
 }
 

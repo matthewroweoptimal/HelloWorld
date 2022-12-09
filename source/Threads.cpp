@@ -30,7 +30,8 @@ void Threads::StartThreads()
     _guiThread = new GuiThread(GUITHREAD_STACKSIZE, GUI_THREAD_PRIORITY,_semMainThreadComplete);
     _guiThread->Start();
 
-
+    _uiThread = new UiThread(UITHREAD_STACKSIZE, UI_THREAD_PRIORITY,_semMainThreadComplete);
+    _uiThread->Start();
 
 }
 
@@ -39,3 +40,7 @@ void Threads::StartScheduler()
 	printf("Running FreeRTOS. Start scheduler...\n");
 	_mainThread->StartScheduler();
 }
+
+
+
+
