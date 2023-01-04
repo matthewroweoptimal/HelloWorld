@@ -472,7 +472,7 @@ namespace oly {
     
     void Config::GetCurrentMeter()
     {
-    	olyDspPort.WriteMessage(RequestMeter(eTARGET_METERS, eMID_OLYspeaker1_INPUT_IN, 0x7f, ++g_nLastMeterSeq));
+    //	olyDspPort.WriteMessage(RequestMeter(eTARGET_METERS, eMID_OLYspeaker1_INPUT_IN, 0x7f, ++g_nLastMeterSeq));
     }
     
     void Config::SetLogoMeter(float db)

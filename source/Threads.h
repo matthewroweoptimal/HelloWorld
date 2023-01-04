@@ -37,15 +37,13 @@
 
  * */
 
-//TODO, sort out the pririties, ULTIMO needs servicing first I think!
-#define MAIN_TASK_PRIORITY          	( 1 )		//1
-#define MONITORING_TASK_PRIORITY        ( 2 )		//2
-#define TCP_THREAD_PRIORITY				( 4 )		//6
-#define TCP_MANDOLIN_THREAD_PRIORITY	( 4 )		//7
-#define DANTE_THREAD_PRIORITY			( 9 )		//4
-#define GUI_THREAD_PRIORITY				( 4 )		//5
-#define UI_THREAD_PRIORITY				( 4 )		//3
-#define METERS_THREAD_PRIORITY			( 4 )		//3
+#define MAIN_TASK_PRIORITY          	( tskIDLE_PRIORITY + 1UL )		//1
+#define MONITORING_TASK_PRIORITY        ( tskIDLE_PRIORITY + 2UL )		//2
+#define TCP_THREAD_PRIORITY				( TCPIP_THREAD_PRIO - 2 )		//6
+#define TCP_MANDOLIN_THREAD_PRIORITY	( TCPIP_THREAD_PRIO - 1 )		//7
+#define DANTE_THREAD_PRIORITY	( TCPIP_THREAD_PRIO - 4 )				//4
+#define GUI_THREAD_PRIORITY	( TCPIP_THREAD_PRIO - 5 )					//5
+#define UI_THREAD_PRIORITY	( TCPIP_THREAD_PRIO - 6 )					//3
 
 
 #define MAIN_THREAD_STACKSIZE      	(configMINIMAL_STACK_SIZE + 256)
@@ -54,8 +52,7 @@
 #define TCP_MANDOLIN_STACK_SIZE    	(1664)    	// FreeRTOS stack size for MANDOLIN thread - seen 1580 HWM
 #define DANTETHREAD_STACKSIZE    	(1664)    	// FreeRTOS stack size for DANTE thread - seen ???? HWM
 #define GUITHREAD_STACKSIZE    		(configMINIMAL_STACK_SIZE + 1024)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
-#define UITHREAD_STACKSIZE    		(configMINIMAL_STACK_SIZE + 2048)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
-#define METERSTHREAD_STACKSIZE  	(configMINIMAL_STACK_SIZE + 256)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
+#define UITHREAD_STACKSIZE    	(configMINIMAL_STACK_SIZE + 2048)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
 
 
 #define MONITORING_TIMER_TICK  ( pdMS_TO_TICKS(500))
@@ -76,7 +73,6 @@ private:
     DanteThread 	*_danteThread; 	// This is Dante_Task
     GuiThread 		*_guiThread; 	// This is Gui_Task
     UiThread 		*_uiThread; 	// This is ui_Task
-    MetersThread 	*_metersThread; 	// This is ui_Task
 
     /* Timers */
     SecondTimer 	*_secondTimer;
