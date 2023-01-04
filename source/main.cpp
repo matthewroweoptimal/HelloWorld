@@ -190,9 +190,6 @@ static void prvSetupHardware( void )
     GPIO_SetMode(PF, BIT9|BIT10|BIT11, GPIO_MODE_QUASI);
     GPIO_SetMode(PG, BIT4, GPIO_MODE_QUASI);
 
-    /* Update System Core Clock */
-    /* User can use SystemCoreClockUpdate() to calculate SystemCoreClock. */
-    /* Enable SPIM module clock */
 
 
     /* Set GPB multi-function pins for UART0 RXD (PB.12) and TXD (PB.13) */
@@ -219,6 +216,7 @@ static void prvSetupHardware( void )
     /* I2C pin enable schmitt trigger */
     PD->SMTEN |= GPIO_SMTEN_SMTEN0_Msk | GPIO_SMTEN_SMTEN1_Msk;
 
+
     /* Set PB.0 ~ PB.1 to input mode */
     PB->MODE &= ~(GPIO_MODE_MODE0_Msk | GPIO_MODE_MODE1_Msk);
 
@@ -239,8 +237,6 @@ static void prvSetupHardware( void )
      *	#define DISPLAY_LED5  				PC10
      */
 
-    /* Enable SPIM module clock */
-    CLK_EnableModuleClock(SPIM_MODULE);
 
     /* Init SPIM multi-function pins, MOSI(PC.0), MISO(PC.1), CLK(PC.2), SS(PC.3), D3(PC.4), and D2(PC.5) */
     SYS->GPC_MFPL &= ~(SYS_GPC_MFPL_PC0MFP_Msk | SYS_GPC_MFPL_PC1MFP_Msk | SYS_GPC_MFPL_PC2MFP_Msk |
@@ -255,7 +251,6 @@ static void prvSetupHardware( void )
                   (0x1<<GPIO_SLEWCTL_HSREN0_Pos) | (0x1<<GPIO_SLEWCTL_HSREN1_Pos) |
                   (0x1<<GPIO_SLEWCTL_HSREN2_Pos) | (0x1<<GPIO_SLEWCTL_HSREN3_Pos) |
                   (0x1<<GPIO_SLEWCTL_HSREN4_Pos) | (0x1<<GPIO_SLEWCTL_HSREN5_Pos);
-
 
 
     GPIO_SetMode(PB, BIT2|BIT3, GPIO_MODE_OUTPUT);
@@ -276,9 +271,6 @@ static void prvSetupHardware( void )
 
     initEthernetHardware();
 
-    /* Lock protected registers */
-    SYS_LockReg();
-
     /* Init UART to 115200-8n1 for print message */
     UART_Open(UART0, 115200);
 
@@ -290,6 +282,8 @@ static void prvSetupHardware( void )
 
     SPIM_SET_DCNUM(8);                /* Set 8 dummy cycle. */
 
+    /* Lock protected registers */
+    SYS_LockReg();
 
 }
 /*-----------------------------------------------------------*/
@@ -307,6 +301,7 @@ static void peripherals_init(void)
 
 	/* Initialize Flash */
 	flash_init();
+//	ext_flash_int(); TODO tidy up the init functions.
 
 	/* TODO : Accelerometer I2C NOT USED BY NUCDDL*/
 
