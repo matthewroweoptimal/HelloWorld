@@ -103,7 +103,7 @@ CDDLive.hex: CDDLive.elf makefile objects.mk $(OPTIONAL_TOOL_DEPS)
 
 CDDLive.siz: CDDLive.elf makefile objects.mk $(OPTIONAL_TOOL_DEPS)
 	@echo 'Invoking: Cross ARM GNU Print Size'
-	arm-none-eabi-size --format=berkeley "CDDLive.elf"
+	arm-none-eabi-size --format=sysv "CDDLive.elf"
 	@echo 'Finished building: $@'
 	@echo ' '
 

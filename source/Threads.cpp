@@ -6,6 +6,7 @@
  */
 
 #include "Threads.h"
+#include "os_tasks.h"
 
 void Threads::StartThreads()
 {
@@ -33,6 +34,9 @@ void Threads::StartThreads()
     _uiThread = new UiThread(UITHREAD_STACKSIZE, UI_THREAD_PRIORITY,_semMainThreadComplete);
     _uiThread->Start();
 
+    //_metersThread = new MetersThread(METERSTHREAD_STACKSIZE, METERS_THREAD_PRIORITY,_semMainThreadComplete);
+    //_metersThread->Start();
+
 }
 
 void Threads::StartScheduler()
@@ -40,7 +44,6 @@ void Threads::StartScheduler()
 	printf("Running FreeRTOS. Start scheduler...\n");
 	_mainThread->StartScheduler();
 }
-
 
 
 

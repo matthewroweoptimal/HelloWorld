@@ -287,7 +287,7 @@ Some MCU allow computing and verifying the IP, UDP, TCP and ICMP checksums by ha
 #endif
 
 #define TCPIP_MBOX_SIZE                 32
-#define TCPIP_THREAD_PRIO	            8
+#define TCPIP_THREAD_PRIO	            10
 //#define TCPIP_THREAD_PRIO	            4		// SC : For debugging, needs to be lower priority to allow IDE to trigger debugger
 #define TCPIP_THREAD_STACKSIZE	        1024
 

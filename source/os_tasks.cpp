@@ -721,7 +721,7 @@ void UserEvents_Task(uint32_t task_init_data)
 	}
 }
 
-#if 0
+#if 0 // EXCLUDE OTHER TASKS FOR THE MOMENT
 /* Handles Amplifier events */
 uint32 gSPIReadMessageNotRequiredCount=0;
 void SysEvents_Task(uint32_t task_init_data)
@@ -1085,6 +1085,8 @@ void SpkrCnfg_Task( uint32_t task_init_data )
 	}
 }
 
+#endif // EXCLUDE OTHER TASKS FOR THE MOMENT
+
 /*	Handles meter polling, limiter LED control, and meter subscription */
 #if(1)
 void Meter_Task( uint32_t task_init_data )
@@ -1114,6 +1116,8 @@ void Meter_Task( uint32_t task_init_data )
 }
 #endif
 
+
+#if(0) // EXCLUDE OTHER TASKS FOR THE MOMENT
 /* Background task for measuring speaker impedance */
 void AUX_spi_Task(uint32_t task_init_data)
 {
