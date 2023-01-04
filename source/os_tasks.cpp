@@ -613,8 +613,9 @@ void UserEvents_Task(uint32_t task_init_data)
 	MQX_TICK_STRUCT 		ticks;
 
 	printf("UI task created\n");
+
 	while (1) {
-		_lwevent_wait_ticks(&user_event,0x3FF,FALSE,0);	//Must not use control bytes in bit mask (0xff000000) as causes a config assert.
+		_lwevent_wait_ticks(&user_event,0x00FFFFFF,FALSE,0);	//Must not use control bytes in bit mask (0xff000000) as causes a config assert.
 		ui_bits = _lwevent_get_signalled();
 
 		TASKDEBUG_IN(TASK_USER)

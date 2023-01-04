@@ -16,11 +16,6 @@
 //#include "spi_aux.h"
 #include <string.h>     // needed for memcpy()
 
-#define FLASH_BLOCK_SIZE            (64*1024)    /* Flash block size. Depend on the physical flash. */
-#define TEST_BLOCK_ADDR             0      /* Test block address on SPI flash. */
-#define BUFFER_SIZE                 8
-#define USE_4_BYTES_MODE            0            /* W25Q20 does not support 4-bytes address mode. */
-uint8_t  g_buff[BUFFER_SIZE] __attribute__((aligned(4)));
 
 spi_flash_status_t spi_flash_init(oly_flash_params_t * olyStoredParams)
 {
@@ -30,7 +25,6 @@ spi_flash_status_t spi_flash_init(oly_flash_params_t * olyStoredParams)
 	uint32_t latestFlashFileIndex = 0;
 	uint32_t latestFlashFileAge = 0;
 	uint32_t tempflashFileAge;
-    uint8_t  idBuf[3];
     //dspi_status_t spiStatus;
     spi_flash_status_t ret;
 
@@ -39,12 +33,6 @@ spi_flash_status_t spi_flash_init(oly_flash_params_t * olyStoredParams)
     result = SPIM_InitFlash(FLASH_WRITE_CLEAR_PROTECT);
     if(result != SPIM_INITFLASH_SUCCESS)
     	printf("SPIM_InitFlash failed return code: %i\n", result);
-
-    SPIM_ReadJedecId(idBuf, sizeof (idBuf), 1);
-
-    printf("SPIM get JEDEC ID=0x%02X, 0x%02X, 0x%02X\n", idBuf[0], idBuf[1], idBuf[2]);
-
-    SPIM_WinbondUnlock(1);
 
 	printf("SPiFlash check slot ");
 	//	Look for the most recent save//
@@ -100,14 +88,14 @@ uint32_t spi_flash_check_for_valid_data(uint32_t page_num, uint32 size, oly_flas
 	//printf("started check len= %08x add = %08x  sig = %08x  age = %08x\n", size, startAddress, *p_flashSig, *p_flashAge);
 	uint32_t work_address = SPI_FLASH_FS_BASE+SPI_FLASH_SECTOR_SIZE*page_num;
 	//spiStatus = memory_read_data(FSL_SPI_AUX, work_address, SPI_HEADER_BLOCK_SIZE, (uint8_t*)&header_data, &nBytes);
-	SPIM_IO_Read(work_address,USE_4_BYTE_ADDR_MODE, SPI_HEADER_BLOCK_SIZE, (uint8_t*)&header_data, OPCODE_FAST_READ, 1,1,1,1);
+	SPIM_DMA_Read(work_address,USE_4_BYTE_ADDR_MODE, SPI_HEADER_BLOCK_SIZE, (uint8_t*)&header_data, CMD_DMA_NORMAL_QUAD_READ, IS_BLOCK);
 	work_address = work_address + 8;
 	if(header_data[0] == SPI_HEADER_SIGNATURE){
 		dest = (uint8_t*)olyStoredParams;
 		bytes_left_count = PARAMS_WRITE_SIZE;
 		while(1){
 			//spiStatus = memory_read_data(FSL_SPI_AUX, work_address, SPI_MEMORY_PAGE_SIZE, dest, &nBytes);
-			SPIM_IO_Read(work_address,USE_4_BYTE_ADDR_MODE, SPI_MEMORY_PAGE_SIZE, dest, OPCODE_FAST_READ, 1,1,1,1);
+			SPIM_DMA_Read(work_address,USE_4_BYTE_ADDR_MODE, SPI_MEMORY_PAGE_SIZE, dest, CMD_DMA_NORMAL_QUAD_READ, IS_BLOCK);
 			work_address = work_address + SPI_MEMORY_PAGE_SIZE;
 			dest = dest + SPI_MEMORY_PAGE_SIZE;
 			bytes_left_count = bytes_left_count - SPI_MEMORY_PAGE_SIZE;
@@ -115,11 +103,11 @@ uint32_t spi_flash_check_for_valid_data(uint32_t page_num, uint32 size, oly_flas
 		}
 		if(bytes_left_count > 0){
 			//spiStatus = memory_read_data(FSL_SPI_AUX, work_address, bytes_left_count, dest, &nBytes);
-			SPIM_IO_Read(work_address,USE_4_BYTE_ADDR_MODE, bytes_left_count, dest, OPCODE_FAST_READ, 1,1,1,1);
+			SPIM_DMA_Read(work_address,USE_4_BYTE_ADDR_MODE, bytes_left_count, dest, CMD_DMA_NORMAL_QUAD_READ, IS_BLOCK);
 		}
 		work_address = work_address + bytes_left_count;
 		///spiStatus = memory_read_data(FSL_SPI_AUX, work_address, SPI_CRC_BLOCK_SIZE,  (uint8_t*)&crc_in_flash, &nBytes);
-		SPIM_IO_Read(work_address,USE_4_BYTE_ADDR_MODE, SPI_CRC_BLOCK_SIZE, (uint8_t*)&crc_in_flash, OPCODE_FAST_READ, 1,1,1,1);
+		SPIM_DMA_Read(work_address,USE_4_BYTE_ADDR_MODE, SPI_CRC_BLOCK_SIZE, (uint8_t*)&crc_in_flash, CMD_DMA_NORMAL_QUAD_READ, IS_BLOCK);
 
 		crc16_init(&flash_Crc_Desc);
 		crc16_update(&flash_Crc_Desc, (uint8_t*)&header_data, SPI_HEADER_BLOCK_SIZE);		//calc crc excluding crc value
@@ -196,19 +184,14 @@ uint32_t spi_flash_write_oly_params(oly_flash_params_t * olyStoredParams)
 	//write header
 	header_data[0] = SPI_HEADER_SIGNATURE;
 	header_data[1] = flashFileAge;
-
 	//spiStatus = memory_write_data (FSL_SPI_AUX, destination_address, SPI_HEADER_BLOCK_SIZE, (uint8_t*)header_data, &nBytes);
-    SPIM_IO_Write(destination_address, USE_4_BYTE_ADDR_MODE, SPI_HEADER_BLOCK_SIZE, (uint8_t*)&header_data, OPCODE_PP,1,1,1);
+	SPIM_DMA_Write(destination_address, USE_4_BYTE_ADDR_MODE, SPI_HEADER_BLOCK_SIZE, (uint8_t*)&header_data, OPCODE_PP);
 	//if(spiStatus != kStatus_DSPI_Success) fail = fail | 2;
-
-	uint8_t check_buff[SPI_HEADER_BLOCK_SIZE] = {0};
-
-	SPIM_IO_Read(destination_address, USE_4_BYTE_ADDR_MODE, SPI_HEADER_BLOCK_SIZE, check_buff, OPCODE_FAST_READ, 1, 1, 1, 1);
 
 	crc16_update(&flash_Crc_Desc, (uint8_t *) header_data, SPI_HEADER_BLOCK_SIZE);
 	destination_address = destination_address + SPI_HEADER_BLOCK_SIZE;
 	//spiStatus = memory_write_data (FSL_SPI_AUX, destination_address, PARAMS_WRITE_SIZE, (uint8_t*)olyStoredParams, &nBytes);
-	SPIM_IO_Write(destination_address, USE_4_BYTE_ADDR_MODE, PARAMS_WRITE_SIZE, (uint8_t*)olyStoredParams, OPCODE_PP,1,1,1);
+	SPIM_DMA_Write(destination_address, USE_4_BYTE_ADDR_MODE, PARAMS_WRITE_SIZE, (uint8_t*)olyStoredParams, OPCODE_PP);
 	//if(spiStatus != kStatus_DSPI_Success) fail = fail | 4;
 
 	crc16_update(&flash_Crc_Desc, (uint8_t *) olyStoredParams, PARAMS_WRITE_SIZE);
@@ -217,7 +200,7 @@ uint32_t spi_flash_write_oly_params(oly_flash_params_t * olyStoredParams)
 	//write final crc
 	crc16_finalize(&flash_Crc_Desc, &crcBlock);
 	//spiStatus = memory_write_data (FSL_SPI_AUX, destination_address, SPI_CRC_BLOCK_SIZE, (uint8_t*)&crcBlock, &nBytes);
-	SPIM_IO_Write(destination_address, USE_4_BYTE_ADDR_MODE, SPI_CRC_BLOCK_SIZE, (uint8_t*)&crcBlock, OPCODE_PP,1,1,1);
+	SPIM_DMA_Write(destination_address, USE_4_BYTE_ADDR_MODE, PARAMS_WRITE_SIZE, (uint8_t*)olyStoredParams, OPCODE_PP);
 
 
 	printf("SPI Param Flash Write OK  to Slot %i of %i age %i\n", emptyMemorySlotIndex+1, SPI_NUM_MEMORY_SLOTS, flashFileAge);

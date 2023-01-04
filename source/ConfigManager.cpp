@@ -2109,70 +2109,56 @@ namespace oly {
     			olyStatus.Values[i] = gOLYspeaker1StatusParameterTable[i].defValue;
     		}
     
-        	// send a sync current state message to DSP
-        	olyDspPort.WriteMessage(GetSyncMessage(MANDOLIN_SE_SYNC_CURRENT_STATE));
-
-        #if USE_CDD_UI
-        	SetActivePreset(eTARGET_USER,  olyParams.Device->Active_User);
-        #else
-        	//these blocks are loaded as presets on CDDL
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_USER, olyParams.Device->Active_User, 1, olyParams.User[olyParams.Device->Active_User],OLYspeaker1_USER_PARAMETER_MAX-1));
-        	_time_delay(10);
-            olyDspPort.WriteMessage(SetParameterBlock(eTARGET_PROFILE, olyParams.Device->Active_Profile, 1, olyParams.Profile[olyParams.Device->Active_Profile],OLYspeaker1_PROFILE_PARAMETER_MAX-1));
-        #endif
-            _time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_VOICING, olyParams.Device->Active_Voicing, ePID_OLYspeaker1_VOICING_GLOBAL_PEQ_ENABLE, olyParams.Voicing[olyParams.Device->Active_Voicing],128));
-            _time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_VOICING, olyParams.Device->Active_Voicing, ePID_OLYspeaker1_VOICING_HF_PEQ_POST_BAND2_Q, olyParams.Voicing[olyParams.Device->Active_Voicing],128));
-            _time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_VOICING, olyParams.Device->Active_Voicing, ePID_OLYspeaker1_VOICING_MF_PEQ_POST_BAND4_GAIN, olyParams.Voicing[olyParams.Device->Active_Voicing],128));
-            _time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_VOICING, olyParams.Device->Active_Voicing, ePID_OLYspeaker1_VOICING_LF_DYNEQ1_DETECTFREQ, olyParams.Voicing[olyParams.Device->Active_Voicing],OLYspeaker1_VOICING_PARAMETER_MAX-ePID_OLYspeaker1_VOICING_LF_DYNEQ1_DETECTFREQ));
-
-            _time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_THROW, olyParams.Device->Active_Throw, 1, olyParams.Throw[olyParams.Device->Active_Throw],OLYspeaker1_THROW_PARAMETER_MAX-1));
-        	_time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_XOVER, olyParams.Device->Active_Xover, 1, olyParams.Xover[olyParams.Device->Active_Xover],OLYspeaker1_XOVER_PARAMETER_MAX-1));
-        	_time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_AIRLOSS, 0, 1, olyParams.Airloss,OLYspeaker1_AIRLOSS_PARAMETER_MAX-1));
-        	_time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_NOISEGATE, 0, 1, olyParams.NoiseGate,OLYspeaker1_NOISEGATE_PARAMETER_MAX-1));
-        	_time_delay(10);
-
-        if (FIR_Presets[olyParams.Device->Active_FIR]){
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],128));
-        	_time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_COEF127_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
-        	_time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_COEF255_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
-        	_time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_COEF383_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
-        	_time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_COEF511_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],ePID_OLYspeaker1_FIR_MF_FIR_ENABLE-ePID_OLYspeaker1_FIR_HF_FIR_COEF511_VALUE));
-        	_time_delay(10);
-
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],128));
-        	_time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_COEF127_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
-        	_time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_COEF255_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
-        	_time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_COEF383_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
-        	_time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_COEF511_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],ePID_OLYspeaker1_FIR_LF_FIR_ENABLE-ePID_OLYspeaker1_FIR_MF_FIR_COEF511_VALUE));
-        	_time_delay(10);
-
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],128));
-        	_time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_COEF127_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
-        	_time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_COEF255_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
-        	_time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_COEF383_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
-        	_time_delay(10);
-        	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_COEF511_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],ePID_OLYspeaker1_FIR_FENCE-ePID_OLYspeaker1_FIR_LF_FIR_COEF511_VALUE));
-        	_time_delay(10);
-        }
+    		olyDspPort.WriteMessage(GetSyncMessage(MANDOLIN_SE_SYNC_CURRENT_STATE));
+    
+    #if	0	//	Use if message size is not big enough to hold largest command ~450 parameters, other places in the code need this too.
+    		olyDspPort.SyncTarget(eTARGET_USER, olyParams.Device->Active_User, 1, olyParams.User[olyParams.Device->Active_User], OLYspeaker1_USER_PARAMETER_MAX-1);
+    		olyDspPort.SyncTarget(eTARGET_USER, olyParams.Device->Active_User, 1, olyParams.User[olyParams.Device->Active_User],OLYspeaker1_USER_PARAMETER_MAX-1);
+    		olyDspPort.SyncTarget(eTARGET_PROFILE, olyParams.Device->Active_Profile, 1, olyParams.Profile[olyParams.Device->Active_Profile],OLYspeaker1_PROFILE_PARAMETER_MAX-1);
+    	    olyDspPort.SyncTarget(eTARGET_VOICING, olyParams.Device->Active_Voicing, 1, olyParams.Voicing[olyParams.Device->Active_Voicing],OLYspeaker1_VOICING_PARAMETER_MAX-1);
+    		olyDspPort.SyncTarget(eTARGET_THROW, olyParams.Device->Active_Throw, 1, olyParams.Throw[olyParams.Device->Active_Throw],OLYspeaker1_THROW_PARAMETER_MAX-1);
+    		olyDspPort.SyncTarget(eTARGET_AIRLOSS, 0, 1, olyParams.Airloss,OLYspeaker1_AIRLOSS_PARAMETER_MAX-1);
+    		olyDspPort.SyncTarget(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302);
+    		olyDspPort.SyncTarget(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300);
+    		olyDspPort.SyncTarget(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302);
+    		olyDspPort.SyncTarget(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300);
+    		olyDspPort.SyncTarget(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302);
+    		olyDspPort.SyncTarget(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300);
+    #else
+    
+    #if USE_CDD_UI
+    		SetActivePreset(eTARGET_USER,  olyParams.Device->Active_User);		// note that this causes the MANDOLIN_SE_SYNC_OK message to be sent!
+    #else
+    		olyDspPort.WriteMessage(SetParameterBlock(eTARGET_USER, olyParams.Device->Active_User, 1, olyParams.User[olyParams.Device->Active_User],OLYspeaker1_USER_PARAMETER_MAX-1));
+    		_time_delay(10);
+    	    olyDspPort.WriteMessage(SetParameterBlock(eTARGET_PROFILE, olyParams.Device->Active_Profile, 1, olyParams.Profile[olyParams.Device->Active_Profile],OLYspeaker1_PROFILE_PARAMETER_MAX-1));
+    #endif
+    	    _time_delay(10);
+    		olyDspPort.WriteMessage(SetParameterBlock(eTARGET_VOICING, olyParams.Device->Active_Voicing, 1, olyParams.Voicing[olyParams.Device->Active_Voicing],OLYspeaker1_VOICING_PARAMETER_MAX-1));
+    		_time_delay(10);
+    		olyDspPort.WriteMessage(SetParameterBlock(eTARGET_THROW, olyParams.Device->Active_Throw, 1, olyParams.Throw[olyParams.Device->Active_Throw],OLYspeaker1_THROW_PARAMETER_MAX-1));
+    		_time_delay(10);
+    		olyDspPort.WriteMessage(SetParameterBlock(eTARGET_XOVER, olyParams.Device->Active_Xover, 1, olyParams.Xover[olyParams.Device->Active_Xover],OLYspeaker1_XOVER_PARAMETER_MAX-1));
+    		_time_delay(10);
+    		olyDspPort.WriteMessage(SetParameterBlock(eTARGET_AIRLOSS, 0, 1, olyParams.Airloss,OLYspeaker1_AIRLOSS_PARAMETER_MAX-1));
+    		_time_delay(10);
+    		olyDspPort.WriteMessage(SetParameterBlock(eTARGET_NOISEGATE, 0, 1, olyParams.NoiseGate,OLYspeaker1_NOISEGATE_PARAMETER_MAX-1));
+    		_time_delay(10);
+    
+    		olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302));
+    		_time_delay(10);
+    		olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300));
+    		_time_delay(10);
+    		olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302));
+    		_time_delay(10);
+    		olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300));
+    		_time_delay(10);
+    		olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302));
+    		_time_delay(10);
+    		olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300));
+    		_time_delay(10);
+    #endif
+    
     		// send a sync ok message to indicate the end of sync current state
      		olyDspPort.WriteMessage(GetSyncMessage(MANDOLIN_SE_SYNC_OK));
     		// may want to wait a bit here while all the messages process on the DSP before unmuting.....
