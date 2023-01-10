@@ -44,6 +44,7 @@
 #define DANTE_THREAD_PRIORITY	( TCPIP_THREAD_PRIO - 4 )				//4
 #define GUI_THREAD_PRIORITY	( TCPIP_THREAD_PRIO - 5 )					//5
 #define UI_THREAD_PRIORITY	( TCPIP_THREAD_PRIO - 6 )					//3
+#define METERS_THREAD_PRIORITY	( TCPIP_THREAD_PRIO - 6 )					//3
 
 
 #define MAIN_THREAD_STACKSIZE      	(configMINIMAL_STACK_SIZE + 256)
@@ -52,7 +53,8 @@
 #define TCP_MANDOLIN_STACK_SIZE    	(configMINIMAL_STACK_SIZE + 256)    	// IQ - This thread stack size is specified differently and in bytes - STuart-> FreeRTOS stack size for MANDOLIN thread - seen 1580 HWM
 #define DANTETHREAD_STACKSIZE    	(configMINIMAL_STACK_SIZE + 256)    	// FreeRTOS stack size for DANTE thread - seen ???? HWM
 #define GUITHREAD_STACKSIZE    		(configMINIMAL_STACK_SIZE + 256)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
-#define UITHREAD_STACKSIZE    	(configMINIMAL_STACK_SIZE + 256)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
+#define UITHREAD_STACKSIZE    		(configMINIMAL_STACK_SIZE + 256)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
+#define METERSTHREAD_STACKSIZE  	(configMINIMAL_STACK_SIZE + 256)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
 
 
 #define MONITORING_TIMER_TICK  ( pdMS_TO_TICKS(500))
@@ -73,6 +75,7 @@ private:
     DanteThread 	*_danteThread; 	// This is Dante_Task
     GuiThread 		*_guiThread; 	// This is Gui_Task
     UiThread 		*_uiThread; 	// This is ui_Task
+    MetersThread 	*_metersThread; 	// This is Meter_Task
 
     /* Timers */
     SecondTimer 	*_secondTimer;

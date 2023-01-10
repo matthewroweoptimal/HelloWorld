@@ -26,4 +26,18 @@ private:
     SemaphoreHandle_t   _semMainThreadComplete;    
 };
 
+class MetersThread : public Thread
+{
+public:
+	MetersThread(uint16_t usStackDepth, UBaseType_t uxPriority, SemaphoreHandle_t& semMainThreadComplete);
+
+protected:
+    void Run();
+
+
+private:
+    SemaphoreHandle_t   _semMainThreadComplete;
+};
+
+
 #endif /* GUITHREAD_H_ */

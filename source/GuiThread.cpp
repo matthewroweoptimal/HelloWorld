@@ -35,3 +35,24 @@ void GuiThread::Run()
 
     Suspend();
 }
+
+
+MetersThread::MetersThread(uint16_t usStackDepth, UBaseType_t uxPriority, SemaphoreHandle_t& semMainThreadComplete)
+     : Thread("Meter Thread", usStackDepth, uxPriority),
+       _semMainThreadComplete(semMainThreadComplete)
+{
+}
+
+void MetersThread::Run()
+{
+	printf("Meters thread waiting on MainThread completing...\n");
+	//--- Wait until MainThread complete ---
+    xSemaphoreTake(_semMainThreadComplete, portMAX_DELAY);
+    xSemaphoreGive(_semMainThreadComplete);					//this feels dodgy, any thread that picks up the semaphore gives again for other threads to start.
+
+    printf("Meters thread running\n");
+
+    Meter_Task(0);		//runs the code from original NXP version...
+
+    Suspend();
+}

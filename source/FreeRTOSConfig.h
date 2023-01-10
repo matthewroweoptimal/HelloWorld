@@ -177,7 +177,7 @@ extern unsigned long RTOS_AppGetRuntimeCounterValueFromISR(void);
 
 #define configASSERT(x) if((x) == 0) {printf("Assert failed %s, %s\n", __FILE__, __FUNCTION__); taskDISABLE_INTERRUPTS(); for (;;);}
 
-#define traceMALLOC(x,y) printf("Malloc %p, %d bytes\n", x, y);
+//#define traceMALLOC(x,y) printf("Malloc %p, %d bytes\n", x, y);
 
 #endif
 

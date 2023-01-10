@@ -33,6 +33,9 @@ void Threads::StartThreads()
     _uiThread = new UiThread(UITHREAD_STACKSIZE, UI_THREAD_PRIORITY,_semMainThreadComplete);
     _uiThread->Start();
 
+    _metersThread = new MetersThread(METERSTHREAD_STACKSIZE, METERS_THREAD_PRIORITY,_semMainThreadComplete);
+    _metersThread->Start();
+
 }
 
 void Threads::StartScheduler()

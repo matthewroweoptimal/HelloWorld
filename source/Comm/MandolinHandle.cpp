@@ -208,7 +208,7 @@ void Config::HandleMetersResponse(mandolin_message * pMsg)
 
 	if (g_nLastMeterSeq != pMsg->sequence)
 	{
-//		printf("Meter response Seq=%d, expecting %d!\n", pMsg->sequence, g_nLastMeterSeq);
+		printf("Meter response Seq=%d, expecting %d!\n", pMsg->sequence, g_nLastMeterSeq);
 	}
 	else
 	{
