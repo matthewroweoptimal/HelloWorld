@@ -2109,6 +2109,21 @@ namespace oly {
     			olyStatus.Values[i] = gOLYspeaker1StatusParameterTable[i].defValue;
     		}
     
+    		/* TODO IQ - these are an add from restore defaults. Without them the DSP seems to enter BIST. Odd, I assume it is sent garbage, this will need fixing.*/
+		#if USER_PRESETS_STORED
+    		/* Reset Editable User parameters */
+    		for (i=0; i< USER_PRESETS_STORED; i++) {
+				RestoreUserEQ(i);
+    		}
+
+		#if USE_CDD_UI
+    		//until it is written to, user 1 should not be loaded
+    		//Store 0xFFFFFFFF in the null first word to mark as unuseable
+    		olyStoredParams.Stored_User_Presets[eCDD_PRESETS_USER][0] = 0xFFFFFFFF;
+		#endif
+
+		#endif
+
         	// send a sync current state message to DSP
         	olyDspPort.WriteMessage(GetSyncMessage(MANDOLIN_SE_SYNC_CURRENT_STATE));
 
