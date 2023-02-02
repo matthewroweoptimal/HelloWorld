@@ -43,7 +43,7 @@ extern uint32_t g_irD_rx_overflow;
 #endif	//	DEBUG
 
 /* circular buffer from the UART */
-extern uint8_t g_u8RecData[ULT_RX_BUF_SIZE];
+extern uint8_t __attribute__ ((section(".external_ram"))) g_u8RecData[ULT_RX_BUF_SIZE];
 extern volatile uint32_t g_u32comRbytes;
 extern volatile uint32_t g_u32comRhead;
 extern volatile uint32_t g_u32comRtail;

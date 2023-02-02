@@ -56,3 +56,23 @@ void MetersThread::Run()
 
     Suspend();
 }
+
+SysEventsThread::SysEventsThread(uint16_t usStackDepth, UBaseType_t uxPriority, SemaphoreHandle_t& semMainThreadComplete)
+     : Thread("Sys Events Thread", usStackDepth, uxPriority),
+       _semMainThreadComplete(semMainThreadComplete)
+{
+}
+
+void SysEventsThread::Run()
+{
+	printf("Sys Events thread waiting on MainThread completing...\n");
+	//--- Wait until MainThread complete ---
+    xSemaphoreTake(_semMainThreadComplete, portMAX_DELAY);
+    xSemaphoreGive(_semMainThreadComplete);					//this feels dodgy, any thread that picks up the semaphore gives again for other threads to start.
+
+    printf("Sys Events thread running\n");
+
+    SysEvents_Task(0);		//runs the code from original NXP version...
+
+    Suspend();
+}

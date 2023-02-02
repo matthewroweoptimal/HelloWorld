@@ -11,12 +11,44 @@
 #include "task.h"
 #include "timer.h"
 #include "spi_sharc.h"
+#include "MQX_to_FreeRTOS.h"
+#include "board.h"
+#include "inputHandler.h"
 
 
 extern "C" {
 #include "uart_ultimo.h"
 
 static uint32_t RTOS_RunTimeCounter; /* runtime counter, used for configGENERATE_RUNTIME_STATS */
+int32_t gDebugCount =0;
+int32_t gDebugCount1 =0;
+
+void GPH_IRQHandler()
+{
+
+    /* To check if SHARC ready interrupt occurred */
+    if(GPIO_GET_INT_FLAG(PH, BIT3))
+    {
+    	//printf("sharc ready int\n");
+        GPIO_CLR_INT_FLAG(PH, BIT3);
+        if(GPIO_DRV_ReadPinInput(SHARC_SPI_READY))
+        {
+        		gDebugCount++;
+        		_lwevent_set_isr(&sys_event, event_dsp_tx_ready);
+        }
+        else
+        {
+        		gDebugCount1++;
+        		_lwevent_clear_isr(&sys_event, event_dsp_tx_ready);
+        }
+    } else
+    {
+    	//printf("other PH ready int\n");
+        PH->INTSRC = PH->INTSRC;
+    }
+
+}
+
 
 void TMR0_IRQHandler(void)
 {

@@ -7,7 +7,7 @@
 /*---------------------------------------------------------------------------------------------------------*/
 /* Global variables                                                                                        */
 /*---------------------------------------------------------------------------------------------------------*/
-uint8_t g_u8RecData[ULT_RX_BUF_SIZE]  = {0};
+uint8_t __attribute__ ((section(".external_ram"))) g_u8RecData[ULT_RX_BUF_SIZE]  = {0};
 volatile uint32_t g_u32comRbytes 	= 0;
 volatile uint32_t g_u32comRhead  	= 0;
 volatile uint32_t g_u32comRtail  	= 0;

@@ -6,6 +6,7 @@ MEMORY
   /* M487 datasheet states : 512k Flash, 160k RAM (but this includes 32kB cache for external SPI Flash) */
   FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 448K	/* 64k for data flash - address 0x00070000 - 0x0007FFFF */
   RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 160K   /* IQ - The 32kB extra is included*/
+  EXT_RAM (rwx) : ORIGIN = 0x60000000, LENGTH = 128K 
 }
 
 /* 
@@ -186,6 +187,11 @@ SECTIONS
 		KEEP(*(.heap*))
 		__HeapLimit = .;
 	} > RAM
+
+	.external_ram (COPY):
+	{
+		KEEP(*(.external_ram*))
+	} > EXT_RAM
 
 	/* .stack_dummy section doesn't contains any symbols. It is only
 	 * used for linker to calculate size of stack sections, and assign

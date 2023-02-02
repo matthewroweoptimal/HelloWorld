@@ -48,7 +48,9 @@ extern "C" {
 
 using namespace oly;
 
-Config *	   		olyConfig;
+//uint32_t __attribute__ ((section(".external_ram"))) ExtRamArray[ARRAY_SIZE] = {0xFF} ;
+Config *	olyConfig;
+//Config * __attribute__ ((section(".external_ram"))) olyConfig;
 
 UltimoPort *		g_pUltimoPort = 0;
 //Discovery *			g_pDiscovery = 0;
@@ -721,7 +723,7 @@ void UserEvents_Task(uint32_t task_init_data)
 	}
 }
 
-#if 0 //EXCLUDE OTHER TASKS FOR NOW - IQ
+
 /* Handles Amplifier events */
 uint32 gSPIReadMessageNotRequiredCount=0;
 void SysEvents_Task(uint32_t task_init_data)
@@ -839,6 +841,7 @@ void SysEvents_Task(uint32_t task_init_data)
 	}
 }
 
+#if 0 //EXCLUDE OTHER TASKS FOR NOW - IQ
 /* Handles Timer Events */
 void TimeKeeper_Task(uint32_t task_init_data)
 {

@@ -697,6 +697,35 @@ _mqx_uint _lwevent_set(LWEVENT_STRUCT_PTR lwevent_group_ptr, _mqx_uint flags)
 	return MQX_OK;
 }
 
+// Sets the specified event bits in the lightweight event group from an interrupt.
+// Parameters
+//		lwevent_group_ptr [IN] — Pointer to the lightweight event group to set bits in
+//		flags [IN] — Each bit represents an event bit to be set
+// Returns
+//		MQX_OK (success)
+//		MQX_LWEVENT_INVALID (failure: lightweight event group was invalid or some other error!)
+_mqx_uint _lwevent_set_isr(LWEVENT_STRUCT_PTR lwevent_group_ptr, _mqx_uint flags)
+{
+	EventBits_t uxBitsToSet = flags;
+	BaseType_t xHigherPriorityTaskWoken, xResult;
+	xHigherPriorityTaskWoken = pdFALSE;
+	xResult = pdFAIL;
+
+	if (lwevent_group_ptr->pEventGroup)
+	{
+		xResult = lwevent_group_ptr->pEventGroup->SetBitsFromISR(uxBitsToSet, &xHigherPriorityTaskWoken);
+	}
+
+	if (xResult != pdFAIL)
+	{
+	portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+	return MQX_OK;
+	}
+
+	return MQX_LWEVENT_INVALID;
+}
+
+
 // Clears the specified event bits in the lightweight event group
 // Parameters
 //		event_group_ptr [IN] — Pointer to the event group
@@ -711,6 +740,19 @@ _mqx_uint _lwevent_clear(LWEVENT_STRUCT_PTR event_group_ptr, _mqx_uint bit_mask)
 	return MQX_OK;
 }
 
+// Clears the specified event bits in the lightweight event group in a ISR
+// Parameters
+//		event_group_ptr [IN] — Pointer to the event group
+//		bit_mask [IN] — Each set bit represents an event bit to clear
+// Returns
+//		MQX_OK (success)
+//		LWEVENT_INVALID_EVENT (failure: lightweight event group is not valid)
+_mqx_uint _lwevent_clear_isr(LWEVENT_STRUCT_PTR event_group_ptr, _mqx_uint bit_mask)
+{
+	EventBits_t uxBitsToClear = bit_mask;
+	EventBits_t bits = event_group_ptr->pEventGroup->ClearBitsFromISR( uxBitsToClear );
+	return MQX_OK;
+}
 
 
 #define MAX_EVENT_GROUPS	1	// Only 1 Event Group required to be supported in the CDD code ("event_spkr_cnfg")

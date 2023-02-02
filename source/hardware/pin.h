@@ -154,6 +154,6 @@ public:
 #define GPIO_DRV_WritePinOutput(pinName,output)		gpioPins[pinName].Write(output)
 #define GPIO_DRV_SetPinOutput(pinName)				gpioPins[pinName].Write(HIGH)
 #define GPIO_DRV_ClearPinOutput(pinName)			gpioPins[pinName].Write(LOW)
-#define GPIO_DRV_ReadPinInput(pinName)				*(volatile uint32_t *)(gpioPins[pinName].m_port + gpioPins[pinName].m_pin);
+#define GPIO_DRV_ReadPinInput(pinName)				*(volatile uint32_t *)(gpioPins[pinName].m_port + gpioPins[pinName].m_pin)
 
 #endif /* HARDWARE_PIN_H_ */

@@ -60,6 +60,10 @@ using namespace std;
 #define FTM2_HANDLER_PRIORITY 	12U
 #define FTM3_HANDLER_PRIORITY 	12U
 #define ETHERNET_HANDLER_PRIORITY 8U  //transfer this manually to ethernet driver
+#define GPH_HANDLER_PRIORITY 12U  //transfer this manually to ethernet driver
+
+#define ARRAY_SIZE 1024
+uint16_t __attribute__ ((section(".external_ram"))) ExtRamArray[ARRAY_SIZE] = {0xFF} ;
 
 /*-----------------------------------------------------------*/
 /*
@@ -256,7 +260,13 @@ static void prvSetupHardware( void )
     GPIO_SetMode(PB, BIT2|BIT3, GPIO_MODE_OUTPUT);
     GPIO_SetMode(PB, BIT5, GPIO_MODE_QUASI);
     GPIO_SetMode(PC, BIT10|BIT11|BIT12, GPIO_MODE_OUTPUT);		//
+
     GPIO_SetMode(PH, BIT2, GPIO_MODE_OUTPUT);    				//sharc reset
+
+    GPIO_SetMode(PH, BIT3, GPIO_MODE_INPUT);					//sharc ready pin
+    GPIO_EnableInt(PH, 3, GPIO_INT_BOTH_EDGE);					//enable int for sharc ready, both direction
+    NVIC_SetPriority(GPH_IRQn, GPH_HANDLER_PRIORITY);
+    NVIC_EnableIRQ(GPH_IRQn);
 
     Gpio::setGpio(SHARC_RESET,LOW);
     Gpio::setGpio(ULTIMO_RESET,LOW);
@@ -282,6 +292,68 @@ static void prvSetupHardware( void )
 
     SPIM_SET_DCNUM(8);                /* Set 8 dummy cycle. */
 
+
+
+    /* EBI AD0~5 pins on PG.9~14 */
+    SYS->GPG_MFPH |= SYS_GPG_MFPH_PG9MFP_EBI_AD0 | SYS_GPG_MFPH_PG10MFP_EBI_AD1 |
+    					SYS_GPG_MFPH_PG11MFP_EBI_AD2 | SYS_GPG_MFPH_PG12MFP_EBI_AD3 |
+						SYS_GPG_MFPH_PG13MFP_EBI_AD4 | SYS_GPG_MFPH_PG14MFP_EBI_AD5;
+
+    /* EBI AD6, AD7 pins on PD.8, PD.9 */
+    SYS->GPD_MFPH |= SYS_GPD_MFPH_PD8MFP_EBI_AD6 | SYS_GPD_MFPH_PD9MFP_EBI_AD7;
+
+    /* EBI AD8, AD9 pins on PE.14, PE.15 */
+    SYS->GPE_MFPH |= SYS_GPE_MFPH_PE14MFP_EBI_AD8 | SYS_GPE_MFPH_PE15MFP_EBI_AD9;
+
+
+    /* EBI AD10, AD11 pins on PE.1, PE.0 */
+    SYS->GPE_MFPL |= SYS_GPE_MFPL_PE1MFP_EBI_AD10 | SYS_GPE_MFPL_PE0MFP_EBI_AD11;
+
+    /* EBI AD12~15 pins on PH.8~11 */
+    SYS->GPH_MFPH |= SYS_GPH_MFPH_PH8MFP_EBI_AD12 | SYS_GPH_MFPH_PH9MFP_EBI_AD13 |
+                     SYS_GPH_MFPH_PH10MFP_EBI_AD14 | SYS_GPH_MFPH_PH11MFP_EBI_AD15;
+
+
+    /* EBI ADR16, ADR17 pins on PF.9, PF.8 */
+//    SYS->GPA_MFPH |= SYS_GPA_MFPH_PF11MFP_EBI_ADR16 | SYS_GPF_MFPH_PF8MFP_EBI_ADR17;
+    /*Proto has A16 as a GPIO. Productino will have it on correct pin, A17/A18 NC as SRAM is only 256kBytes */
+	//#define SRAM_A16				PA9
+	//#define SRAM_A17				PA10
+	//#define SRAM_A18				PA11
+    PA9 = 0;
+    PA10 = 0;
+    PA11 = 0;
+
+
+
+    /* EBI ADR18, ADR19 pins on PF.7, PF.6 */
+//    SYS->GPF_MFPL |= SYS_GPF_MFPL_PF7MFP_EBI_ADR18 | SYS_GPF_MFPL_PF6MFP_EBI_ADR19;
+
+    //these pins are under software control, not part of EBI interface?!?!?
+
+    /* EBI RD and WR pins on PE.4 and PE.5 */
+    SYS->GPE_MFPL |= SYS_GPE_MFPL_PE4MFP_EBI_nWR | SYS_GPE_MFPL_PE5MFP_EBI_nRD;
+
+    /* EBI WRL and WRH pins on PG.7 and PG.8 */
+    SYS->GPG_MFPL |= SYS_GPG_MFPL_PG7MFP_EBI_nWRL;
+    SYS->GPG_MFPH |= SYS_GPG_MFPH_PG8MFP_EBI_nWRH;
+
+
+    /* EBI CS1 pin on PD.11 - The SRAM is attached to CS1 but we currently use bank0 and not sure how to setup more banks - for now pull PD.11 low and let the MCU twiddle CS0 to hearts content*/
+    PD11 = 0;
+
+    /* EBI CS0 pin on PD.12, this is a mistakenly attached to debug_uart_rx pin and is pulled up. EBI will be active on this pin but no problem!.  */
+     SYS->GPD_MFPH |= SYS_GPD_MFPH_PD12MFP_EBI_nCS0;
+
+
+    /* EBI ALE pin on PA.8 */
+    SYS->GPA_MFPH |= SYS_GPA_MFPH_PA8MFP_EBI_ALE;
+
+    CLK_EnableModuleClock(EBI_MODULE);
+    /* Configure multi-function pins for EBI 16-bit application */
+
+    /* Initialize EBI bank0 to access external SRAM */
+    EBI_Open(EBI_BANK0, EBI_BUSWIDTH_16BIT, EBI_TIMING_SLOWEST, 0, EBI_CS_ACTIVE_LOW);
     /* Lock protected registers */
     SYS_LockReg();
 
@@ -299,9 +371,27 @@ static void peripherals_init(void)
 
 	//Init I2C for ADC - Does it need any init or do we just do the setup?
 
+	uint32_t count = 0;
+    //uint8_t i = 0;
+
+    while(count<ARRAY_SIZE)
+    {
+    	ExtRamArray[count] = 0xffff;
+    	count++;
+    }
+
+    count=0;
+    /*write directly to my array*/
+    while(count<ARRAY_SIZE)
+    {
+    	ExtRamArray[count] = 0xff + count;
+    	count++;
+    }
+
 	/* Initialize Flash */
 	flash_init();
 //	ext_flash_int(); TODO tidy up the init functions.
+
 
 	/* TODO : Accelerometer I2C NOT USED BY NUCDDL*/
 

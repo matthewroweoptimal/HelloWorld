@@ -16,8 +16,11 @@ typedef uint32_t  _mqx_uint, * _mqx_uint_ptr;
  */
 #define MQX_OK                              (0)
 
+
 #define MQX_ERROR_BASE                      (0x00000000ul)
 #define POSIX_ERROR_BASE                    (MQX_ERROR_BASE | 0x0400)
+
+#define MQX_LWEVENT_INVALID					(MQX_ERROR_BASE|0x39)
 
 #define MQX_OUT_OF_MEMORY                   (MQX_ERROR_BASE|0x04)
 
@@ -292,7 +295,9 @@ _mqx_uint _lwevent_create(LWEVENT_STRUCT_PTR lwevent_group_ptr, _mqx_uint flags)
 _mqx_uint _lwevent_wait_ticks(LWEVENT_STRUCT_PTR, _mqx_uint, bool, _mqx_uint);
 _mqx_uint _lwevent_get_signalled(void);
 _mqx_uint _lwevent_set(LWEVENT_STRUCT_PTR, _mqx_uint);
+_mqx_uint _lwevent_set_isr(LWEVENT_STRUCT_PTR, _mqx_uint);
 _mqx_uint _lwevent_clear(LWEVENT_STRUCT_PTR, _mqx_uint);
+_mqx_uint _lwevent_clear_isr(LWEVENT_STRUCT_PTR, _mqx_uint);
 
 /* The maximum name size for a name component name */
 #define NAME_MAX_NAME_SIZE          (32)

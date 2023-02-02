@@ -12,7 +12,10 @@
 #include "os_tasks.h"
 
 static mandolin_message 	tmpMsg;
-static uint8_t				tmpMsgPayload[MANDOLIN_MAX_PAYLOAD_DATA_WORDS*MANDOLIN_BYTES_PER_WORD];
+
+static uint8_t	__attribute__ ((section(".external_ram")))	tmpMsgPayload[MANDOLIN_MAX_PAYLOAD_DATA_WORDS*MANDOLIN_BYTES_PER_WORD];
+
+//static uint8_t tmpMsgPayload[MANDOLIN_MAX_PAYLOAD_DATA_WORDS*MANDOLIN_BYTES_PER_WORD];
 
 mandolin_fifo	UartVoiceRxFifo;
 static uint8_t	UartVoiceRxFifo_bytes[UART_VOICE_MANDOLIN_FIFO_SIZE];

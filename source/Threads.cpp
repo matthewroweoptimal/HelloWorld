@@ -36,6 +36,9 @@ void Threads::StartThreads()
     _metersThread = new MetersThread(METERSTHREAD_STACKSIZE, METERS_THREAD_PRIORITY,_semMainThreadComplete);
     _metersThread->Start();
 
+    _sysEventsThread = new SysEventsThread(SYSEVENTSTHREAD_STACKSIZE, SYSEVENTS_THREAD_PRIORITY,_semMainThreadComplete);
+    _sysEventsThread->Start();
+
 }
 
 void Threads::StartScheduler()

@@ -55,7 +55,7 @@ extern "C" {
 
 
 mandolin_fifo	netRxFifo;
-uint8_t			netRxFifo_bytes[NETWORK_MANDOLIN_FIFO_SIZE];
+uint8_t			__attribute__ ((section(".external_ram"))) netRxFifo_bytes[NETWORK_MANDOLIN_FIFO_SIZE];
 uint32_t		g_CurrentIpAddress;
 
 _queue_id	tcp_qid;

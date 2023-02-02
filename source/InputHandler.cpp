@@ -25,16 +25,6 @@ static uint8_t amp_clip = 0;
 int16_t enc_pos = 0;
 int16_t enc_last_pos = 0;
 
-void PORTA_IRQHandler()
-{
-#ifdef SC_COMMENTED_OUT
-	GPIO_DRV_ClearPinIntFlag(SHARC_SPI_READY);
-//	if(GPIO_DRV_ReadPinInput(SHARC_SPI_READY))
-		_lwevent_set(&sys_event, event_dsp_tx_ready);
-//	else
-//		_lwevent_clear(&sys_event, event_dsp_tx_ready);
-#endif // SC_COMMENTED_OUT
-}
 
 uint8_t init_inputs(void){
 

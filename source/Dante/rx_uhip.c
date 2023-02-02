@@ -37,7 +37,7 @@ typedef struct uhip_rx_buffer
 	} _;
 } uhip_rx_buffer_t;
 
-static uhip_rx_buffer_t rx_buffer;
+static uhip_rx_buffer_t __attribute__ ((section(".external_ram"))) rx_buffer;
 
 unsigned char g_dante_comm_error_detect = 0;
 

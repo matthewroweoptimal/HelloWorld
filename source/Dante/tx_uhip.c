@@ -24,7 +24,7 @@
 uint8_t __attribute__ ((aligned (4))) tx_buffer[UHIP_PACKET_SIZE_MAX];
 // jeffwh - 16 Sept 2015 - Fixing 32 bit alignment problem
 //uint8_t cobs_tx_buffer[_COBS_PAD(UHIP_PACKET_SIZE_MAX) + UHIP_PACKET_SIZE_MAX + COBS_ZERO_PAIR_NUM];
-uint8_t cobs_tx_buffer[((_COBS_PAD(UHIP_PACKET_SIZE_MAX) + UHIP_PACKET_SIZE_MAX + COBS_ZERO_PAIR_NUM)+3)&0xFFFFFFFC];
+uint8_t __attribute__ ((section(".external_ram"))) cobs_tx_buffer[((_COBS_PAD(UHIP_PACKET_SIZE_MAX) + UHIP_PACKET_SIZE_MAX + COBS_ZERO_PAIR_NUM)+3)&0xFFFFFFFC];
 
 // Forward declarations
 size_t add_delim_pad_data(uint8_t *cobs_buffer, size_t cobs_encoded_size);

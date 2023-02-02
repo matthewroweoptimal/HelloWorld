@@ -39,5 +39,16 @@ private:
     SemaphoreHandle_t   _semMainThreadComplete;
 };
 
+class SysEventsThread : public Thread
+{
+public:
+	SysEventsThread(uint16_t usStackDepth, UBaseType_t uxPriority, SemaphoreHandle_t& semMainThreadComplete);
 
+protected:
+    void Run();
+
+
+private:
+    SemaphoreHandle_t   _semMainThreadComplete;
+};
 #endif /* GUITHREAD_H_ */

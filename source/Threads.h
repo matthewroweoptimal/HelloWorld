@@ -45,16 +45,18 @@
 #define GUI_THREAD_PRIORITY	( TCPIP_THREAD_PRIO - 5 )					//5
 #define UI_THREAD_PRIORITY	( TCPIP_THREAD_PRIO - 6 )					//3
 #define METERS_THREAD_PRIORITY	( TCPIP_THREAD_PRIO - 6 )					//3
+#define SYSEVENTS_THREAD_PRIORITY	( TCPIP_THREAD_PRIO - 6 )					//3
 
 
 #define MAIN_THREAD_STACKSIZE      	(configMINIMAL_STACK_SIZE + 256)
-#define MONITORING_TIMER_STACKSIZE 	(configMINIMAL_STACK_SIZE + 100)
+#define MONITORING_TIMER_STACKSIZE 	(configMINIMAL_STACK_SIZE + 256)
 #define TCPTHREAD_STACKSIZE 	   	(configMINIMAL_STACK_SIZE + 256)		// IQ - HWM 844 bytes so only 211 words - STuart-> FreeRTOS stack size for TCP CONFIG thread - seen 1518 HWM
 #define TCP_MANDOLIN_STACK_SIZE    	(configMINIMAL_STACK_SIZE + 256)    	// IQ - This thread stack size is specified differently and in bytes - STuart-> FreeRTOS stack size for MANDOLIN thread - seen 1580 HWM
 #define DANTETHREAD_STACKSIZE    	(configMINIMAL_STACK_SIZE + 256)    	// FreeRTOS stack size for DANTE thread - seen ???? HWM
 #define GUITHREAD_STACKSIZE    		(configMINIMAL_STACK_SIZE + 256)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
 #define UITHREAD_STACKSIZE    		(configMINIMAL_STACK_SIZE + 256)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
 #define METERSTHREAD_STACKSIZE  	(configMINIMAL_STACK_SIZE + 256)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
+#define SYSEVENTSTHREAD_STACKSIZE  	(configMINIMAL_STACK_SIZE + 344)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
 
 
 #define MONITORING_TIMER_TICK  ( pdMS_TO_TICKS(500))
@@ -76,6 +78,7 @@ private:
     GuiThread 		*_guiThread; 	// This is Gui_Task
     UiThread 		*_uiThread; 	// This is ui_Task
     MetersThread 	*_metersThread; 	// This is Meter_Task
+    SysEventsThread *_sysEventsThread; 	// This is Meter_Task
 
     /* Timers */
     SecondTimer 	*_secondTimer;
