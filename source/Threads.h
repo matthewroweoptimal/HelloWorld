@@ -50,8 +50,8 @@
 
 #define MAIN_THREAD_STACKSIZE      	(configMINIMAL_STACK_SIZE + 256)
 #define MONITORING_TIMER_STACKSIZE 	(configMINIMAL_STACK_SIZE + 256)
-#define TCPTHREAD_STACKSIZE 	   	(configMINIMAL_STACK_SIZE + 256)		// IQ - HWM 844 bytes so only 211 words - STuart-> FreeRTOS stack size for TCP CONFIG thread - seen 1518 HWM
-#define TCP_MANDOLIN_STACK_SIZE    	(configMINIMAL_STACK_SIZE + 256)    	// IQ - This thread stack size is specified differently and in bytes - STuart-> FreeRTOS stack size for MANDOLIN thread - seen 1580 HWM
+#define TCPTHREAD_STACKSIZE 	   	(configMINIMAL_STACK_SIZE + 344)		// IQ - HWM 844 bytes so only 211 words - STuart-> FreeRTOS stack size for TCP CONFIG thread - seen 1518 HWM
+#define TCP_MANDOLIN_STACK_SIZE    	(configMINIMAL_STACK_SIZE + 344)    	// IQ - This thread stack size is specified differently and in bytes - STuart-> FreeRTOS stack size for MANDOLIN thread - seen 1580 HWM
 #define DANTETHREAD_STACKSIZE    	(configMINIMAL_STACK_SIZE + 256)    	// FreeRTOS stack size for DANTE thread - seen ???? HWM
 #define GUITHREAD_STACKSIZE    		(configMINIMAL_STACK_SIZE + 256)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
 #define UITHREAD_STACKSIZE    		(configMINIMAL_STACK_SIZE + 256)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
