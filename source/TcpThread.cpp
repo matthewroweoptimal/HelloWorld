@@ -42,8 +42,15 @@ static void netifStatusCallback(struct netif *netif, netif_nsc_reason_t reason, 
 
 static void srv_txt(struct mdns_service *service, void *txt_userdata)
 {
-    int res = mdns_resp_add_service_txtitem(service, "path=/", 6);
+    int res = mdns_resp_add_service_txtitem(service, "Brand=/", 7);
     LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
+    res = mdns_resp_add_service_txtitem(service, "Model=/", 7);
+    LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
+    res = mdns_resp_add_service_txtitem(service, "Revision=/", 10);
+    LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
+    res = mdns_resp_add_service_txtitem(service, "Serial=/", 8);
+    LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
+
 }
 
 TcpThread::TcpThread(uint16_t usStackDepth, UBaseType_t uxPriority, SemaphoreHandle_t& semMainThreadComplete)
@@ -80,7 +87,8 @@ void TcpThread::Run()
 
     mdns_resp_init();
     mdns_resp_add_netif(&netif, mdnsName);
-    mdns_resp_add_service(&netif, "cddlive", "_tcp", DNSSD_PROTO_TCP, 50001, srv_txt, NULL);
+    mdns_resp_add_service(&netif, "CDDLIVE12", "_mandolin", DNSSD_PROTO_TCP, 50001, srv_txt, NULL);
+
 
     dhcp_start(&netif);
 
