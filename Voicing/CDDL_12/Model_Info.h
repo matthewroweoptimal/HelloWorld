@@ -42,4 +42,4 @@
 #define USE_CDD_NOISEGATE       1
 
 /* UI Definitions */
-#define USE_CDD_UI				1
+//#define USE_CDD_UI				1
