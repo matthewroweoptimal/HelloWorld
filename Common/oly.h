@@ -29,7 +29,7 @@
 #ifdef DANTE_V4
  #define OLY_FW_VERSION		    FW_VERSION_CONST(2,2,43)
 #else
- #define OLY_FW_VERSION		    FW_VERSION_CONST(1,2,43)
+ #define OLY_FW_VERSION		    FW_VERSION_CONST(1,1,13)
 #endif
 
 #define DANTE_OS_VERSION		FW_VERSION_CONST(2,2,3,1)

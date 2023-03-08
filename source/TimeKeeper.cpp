@@ -21,7 +21,7 @@ LWEVENT_STRUCT timer_event;
 int g_nDeferredRebootDowncount = 0;
 
 //	perform background timer-based actions
-void HeartbeatTimer(_timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr)
+void HeartbeatTimer(_timer_id id)
 {
 	//	Toggle LEDs every tick (500 ms)
 #ifdef SC_COMMENTED_OUT
@@ -55,14 +55,14 @@ void DeferredReboot(int nMs)
 
 
 
-void CheckAmps( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr )
+void CheckAmps( _timer_id id)
 {
 	_lwevent_set( &timer_event, event_timer_amp_temp_update );
 }
 
 
 
-void TriggerFlashWrite( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr )
+void TriggerFlashWrite( _timer_id id)
 {
 	_lwevent_set( &timer_event, event_timer_flashwrite_expired );
 }
@@ -115,7 +115,7 @@ void VoicingSubscriptionUpdater( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_
 	_lwevent_set( &timer_event, event_timer_self_test_switch );
 }
 
-void UIBackToDefaultScreen( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr )
+void UIBackToDefaultScreen( _timer_id id)
 {
 	_lwevent_set( &timer_event, event_timer_backpanel_ui_timeout );
 }

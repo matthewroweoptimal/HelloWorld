@@ -62,9 +62,11 @@ void cddlMembraneUI::SW2()
 			GPIO_DRV_WritePinOutput(FAN_CONTROL, 0);
 
 		if(cddl_current_preset == 4)
-			LogoSetState(LOGO_ON_RED);
+			//LogoSetState(LOGO_ON_RED);
+			GPIO_DRV_WritePinOutput(LOGO_ON_RED, 0);
 		else
-			LogoSetState(LOGO_OFF);
+			//LogoSetState(LOGO_OFF);
+			GPIO_DRV_WritePinOutput(LOGO_ON_RED, 1);
 
 
 #else

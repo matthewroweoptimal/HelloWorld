@@ -76,3 +76,24 @@ void SysEventsThread::Run()
 
     Suspend();
 }
+
+
+TimerKeeperThread::TimerKeeperThread(uint16_t usStackDepth, UBaseType_t uxPriority, SemaphoreHandle_t& semMainThreadComplete)
+     : Thread("Timer Keeper Thread", usStackDepth, uxPriority),
+       _semMainThreadComplete(semMainThreadComplete)
+{
+}
+
+void TimerKeeperThread::Run()
+{
+	printf("Timer Keeper thread waiting on MainThread completing...\n");
+	//--- Wait until MainThread complete ---
+    xSemaphoreTake(_semMainThreadComplete, portMAX_DELAY);
+    xSemaphoreGive(_semMainThreadComplete);					//this feels dodgy, any thread that picks up the semaphore gives again for other threads to start.
+
+    printf("Timer Keeper thread running\n");
+
+    TimeKeeper_Task(0);		//runs the code from original NXP version...
+
+    Suspend();
+}

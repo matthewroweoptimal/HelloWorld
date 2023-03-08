@@ -76,7 +76,7 @@
 #define configSUPPORT_STATIC_ALLOCATION         0
 #define configSUPPORT_DYNAMIC_ALLOCATION        1
 /*#define configTOTAL_HEAP_SIZE                   0  not used by heap_3.c allocator */
-#define configTOTAL_HEAP_SIZE                   ((size_t)(91 * 1024))		// TODO: 90k appears to be the largest possible before the meter thread is added.
+#define configTOTAL_HEAP_SIZE                   ((size_t)(89 * 1024))		// TODO: 90k appears to be the largest possible before the meter thread is added.
 #define configAPPLICATION_ALLOCATED_HEAP        0
 
 /* Hook function related definitions. */

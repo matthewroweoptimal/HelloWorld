@@ -9,6 +9,7 @@
 #define SOURCES_AMPMONITOR_H_
 
 //#include "fsl_adc16_driver.h"
+#include <stdint.h>
 
 #define DEFAULT_TEMP_TARGET			30.0
 #define DEFAULT_TEMP_HYSTERESIS		4.0
@@ -24,5 +25,7 @@ float ReadAmpTemperature( uint32_t whichAmp );
 //void SetLowTempThreshold( float target, float hysteresis );
 //void SetHighTempThreshold( float target, float hysteresis );
 //void SetFanControlTempThreshold( float target, float hysteresis );
+
+void EADC_Init();
 
 #endif /* SOURCES_AMPMONITOR_H_ */

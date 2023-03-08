@@ -14,6 +14,7 @@
 #include "network.h"
 #include "TimeKeeper.h"
 #include "spi_flash_nu.h"
+#include "AmpMonitor.h"
 
 extern "C" {
 #include "flash_params.h"
@@ -698,12 +699,12 @@ namespace oly {
     		valid = true;
     		break;
     	case OUTPUT_MARTIN_LOGO_LED_AMBER:
-    		GPIO_DRV_WritePinOutput(LOGO_LED_AMBER, value);
+    		//GPIO_DRV_WritePinOutput(LOGO_LED_AMBER, value);
     		printf("Martin Mfg: Setting Amber LED to %d\n", value);
     		valid = true;
     		break;
     	case OUTPUT_MARTIN_LOGO_LED_WHITE:
-    		GPIO_DRV_WritePinOutput(LOGO_LED_WHITE, value);
+    		//GPIO_DRV_WritePinOutput(LOGO_LED_WHITE, value);
     		printf("Martin Mfg: Setting White LED to %d\n", value);
     		valid = true;
     		break;
@@ -765,7 +766,7 @@ namespace oly {
     		break;
     	case INPUT_MARTIN_DISPLAY_D1:
     		// "UI_PB_1" actually corresponds to the D1 pin for Martin
-    		pinValue = GPIO_DRV_ReadPinInput(UI_PB_1);
+    		//pinValue = GPIO_DRV_ReadPinInput(UI_PB_1);
     		break;
     #endif // MFG_TEST_EAW
     	}
@@ -872,6 +873,7 @@ namespace oly {
     			olyNetworkPort.WriteMessage(SetParameter(eTARGET_STATUS, 0, ePID_OLYspeaker1_STATUS_CS_FAULT_CH3, olyStatus.Values[ePID_OLYspeaker1_STATUS_CS_FAULT_CH3]), true);
     		}
     	}
+
     }
     
     void Config::OnAmpFaultStatusChanged(bool fault)
@@ -2092,6 +2094,9 @@ namespace oly {
     
     	oly_version_t version;
     	version.u32 = OLY_FW_VERSION;
+
+    	//bodge to enforce defaults are used, for EMC & Safety samples!
+    	//version.u32 = 0;
     
     	// If XML version or Major/Minor rev, clear flash to defaults.  Sub rev ignored
     	if  ((olyStoredParams.XML_Version != OLYspeaker1_XML_VERSION) || ((olyStoredParams.Version.u32 & 0xFF00) != (version.u32 & 0xFF00) )){
@@ -2278,6 +2283,7 @@ namespace oly {
     {
     	// Starts the countdown before writing to flash
     	_lwevent_set( &timer_event, event_timer_flashwrite_start );
+
     }
     
     void Config::WriteParamsToFlash()
@@ -2289,29 +2295,14 @@ namespace oly {
     
     float Config::GetCurrentAmpTemp(amp_instance_t amp)
     {
-#ifdef SC_COMENTED_OUT
+
     	int32_t rounded = ROUND(ReadAmpTemperature(amp));
     	return (float)rounded;
-#endif //  SC_COMENTED_OUT
     }
     
     void Config::UpdateCurrentTiltAngle(void)
     {
-#ifdef SC_COMENTED_OUT
-    	int32 tempVar = (int32) GetRawTilt();
-    
-    	if (olyStatus.Angle != tempVar)
-    	{
-    		olyStatus.Angle = (int32) tempVar;
-    		CheckOrientation();
-    #if USES_IRDA	// TODO: Enable for FRs once angle and axis logic is sorted
-    		olyNetworkPort.WriteMessage(SetParameter(eTARGET_STATUS, 0, ePID_OLYspeaker1_STATUS_ANGLE, olyStatus.Values[ePID_OLYspeaker1_STATUS_ANGLE]), true);
-    #endif
-    #if USE_OLY_UI
-    		olyUI.UpdateAutoTilt(CalcCorrectedTilt(tempVar));
-    #endif	// USE_OLY_UI
-    	}
-#endif //  SC_COMENTED_OUT
+    	olyStatus.Angle = 90;
     }
     
     #endif // _SECONDARY_BOOT

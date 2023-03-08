@@ -22,6 +22,10 @@
 #define GPIOG_PIN_BASE (GPIO_PIN_DATA_BASE+(0x40*(6)))
 #define GPIOH_PIN_BASE (GPIO_PIN_DATA_BASE+(0x40*(7)))
 
+//Temp monitor pins
+#define AMP1_TEMP_MON_PIN  			PB0
+#define AMP2_TEMP_MON_PIN  			PB1
+
 class Pin
 {
 public:
@@ -81,6 +85,8 @@ enum GPIO_t {
 	DISPLAY_D4,
 	DISPLAY_D5,
 	DISPLAY_D6,
+	LOGO_LED_RED,
+	FAN_CONTROL,
 	NUM_GPIO
 };
 
@@ -109,7 +115,9 @@ static Pin gpioPins[NUM_GPIO] = {
 	{GPIOB_PIN_BASE, 2},	// DISPLAY_D3 on B2
 	{GPIOC_PIN_BASE, 12},	// DISPLAY_D4 on C12
 	{GPIOC_PIN_BASE, 11},	// DISPLAY_D5 on C11
-	{GPIOC_PIN_BASE, 10},	// DISPLAY_D5 on C10
+	{GPIOC_PIN_BASE, 10},	// DISPLAY_D6 on C10
+	{GPIOA_PIN_BASE, 1},	// LOGO_LED_RED on A1
+	{GPIOA_PIN_BASE, 0},	// FAN_CONTROL on A0
 };
 
 class Leds
@@ -136,6 +144,8 @@ public:
 	};
 
 };
+
+
 
 
 /* Adding driver functions used in the original CDD/OLY code

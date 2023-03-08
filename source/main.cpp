@@ -40,6 +40,7 @@
 #include "board.h"
 #include "uart_ultimo.h"
 #include "flash_params.h"
+#include "AmpMonitor.h"
 
 using namespace std;
 
@@ -73,6 +74,8 @@ static void prvSetupHardware( void );
 static void peripherals_init(void);
 /*-----------------------------------------------------------*/
 
+extern int32_t g_EADC_i32ErrCode;
+
 // Map new / delete operators to use the FreeRTOS heap.
 void * operator new( size_t size )
 {
@@ -97,6 +100,9 @@ void operator delete[]( void * ptr )
 }
 
 int main(void)
+
+
+
 
 {
     /* Configure the hardware */
@@ -169,6 +175,20 @@ static void prvSetupHardware( void )
     CLK_SetModuleClock(TMR0_MODULE, CLK_CLKSEL1_TMR0SEL_HXT, 0);
     // Configure MDC clock rate to HCLK / (127 + 1) = 1.5 MHz if system is running at 192 MHz
     CLK_SetModuleClock(EMAC_MODULE, 0, CLK_CLKDIV3_EMAC(127));
+
+    /* Enable EADC module clock */
+    CLK_EnableModuleClock(EADC_MODULE);
+
+    /* EADC clock source is 96MHz, set divider to 8, EADC clock is 96/8 MHz */
+    CLK_SetModuleClock(EADC_MODULE, 0, CLK_CLKDIV0_EADC(8));
+
+
+    /* Update System Core Clock */
+    /* User can use SystemCoreClockUpdate() to calculate SystemCoreClock and CyclesPerUs automatically. */
+    SystemCoreClockUpdate();
+
+
+
 
 
     // SPI1_CONFIGURATION
@@ -256,7 +276,14 @@ static void prvSetupHardware( void )
                   (0x1<<GPIO_SLEWCTL_HSREN2_Pos) | (0x1<<GPIO_SLEWCTL_HSREN3_Pos) |
                   (0x1<<GPIO_SLEWCTL_HSREN4_Pos) | (0x1<<GPIO_SLEWCTL_HSREN5_Pos);
 
+    /* Configure the GPB0 ADC analog input pins.  */
+    SYS->GPB_MFPL &= ~(SYS_GPB_MFPL_PB0MFP_Msk | SYS_GPB_MFPL_PB1MFP_Msk);
+    SYS->GPB_MFPL |= (SYS_GPB_MFPL_PB0MFP_EADC0_CH0 | SYS_GPB_MFPL_PB1MFP_EADC0_CH1);
 
+    /* Disable the GPB0 and GPB12 digital input path to avoid the leakage current. */
+    GPIO_DISABLE_DIGITAL_PATH(PB, BIT1|BIT0);
+
+    GPIO_SetMode(PA, BIT0|BIT1, GPIO_MODE_OUTPUT);
     GPIO_SetMode(PB, BIT2|BIT3, GPIO_MODE_OUTPUT);
     GPIO_SetMode(PB, BIT5, GPIO_MODE_QUASI);
     GPIO_SetMode(PC, BIT10|BIT11|BIT12, GPIO_MODE_OUTPUT);		//
@@ -404,5 +431,14 @@ static void peripherals_init(void)
 
     /* TODO : FTM3 LCD Backlight NOT USED BY NUCDD*/
 
-    /* TODO : Init ADC for Amp Monitoring NOT USED BY NUCDD*/
+    /* TODO : Init ADC for Amp Monitoring*/
+    EADC_Init();
+
+    if(g_EADC_i32ErrCode==EADC_TIMEOUT_ERR)
+    {
+    	while(1);
+    }
+
+
+
 }

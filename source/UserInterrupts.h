@@ -20,8 +20,7 @@ extern "C" {
 #include "uart_ultimo.h"
 
 static uint32_t RTOS_RunTimeCounter; /* runtime counter, used for configGENERATE_RUNTIME_STATS */
-int32_t gDebugCount =0;
-int32_t gDebugCount1 =0;
+extern uint32_t g_u32AdcIntFlag;
 
 void GPH_IRQHandler()
 {
@@ -33,12 +32,10 @@ void GPH_IRQHandler()
         GPIO_CLR_INT_FLAG(PH, BIT3);
         if(GPIO_DRV_ReadPinInput(SHARC_SPI_READY))
         {
-        		gDebugCount++;
         		_lwevent_set_isr(&sys_event, event_dsp_tx_ready);
         }
         else
         {
-        		gDebugCount1++;
         		_lwevent_clear_isr(&sys_event, event_dsp_tx_ready);
         }
     } else
@@ -69,6 +66,14 @@ void UART1_IRQHandler(void)
 {   // ULTIMO connected on UART1
 	ULTIMO_UART_IRQHandler();
 }
+
+
+void EADC00_IRQHandler(void)
+{
+    g_u32AdcIntFlag = 1;
+    EADC_CLR_INT_FLAG(EADC, EADC_STATUS2_ADIF0_Msk);      /* Clear the A/D ADINT0 interrupt flag */
+}
+
 
 void RTOS_AppConfigureTimerForRuntimeStats(void) {
   RTOS_RunTimeCounter = 0;

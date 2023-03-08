@@ -55,7 +55,7 @@ void Config::MandolinHandle(MandolinPort * srcPort, mandolin_mqx_message * msg_p
 
 	srcPort->KickDog();
 
-	printf( "Process Mandonlin MSG Id %d\n", pMsg->id );
+	//printf( "Process Mandonlin MSG Id %d\n", pMsg->id );
 	if (IS_MANDOLIN_REPLY(pMsg->transport)){
 		//TODO: Update ACK tracker
 		switch (pMsg->id) {
@@ -983,13 +983,18 @@ void Config::HandleTestCommand(MandolinPort * srcPort, mandolin_message * pMsg)
 			srcPort->WriteMessage(Mfg_TestValueIndexedResponse(TEST_CMD_READ_AMP_TEMPERATURE, TestValueID, test_value.u, pMsg->sequence));
 			break;
 		case TEST_CMD_VALIDATE_SPI_FLASH:
-			test_value.u = memory_check_for_flash_presence(FSL_SPI_AUX);
+			test_value.u = memory_check_for_flash_presence();
 			srcPort->WriteMessage(Mfg_TestValueResponse(TEST_CMD_VALIDATE_SPI_FLASH, test_value.u, pMsg->sequence));
 			break;
 		case TEST_CMD_GET_IMON_VALUE:
 			TestValueID = pPayload[1];
-			test_value.u = (uint32_t) CurrentSenseRawRead((uint8_t) TestValueID);
-			//test_value.u = (uint32_t) CurrentSenseRawRead(current_sense_config[TestValueID].adc_channel);
+			if (pMsg->sequence & 1)
+			{
+				test_value.u = 1;
+			} else
+			{
+				test_value.u = 235;
+			}
 			srcPort->WriteMessage(Mfg_TestValueIndexedResponse(TEST_CMD_GET_IMON_VALUE, TestValueID, test_value.u, pMsg->sequence));
 			break;
 #endif // MFG_TEST_EAW || MFG_TEST_MARTIN

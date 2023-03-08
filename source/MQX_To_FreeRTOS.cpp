@@ -499,6 +499,7 @@ _timer_id  _timer_start_periodic_every_ticks(TIMER_NOTIFICATION_TICK_FPTR notifi
 	configASSERT( handle != NULL );
 	BaseType_t result = xTimerStart( handle, portMAX_DELAY );
 	configASSERT( result != pdFALSE );
+	return handle;
 }
 
 // Cancels an outstanding timer request
@@ -538,6 +539,7 @@ _timer_id  _timer_start_oneshot_after_ticks(TIMER_NOTIFICATION_TICK_FPTR notific
 	configASSERT( handle != NULL );
 	BaseType_t result = xTimerStart( handle, portMAX_DELAY );
 	configASSERT( result != pdFALSE );
+	return handle;
 }
 
 

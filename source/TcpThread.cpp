@@ -19,7 +19,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 
-unsigned char macAddr[6] = {0x00, 0x00, 0x00, 0x55, 0x66, 0x77};
+unsigned char macAddr[6] = {0x00, 0x0F, 0xF2, 0x08, 0x5B, 0xB9};
 const char mdnsName[] = "cddlive";
 
 NETIF_DECLARE_EXT_CALLBACK(netif_callback)
@@ -71,8 +71,8 @@ void TcpThread::Run()
     ip_addr_t netmask;
     ip_addr_t gw;
 
-    IP4_ADDR(&gw, 192,168,0,1);
-    IP4_ADDR(&ipaddr, 192,168,0,2);
+    IP4_ADDR(&gw, 169,254,1,1);
+    IP4_ADDR(&ipaddr, 169,254,1,101);
     IP4_ADDR(&netmask, 255,255,255,0);
 
     tcpip_init(NULL, NULL);

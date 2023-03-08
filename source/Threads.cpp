@@ -36,8 +36,13 @@ void Threads::StartThreads()
     _metersThread = new MetersThread(METERSTHREAD_STACKSIZE, METERS_THREAD_PRIORITY,_semMainThreadComplete);
     _metersThread->Start();
 
+    _timerKeeperThread = new TimerKeeperThread(TIMERKEEPERTHREAD_STACKSIZE, TIMERKEEPER_THREAD_PRIORITY,_semMainThreadComplete);
+    _timerKeeperThread->Start();
+
     _sysEventsThread = new SysEventsThread(SYSEVENTSTHREAD_STACKSIZE, SYSEVENTS_THREAD_PRIORITY,_semMainThreadComplete);
     _sysEventsThread->Start();
+
+
 
 }
 

@@ -22,6 +22,30 @@
 #define USE_4_BYTES_MODE            0            /* W25Q20 does not support 4-bytes address mode. */
 uint8_t  g_buff[BUFFER_SIZE] __attribute__((aligned(4)));
 
+
+/*FUNCTION*---------------------------------------------------------------
+*
+* Function Name : memory_check_for_flash_presence
+* Comments  : This function checks if a spi flash is present
+* Return:
+*         Status of SPI transfer
+*
+*END*----------------------------------------------------------------------*/
+uint32_t memory_check_for_flash_presence ()
+{
+	uint32_t result;
+
+    result = SPIM_InitFlash(FLASH_WRITE_CLEAR_PROTECT);
+    if(result != SPIM_INITFLASH_SUCCESS)
+    	return 0;
+    else
+    	return 1;
+}
+
+
+
+
+
 spi_flash_status_t spi_flash_init(oly_flash_params_t * olyStoredParams)
 {
 	uint32_t i, result;

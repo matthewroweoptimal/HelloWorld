@@ -58,6 +58,7 @@ uint32_t system_flash_init(oly_flash_params_t * olyStoredParams);
 void system_flash_write_oly_params(oly_flash_params_t * olyStoredParams);
 void system_flash_param_reinit();
 uint32_t spi_flash_check_block_erased(uint32_t u32Addr, uint32_t u32BlockSize);
+uint32_t memory_check_for_flash_presence ();
 
 extern uint32_t emptyMemorySlotIndex;
 

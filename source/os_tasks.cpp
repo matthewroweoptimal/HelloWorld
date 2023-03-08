@@ -15,7 +15,7 @@
 #include "network.h"
 #include "cddl_leds.h"
 
-
+#include "TimeKeeper.h"
 
 extern "C" {
 //#include "gpio_pins.h"
@@ -28,7 +28,7 @@ extern "C" {
 #include "UltimoPort.h"
 //#include "Discovery.h"
 //#include <timer.h>
-//#include "TimeKeeper.h"
+
 //#include "SpeakerConfiguration.h"
 //#include "math.h"
 //#include "CurrentSense.h"
@@ -841,7 +841,7 @@ void SysEvents_Task(uint32_t task_init_data)
 	}
 }
 
-#if 0 //EXCLUDE OTHER TASKS FOR NOW - IQ
+
 /* Handles Timer Events */
 void TimeKeeper_Task(uint32_t task_init_data)
 {
@@ -862,6 +862,7 @@ void TimeKeeper_Task(uint32_t task_init_data)
 	_time_add_msec_to_ticks(&heartbeat_ticks, TIMEOUT_HEARTBEAT);
 	heartbeat_timer = _timer_start_periodic_every_ticks(HeartbeatTimer, 0, TIMER_ELAPSED_TIME_MODE, &heartbeat_ticks);
 
+
 	/* Create Amp Temperature Monitoring Timer */
 	_time_init_ticks(&ampMonitoring_ticks, 0);
 	_time_add_msec_to_ticks(&ampMonitoring_ticks, TIMEOUT_AMPMONITORING);
@@ -873,28 +874,31 @@ void TimeKeeper_Task(uint32_t task_init_data)
 
 	printf("TimeKeeper task created\n");
 
+	//IQ The following simply sets default values for manf test.
+	olyConfig->UpdateCurrentTiltAngle();
+
+
 	while(1)
 	{
-		_lwevent_wait_ticks(&timer_event,0xffffffff,FALSE,0);
+		_lwevent_wait_ticks(&timer_event,0xffffff,FALSE,0);		//for freeRTOS, must not include top 8 bits in mask!
 		timer_bits = _lwevent_get_signalled();
+
 		TASKDEBUG_IN(TASK_TIMER)
 		if( timer_bits & event_timer_flashwrite_start ) {
 			if( flashWrite_timer )	_timer_cancel( flashWrite_timer );
 			flashWrite_timer = _timer_start_oneshot_after_ticks(TriggerFlashWrite, 0, TIMER_ELAPSED_TIME_MODE, &flashWrite_ticks);
 			_lwevent_clear(&timer_event, event_timer_flashwrite_start);
 		}
-
-		//this is now handled by aux_spi_task
 		else if( timer_bits & event_timer_flashwrite_expired ) {
-		//	olyConfig->WriteParamsToFlash();
-			_lwevent_set( &aux_spi_event, system_flash_write_event );
+			olyConfig->WriteParamsToFlash();
+			//_lwevent_set( &aux_spi_event, system_flash_write_event );		//moving back from aux_spi_task
 			_lwevent_clear(&timer_event, event_timer_flashwrite_expired);
 		}
 
 		else if ( timer_bits & event_timer_amp_temp_update) {
 			olyConfig->OnAmpTempChanged(sPro2_amp1, olyConfig->GetCurrentAmpTemp(sPro2_amp1));
 			olyConfig->OnAmpTempChanged(sPro2_amp2, olyConfig->GetCurrentAmpTemp(sPro2_amp2));
-			olyConfig->UpdateCurrentTiltAngle();
+			//olyConfig->UpdateCurrentTiltAngle();
 			_lwevent_clear(&timer_event, event_timer_amp_temp_update);
 		}
 
@@ -962,13 +966,13 @@ void TimeKeeper_Task(uint32_t task_init_data)
 
 			_lwevent_clear(&timer_event, event_timer_subscription_Network2);
 		}
-
 		else
-			_lwevent_clear(&timer_event, 0xffffffff);
+			_lwevent_clear(&timer_event, 0xffffff);
 
 		TASKDEBUG_OUT(TASK_TIMER)
 
 	}
+
 }
 
 bool IsIpConnected()
@@ -994,7 +998,7 @@ bool IsIpConnected()
 	return(bIsIpConnected);
 }
 
-
+#if 0 //EXCLUDE OTHER TASKS FOR NOW - IQ
 /* mDNS Responder */
 void Discovery_Task(uint32_t task_init_data)
 {
