@@ -398,7 +398,10 @@ void MandolinPort::ConfigureMeters(int nAutoMetersListId, int nAutoMetersRate, i
 void MandolinPort::KillAllSubscriptions(void)
 {
 	for(int nList=0;nList<PORT_MAX_PARAMETER_LISTS;nList++)
-		_timer_cancel(m_SubscriptionTimer[nList]);
+	{
+    	if (m_SubscriptionTimer[nList])
+		    _timer_cancel(m_SubscriptionTimer[nList]);
+    }
 }
 
 int MandolinPort::GetParameterListFlags(int listId)
