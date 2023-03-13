@@ -68,16 +68,17 @@
 #define configUSE_APPLICATION_TASK_TAG          0
 
 /* Used memory allocation (heap_x.c) */
-#define configFRTOS_MEMORY_SCHEME               4
+#define configFRTOS_MEMORY_SCHEME               5   // CCDLive will use Heap regions in both Internal and External RAM (heap_5.c scheme)
 /* Tasks.c additions (e.g. Thread Aware Debug capability) */
 #define configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H 1
 
 /* Memory allocation related definitions. */
 #define configSUPPORT_STATIC_ALLOCATION         0
 #define configSUPPORT_DYNAMIC_ALLOCATION        1
-/*#define configTOTAL_HEAP_SIZE                   0  not used by heap_3.c allocator */
-#define configTOTAL_HEAP_SIZE                   ((size_t)(89 * 1024))		// TODO: 90k appears to be the largest possible before the meter thread is added.
-#define configAPPLICATION_ALLOCATED_HEAP        0
+#define configAPPLICATION_ALLOCATED_HEAP        0   // Not used in heap_5 scheme
+#define configTOTAL_HEAP_SIZE                   ((size_t)(80 * 1024))   // 80k in Internal RAM prioritises FreeRTOS objects in faster RAM
+#define configTOTAL_EXT_HEAP_SIZE               ((size_t)(48 * 1024))   // Size of FreeRTOS heap within (slower) External RAM (heap_5 scheme).
+
 
 /* Hook function related definitions. */
 #define configUSE_IDLE_HOOK                     0
@@ -177,7 +178,8 @@ extern unsigned long RTOS_AppGetRuntimeCounterValueFromISR(void);
 
 #define configASSERT(x) if((x) == 0) {printf("Assert failed %s, %s\n", __FILE__, __FUNCTION__); taskDISABLE_INTERRUPTS(); for (;;);}
 
-//#define traceMALLOC(x,y) printf("Malloc %p, %d bytes\n", x, y);
+//#define traceMALLOC(x,y) printf("MALLOC %p, %d bytes\n", x, y);
+//#define traceFREE(x, y) printf("FREE %p, size %d\n", x, y);
 
 #endif
 

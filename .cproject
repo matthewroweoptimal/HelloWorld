@@ -60,7 +60,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/dante-uhip/src/libs/lib_uhip/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Dante/src/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Dante/&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CDDLive/Voicing/CDDL_15}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Voicing/CDDL_15&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.135102731" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
@@ -117,6 +117,7 @@
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 								</option>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.asmlisting.1400257857" name="Generate assembler listing (-Wa,-adhlns=&quot;$@.lst&quot;)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.asmlisting" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.2145466818" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.271442930" name="Cross ARM GNU C++ Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler">
@@ -162,6 +163,7 @@
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.171425854" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
+								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.asmlisting.189434819" name="Generate assembler listing (-Wa,-adhlns=&quot;$@.lst&quot;)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.asmlisting" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.797759580" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
 							</tool>
 							<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker.221964997" name="Cross ARM GNU C Linker" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker">
@@ -204,7 +206,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Library"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="OSExtensions"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos-addons"/>
-						<entry excluding="portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_5.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
+						<entry excluding="portable/MemMang/heap_4.c|portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
 						<entry excluding="Drivers/spi_sharc.c|FatalError.cpp|OLD_InputHandler.c|OLD_InputHandler.cpp|OLD_TimeKeeper.c|OLD_mandolin.c|Comm/OLD_CommMandolin.c|cddl_leds.c|Common|server.c|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 					</sourceEntries>
@@ -465,7 +467,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/dante-uhip/src/libs/lib_uhip/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Dante/src/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Dante/&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CDDLive/Voicing/CDDL_15}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Voicing/CDDL_15&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.1291256425" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
@@ -609,7 +611,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Library"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="OSExtensions"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos-addons"/>
-						<entry excluding="portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_5.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
+						<entry excluding="portable/MemMang/heap_4.c|portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
 						<entry excluding="Drivers/spi_sharc.c|FatalError.cpp|OLD_InputHandler.c|OLD_InputHandler.cpp|OLD_TimeKeeper.c|OLD_mandolin.c|Comm/OLD_CommMandolin.c|cddl_leds.c|Common|server.c|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 					</sourceEntries>
@@ -690,7 +692,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/dante-uhip/src/libs/lib_uhip/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Dante/src/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Dante/&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CDDLive/Voicing/CDDL_12}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Voicing/CDDL_12&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.256873936" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
@@ -834,7 +836,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Library"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="OSExtensions"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos-addons"/>
-						<entry excluding="portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_5.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
+						<entry excluding="portable/MemMang/heap_4.c|portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
 						<entry excluding="Drivers/spi_sharc.c|FatalError.cpp|OLD_InputHandler.c|OLD_InputHandler.cpp|OLD_TimeKeeper.c|OLD_mandolin.c|Comm/OLD_CommMandolin.c|cddl_leds.c|Common|server.c|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 					</sourceEntries>
@@ -915,7 +917,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/dante-uhip/src/libs/lib_uhip/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Dante/src/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Dante/&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CDDLive/Voicing/CDDL_8}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Voicing/CDDL_8&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.221212273" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
@@ -1059,7 +1061,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Library"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="OSExtensions"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos-addons"/>
-						<entry excluding="portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_5.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
+						<entry excluding="portable/MemMang/heap_4.c|portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
 						<entry excluding="Drivers/spi_sharc.c|FatalError.cpp|OLD_InputHandler.c|OLD_InputHandler.cpp|OLD_TimeKeeper.c|OLD_mandolin.c|Comm/OLD_CommMandolin.c|cddl_leds.c|Common|server.c|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 					</sourceEntries>
@@ -1140,7 +1142,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/dante-uhip/src/libs/lib_uhip/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Dante/src/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Dante/&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CDDLive/Voicing/CSXL_118}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Voicing/CSXL_118&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.614196133" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
@@ -1284,7 +1286,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Library"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="OSExtensions"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos-addons"/>
-						<entry excluding="portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_5.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
+						<entry excluding="portable/MemMang/heap_4.c|portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
 						<entry excluding="Drivers/spi_sharc.c|FatalError.cpp|OLD_InputHandler.c|OLD_InputHandler.cpp|OLD_TimeKeeper.c|OLD_mandolin.c|Comm/OLD_CommMandolin.c|cddl_leds.c|Common|server.c|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 					</sourceEntries>
@@ -1365,7 +1367,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/dante-uhip/src/libs/lib_uhip/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Dante/src/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Dante/&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CDDLive/Voicing/CSXL_218}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Voicing/CSXL_218&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.1746934443" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
@@ -1509,7 +1511,7 @@
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Library"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="OSExtensions"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos-addons"/>
-						<entry excluding="portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_5.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
+						<entry excluding="portable/MemMang/heap_4.c|portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
 						<entry excluding="Drivers/spi_sharc.c|FatalError.cpp|OLD_InputHandler.c|OLD_InputHandler.cpp|OLD_TimeKeeper.c|OLD_mandolin.c|Comm/OLD_CommMandolin.c|cddl_leds.c|Common|server.c|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 					</sourceEntries>
@@ -1590,7 +1592,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/dante-uhip/src/libs/lib_uhip/include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Dante/src/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Dante/&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CDDLive/Voicing/CDDL_15}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Voicing/CDDL_15&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.1268196598" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
@@ -1732,12 +1734,15 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1790202927.324956088.190811062" name="heap_5.c" rcbsApplicability="disable" resourcePath="freertos_kernel/portable/MemMang/heap_5.c" toolsToInvoke="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.1728162936.1475498245">
+						<tool id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.1728162936.1475498245" name="Cross ARM GNU C Compiler" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.1728162936"/>
+					</fileInfo>
 					<sourceEntries>
 						<entry excluding="Region - Copy.cpp|Mandolin/mandolin.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Common"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Library"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="OSExtensions"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos-addons"/>
-						<entry excluding="portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_5.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
+						<entry excluding="portable/MemMang/heap_4.c|portable/MemMang/heap_useNewlib.c|portable/MemMang/heap_1.c|portable/MemMang/heap_3.c|portable/MemMang/heap_2.c|portable/ARMv8M" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="freertos_kernel"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="lwip"/>
 						<entry excluding="Drivers/spi_sharc.c|FatalError.cpp|OLD_InputHandler.c|OLD_InputHandler.cpp|OLD_TimeKeeper.c|OLD_mandolin.c|Comm/OLD_CommMandolin.c|cddl_leds.c|Common|server.c|Common/Mandolin/mandolin.c|Common/Mandolin/crc.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="source"/>
 					</sourceEntries>

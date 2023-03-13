@@ -70,7 +70,10 @@ uint16_t __attribute__ ((section(".external_ram"))) ExtRamArray[ARRAY_SIZE] = {0
 /*
  * Set up the hardware ready to run this demo.
  */
-static void prvSetupHardware( void );
+extern "C"
+{	// Make callable from heap_5.c where Ext RAM needs setting up before main() gets called.
+	void prvSetupHardware( void );
+}
 static void peripherals_init(void);
 /*-----------------------------------------------------------*/
 
@@ -100,10 +103,6 @@ void operator delete[]( void * ptr )
 }
 
 int main(void)
-
-
-
-
 {
     /* Configure the hardware */
     prvSetupHardware();
@@ -129,8 +128,10 @@ int main(void)
     for( ;; );
 }
 /*-----------------------------------------------------------*/
-
-static void prvSetupHardware( void )
+//static void prvSetupHardware( void )
+extern "C"
+{
+void prvSetupHardware( void )
 {
     /* Unlock protected registers */
     SYS_UnlockReg();
@@ -385,9 +386,9 @@ static void prvSetupHardware( void )
     SYS_LockReg();
 
 }
+} // extern "C"
+
 /*-----------------------------------------------------------*/
-
-
 
 static void peripherals_init(void)
 {
@@ -438,7 +439,5 @@ static void peripherals_init(void)
     {
     	while(1);
     }
-
-
 
 }
