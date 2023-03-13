@@ -321,10 +321,11 @@ Some MCU allow computing and verifying the IP, UDP, TCP and ICMP checksums by ha
 
 #define LWIP_IGMP                       1
 #define LWIP_MDNS_RESPONDER             1
-#define LWIP_NUM_NETIF_CLIENT_DATA      1
+#define LWIP_NUM_NETIF_CLIENT_DATA      2       // Increased by 1 for MDNS
 #define LWIP_NETIF_EXT_STATUS_CALLBACK  1
 #define MDNS_RESP_USENETIF_EXTCALLBACK  1
 #define LWIP_NETIF_LINK_CALLBACK        1
+#define LWIP_NETIF_STATUS_CALLBACK      1   // Match Breeze configuration settings
 
 // Tuning
 #define ETH_PAD_SIZE                    2

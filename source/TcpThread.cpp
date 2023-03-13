@@ -9,6 +9,8 @@
 #include "lwip/apps/mdns.h"
 #include "network.h"
 #include "os_tasks.h"
+#include "Region.h"
+#include <cstring>
 
 
 /* Private typedef -----------------------------------------------------------*/
@@ -41,16 +43,24 @@ static void netifStatusCallback(struct netif *netif, netif_nsc_reason_t reason, 
 }
 
 static void srv_txt(struct mdns_service *service, void *txt_userdata)
-{
-    int res = mdns_resp_add_service_txtitem(service, "Brand=/", 7);
+{    
+    char szText[64];
+	
+	sprintf(szText, "Brand=%s", Region::GetMandolinBrandName(Region::GetSystemBrand()));
+    int res = mdns_resp_add_service_txtitem(service, szText, strlen(szText));
     LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
-    res = mdns_resp_add_service_txtitem(service, "Model=/", 7);
+    
+	sprintf(szText, "Model=%s", Region::GetMandolinModelName(Region::GetSystemBrand(), Region::GetSystemModel()));
+    res = mdns_resp_add_service_txtitem(service, szText, strlen(szText));
     LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
-    res = mdns_resp_add_service_txtitem(service, "Revision=/", 10);
-    LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
-    res = mdns_resp_add_service_txtitem(service, "Serial=/", 8);
+    
+	sprintf(szText, "Revision=%d", (int)Region::GetHardwareRevision());
+    res = mdns_resp_add_service_txtitem(service, szText, strlen(szText));
     LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
 
+   	sprintf(szText, "Serial=%d", (int)Region::GetSerialNumber());
+    res = mdns_resp_add_service_txtitem(service, szText, strlen(szText));
+    LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
 }
 
 TcpThread::TcpThread(uint16_t usStackDepth, UBaseType_t uxPriority, SemaphoreHandle_t& semMainThreadComplete)
