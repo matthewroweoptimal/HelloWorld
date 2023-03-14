@@ -2812,7 +2812,7 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     	unsigned char *pSystemMAC = Region::GetSystemMAC();
     
     	sprintf(g_DiscoServiceName, "%s\xE2\x80\xA2\%02X%02X%02X",
-    				g_pszModelName,
+    				Region::GetMandolinModelName(Region::GetSystemBrand(), Region::GetSystemModel()),
     				*(pSystemMAC+3),
     				*(pSystemMAC+4),
     				*(pSystemMAC+5));

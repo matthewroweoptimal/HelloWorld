@@ -10,8 +10,10 @@
 #include "network.h"
 #include "os_tasks.h"
 #include "Region.h"
+#include "ConfigManager.h"
 #include <cstring>
 
+extern oly::Config *olyConfig;
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -39,6 +41,7 @@ static void netifStatusCallback(struct netif *netif, netif_nsc_reason_t reason, 
       LWIP_NSC_IPV4_NETMASK_CHANGED | LWIP_NSC_IPV4_SETTINGS_CHANGED )) {
 
 	  printf("Netif IP change: %s\n", ip_ntoa(&(netif->ip_addr)));
+	  mdns_resp_netif_settings_changed(netif);
   }
 }
 
@@ -97,8 +100,7 @@ void TcpThread::Run()
 
     mdns_resp_init();
     mdns_resp_add_netif(&netif, mdnsName);
-    mdns_resp_add_service(&netif, "CDDLIVE12", "_mandolin", DNSSD_PROTO_TCP, 50001, srv_txt, NULL);
-
+    mdns_resp_add_service(&netif, olyConfig->GetDiscoServiceName(), "_mandolin", DNSSD_PROTO_TCP, 50001, srv_txt, NULL);
 
     dhcp_start(&netif);
 
