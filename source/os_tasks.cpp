@@ -321,9 +321,9 @@ void Config_Task(uint32_t button_state)
 	/* Load stored DSP parameters */
 	olyConfig->LoadAllFromFlash();			// (Also inits codec)
 
-//	if ((!olyConfig->IsInitialized()) || (!(button_state & event_EncoderSW)) || (!(button_state & event_SW2))) { 	// First time boot, flash not programmed or Encoder button held at boot
-//		olyConfig->RestoreDefaults(true);
-//	}
+	if ((!olyConfig->IsInitialized()) || (!(button_state & event_EncoderSW)) || (!(button_state & event_SW2))) { 	// First time boot, flash not programmed or Encoder button held at boot
+		olyConfig->RestoreDefaults(true);
+	}
 #if USE_CDD_UI
 //	olyConfig->SetFanEnabled(true);  //enable fan for first 2 seconds on startup
 #else
@@ -346,8 +346,15 @@ void Config_Task(uint32_t button_state)
 //	olyConfig->InitStatusParams();
 //	olyConfig->InitUI();
 
+	/* unmnute the amps! maybe fade up the DSP? The logic here is inverted by the transistors!*/
+    Gpio::setGpio(AMP1_DISABLE_MUTE_CNTRL,LOW);
+    Gpio::setGpio(AMP2_DISABLE_MUTE_CNTRL,LOW);
+    Gpio::setGpio(AMP1_2_STANDBY_CNTRL,LOW);
+
 	configtask_initialized = true;
 	 _time_get_elapsed_ticks(&startTicks);
+
+
 
 
 	while (1) {
