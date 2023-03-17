@@ -209,10 +209,15 @@ void prvSetupHardware( void )
     GPIO_SetMode(PG, BIT0|BIT1|BIT2|BIT3, GPIO_MODE_OUTPUT);
     GPIO_SetMode(PF, BIT5|BIT6, GPIO_MODE_OUTPUT);
 
-    //Set the inputs up
-    GPIO_SetMode(PF, BIT7|BIT8, GPIO_MODE_QUASI);
-    //GPIO_SetMode(PB, BIT0|BIT1, GPIO_MODE_QUASI);
-    GPIO_SetMode(PF, BIT9|BIT10|BIT11, GPIO_MODE_QUASI);
+    //Set the inputs up from the amp
+#if REV004_PIN_CHANGES
+    GPIO_SetMode(PA, BIT9|BIT10|BIT11, GPIO_MODE_QUASI);
+#else
+    GPIO_SetMode(PF, BIT7|BIT8|BIT9, GPIO_MODE_QUASI);
+#endif
+    GPIO_SetMode(PF, BIT10|BIT11, GPIO_MODE_QUASI);
+
+
     GPIO_SetMode(PG, BIT4, GPIO_MODE_QUASI);
 
 
@@ -342,22 +347,19 @@ void prvSetupHardware( void )
                      SYS_GPH_MFPH_PH10MFP_EBI_AD14 | SYS_GPH_MFPH_PH11MFP_EBI_AD15;
 
 
-    /* EBI ADR16, ADR17 pins on PF.9, PF.8 */
-//    SYS->GPA_MFPH |= SYS_GPA_MFPH_PF11MFP_EBI_ADR16 | SYS_GPF_MFPH_PF8MFP_EBI_ADR17;
-    /*Proto has A16 as a GPIO. Productino will have it on correct pin, A17/A18 NC as SRAM is only 256kBytes */
-	//#define SRAM_A16				PA9
-	//#define SRAM_A17				PA10
-	//#define SRAM_A18				PA11
+
+    /* EBI ADR16, ADR17 & ADR18 pins
+     * REV002 uses PA9, PA10 & PA11 GPIO to access the memory sections.
+     * REV004 correctly assigns the Multifunction pins PF.9, PF8 & PF.7 */
+#if REV004_PIN_CHANGES
+    SYS->GPF_MFPH |= SYS_GPF_MFPH_PF9MFP_EBI_ADR16 | SYS_GPF_MFPH_PF8MFP_EBI_ADR17;
+    SYS->GPF_MFPL |= SYS_GPF_MFPL_PF7MFP_EBI_ADR18;
+#else
     PA9 = 0;
     PA10 = 0;
     PA11 = 0;
+#endif
 
-
-
-    /* EBI ADR18, ADR19 pins on PF.7, PF.6 */
-//    SYS->GPF_MFPL |= SYS_GPF_MFPL_PF7MFP_EBI_ADR18 | SYS_GPF_MFPL_PF6MFP_EBI_ADR19;
-
-    //these pins are under software control, not part of EBI interface?!?!?
 
     /* EBI RD and WR pins on PE.4 and PE.5 */
     SYS->GPE_MFPL |= SYS_GPE_MFPL_PE4MFP_EBI_nWR | SYS_GPE_MFPL_PE5MFP_EBI_nRD;
