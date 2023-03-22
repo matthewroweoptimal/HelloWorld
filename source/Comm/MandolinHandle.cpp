@@ -9,6 +9,7 @@
  *	In production builds test functions may be disabled.
  */
 #include "CommMandolin.h"
+#include "CurrentSense.h"
 
 extern "C" {
 #include "flash_params.h"
@@ -29,10 +30,11 @@ extern "C" {
 #include "ConfigManager.h"
 //#include "UltimoPort.h"
 
+
 #include "Region.h"
 #include "oly_logo.h"
 #ifndef _SECONDARY_BOOT
-//#include "CurrentSense.h"
+
 //#include "IRDA_Task.h"
 #endif
 
@@ -988,13 +990,7 @@ void Config::HandleTestCommand(MandolinPort * srcPort, mandolin_message * pMsg)
 			break;
 		case TEST_CMD_GET_IMON_VALUE:
 			TestValueID = pPayload[1];
-			if (pMsg->sequence & 1)
-			{
-				test_value.u = 1;
-			} else
-			{
-				test_value.u = 235;
-			}
+			test_value.u = (uint32_t) CurrentSenseRawRead((uint8_t) TestValueID);
 			srcPort->WriteMessage(Mfg_TestValueIndexedResponse(TEST_CMD_GET_IMON_VALUE, TestValueID, test_value.u, pMsg->sequence));
 			break;
 #endif // MFG_TEST_EAW || MFG_TEST_MARTIN

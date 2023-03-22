@@ -37,6 +37,7 @@
 #include "InputHandler.h"
 #include "TimeKeeper.h"
 #include "spi_sharc.h"
+#include "spi_aux_csense.h"
 #include "board.h"
 #include "uart_ultimo.h"
 #include "flash_params.h"
@@ -63,8 +64,6 @@ using namespace std;
 #define ETHERNET_HANDLER_PRIORITY 8U  //transfer this manually to ethernet driver
 #define GPH_HANDLER_PRIORITY 12U  //transfer this manually to ethernet driver
 
-#define ARRAY_SIZE 1024
-uint16_t __attribute__ ((section(".external_ram"))) ExtRamArray[ARRAY_SIZE] = {0xFF} ;
 
 /*-----------------------------------------------------------*/
 /*
@@ -202,6 +201,15 @@ void prvSetupHardware( void )
     /* Enable SPI1 I/O high slew rate (0xF0 for PH4-7) what about other PH pins?*/
     GPIO_SetSlewCtl(PH, 0xF0, GPIO_SLEWCTL_HIGH);
 
+    // SPI2_CONFIGURATION SYS_GPA_MFPH_PA15MFP_SPI2_MOSI
+    /* Configure SPI1 related multi-function pins. GPH[7:4] : SPI1_MISO, SPI1_MOSI, SPI1_CLK, SPI1_SS. */
+    SYS->GPA_MFPH |= (SYS_GPA_MFPH_PA12MFP_SPI2_SS | SYS_GPA_MFPH_PA13MFP_SPI2_CLK | SYS_GPA_MFPH_PA14MFP_SPI2_MISO | SYS_GPA_MFPH_PA15MFP_SPI2_MOSI);
+
+    /* Enable SPI2 clock pin (PA13) schmitt trigger */
+    PA->SMTEN |= GPIO_SMTEN_SMTEN13_Msk;
+    /* Enable SPI1 I/O high slew rate (0xF00 for PA15-12) what about other PA pins? untouched I think!*/
+    GPIO_SetSlewCtl(PA, 0xF000, GPIO_SLEWCTL_HIGH);
+
     /*enable some output GPIO pins for resets of DAC, ADC, SHARC, AMPS and the happy leds */
     GPIO_SetMode(PH, BIT0|BIT1|BIT2, GPIO_MODE_OUTPUT);
     GPIO_SetMode(PE, BIT7, GPIO_MODE_OUTPUT);
@@ -209,7 +217,7 @@ void prvSetupHardware( void )
     GPIO_SetMode(PG, BIT0|BIT1|BIT2|BIT3, GPIO_MODE_OUTPUT);
     GPIO_SetMode(PF, BIT5|BIT6, GPIO_MODE_OUTPUT);
 
-    //Set the inputs up from the amp
+    //Set the inputs up from the amps
 #if REV004_PIN_CHANGES
     GPIO_SetMode(PA, BIT9|BIT10|BIT11, GPIO_MODE_QUASI);
 #else
@@ -399,26 +407,14 @@ static void peripherals_init(void)
 //	OSA_InstallIntHandler(SPI0_IRQn, spi_sharc_IRQHandler);
 	DSPI_DRV_MasterInit(FSL_SPI_SHARC, &spi_sharc_MasterState, &spi_sharc_MasterConfig_boot, &spi_sharc_bootConfig);
 
+	//Init aux SPI for talking to current sense.
+	NVIC_SetPriority(SPI2_IRQn, SPI2_HANDLER_PRIORITY);
+	DSPI_DRV_MasterInit(FSL_SPI_AUX, &spi_aux_csense_MasterState, &spi_aux_MasterConfig0, &spi_aux_BusConfig0);
+
 	//Init I2C for ADC - Does it need any init or do we just do the setup?
 
-	uint32_t count = 0;
-    //uint8_t i = 0;
 
-    while(count<ARRAY_SIZE)
-    {
-    	ExtRamArray[count] = 0xffff;
-    	count++;
-    }
-
-    count=0;
-    /*write directly to my array*/
-    while(count<ARRAY_SIZE)
-    {
-    	ExtRamArray[count] = 0xff + count;
-    	count++;
-    }
-
-	/* Initialize Flash */
+	/* Initialize Flash IQ - probably omit use of internal flash*/
 	flash_init();
 //	ext_flash_int(); TODO tidy up the init functions.
 
@@ -434,7 +430,8 @@ static void peripherals_init(void)
 
     /* TODO : FTM3 LCD Backlight NOT USED BY NUCDD*/
 
-    /* TODO : Init ADC for Amp Monitoring*/
+    /* Init ADC for Amp Monitoring*/
+    /* EADC */
     EADC_Init();
 
     if(g_EADC_i32ErrCode==EADC_TIMEOUT_ERR)

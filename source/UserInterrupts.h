@@ -11,6 +11,7 @@
 #include "task.h"
 #include "timer.h"
 #include "spi_sharc.h"
+#include "spi_aux_csense.h"
 #include "MQX_to_FreeRTOS.h"
 #include "board.h"
 #include "inputHandler.h"
@@ -58,8 +59,13 @@ void TMR0_IRQHandler(void)
 }
 
 void SPI1_IRQHandler(void)
-{   // SHARC connected on SPI0
+{   // SHARC connected on SPI1
     DSPI_DRV_IRQHandler(FSL_SPI_SHARC);
+}
+
+void SPI2_IRQHandler(void)
+{   // AUX CSENSE connected on SPI2
+    DSPI_DRV_IRQHandler(FSL_SPI_AUX);
 }
 
 void UART1_IRQHandler(void)

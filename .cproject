@@ -1651,7 +1651,7 @@
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="MFG_TEST_MARTIN=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.1180888569" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -1687,6 +1687,7 @@
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Dante/src/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${ProjDirPath}/source/Dante/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CDDLive/Voicing/Martin_Generic}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/CDDLive/source}&quot;"/>
 								</option>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs.1617456748" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
@@ -1697,7 +1698,7 @@
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="MFG_TEST_MARTIN=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.854013458" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1240313917" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
