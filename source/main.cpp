@@ -65,6 +65,9 @@ using namespace std;
 #define GPH_HANDLER_PRIORITY 12U  //transfer this manually to ethernet driver
 
 
+#define ARRAY_SIZE 1024
+uint16_t __attribute__ ((section(".external_ram"))) ExtRamArray[ARRAY_SIZE] = {0xFF} ;
+
 /*-----------------------------------------------------------*/
 /*
  * Set up the hardware ready to run this demo.
@@ -320,6 +323,9 @@ void prvSetupHardware( void )
     Gpio::setGpio(AMP1_TEMP_VAC_SEL,HIGH);
     Gpio::setGpio(AMP2_TEMP_VAC_SEL,HIGH);
 
+    Leds::setLed(GREEN_LED1,true);
+    Leds::setLed(GREEN_LED2,true);
+
     initEthernetHardware();
 
     /* Init UART to 115200-8n1 for print message */
@@ -358,10 +364,11 @@ void prvSetupHardware( void )
 
     /* EBI ADR16, ADR17 & ADR18 pins
      * REV002 uses PA9, PA10 & PA11 GPIO to access the memory sections.
-     * REV004 correctly assigns the Multifunction pins PF.9, PF8 & PF.7 */
+     * REV004 correctly assigns the Multifunction pins PF.9, PF8 & PF.7
+     * We set PF7&PF8 to zero as hey are not used by the 256k flash*/
 #if REV004_PIN_CHANGES
-    SYS->GPF_MFPH |= SYS_GPF_MFPH_PF9MFP_EBI_ADR16 | SYS_GPF_MFPH_PF8MFP_EBI_ADR17;
-    SYS->GPF_MFPL |= SYS_GPF_MFPL_PF7MFP_EBI_ADR18;
+    SYS->GPF_MFPH |= SYS_GPF_MFPH_PF9MFP_EBI_ADR16;
+    GPIO_SetMode(PF, BIT7|BIT8, GPIO_MODE_QUASI);		//These pins are NC on the SRAM - We make high impedance
 #else
     PA9 = 0;
     PA10 = 0;
@@ -402,6 +409,36 @@ void prvSetupHardware( void )
 
 static void peripherals_init(void)
 {
+	uint32_t count=0;
+
+    while(count++<ARRAY_SIZE)
+    {
+    	ExtRamArray[count] = 0xff + count;
+    	count++;
+    }
+
+    count=0;
+
+    while(count++<ARRAY_SIZE)
+    {
+    	if(ExtRamArray[count] != 0xff + count)
+    	{
+    		printf("External SRAM test FAILED\n");
+    		while(1)
+    		{
+    			if(count++ > 2500000)
+    				{
+    				Leds::toggleLed(GREEN_LED1);
+    				count = 0;
+    				}
+    		}
+    	}
+    	count++;
+    }
+
+    printf("External SRAM test PASSED\n");
+
+
 	/* DSP SPI1 boot config */
 	NVIC_SetPriority(SPI1_IRQn, SPI1_HANDLER_PRIORITY);
 //	OSA_InstallIntHandler(SPI0_IRQn, spi_sharc_IRQHandler);

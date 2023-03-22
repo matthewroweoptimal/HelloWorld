@@ -96,7 +96,7 @@ static Pin gpioPins[NUM_GPIO] = {
 	{GPIOD_PIN_BASE, 3},	// sharc reset on D3
 	{GPIOE_PIN_BASE, 7},	// DAC reset on E7
 	{GPIOG_PIN_BASE, 0},	// AMP1_MUTE on G0
-	{GPIOG_PIN_BASE, 2},	// AMP1_MUTE on G2
+	{GPIOG_PIN_BASE, 2},	// AMP2_MUTE on G2
 	{GPIOG_PIN_BASE, 1},	// AMP_STANDBY on G1
 	{GPIOG_PIN_BASE, 3},	// AMP_BTL4R_CTL on G3
 	{GPIOF_PIN_BASE, 5},	// AMP1_TEMP_SEL on F5
