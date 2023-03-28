@@ -944,6 +944,7 @@ void Config::HandleTestCommand(MandolinPort * srcPort, mandolin_message * pMsg)
 		case TEST_CMD_SET_OUTPUT:
 			// Sets the output channel.
 			TestValue1 = pPayload[1];
+			printf("TEST_CMD_SET_OUTPUT: Chl:%d\n", TestValue1);
 			SelfTestEnableChannel(ch_none);
 			SelfTestEnableChannel(TestValue1);
 			srcPort->WriteMessage(GetAckResponse(pMsg));
@@ -952,6 +953,7 @@ void Config::HandleTestCommand(MandolinPort * srcPort, mandolin_message * pMsg)
 			// It sets parameters for the function generator.
 			test_value.u = pPayload[2];				// fader
 			test_value2.u = pPayload[3];			// frequency
+			test_value.f = test_value.f + 2.0;		//adjusts gain for nuvoton board so it can still use existing test app!
 			Mfg_SetFunctionGenerator(test_value, test_value2);
 			srcPort->WriteMessage(GetAckResponse(pMsg));
 			break;

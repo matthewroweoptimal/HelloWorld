@@ -436,7 +436,7 @@ namespace oly {
     
     		OnDanteMuteChanged();	// Evaluate mute state
     		olyParams.User[0][ePID_OLYspeaker1_USER_INPUT_ROUTING] = routing; // force user 0 routing to selected value for backward compatibility
-    //		olyDspPort.WriteMessage(SetParameter(eTARGET_USER,0,ePID_OLYspeaker1_USER_INPUT_ROUTING, (uint32_t)routing));	// This is the only case where the DSP receives this parameter
+    		olyDspPort.WriteMessage(SetParameter(eTARGET_USER,0,ePID_OLYspeaker1_USER_INPUT_ROUTING, (uint32_t)routing));	// This is the only case where the DSP receives this parameter
     		olyNetworkPort.WriteMessage(SetParameter(eTARGET_USER, 0, ePID_OLYspeaker1_USER_INPUT_ROUTING, (uint32_t)routing));
     	}
     
@@ -1489,6 +1489,21 @@ namespace oly {
     
     void Config::ParamSetVoicing(uint32_t instance, OLYspeaker1_VOICING_pid PID, uint32_t Value)
     {
+
+#if MFG_TEST_MARTIN
+		printf("ParamSetVoicing for PID: %d Value: %d\n",PID, Value);
+		/*
+		 * To use the old test app we must check for routing changes, these will not work with the Nuvoton
+		 */
+		if(PID==ePID_OLYspeaker1_VOICING_AMP4_ROUTING)
+		{
+			PID = ePID_OLYspeaker1_VOICING_AMP2_ROUTING;
+		}
+
+#endif
+
+
+
     	if (instance == 0)
     		instance = olyParams.Device->Active_Voicing;
     	else
@@ -3098,6 +3113,7 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     
     void Config::SetAmpRouting(uint32_t amp1, uint32_t amp2, uint32_t amp3, uint32_t amp4)
     {
+    	printf("SetAmpRouting amp1=%d, amp2=%d, amp3=%d, Amp4=%d\n", amp1, amp2, amp3, amp4);
     	ParamSetVoicing(0, ePID_OLYspeaker1_VOICING_AMP1_ROUTING, amp1);
     	ParamSetVoicing(0, ePID_OLYspeaker1_VOICING_AMP2_ROUTING, amp2);
 
