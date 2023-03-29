@@ -452,7 +452,7 @@ static void peripherals_init(void)
 
 
 	/* Initialize Flash IQ - probably omit use of internal flash*/
-	flash_init();
+	//flash_init();
 //	ext_flash_int(); TODO tidy up the init functions.
 
 
