@@ -16,6 +16,7 @@
 #include "cddl_leds.h"
 
 #include "TimeKeeper.h"
+#include "Region.h"
 
 extern "C" {
 //#include "gpio_pins.h"
@@ -36,7 +37,7 @@ extern "C" {
 //#include "pascal_spro2.h"
 
 //#include "AmpMonitor.h"
-//#include "Region.h"
+
 //#include "MMA8653FC.h"
 //#include "IRDAManager.h"
 //#include "sys.h"
@@ -63,6 +64,8 @@ extern uint32_t g_CurrentIpAddress;
 bool g_bMeterComplete = true;
 int orientation_counter = 0;
 extern bool g_ScreenInTransition;
+
+extern uint32_t g_button_state;
 
 // -----------------------------------------------------------------------------------------------
 
@@ -295,7 +298,7 @@ void TaskDebug_SetPos(int nId, int nPos)
 // -----------------------------------------------------------------------------------------------
 
 /* Processes incoming mandolin messages */
-void Config_Task(uint32_t button_state)
+void Config_Task(uint32_t task_init_data)
 {
 	_queue_id			 	 config_qid;
 	mandolin_mqx_message_ptr msg_ptr = NULL;
@@ -313,7 +316,7 @@ void Config_Task(uint32_t button_state)
 
 	olyConfig = new Config();
 
-//	g_pszModelName = Region::GetMandolinModelName(Region::GetSystemBrand(), Region::GetSystemModel());
+	g_pszModelName = Region::GetMandolinModelName(Region::GetSystemBrand(), Region::GetSystemModel());
 
 	//set brightness to zero and later turn bright. This assumes the stored value is not used for anything.
 //	olyConfig->SetLcdBrightness(0);
@@ -321,13 +324,15 @@ void Config_Task(uint32_t button_state)
 	/* Load stored DSP parameters */
 	olyConfig->LoadAllFromFlash();			// (Also inits codec)
 
-	if ((!olyConfig->IsInitialized()) || (!(button_state & event_EncoderSW)) || (!(button_state & event_SW2))) { 	// First time boot, flash not programmed or Encoder button held at boot
-		olyConfig->RestoreDefaults(true);
-	}
+	//TODO - IQ - I do not think olyConfig->IsInitialized() is ever false if called after LoadAllFromFlash(). Also, holding the button at power up for CDD should go to FW update mode, not set defaults.
+	//if ((!olyConfig->IsInitialized()) || (!(g_button_state & event_SW2))) { 	// First time boot, flash not programmed or button held at boot
+	//	olyConfig->RestoreDefaults(true);
+	//}
+
 #if USE_CDD_UI
-//	olyConfig->SetFanEnabled(true);  //enable fan for first 2 seconds on startup
+	olyConfig->SetFanEnabled(true);  //enable fan for first 2 seconds on startup
 #else
-//	olyConfig->SetFanEnabled(false);
+	olyConfig->SetFanEnabled(false);
 #endif
 
 	MSGQ_INIT()
@@ -343,8 +348,8 @@ void Config_Task(uint32_t button_state)
 	olyConfig->SetInputSelectMode(eAUDIO_MODE_AUTO); // Enforce auto mode on oly
 #endif
 
-//	olyConfig->InitStatusParams();
-//	olyConfig->InitUI();
+	olyConfig->InitStatusParams();
+	olyConfig->InitUI();
 
 	/* unmnute the amps! maybe fade up the DSP? The logic here is inverted by the transistors!*/
     Gpio::setGpio(AMP1_DISABLE_MUTE_CNTRL,LOW);

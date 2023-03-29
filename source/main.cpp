@@ -64,9 +64,12 @@ using namespace std;
 #define ETHERNET_HANDLER_PRIORITY 8U  //transfer this manually to ethernet driver
 #define GPH_HANDLER_PRIORITY 12U  //transfer this manually to ethernet driver
 
-
+#if MFG_TEST_MARTIN
 #define ARRAY_SIZE 1024
 uint16_t __attribute__ ((section(".external_ram"))) ExtRamArray[ARRAY_SIZE] = {0xFF} ;
+#endif
+
+uint32_t	g_button_state;
 
 /*-----------------------------------------------------------*/
 /*
@@ -409,6 +412,8 @@ void prvSetupHardware( void )
 
 static void peripherals_init(void)
 {
+
+#if MFG_TEST_MARTIN
 	uint32_t count=0;
 
     while(count++<ARRAY_SIZE)
@@ -437,7 +442,7 @@ static void peripherals_init(void)
     }
 
     printf("External SRAM test PASSED\n");
-
+#endif
 
 	/* DSP SPI1 boot config */
 	NVIC_SetPriority(SPI1_IRQn, SPI1_HANDLER_PRIORITY);
@@ -453,8 +458,11 @@ static void peripherals_init(void)
 
 	/* Initialize Flash IQ - probably omit use of internal flash*/
 	//flash_init();
+
 //	ext_flash_int(); TODO tidy up the init functions.
 
+	/* Get initial inputs state */
+	g_button_state = init_inputs();
 
 	/* TODO : Accelerometer I2C NOT USED BY NUCDDL*/
 
