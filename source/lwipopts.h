@@ -85,9 +85,9 @@
  * a lot of data that needs to be copied, this should be set high.
  */
 #ifndef MEM_SIZE
-#define MEM_SIZE                (32*1024)
+#define MEM_SIZE                (2*1024) // Breeze was (32*1024)
 #endif
-#define MEMP_NUM_NETCONN                10
+#define MEMP_NUM_NETCONN         20 // Breeze was 20
 
 /* MEMP_NUM_PBUF: the number of memp struct pbufs. If the application
    sends a lot of data out of ROM (or other static memory), this
@@ -98,22 +98,22 @@
 /* MEMP_NUM_UDP_PCB: the number of UDP protocol control blocks. One
    per active UDP "connection". */
 #ifndef MEMP_NUM_UDP_PCB
-#define MEMP_NUM_UDP_PCB        4
+#define MEMP_NUM_UDP_PCB        4 // Breeze was 8
 #endif
 /* MEMP_NUM_TCP_PCB: the number of simultaneously active TCP
    connections. */
 #ifndef MEMP_NUM_TCP_PCB
-#define MEMP_NUM_TCP_PCB        80
+#define MEMP_NUM_TCP_PCB        4 // Breeze was 11
 #endif
 /* MEMP_NUM_TCP_PCB_LISTEN: the number of listening TCP
    connections. */
 #ifndef MEMP_NUM_TCP_PCB_LISTEN
-#define MEMP_NUM_TCP_PCB_LISTEN 40
+#define MEMP_NUM_TCP_PCB_LISTEN 4 // Breeze was 11
 #endif
 /* MEMP_NUM_TCP_SEG: the number of simultaneously queued TCP
    segments. */
 #ifndef MEMP_NUM_TCP_SEG
-#define MEMP_NUM_TCP_SEG        18
+#define MEMP_NUM_TCP_SEG        18 // Breeze was 18
 #endif
 /* MEMP_NUM_SYS_TIMEOUT: the number of simultaneously active
    timeouts. */
@@ -152,7 +152,7 @@
 
 /* TCP sender buffer space (bytes). */
 #ifndef TCP_SND_BUF
-#define TCP_SND_BUF             (6*TCP_MSS) //2
+#define TCP_SND_BUF             (6*TCP_MSS) // Breeze was (6*TCP_MSS)
 #endif
 
 /* TCP sender buffer space (pbufs). This must be at least = 2 *
@@ -321,10 +321,11 @@ Some MCU allow computing and verifying the IP, UDP, TCP and ICMP checksums by ha
 
 #define LWIP_IGMP                       1
 #define LWIP_MDNS_RESPONDER             1
-#define LWIP_NUM_NETIF_CLIENT_DATA      1
+#define LWIP_NUM_NETIF_CLIENT_DATA      2       // Increased by 1 for MDNS
 #define LWIP_NETIF_EXT_STATUS_CALLBACK  1
 #define MDNS_RESP_USENETIF_EXTCALLBACK  1
 #define LWIP_NETIF_LINK_CALLBACK        1
+#define LWIP_NETIF_STATUS_CALLBACK      1   // Match Breeze configuration settings
 
 // Tuning
 #define ETH_PAD_SIZE                    2

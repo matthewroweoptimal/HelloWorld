@@ -1,9 +1,21 @@
 /* Linker script to configure memory regions. */
 MEMORY
 {
-  FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 256K
-  RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 128K 
+
+
+  /* M487 datasheet states : 512k Flash, 160k RAM (but this includes 32kB cache for external SPI Flash) */
+  FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 448K	/* 64k for data flash - address 0x00070000 - 0x0007FFFF */
+  RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 160K   /* IQ - The 32kB extra is included*/
+  EXT_RAM (rwx) : ORIGIN = 0x60000000, LENGTH = 128K 
 }
+
+/* 
+*	To activate the 64k dataflash, the following use configuration registers must be loaded when preogramming
+*	
+*
+*
+*
+*/
 
 /* Library configurations */
 GROUP(libgcc.a libc.a libm.a libnosys.a)
@@ -176,6 +188,11 @@ SECTIONS
 		__HeapLimit = .;
 	} > RAM
 
+	.external_ram (COPY):
+	{
+		KEEP(*(.external_ram*))
+	} > EXT_RAM
+
 	/* .stack_dummy section doesn't contains any symbols. It is only
 	 * used for linker to calculate size of stack sections, and assign
 	 * values to stack symbols later */
@@ -192,4 +209,6 @@ SECTIONS
 
 	/* Check if data + heap + stack exceeds RAM limit */
 	ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
+/*	ASSERT(__HeapBase <= (__HeapLimit - 0x400), "Less than 1k available for malloc heap")
+*/
 }

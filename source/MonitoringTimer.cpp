@@ -28,7 +28,7 @@ void MonitoringTimer::Run()
 void MonitoringTimer::TimerEvent()
 {
 	// toggle an led
-	Leds::toggleLed(YELLOW_LED);
+	Leds::toggleLed(GREEN_LED2);
 }
 
 void MonitoringTimer::OtherEvent(EventBits_t eventBits)

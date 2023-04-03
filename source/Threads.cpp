@@ -7,36 +7,51 @@
 
 #include "Threads.h"
 
-/* Priorities for application tasks. */
-#define MONITORING_TASK_PRIORITY        ( tskIDLE_PRIORITY + 2UL )
-#define MAIN_TASK_PRIORITY          	( tskIDLE_PRIORITY + 3UL )
-#define TCP_THREAD_PRIORITY				( tskIDLE_PRIORITY + 1UL )
-
-#define MONITORING_TIMER_STACKSIZE (configMINIMAL_STACK_SIZE + 100)
-#define TCPTHREAD_STACKSIZE 	   (configMINIMAL_STACK_SIZE + 100)
-
-#define MONITORING_TIMER_TICK  ( pdMS_TO_TICKS(500))
-
-
 void Threads::StartThreads()
 {
 	// heartbeat timer thread
-    secondTimer = new SecondTimer();
-    secondTimer->Start();
+    _secondTimer = new SecondTimer();
+    _secondTimer->Start();
 
     // This main thread only present to get the scheduler going and immediately suspends
-    mainThread = new MainThread(configMINIMAL_STACK_SIZE, MAIN_TASK_PRIORITY);
-    mainThread->Start();
+    _semMainThreadComplete = xSemaphoreCreateBinary();
+    _mainThread = new MainThread(MAIN_THREAD_STACKSIZE, MAIN_TASK_PRIORITY,_semMainThreadComplete);
+    _mainThread->Start();
 
-    monitoring = new MonitoringTimer(MONITORING_TIMER_STACKSIZE, MONITORING_TASK_PRIORITY, MONITORING_TIMER_TICK);
-    monitoring->Start();
+    _monitoring = new MonitoringTimer(MONITORING_TIMER_STACKSIZE, MONITORING_TASK_PRIORITY, MONITORING_TIMER_TICK);
+    _monitoring->Start();
 
-    tcpThread = new TcpThread(TCPTHREAD_STACKSIZE, TCP_THREAD_PRIORITY);
-    tcpThread->Start();
+    _tcpThread = new TcpThread(TCPTHREAD_STACKSIZE, TCP_THREAD_PRIORITY,_semMainThreadComplete);
+    _tcpThread->Start();
+
+    _danteThread = new DanteThread(DANTETHREAD_STACKSIZE, DANTE_THREAD_PRIORITY,_semMainThreadComplete);
+    _danteThread->Start();
+
+    _guiThread = new GuiThread(GUITHREAD_STACKSIZE, GUI_THREAD_PRIORITY,_semMainThreadComplete);
+    _guiThread->Start();
+
+    _uiThread = new UiThread(UITHREAD_STACKSIZE, UI_THREAD_PRIORITY,_semMainThreadComplete);
+    _uiThread->Start();
+
+    _metersThread = new MetersThread(METERSTHREAD_STACKSIZE, METERS_THREAD_PRIORITY,_semMainThreadComplete);
+    _metersThread->Start();
+
+    _timerKeeperThread = new TimerKeeperThread(TIMERKEEPERTHREAD_STACKSIZE, TIMERKEEPER_THREAD_PRIORITY,_semMainThreadComplete);
+    _timerKeeperThread->Start();
+
+    _sysEventsThread = new SysEventsThread(SYSEVENTSTHREAD_STACKSIZE, SYSEVENTS_THREAD_PRIORITY,_semMainThreadComplete);
+    _sysEventsThread->Start();
+
+
+
 }
 
 void Threads::StartScheduler()
 {
 	printf("Running FreeRTOS. Start scheduler...\n");
-	mainThread->StartScheduler();
+	_mainThread->StartScheduler();
 }
+
+
+
+

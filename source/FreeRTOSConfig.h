@@ -68,16 +68,17 @@
 #define configUSE_APPLICATION_TASK_TAG          0
 
 /* Used memory allocation (heap_x.c) */
-#define configFRTOS_MEMORY_SCHEME               4
+#define configFRTOS_MEMORY_SCHEME               5   // CCDLive will use Heap regions in both Internal and External RAM (heap_5.c scheme)
 /* Tasks.c additions (e.g. Thread Aware Debug capability) */
 #define configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H 1
 
 /* Memory allocation related definitions. */
 #define configSUPPORT_STATIC_ALLOCATION         0
 #define configSUPPORT_DYNAMIC_ALLOCATION        1
-/*#define configTOTAL_HEAP_SIZE                   0  not used by heap_3.c allocator */
-#define configTOTAL_HEAP_SIZE                   ((size_t)(48 * 1024))		// TODO: need better understanding of allocation. 64k heap causes hardfault in startup malloc.
-#define configAPPLICATION_ALLOCATED_HEAP        0
+#define configAPPLICATION_ALLOCATED_HEAP        0   // Not used in heap_5 scheme
+#define configTOTAL_HEAP_SIZE                   ((size_t)(80 * 1024))   // 80k in Internal RAM prioritises FreeRTOS objects in faster RAM
+#define configTOTAL_EXT_HEAP_SIZE               ((size_t)(48 * 1024))   // Size of FreeRTOS heap within (slower) External RAM (heap_5 scheme).
+
 
 /* Hook function related definitions. */
 #define configUSE_IDLE_HOOK                     0
@@ -105,7 +106,7 @@
 #define configTIMER_TASK_STACK_DEPTH            512
 
 /* Define to trap errors during development. */
-#define configASSERT(x) if((x) == 0) {taskDISABLE_INTERRUPTS(); for (;;);}
+//#define configASSERT(x) if((x) == 0) {taskDISABLE_INTERRUPTS(); for (;;);}
 
 /* Optional functions - most linkers will remove unused functions anyway. */
 #define INCLUDE_vTaskPrioritySet                1
@@ -162,5 +163,24 @@ extern void RTOS_AppConfigureTimerForRuntimeStats(void);
 #define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS()   RTOS_AppConfigureTimerForRuntimeStats()
 extern unsigned long RTOS_AppGetRuntimeCounterValueFromISR(void);
 #define portGET_RUN_TIME_COUNTER_VALUE()           RTOS_AppGetRuntimeCounterValueFromISR()
+
+#ifdef NDEBUG
+
+// In Release Builds, just log the assert failure. Note: Must be pure 'C' only, so can't use Logger.cpp/.h
+
+#include "configAssertFunc.h"
+
+#define configASSERT(x) ((x) ? (void)0 : configAssert_func(__FILE__, __FUNCTION__, #x))
+
+#else
+
+/* Debug Build : Define to trap errors during development. */
+
+#define configASSERT(x) if((x) == 0) {printf("Assert failed %s, %s\n", __FILE__, __FUNCTION__); taskDISABLE_INTERRUPTS(); for (;;);}
+
+//#define traceMALLOC(x,y) printf("MALLOC %p, %d bytes\n", x, y);
+//#define traceFREE(x, y) printf("FREE %p, size %d\n", x, y);
+
+#endif
 
 #endif /* FREERTOS_CONFIG_H */

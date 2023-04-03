@@ -41,6 +41,11 @@
 
 #include <stdlib.h>
 #include "mem_pool.hpp"
+#include "portable.h"	// For pvPortMalloc etc
+
+// SC : Use FreeRTOS Heap Memory rather than stdlib malloc()
+#define malloc	pvPortMalloc
+#define free    vPortFree
 
 
 using namespace cpp_freertos;

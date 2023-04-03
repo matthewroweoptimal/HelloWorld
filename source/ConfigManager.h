@@ -8,10 +8,13 @@
 #ifndef CONFIGMANAGER_H_
 #define CONFIGMANAGER_H_
 
+#include "MQX_To_FreeRTOS.h"
+
 extern "C" {
 #include "oly.h"
-//#include "timer.h"
+#include "timer.h"
 #ifndef _SECONDARY_BOOT
+#include "CurrentSense.h"
 #endif
 }
 
@@ -23,11 +26,11 @@ extern "C" {
 #endif
 
 
-//#include "SpiSharcPort.h"
-//#include "UartPort.h"
+#include "SpiSharcPort.h"
+#include "UartPort.h"
 //#include "uart_voice.h"
 //#include "uart_irda.h"
-//#include "NetworkPort.h"
+#include "NetworkPort.h"
 #ifndef _SECONDARY_BOOT
 //#include "IRDAUartPort.h"
 #endif
@@ -38,12 +41,6 @@ enum{
 	optimize_source_network
 };
 
-typedef union {
-    int32   i;
-    uint32  u;
-    bool32  b;
-    float32 f;
-} mandolin_parameter_value;
 
 #define CONNECT_MANAGEMENT_PERIOD 100	//	Time period for strobe to connect management system
 
@@ -71,7 +68,7 @@ protected:
 	oly_flash_params_t olyStoredParams;
 	oly_status_t 	olyStatus;
 	float			olyMeterForUI;
-//	mandolin_parameter_value	olyCurrentSenseMeter[3];
+	mandolin_parameter_value	olyCurrentSenseMeter[3];
 
 	bool IsPhysicallyUpsideDown=0;
 
@@ -79,14 +76,14 @@ protected:
 	bool GlobalMute=0;
 	bool DanteMute=0;
 
-//	_timer_id		SubscriptionTimers[ePID_OLYspeaker1_STATUS_FENCE];
-//	MQX_TICK_STRUCT SubscriptionTicks[ePID_OLYspeaker1_STATUS_FENCE];
+	_timer_id		SubscriptionTimers[ePID_OLYspeaker1_STATUS_FENCE];
+	MQX_TICK_STRUCT SubscriptionTicks[ePID_OLYspeaker1_STATUS_FENCE];
 
-//	_timer_id		identify_timer;
-//	MQX_TICK_STRUCT identify_ticks;
+	_timer_id		identify_timer;
+	MQX_TICK_STRUCT identify_ticks;
 
-//	_timer_id		dsp_error_timer;
-//	MQX_TICK_STRUCT dsp_error_ticks;
+	_timer_id		dsp_error_timer;
+	MQX_TICK_STRUCT dsp_error_ticks;
 
 	float Audio_Level =0;
 	float optHeightDeviceOffset=0;			//this device's distance in meters from the top of the array
@@ -126,12 +123,12 @@ public:
 #if USE_CDD_UI
 	cddlMembraneUI		cddlUI;
 #endif
-//	SpiSharcPort	olyDspPort;
+	SpiSharcPort	olyDspPort;
 
 #if !USES_FOUR_IRDA
-//	UartPort		olyVoicingPort;
+	UartPort		olyVoicingPort;
 #endif
-//	NetworkPort		olyNetworkPort;
+	NetworkPort		olyNetworkPort;
 #ifndef _SECONDARY_BOOT
 //	IRDAUartPort	olyIrdaPortA;
 //	IRDAUartPort	olyIrdaPortB;
@@ -153,8 +150,9 @@ public:
 	oly_params_t *GetParamsDatabase();
 	oly_flash_params_t *GetStoredParamsDatabase();
 	oly_status_t *GetStatusParamsDatabase();
-
 	void SetActivePreset(OLY_target group, uint32_t instance);
+	
+#if 1
 	void SetInputSelectMode(LOUD_audio_mode mode);
 	uint8_t GetInputSelectMode();
 	void SetDisplayUserMode(LOUD_disp_mode display_mode);
@@ -172,10 +170,13 @@ public:
 			int8_t arrayMismatch, bool arrayReady);
 
 	uint32_t ReverseIpValues(uint32_t ipAddress);
+#endif // 0
 
 	/* Status Functions */
 	void SetSelfTestMode(LOUD_test_mode test_mode);
 	LOUD_test_mode GetSelfTestMode(void);
+
+#if 1
 	void ResetSelfTestTimer();
 	void DestroySelfTestTimer();
 	void SelfTestSequence();
@@ -195,9 +196,13 @@ public:
 	void SetLFSolo(bool solo);
 	float GetCurrentAmpTemp(amp_instance_t amp);
 	void UpdateCurrentTiltAngle(void);
+#endif // 0
+	
 	void OnIPAddressChanged(uint32_t ip);
 	void OnAmpFaultStatusChanged(bool fault);
 	void OnLimiterStatusChanged(bool limiting);
+
+#if 1	
 	void OnArrayConfigurationChanged(void);
 	void OnFanStatusChanged(bool fan_on);
 	void OnAmpTempChanged(amp_instance_t amp, float32 temp);
@@ -210,7 +215,11 @@ public:
 	void OnSelfTestModeChanged(LOUD_test_mode mode);
 	void SetSelfTestSequence(dsp_channels_t sequence);
 	void OnMuteSoloChanged();
+#endif // 0
+
 	void KillAllSubscriptions(void);
+	
+#if 1
 	void GetCurrentMeter();
 	float GetCurrentUIMeter();
 	bool MeterRangeCheck(float min, float max);
@@ -226,7 +235,7 @@ public:
 	void CheckInitialOrientation();
 
 	float CurrentSenseGetOutputMeter(uint32_t channelNumber);
-//	void CurrentSenseGetImpedanceLimits(current_sense_Z_limits_t * current_sense_Z_limits);
+	void CurrentSenseGetImpedanceLimits(current_sense_Z_limits_t * current_sense_Z_limits);
 	void OnCurrentSenseImpedanceChanged(uint32_t channelNumber);
 
 	/* Parameter Controls - UI only */
@@ -257,7 +266,11 @@ public:
 	uint32_t Controls_GetArrayIndex(void);
 	void Controls_SetArraySizeFromStatus(void);
 	uint32_t Controls_GetArraySize(void);
+#endif // 0
+
 	void Controls_RestoreDefaults(void);
+
+#if 1
 	void Controls_RestoreIPAddresses(void);
 
 	void Controls_SetLogoMode(LOUD_logo_mode mode);
@@ -274,11 +287,21 @@ public:
 
 	/* System Functions */
 	void LoadAllFromFlash();
+#endif // 0
+	
 	void StoreParams();			// Starts the countdown before writing to flash
+	
+#if 1
 	void WriteParamsToFlash();	// Actually writes to flash
+#endif // 0
+	
 	void RestoreDefaults(bool startup);
+	
+#if 1	
 	void RestoreIPAddresses();
 	void RestoreUserEQ(int instance);
+#endif // 0
+	
 	void ClearOptimization();
 	float ParamGetMin(OLYspeaker1_USER_pid PID);
 	float ParamGetMax(OLYspeaker1_USER_pid PID);
@@ -287,7 +310,9 @@ public:
 	float ParamXoverGetMin(OLYspeaker1_XOVER_pid PID);
 	float ParamXoverGetMax(OLYspeaker1_XOVER_pid PID);
 	float ParamXoverGetValue(uint32_t instance, OLYspeaker1_XOVER_pid PID);
-//	mandolin_error_code ParamValidate(OLY_target group, uint32_t PID, mandolin_parameter_value * pValue);
+	mandolin_error_code ParamValidate(OLY_target group, uint32_t PID, mandolin_parameter_value * pValue);
+	
+#if 1	
 	void SetAudioSource(oly_audio_source_t source);
 	oly_audio_source_t GetAudioSource(void);
 	void EvaluateFanControl();
@@ -297,9 +322,13 @@ public:
 
 	/* Error Functions */
 	void DSPErrorTimer_Cancel(void);
-	void DSPErrorTimer_Reset(void);
-#endif
-//	void SendGetHardwareInfo(MandolinPort * srcPort);
+#endif // 0
+
+	void DSPErrorTimer_Reset(void); 
+#endif // _SECONDARY_BOOT
+	
+#if 1
+	void SendGetHardwareInfo(MandolinPort * srcPort);
 
 	void SetLcdBrightness(int level);
 	void RampLcdBrightness(bool set_ramp, uint32_t level);
@@ -309,20 +338,25 @@ public:
 	bool GetIsPhysicallyUpsideDown();
 	int32 GetTiltAngle();
 	void UpdateOrientation(bool initial, bool flipped);
-	void InitUI();
-	void InitStatusParams();
+	void InitUI();	
+	void InitStatusParams();	
 	char * GetDiscoServiceName();
 	void OnNetworkConnectionChanged(bool connected);
+#endif // 0
+	
 	void OpenNetworkPort(bool bOpen, int nPort);
 	bool GetForceNetworkPortClose(int nPort);
+	
+
 	void IdentifyStart(uint32_t ms, LOUD_identify_mode mode);
 	void IdentifyStop();
 	LOUD_identify_mode GetIdentifyMode(void);
 
 	bool ValidateMAC(uint8 mac[6]);
 	void MandolinProcess(int nTaskId);
-//	void MandolinHandle(MandolinPort * srcPort, mandolin_mqx_message * msg_ptr);
+	void MandolinHandle(MandolinPort * srcPort, mandolin_mqx_message * msg_ptr);
 	bool IsInitialized();
+#if 1
 	uint32_t GetUserParamsValidIndicator();
 	bool32 ComputeAutoOptimize(void);
 	void OptiCalcAndSetAirloss(uint32_t compEQ);
@@ -345,36 +379,37 @@ public:
 	void OnDanteChange_Reboot(void);
 	void OnDanteChange_Upgrade(void);
 	void OnDanteChange_CodecReset(void);
+#endif // 0
 
 private:
 #ifndef _SECONDARY_BOOT
 	void SelfTestEnableChannel(int channel);
 	void ParamSetDevice(OLYspeaker1_DEVICE_pid PID, void * Value);
-//	void ParamSetUser(uint32_t instance, OLYspeaker1_USER_pid PID, mandolin_parameter_value Value);
+	void ParamSetUser(uint32_t instance, OLYspeaker1_USER_pid PID, mandolin_parameter_value Value);
 	void ParamSetVoicing(uint32_t instance, OLYspeaker1_VOICING_pid PID, uint32_t Value);
 	void ParamSetFIR(uint32_t instance,OLYspeaker1_FIR_pid PID, uint32_t Value);
 	void ParamSetThrow(uint32_t instance,OLYspeaker1_THROW_pid PID, uint32_t Value);
 	void ParamSetProfile(uint32_t instance,OLYspeaker1_PROFILE_pid PID, uint32_t Value);
-//	void ParamSetXover(uint32_t instance,OLYspeaker1_XOVER_pid PID, mandolin_parameter_value Value);
-//	void ParamSetAirloss(OLYspeaker1_AIRLOSS_pid PID, mandolin_parameter_value Value);
-//	void ParamSetNoiseGate(OLYspeaker1_NOISEGATE_pid PID, mandolin_parameter_value Value);
-//	void HandleSetApplicationParameter(MandolinPort * srcPort, mandolin_message * pMsg);
-///	void HandleGetApplicationParameters(MandolinPort * srcPort, mandolin_message * pMsg);
-//	void HandleSetApplicationString(MandolinPort * srcPort, mandolin_message * pMsg);
-//	void HandleGetApplicationString(MandolinPort * srcPort, mandolin_message * pMsg);
-//	void HandleGetSoftwareInfo(MandolinPort * srcPort, mandolin_message * pMsg);
-//	void HandleCreateParameterList(MandolinPort * srcPort, mandolin_message * pMsg);
-//	void HandleSubscribeParameter(MandolinPort * srcPort, mandolin_message * pMsg);
-//	void HandleMetersResponse(mandolin_message * pMsg);
+	void ParamSetXover(uint32_t instance,OLYspeaker1_XOVER_pid PID, mandolin_parameter_value Value);
+	void ParamSetAirloss(OLYspeaker1_AIRLOSS_pid PID, mandolin_parameter_value Value);
+	void ParamSetNoiseGate(OLYspeaker1_NOISEGATE_pid PID, mandolin_parameter_value Value);
+	void HandleSetApplicationParameter(MandolinPort * srcPort, mandolin_message * pMsg);
+	void HandleGetApplicationParameters(MandolinPort * srcPort, mandolin_message * pMsg);
+	void HandleSetApplicationString(MandolinPort * srcPort, mandolin_message * pMsg);
+	void HandleGetApplicationString(MandolinPort * srcPort, mandolin_message * pMsg);
+	void HandleGetSoftwareInfo(MandolinPort * srcPort, mandolin_message * pMsg);
+	void HandleCreateParameterList(MandolinPort * srcPort, mandolin_message * pMsg);
+	void HandleSubscribeParameter(MandolinPort * srcPort, mandolin_message * pMsg);
+	void HandleMetersResponse(mandolin_message * pMsg);
 #endif
-//	void HandleFastConnect(MandolinPort * srcPort, mandolin_message * pMsg);
+	void HandleFastConnect(MandolinPort * srcPort, mandolin_message * pMsg);
 
 	/* Test Functions */
-//	void HandleTestCommand(MandolinPort * srcPort, mandolin_message * pMsg);
-//	void HandleGetSystemStatus(MandolinPort * srcPort, mandolin_message * pMsg);
-///	void HandleSystemEvent(MandolinPort * srcPort, mandolin_message *pMsg);
-//	void SoftwareReset(MandolinPort * srcPort, mandolin_message * pMsg);
-//	void HandleFileMessage(MandolinPort * srcPort, mandolin_message * pMsg);
+	void HandleTestCommand(MandolinPort * srcPort, mandolin_message * pMsg);
+	void HandleGetSystemStatus(MandolinPort * srcPort, mandolin_message * pMsg);
+	void HandleSystemEvent(MandolinPort * srcPort, mandolin_message *pMsg);
+	void SoftwareReset(MandolinPort * srcPort, mandolin_message * pMsg);
+	void HandleFileMessage(MandolinPort * srcPort, mandolin_message * pMsg);
 #if MFG_TEST_EAW || MFG_TEST_MARTIN
 	bool Mfg_SetOutputPinValue(uint32_t pinID, uint32_t value);
 	bool Mfg_GetInputPinValue(uint32_t pinID);
@@ -383,6 +418,6 @@ private:
 #endif // MFG_TEST_EAW || MFG_TEST_MARTIN
 };
 
-} /* namespace params */
+} /* namespace oly */
 
 #endif /* CONFIGMANAGER_H_ */

@@ -8,6 +8,10 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include source/Drivers/subdir.mk
+-include source/Dante/src/subdir.mk
+-include source/Dante/subdir.mk
+-include source/Comm/subdir.mk
 -include source/subdir.mk
 -include lwip/src/netif/ppp/polarssl/subdir.mk
 -include lwip/src/netif/ppp/subdir.mk
@@ -27,6 +31,8 @@ RM := rm -rf
 -include Library/StdDriver/src/subdir.mk
 -include Library/Device/Nuvoton/GCC/subdir.mk
 -include Library/Device/Nuvoton/subdir.mk
+-include Common/Mandolin/subdir.mk
+-include Common/subdir.mk
 -include subdir.mk
 -include objects.mk
 
@@ -59,6 +65,17 @@ endif
 
 -include ../makefile.defs
 
+OPTIONAL_TOOL_DEPS := \
+$(wildcard ../makefile.defs) \
+$(wildcard ../makefile.init) \
+$(wildcard ../makefile.targets) \
+
+
+BUILD_ARTIFACT_NAME := CDDLive
+BUILD_ARTIFACT_EXTENSION := elf
+BUILD_ARTIFACT_PREFIX :=
+BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
+
 # Add inputs and outputs from these tool invocations to the build variables 
 SECONDARY_FLASH += \
 CDDLive.hex \
@@ -71,20 +88,20 @@ CDDLive.siz \
 all: CDDLive.elf secondary-outputs
 
 # Tool invocations
-CDDLive.elf: $(OBJS) $(USER_OBJS)
+CDDLive.elf: $(OBJS) $(USER_OBJS) makefile objects.mk $(OPTIONAL_TOOL_DEPS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross ARM GNU C++ Linker'
 	arm-none-eabi-g++ -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Og -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "C:\Users\Iain.Quarmby\OneDrive - Focusrite Group\Documents\GitHub\HelloWorld\CMSIS\GCC\gcc_arm.ld" -Xlinker --gc-sections -Wl,-Map,"CDDLive.map" -o "CDDLive.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-CDDLive.hex: CDDLive.elf
+CDDLive.hex: CDDLive.elf makefile objects.mk $(OPTIONAL_TOOL_DEPS)
 	@echo 'Invoking: Cross ARM GNU Create Flash Image'
 	arm-none-eabi-objcopy -O ihex "CDDLive.elf"  "CDDLive.hex"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-CDDLive.siz: CDDLive.elf
+CDDLive.siz: CDDLive.elf makefile objects.mk $(OPTIONAL_TOOL_DEPS)
 	@echo 'Invoking: Cross ARM GNU Print Size'
 	arm-none-eabi-size --format=berkeley "CDDLive.elf"
 	@echo 'Finished building: $@'
@@ -98,6 +115,5 @@ clean:
 secondary-outputs: $(SECONDARY_FLASH) $(SECONDARY_SIZE)
 
 .PHONY: all clean dependents
-.SECONDARY:
 
 -include ../makefile.targets

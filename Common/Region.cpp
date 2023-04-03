@@ -15,7 +15,7 @@
 #include <string.h>
 #include <assert.h>
 #include <errno.h>
-#include "mqx.h"
+#include "MQX_To_FreeRTOS.h"
 #include "network.h"
 
 extern "C" {
@@ -364,13 +364,19 @@ bool Region::ValidateMAC(uint8 mac[6])
 //	Load region data from Flash
 void Region::Load()
 {
+#ifdef SC_COMMENTED_OUT
+	// Need the proper Flash layout for this to work on Nuvoton board
 	memcpy(&olyBlock, OLY_BLOCK_LOCATION, sizeof(olyBlock));
+#endif
 }
 
 //	Verify the RAM version is valid
 //	In future, will have to deal with changes to structure for backwards compatibility
 bool Region::Verify()
 {
+#if 1
+	return false;	// SC : Force Verification fail to ensure Region initialised to defaults in RAM by Initialize()
+#else	// SC_COMMENTED_OUT
 	bool bValid = true;
 
 #ifdef _SECONDARY_BOOT
@@ -428,6 +434,7 @@ bool Region::Verify()
 	}
 	printf(bValid?"System block valid.\r\n":"System block invalid!\r\n");
 	return(bValid);
+#endif	// SC_COMMENTED_OUT
 }
 
 //	Initialize an invalid region database
@@ -457,6 +464,7 @@ void Region::Initialize()
 	olyBlock.rgn[0].vectorTable = m_uiDefaultStart;
 	olyBlock.rgn[0].stackPtr = OLY_DEFAULT_STACK_PTR;
 
+#ifdef SC_COMMENTED_OUT
 	//	Calculate CRC
 	unsigned char *pCrcPtr = (unsigned char *)olyBlock.rgn[0].address;
 	unsigned short crcCalc;
@@ -465,6 +473,7 @@ void Region::Initialize()
 	Crc16Update(&rgnCrc, pCrcPtr, olyBlock.rgn[0].length);
 	Crc16Finalize(&rgnCrc, &crcCalc);
 	olyBlock.rgn[0].crc =crcCalc;
+#endif // SC_COMMENTED_OUT
 }
 
 void Region::SetStaticIp(uint32_t uiIp)
@@ -516,12 +525,13 @@ void Region::SetIpSettings(uint32_t uiIp, uint32_t uiGateway, uint32_t uiMask)
 void Region::Save()
 {
 	printf("Saving Region Block to Flash.\r\n");
-
+#ifdef SC_COMMENTED_OUT
 	uint32_t uiFlashAdddress = (unsigned int)OLY_BLOCK_LOCATION;
 
 	olyBlock.generation++;
 
 	write_sector((unsigned int)uiFlashAdddress, (uint8_t*)&olyBlock);
+#endif // SC_COMMENTED_OUT
 }
 
 //	Search RAM copy of Region Table for matching region type
@@ -539,6 +549,7 @@ int Region::FindFirst(OLY_REGION_TYPE type)
 
 bool Region::VerifyRegion(int nRegion)
 {
+#ifdef SC_COMMENTED_OUT
 	if ((nRegion>=0) && (nRegion<OLY_MAX_REGIONS))
 	{
 		if ((olyBlock.rgn[nRegion].length) && (0xFFFFFFFF!=olyBlock.rgn[nRegion].length))
@@ -565,6 +576,8 @@ bool Region::VerifyRegion(int nRegion)
 	else
 		printf("Region number invalid!\r\n");
 	return(false);
+#endif // SC_COMMENTED_OUT
+	return true;
 }
 
 //	Clear out a region that will be upgraded
@@ -596,8 +609,9 @@ bool Region::WriteRegion(int nRegion, P_OLY_REGION pOlyRegion)
 bool Region::WriteChunk(uint32_t uiFlashAdddress, uint8_t *pChunk)
 {
 	uint32_t uiResult;
-
+#ifdef SC_COMMENTED_OUT
 	uiResult = write_sector(uiFlashAdddress, pChunk);
+#endif // SC_COMMENTED_OUT
 
 	return(!uiResult);
 }
@@ -908,6 +922,7 @@ const char *Region::GetMandolinModelName(LOUD_brand mandolinBrand, int nMandolin
 		default:
 			break;
 		}
+		break;
 	default:
 		break;
 	}
@@ -1006,8 +1021,10 @@ void Region::WriteIdentity(uint8_t mac[6], int32_t nBrand, int32_t nModel, uint1
 		}
 
 		printf("Saving Identity Sector, hold on...");
+#ifdef SC_COMMENTED_OUT
 		write_sector_zero(pSectorZero);
 		printf("Success.\r\n");
+#endif // SC_COMMENTED_OUT
 		delete pSectorZero;
 	}
 }

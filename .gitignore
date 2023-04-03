@@ -4,3 +4,10 @@
 *.hex
 *.elf
 *.mk
+/Release/
+/Debug 15/
+/Debug 12/
+/Debug 8/
+/Debug 118/
+/Debug 218/
+/Debug Manf/

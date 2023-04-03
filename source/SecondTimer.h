@@ -17,6 +17,8 @@ const uint32_t MEMORY_DISPLAY_TICKS = 5;
 
 static void printFreeRTOSHeapStats()
 {
+return;	// Whilst DEBUGGING OTHER STUFF
+
 	static xHeapStats stats = {0};
 	vPortGetHeapStats( &stats );
 	printf("FreeRTOS heap\n  Free = %u, biggest = %u, smallest = %u\n",
@@ -35,8 +37,7 @@ protected:
 	void Run()
 	{
 		// toggle an led
-		Leds::toggleLed(GREEN_LED);
-		Leds::setLed(RED_LED, Buttons::readButton(SW2));
+		Leds::toggleLed(GREEN_LED1);
 
 		if (!--tickCounter)
 		{

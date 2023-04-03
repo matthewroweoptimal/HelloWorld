@@ -28,7 +28,7 @@
 /** @cond HIDDEN_SYMBOLS */
 
 
-#define ENABLE_DEBUG    0
+#define ENABLE_DEBUG    1
 
 #if ENABLE_DEBUG
 #define SPIM_DBGMSG   printf
@@ -540,7 +540,7 @@ int SPIM_InitFlash(int clrWP)
 
     SPIM_ReadJedecId(idBuf, sizeof (idBuf), 1UL);
 
-    /* printf("ID: 0x%x, 0x%x, px%x\n", idBuf[0], idBuf[1], idBuf[2]); */
+    printf("ID: 0x%x, 0x%x, px%x\n", idBuf[0], idBuf[1], idBuf[2]);
 
     for (i = 0UL; i < sizeof(g_Supported_List)/sizeof(g_Supported_List[0]); i++)
     {
