@@ -167,10 +167,9 @@ extern unsigned long RTOS_AppGetRuntimeCounterValueFromISR(void);
 #ifdef NDEBUG
 
 // In Release Builds, just log the assert failure. Note: Must be pure 'C' only, so can't use Logger.cpp/.h
-
-#include "configAssertFunc.h"
-
-#define configASSERT(x) ((x) ? (void)0 : configAssert_func(__FILE__, __FUNCTION__, #x))
+//#include "configAssertFunc.h"
+//#define configASSERT(x) ((x) ? (void)0 : configAssert_func(__FILE__, __FUNCTION__, #x))
+#define configASSERT(x)		// Asserts will do nothing in Release build
 
 #else
 

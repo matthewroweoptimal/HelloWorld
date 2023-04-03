@@ -66,12 +66,15 @@ extern oly::Config *olyConfig;	//	Messy going through Config object, won't be ne
 
 void dhcp_callback(struct netif* pnetif)
 {
+#ifndef _SECONDARY_BOOT
 	if (g_CurrentIpAddress != pnetif->ip_addr.addr)
 	{
 		printf("\nIPv4 Address changed to %d.%d.%d.%d.\r\n", IPBYTES(pnetif->ip_addr.addr));
 		g_CurrentIpAddress = pnetif->ip_addr.addr;
+
 		olyConfig->OnIPAddressChanged(pnetif->ip_addr.addr);
 	}
+#endif // _SECONDARY_BOOT
 }
 
 static void tcp_mandolin_thread(void *arg)

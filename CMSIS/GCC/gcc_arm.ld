@@ -1,12 +1,15 @@
 /* Linker script to configure memory regions. */
 MEMORY
 {
-
-
   /* M487 datasheet states : 512k Flash, 160k RAM (but this includes 32kB cache for external SPI Flash) */
-  FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 448K	/* 64k for data flash - address 0x00070000 - 0x0007FFFF */
-  RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 160K   /* IQ - The 32kB extra is included*/
-  EXT_RAM (rwx) : ORIGIN = 0x60000000, LENGTH = 128K 
+  FLASH_BOOT (rx)      : ORIGIN = 0x00000000, LENGTH = 44k	/* Reserved for the BootLoader */
+  m_flash_params (rx)  : ORIGIN = 0x0000B000, LENGTH = 16k	/* Reserved for the Parameters - written to by the APP */
+  m_system_params (rx) : ORIGIN = 0x0000F000, LENGTH = 4k	/* Reserved for the System Parameters - written to by the APP */
+
+  FLASH_APP (rx)       : ORIGIN = 0x00010000, LENGTH = 448K	/* 448k (3 * 128k) for APP data flash - address 0x00010000 - 0x0007FFFF */
+
+  RAM (rwx)            : ORIGIN = 0x20000000, LENGTH = 160K   /* IQ - The 32kB extra is included*/
+  EXT_RAM (rwx)        : ORIGIN = 0x60000000, LENGTH = 128K 
 }
 
 /* 
@@ -56,6 +59,16 @@ ENTRY(Reset_Handler)
 
 SECTIONS
 {
+	.flash_params 0x0000B000 :
+	{
+		KEEP(*(.flash_params))  /* keep my variable even if not referenced */
+	} > m_flash_params
+  
+	.system_params 0x0000F000 :
+	{
+		KEEP(*(.system_params))  /* keep my variable even if not referenced */
+	} > m_system_params
+
 	.text :
 	{
 		KEEP(*(.vectors))
@@ -85,18 +98,18 @@ SECTIONS
 		*(.rodata*)
 
 		KEEP(*(.eh_frame*))
-	} > FLASH
+	} > FLASH_APP
 
 	.ARM.extab :
 	{
 		*(.ARM.extab* .gnu.linkonce.armextab.*)
-	} > FLASH
+	} > FLASH_APP
 
 	__exidx_start = .;
 	.ARM.exidx :
 	{
 		*(.ARM.exidx* .gnu.linkonce.armexidx.*)
-	} > FLASH
+	} > FLASH_APP
 	__exidx_end = .;
 
 	/* To copy multiple ROM to RAM sections,
@@ -114,7 +127,7 @@ SECTIONS
 		LONG (__data2_start__)
 		LONG (__data2_end__ - __data2_start__)
 		__copy_table_end__ = .;
-	} > FLASH
+	} > FLASH_APP
 	*/
 
 	/* To clear multiple BSS sections,
@@ -130,7 +143,7 @@ SECTIONS
 		LONG (__bss2_start__)
 		LONG (__bss2_end__ - __bss2_start__)
 		__zero_table_end__ = .;
-	} > FLASH
+	} > FLASH_APP
 	*/
 
 	__etext = .;

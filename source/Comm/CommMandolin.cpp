@@ -202,8 +202,11 @@ mandolin_message * GetSoftwareInfoResponse(uint32_t dante_fw_ver, uint32_t dante
     uint32_t version = ((MANDOLIN_MAJOR_VERSION & 0x0ff) << 24) | ((MANDOLIN_MINOR_VERSION & 0x0ff) << 16) | ((OLYspeaker1_XML_VERSION & 0x0ffff) << 0);
 
     volatile oly_version_t oly_version;
-
+#ifdef _SECONDARY_BOOT
+    oly_version.u32 = OLY_BOOT_VERSION;
+#else
     oly_version.u32 = OLY_FW_VERSION;
+#endif
 
     tmpMsg.payload   = pPayload;
     tmpMsg.id        = MANDOLIN_MSG_GET_SOFTWARE_INFO;

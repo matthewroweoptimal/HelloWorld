@@ -382,6 +382,7 @@ public:
 #endif // 0
 
 private:
+	void HandleGetSoftwareInfo(MandolinPort * srcPort, mandolin_message * pMsg);
 #ifndef _SECONDARY_BOOT
 	void SelfTestEnableChannel(int channel);
 	void ParamSetDevice(OLYspeaker1_DEVICE_pid PID, void * Value);
@@ -397,7 +398,6 @@ private:
 	void HandleGetApplicationParameters(MandolinPort * srcPort, mandolin_message * pMsg);
 	void HandleSetApplicationString(MandolinPort * srcPort, mandolin_message * pMsg);
 	void HandleGetApplicationString(MandolinPort * srcPort, mandolin_message * pMsg);
-	void HandleGetSoftwareInfo(MandolinPort * srcPort, mandolin_message * pMsg);
 	void HandleCreateParameterList(MandolinPort * srcPort, mandolin_message * pMsg);
 	void HandleSubscribeParameter(MandolinPort * srcPort, mandolin_message * pMsg);
 	void HandleMetersResponse(mandolin_message * pMsg);
