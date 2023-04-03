@@ -10,7 +10,11 @@
 
 #include "MQX_To_FreeRTOS.h"
 //#include "lwevent.h"
+
+extern "C" {
 #include "oly.h"
+}
+
 
 #define ADC_START_BYTE			0x01
 #define ADC_SINGLE_ENDED		0x80

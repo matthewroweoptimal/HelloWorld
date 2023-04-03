@@ -37,6 +37,7 @@
 #include "InputHandler.h"
 #include "TimeKeeper.h"
 #include "spi_sharc.h"
+#include "spi_aux_csense.h"
 #include "board.h"
 #include "uart_ultimo.h"
 #include "flash_params.h"
@@ -63,8 +64,12 @@ using namespace std;
 #define ETHERNET_HANDLER_PRIORITY 8U  //transfer this manually to ethernet driver
 #define GPH_HANDLER_PRIORITY 12U  //transfer this manually to ethernet driver
 
+#if MFG_TEST_MARTIN
 #define ARRAY_SIZE 1024
 uint16_t __attribute__ ((section(".external_ram"))) ExtRamArray[ARRAY_SIZE] = {0xFF} ;
+#endif
+
+uint32_t	g_button_state;
 
 /*-----------------------------------------------------------*/
 /*
@@ -202,6 +207,15 @@ void prvSetupHardware( void )
     /* Enable SPI1 I/O high slew rate (0xF0 for PH4-7) what about other PH pins?*/
     GPIO_SetSlewCtl(PH, 0xF0, GPIO_SLEWCTL_HIGH);
 
+    // SPI2_CONFIGURATION SYS_GPA_MFPH_PA15MFP_SPI2_MOSI
+    /* Configure SPI1 related multi-function pins. GPH[7:4] : SPI1_MISO, SPI1_MOSI, SPI1_CLK, SPI1_SS. */
+    SYS->GPA_MFPH |= (SYS_GPA_MFPH_PA12MFP_SPI2_SS | SYS_GPA_MFPH_PA13MFP_SPI2_CLK | SYS_GPA_MFPH_PA14MFP_SPI2_MISO | SYS_GPA_MFPH_PA15MFP_SPI2_MOSI);
+
+    /* Enable SPI2 clock pin (PA13) schmitt trigger */
+    PA->SMTEN |= GPIO_SMTEN_SMTEN13_Msk;
+    /* Enable SPI1 I/O high slew rate (0xF00 for PA15-12) what about other PA pins? untouched I think!*/
+    GPIO_SetSlewCtl(PA, 0xF000, GPIO_SLEWCTL_HIGH);
+
     /*enable some output GPIO pins for resets of DAC, ADC, SHARC, AMPS and the happy leds */
     GPIO_SetMode(PH, BIT0|BIT1|BIT2, GPIO_MODE_OUTPUT);
     GPIO_SetMode(PE, BIT7, GPIO_MODE_OUTPUT);
@@ -209,10 +223,15 @@ void prvSetupHardware( void )
     GPIO_SetMode(PG, BIT0|BIT1|BIT2|BIT3, GPIO_MODE_OUTPUT);
     GPIO_SetMode(PF, BIT5|BIT6, GPIO_MODE_OUTPUT);
 
-    //Set the inputs up
-    GPIO_SetMode(PF, BIT7|BIT8, GPIO_MODE_QUASI);
-    //GPIO_SetMode(PB, BIT0|BIT1, GPIO_MODE_QUASI);
-    GPIO_SetMode(PF, BIT9|BIT10|BIT11, GPIO_MODE_QUASI);
+    //Set the inputs up from the amps
+#if REV004_PIN_CHANGES
+    GPIO_SetMode(PA, BIT9|BIT10|BIT11, GPIO_MODE_QUASI);
+#else
+    GPIO_SetMode(PF, BIT7|BIT8|BIT9, GPIO_MODE_QUASI);
+#endif
+    GPIO_SetMode(PF, BIT10|BIT11, GPIO_MODE_QUASI);
+
+
     GPIO_SetMode(PG, BIT4, GPIO_MODE_QUASI);
 
 
@@ -307,6 +326,9 @@ void prvSetupHardware( void )
     Gpio::setGpio(AMP1_TEMP_VAC_SEL,HIGH);
     Gpio::setGpio(AMP2_TEMP_VAC_SEL,HIGH);
 
+    Leds::setLed(GREEN_LED1,true);
+    Leds::setLed(GREEN_LED2,true);
+
     initEthernetHardware();
 
     /* Init UART to 115200-8n1 for print message */
@@ -342,22 +364,20 @@ void prvSetupHardware( void )
                      SYS_GPH_MFPH_PH10MFP_EBI_AD14 | SYS_GPH_MFPH_PH11MFP_EBI_AD15;
 
 
-    /* EBI ADR16, ADR17 pins on PF.9, PF.8 */
-//    SYS->GPA_MFPH |= SYS_GPA_MFPH_PF11MFP_EBI_ADR16 | SYS_GPF_MFPH_PF8MFP_EBI_ADR17;
-    /*Proto has A16 as a GPIO. Productino will have it on correct pin, A17/A18 NC as SRAM is only 256kBytes */
-	//#define SRAM_A16				PA9
-	//#define SRAM_A17				PA10
-	//#define SRAM_A18				PA11
+
+    /* EBI ADR16, ADR17 & ADR18 pins
+     * REV002 uses PA9, PA10 & PA11 GPIO to access the memory sections.
+     * REV004 correctly assigns the Multifunction pins PF.9, PF8 & PF.7
+     * We set PF7&PF8 to zero as hey are not used by the 256k flash*/
+#if REV004_PIN_CHANGES
+    SYS->GPF_MFPH |= SYS_GPF_MFPH_PF9MFP_EBI_ADR16;
+    GPIO_SetMode(PF, BIT7|BIT8, GPIO_MODE_QUASI);		//These pins are NC on the SRAM - We make high impedance
+#else
     PA9 = 0;
     PA10 = 0;
     PA11 = 0;
+#endif
 
-
-
-    /* EBI ADR18, ADR19 pins on PF.7, PF.6 */
-//    SYS->GPF_MFPL |= SYS_GPF_MFPL_PF7MFP_EBI_ADR18 | SYS_GPF_MFPL_PF6MFP_EBI_ADR19;
-
-    //these pins are under software control, not part of EBI interface?!?!?
 
     /* EBI RD and WR pins on PE.4 and PE.5 */
     SYS->GPE_MFPL |= SYS_GPE_MFPL_PE4MFP_EBI_nWR | SYS_GPE_MFPL_PE5MFP_EBI_nRD;
@@ -392,34 +412,57 @@ void prvSetupHardware( void )
 
 static void peripherals_init(void)
 {
-	/* DSP SPI1 boot config */
-	NVIC_SetPriority(SPI1_IRQn, SPI1_HANDLER_PRIORITY);
-//	OSA_InstallIntHandler(SPI0_IRQn, spi_sharc_IRQHandler);
-	DSPI_DRV_MasterInit(FSL_SPI_SHARC, &spi_sharc_MasterState, &spi_sharc_MasterConfig_boot, &spi_sharc_bootConfig);
 
-	//Init I2C for ADC - Does it need any init or do we just do the setup?
+#if MFG_TEST_MARTIN
+	uint32_t count=0;
 
-	uint32_t count = 0;
-    //uint8_t i = 0;
-
-    while(count<ARRAY_SIZE)
-    {
-    	ExtRamArray[count] = 0xffff;
-    	count++;
-    }
-
-    count=0;
-    /*write directly to my array*/
-    while(count<ARRAY_SIZE)
+    while(count++<ARRAY_SIZE)
     {
     	ExtRamArray[count] = 0xff + count;
     	count++;
     }
 
-	/* Initialize Flash */
-	flash_init();
+    count=0;
+
+    while(count++<ARRAY_SIZE)
+    {
+    	if(ExtRamArray[count] != 0xff + count)
+    	{
+    		printf("External SRAM test FAILED\n");
+    		while(1)
+    		{
+    			if(count++ > 2500000)
+    				{
+    				Leds::toggleLed(GREEN_LED1);
+    				count = 0;
+    				}
+    		}
+    	}
+    	count++;
+    }
+
+    printf("External SRAM test PASSED\n");
+#endif
+
+	/* DSP SPI1 boot config */
+	NVIC_SetPriority(SPI1_IRQn, SPI1_HANDLER_PRIORITY);
+//	OSA_InstallIntHandler(SPI0_IRQn, spi_sharc_IRQHandler);
+	DSPI_DRV_MasterInit(FSL_SPI_SHARC, &spi_sharc_MasterState, &spi_sharc_MasterConfig_boot, &spi_sharc_bootConfig);
+
+	//Init aux SPI for talking to current sense.
+	NVIC_SetPriority(SPI2_IRQn, SPI2_HANDLER_PRIORITY);
+	DSPI_DRV_MasterInit(FSL_SPI_AUX, &spi_aux_csense_MasterState, &spi_aux_MasterConfig0, &spi_aux_BusConfig0);
+
+	//Init I2C for ADC - Does it need any init or do we just do the setup?
+
+
+	/* Initialize Flash IQ - probably omit use of internal flash*/
+	//flash_init();
+
 //	ext_flash_int(); TODO tidy up the init functions.
 
+	/* Get initial inputs state */
+	g_button_state = init_inputs();
 
 	/* TODO : Accelerometer I2C NOT USED BY NUCDDL*/
 
@@ -432,7 +475,8 @@ static void peripherals_init(void)
 
     /* TODO : FTM3 LCD Backlight NOT USED BY NUCDD*/
 
-    /* TODO : Init ADC for Amp Monitoring*/
+    /* Init ADC for Amp Monitoring*/
+    /* EADC */
     EADC_Init();
 
     if(g_EADC_i32ErrCode==EADC_TIMEOUT_ERR)

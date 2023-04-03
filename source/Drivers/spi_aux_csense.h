@@ -1,38 +1,31 @@
 
-#ifndef __spi_sharc_H
-#define __spi_sharc_H
-/* MODULE spi_sharc. */
+#ifndef __spi_aux_csense_H
+#define __spi_aux_csense_H
+/* MODULE spi_aux_csense.h */
 
 #include "SpiDriverNuvoton.h"
 
 
 /*! @brief Device instance number */
-#define FSL_SPI_SHARC 1
-/*! @brief spi_sharc component mode */
-#define SPI_SHARC_DMA_MODE 0U
-
-
+#define FSL_SPI_AUX 2
 
 /*! @brief Driver state structure. Generated due to enabled auto initialization - this is declared in spi_sharc.cpp!!*/
-extern dspi_master_state_t spi_sharc_MasterState;
+extern dspi_master_state_t spi_aux_csense_MasterState;
 
 /*! @brief Driver calculated baudrate is returned from DSPI_DRV_MasterInit() call.
     Generated due to enabled auto initialization */
-extern uint32_t spi_sharc_calculatedBaudRate;
+extern uint32_t spi_aux_csense_calculatedBaudRate;
   
+
 /*! @brief Master bus configuration declaration */
-extern const dspi_device_t spi_sharc_bootConfig;
-extern const dspi_device_t spi_sharc_hostConfig;
+extern const dspi_device_t spi_aux_BusConfig0;
     
 /*! @brief Master configuration declaration */
-extern const dspi_master_user_config_t spi_sharc_MasterConfig_boot;
-extern const dspi_master_user_config_t spi_sharc_MasterConfig_host;
+extern const dspi_master_user_config_t spi_aux_MasterConfig0;
 
-//void SPI0_IRQHandler(void);
-void dsp_sharc_SetMode_Host(void);
     
 #endif
-/* ifndef __spi_sharc_H */
+/* ifndef __spi_aux_csense_H */
 /*!
 ** @}
 */

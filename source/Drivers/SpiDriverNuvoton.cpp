@@ -155,7 +155,19 @@ dspi_status_t DSPI_DRV_MasterInit(uint32_t instance, dspi_master_state_t * dspiS
      * Enable clock for DSPI
      */
     /* >>>>>>> Select PCLK0 as the clock source of SPI0 */
-    CLK_SetModuleClock(SPI_MODULE, CLK_CLKSEL2_SPI0SEL_PCLK1, MODULE_NoMsk);    // NUVOTON M480
+    switch (SPI_MODULE) {
+    	case(SPI0_MODULE):
+    	    CLK_SetModuleClock(SPI0_MODULE, CLK_CLKSEL2_SPI0SEL_PCLK1, MODULE_NoMsk);    // NUVOTON M480
+    		break;
+    	case(SPI1_MODULE):
+    	    CLK_SetModuleClock(SPI1_MODULE, CLK_CLKSEL2_SPI1SEL_PCLK0, MODULE_NoMsk);    // NUVOTON M480
+    		break;
+    	case(SPI2_MODULE):
+    	    CLK_SetModuleClock(SPI2_MODULE, CLK_CLKSEL2_SPI2SEL_PCLK1, MODULE_NoMsk);    // NUVOTON M480
+    		break;
+
+    }
+
     /* >>>>>>>>> Enable SPI0 peripheral clock */
     CLK_EnableModuleClock(SPI_MODULE);                                          // NUVOTON M480 
          

@@ -4,7 +4,7 @@
 #include "MQX_To_FreeRTOS.h"
 
 
-#define SPI_INSTANCE_COUNT   4       // SPI0..3, but in CDDLive we only use : SPI_0 (SHARC) and SPI_2 (AUX) ?
+#define SPI_INSTANCE_COUNT   4       // SPI0..3, but in CDDLive we only use : SPI_1 (SHARC) and SPI_2 (AUX) ?
 
 //#define FSL_SPI_SHARC   0   // SPI0
 //#define FSL_SPI_AUX     2   // SPI2  Needed ??

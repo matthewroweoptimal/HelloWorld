@@ -37,12 +37,15 @@ void DeferredReboot(int nMs);
 void HeartbeatTimer( _timer_id id);
 void CheckAmps( _timer_id id);
 void TriggerFlashWrite( _timer_id id);
-void NetworkSubscriptionUpdater( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr );
-void VoicingSubscriptionUpdater( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr );
+
 #ifdef FREERTOS_CONFIG_H
+    void NetworkSubscriptionUpdater( _timer_id id );
+    void VoicingSubscriptionUpdater( _timer_id id );
 	void TriggerSelfTestSwitch( _timer_id id );
 #else
-	void TriggerSelfTestSwitch( _timer_id id);
+    void NetworkSubscriptionUpdater( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr );
+    void VoicingSubscriptionUpdater( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr );
+	void TriggerSelfTestSwitch( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr );
 #endif
 void UIBackToDefaultScreen( _timer_id id);
 

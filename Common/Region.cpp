@@ -922,6 +922,7 @@ const char *Region::GetMandolinModelName(LOUD_brand mandolinBrand, int nMandolin
 		default:
 			break;
 		}
+		break;
 	default:
 		break;
 	}

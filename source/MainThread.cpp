@@ -138,10 +138,21 @@ void MainThread::Run()
     readByte = I2C_ReadByteThreeRegs(I2C2, DAC_I2C_ADDR, ASP_CLK_CNFG_REG);
 	printf("asp cnfg reg... 0x%02x\n", readByte);
 
-	/* unmnute the amps! maybe fade up the DSP? The logic here is inverted by the transistors!*/
-    Gpio::setGpio(AMP1_DISABLE_MUTE_CNTRL,LOW);
-    Gpio::setGpio(AMP2_DISABLE_MUTE_CNTRL,LOW);
-    Gpio::setGpio(AMP1_2_STANDBY_CNTRL,LOW);
+	uint32_t count=0;
+	if(readByte!=ASP_CLK_CNFG)
+	{
+		printf("DAC failed to initialise\n");
+		while(1)
+		{
+			if(count++ > 2500000)
+				{
+				Leds::toggleLed(GREEN_LED2);
+				count = 0;
+				}
+		}
+	}
+
+
 
     // Signal that other Threads can now start
     xSemaphoreGive(_semMainThreadComplete);

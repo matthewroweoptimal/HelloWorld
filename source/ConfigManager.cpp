@@ -15,6 +15,7 @@
 #include "TimeKeeper.h"
 #include "spi_flash_nu.h"
 #include "AmpMonitor.h"
+#include "SpeakerConfiguration.h"
 
 extern "C" {
 #include "flash_params.h"
@@ -24,7 +25,7 @@ extern "C" {
 #ifndef _SECONDARY_BOOT
 #include "Voicing_Info.h"
 #endif	//	_SECONDARY_BOOT
-//#include "SpeakerConfiguration.h"
+
 //#include "AmpMonitor.h"
 //#include "MMA8653FC.h"
 //#include "ftm_lcdbacklight.h"
@@ -292,15 +293,15 @@ namespace oly {
     				memcpy(olyParams.Profile[0], olyParams.Profile[user_preset_remap], sizeof(olyStoredParams.Stored_Profile_Presets[0]));
     
     				//now dump the user parameters over to DSP
-    //				olyDspPort.WriteMessage(GetSyncMessage(MANDOLIN_SE_SYNC_CURRENT_STATE));
-    //				olyDspPort.WriteMessage(SetParameterBlock(eTARGET_USER, 0, 1, olyParams.User[user_preset_remap],OLYspeaker1_USER_PARAMETER_MAX-1));
-    //				olyDspPort.WriteMessage(SetParameter(eTARGET_USER, 0, ePID_OLYspeaker1_USER_INPUT_ROUTING, AudioSrc2Routing(ActiveInputSource)));	// Override input source
+    				olyDspPort.WriteMessage(GetSyncMessage(MANDOLIN_SE_SYNC_CURRENT_STATE));
+    				olyDspPort.WriteMessage(SetParameterBlock(eTARGET_USER, 0, 1, olyParams.User[user_preset_remap],OLYspeaker1_USER_PARAMETER_MAX-1));
+    				olyDspPort.WriteMessage(SetParameter(eTARGET_USER, 0, ePID_OLYspeaker1_USER_INPUT_ROUTING, AudioSrc2Routing(ActiveInputSource)));	// Override input source
     				//olyDspPort.WriteMessage(GetSyncMessage(MANDOLIN_SE_SYNC_OK));
     
     				//now dump the profile parameters over to DSP
     				//olyDspPort.WriteMessage(GetSyncMessage(MANDOLIN_SE_SYNC_CURRENT_STATE));
-    //				olyDspPort.WriteMessage(SetParameterBlock(eTARGET_PROFILE, user_preset_remap, 1, olyParams.Profile[user_preset_remap],OLYspeaker1_PROFILE_PARAMETER_MAX-1));
-    //				olyDspPort.WriteMessage(GetSyncMessage(MANDOLIN_SE_SYNC_OK));
+    				olyDspPort.WriteMessage(SetParameterBlock(eTARGET_PROFILE, user_preset_remap, 1, olyParams.Profile[user_preset_remap],OLYspeaker1_PROFILE_PARAMETER_MAX-1));
+    				olyDspPort.WriteMessage(GetSyncMessage(MANDOLIN_SE_SYNC_OK));
     				cddlUI.UpdateUser(instance);
     			}
     			else {
@@ -335,13 +336,13 @@ namespace oly {
     			olyParams.Device->Active_Throw = instance;
     
     			//	Sync DSP
-    //			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_THROW, instance, 1, olyParams.Throw[instance],OLYspeaker1_THROW_PARAMETER_MAX-1));
+    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_THROW, instance, 1, olyParams.Throw[instance],OLYspeaker1_THROW_PARAMETER_MAX-1));
     		}
     		break;
     	case eTARGET_XOVER:
     		if (instance < XOVER_PRESETS) {
     			olyParams.Device->Active_Xover = instance;
-    //			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_XOVER, instance, 1, olyParams.Xover[instance],OLYspeaker1_XOVER_PARAMETER_MAX-1));
+    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_XOVER, instance, 1, olyParams.Xover[instance],OLYspeaker1_XOVER_PARAMETER_MAX-1));
     #if USE_OLY_UI
     			olyUI.UpdateActiveXover((LOUD_xover_type)olyParams.Device->Active_Xover);
     #endif
@@ -350,25 +351,25 @@ namespace oly {
     	case eTARGET_VOICING:
     		if (instance < VOICING_PRESETS) {
     			olyParams.Device->Active_Voicing = instance;
-    //			olyDspPort.WriteMessage(GetSyncMessage(MANDOLIN_SE_SYNC_CURRENT_STATE));
-    //			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_VOICING, instance, 1, olyParams.Voicing[instance],OLYspeaker1_VOICING_PARAMETER_MAX-1));
-    //			olyDspPort.WriteMessage(GetSyncMessage(MANDOLIN_SE_SYNC_OK));
+    			olyDspPort.WriteMessage(GetSyncMessage(MANDOLIN_SE_SYNC_CURRENT_STATE));
+    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_VOICING, instance, 1, olyParams.Voicing[instance],OLYspeaker1_VOICING_PARAMETER_MAX-1));
+    			olyDspPort.WriteMessage(GetSyncMessage(MANDOLIN_SE_SYNC_OK));
     		}
     		break;
     	case eTARGET_FIR:
     		if (instance < FIR_PRESETS) {
     			olyParams.Device->Active_FIR = instance;
-    //			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_HF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302));
+    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_HF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302));
     			_time_delay(10);
-    //			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_HF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300));
+    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_HF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300));
     			_time_delay(10);
-    //			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_MF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302));
+    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_MF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302));
     			_time_delay(10);
-    //			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_MF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300));
+    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_MF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300));
     			_time_delay(10);
-    //			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_LF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302));
+    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_LF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302));
     			_time_delay(10);
-    //			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_LF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300));
+    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_LF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300));
     			_time_delay(10);
     		}
     		break;
@@ -389,7 +390,7 @@ namespace oly {
     	if (olyStatus.SelfTest_Mode == eTEST_MODE_DISABLED)
     	{
     		if (mode == eAUDIO_MODE_AUTO) {
-    //			SetAudioSource((oly_audio_source_t)GetDanteAudioSource());
+    			SetAudioSource((oly_audio_source_t)GetDanteAudioSource());
     		}
     		else if (mode == eAUDIO_MODE_ANALOG){
     			SetAudioSource(src_analog);
@@ -436,7 +437,7 @@ namespace oly {
     
     		OnDanteMuteChanged();	// Evaluate mute state
     		olyParams.User[0][ePID_OLYspeaker1_USER_INPUT_ROUTING] = routing; // force user 0 routing to selected value for backward compatibility
-    //		olyDspPort.WriteMessage(SetParameter(eTARGET_USER,0,ePID_OLYspeaker1_USER_INPUT_ROUTING, (uint32_t)routing));	// This is the only case where the DSP receives this parameter
+    		olyDspPort.WriteMessage(SetParameter(eTARGET_USER,0,ePID_OLYspeaker1_USER_INPUT_ROUTING, (uint32_t)routing));	// This is the only case where the DSP receives this parameter
     		olyNetworkPort.WriteMessage(SetParameter(eTARGET_USER, 0, ePID_OLYspeaker1_USER_INPUT_ROUTING, (uint32_t)routing));
     	}
     
@@ -1489,6 +1490,21 @@ namespace oly {
     
     void Config::ParamSetVoicing(uint32_t instance, OLYspeaker1_VOICING_pid PID, uint32_t Value)
     {
+
+#if MFG_TEST_MARTIN
+		printf("ParamSetVoicing for PID: %d Value: %d\n",PID, Value);
+		/*
+		 * To use the old test app we must check for routing changes, these will not work with the Nuvoton
+		 */
+		if(PID==ePID_OLYspeaker1_VOICING_AMP4_ROUTING)
+		{
+			PID = ePID_OLYspeaker1_VOICING_AMP2_ROUTING;
+		}
+
+#endif
+
+
+
     	if (instance == 0)
     		instance = olyParams.Device->Active_Voicing;
     	else
@@ -2086,7 +2102,6 @@ namespace oly {
     	int i;
     	printf("OLY Params size = %d\n", sizeof(oly_flash_params_t));
 
-// TODO : SC Commented out
 
     	system_flash_init(&olyStoredParams);
     	//memcpy(&olyStoredParams, p_CurrentParamMemLoc, sizeof(oly_flash_params_t));
@@ -2107,27 +2122,14 @@ namespace oly {
     		system_flash_param_reinit();
     		RestoreDefaults(true);
     
-    	}else{
+    	}else
+    	{
     		printf("XML version=%i\n", olyStoredParams.XML_Version);
     		/* Initialize Status Parameters */
     		for (int i=1;i<OLYspeaker1_STATUS_PARAMETER_MAX; i++){
     			olyStatus.Values[i] = gOLYspeaker1StatusParameterTable[i].defValue;
     		}
-    
-    		/* TODO IQ - these are an add from restore defaults. Without them the DSP seems to enter BIST. Odd, I assume it is sent garbage, this will need fixing.*/
-		#if USER_PRESETS_STORED
-    		/* Reset Editable User parameters */
-    		for (i=0; i< USER_PRESETS_STORED; i++) {
-				RestoreUserEQ(i);
-    		}
 
-		#if USE_CDD_UI
-    		//until it is written to, user 1 should not be loaded
-    		//Store 0xFFFFFFFF in the null first word to mark as unuseable
-    		olyStoredParams.Stored_User_Presets[eCDD_PRESETS_USER][0] = 0xFFFFFFFF;
-		#endif
-
-		#endif
 
         	// send a sync current state message to DSP
         	olyDspPort.WriteMessage(GetSyncMessage(MANDOLIN_SE_SYNC_CURRENT_STATE));
@@ -2488,7 +2490,7 @@ namespace oly {
     }
     
     void Config::InitStatusParams() {
-    	// SC_COMMENTED_OUT
+
     	//olyStatus.Angle = 0; // SC : GetRawTilt();
     	olyStatus.Amp1_Temp = GetCurrentAmpTemp(sPro2_amp1);
     	olyStatus.Amp2_Temp = GetCurrentAmpTemp(sPro2_amp2);
@@ -2701,7 +2703,7 @@ namespace oly {
     		m_pUpgrade->SetIpSettings(0,0,0);  //force static IP to zero to make it dhcp permanently
     	}
     }
-#endif // 0
+
     
     //	Messy having this in Config object, won't be necessary when Network.cpp combined with NetworkPort.cpp
     bool Config::GetForceNetworkPortClose(int nPort)
@@ -2716,7 +2718,7 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
 	olyNetworkPort.OpenPort(bOpen);
 }
   
-#if 1
+//#if 1
     void Config::SetArrayMismatch(bool mismatch)
     {
     	if (olyStatus.Array_Mismatch != mismatch) {
@@ -3098,6 +3100,7 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     
     void Config::SetAmpRouting(uint32_t amp1, uint32_t amp2, uint32_t amp3, uint32_t amp4)
     {
+    	printf("SetAmpRouting amp1=%d, amp2=%d, amp3=%d, Amp4=%d\n", amp1, amp2, amp3, amp4);
     	ParamSetVoicing(0, ePID_OLYspeaker1_VOICING_AMP1_ROUTING, amp1);
     	ParamSetVoicing(0, ePID_OLYspeaker1_VOICING_AMP2_ROUTING, amp2);
 

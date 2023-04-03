@@ -140,7 +140,7 @@ float ReadAmpTemperature( uint32_t whichAmp )
     /* Get the conversion result of the sample module 0 */
     adc_value = uint16_t EADC_GET_CONV_DATA(EADC, whichAmp-1);
     temp = CalculateTemp(adc_value);
-    printf("Conversion result of temp, amp %d: 0x%X (%d) Actual Temp= %f\n\n", whichAmp, adc_value, adc_value, temp);
+    //printf("Conversion result of temp, amp %d: 0x%X (%d) Actual Temp= %f\n\n", whichAmp, adc_value, adc_value, temp);
     return temp;
 
 }

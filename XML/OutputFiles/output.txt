@@ -152,7 +152,7 @@ attributes: name='version', value='18'
         attributes: name='name', value='status'
 
             node name='Param', type='element'
-            attributes: name='name', value='angle' name='format', value='signed' name='default', value='0' name='min', value='-180' name='max', value='180'
+            attributes: name='name', value='angle' name='format', value='signed' name='default', value='90' name='min', value='-180' name='max', value='180'
 
             node name='Param', type='element'
             attributes: name='name', value='amp1_temp' name='format', value='float' name='default', value='0' name='min', value='0' name='max', value='100'

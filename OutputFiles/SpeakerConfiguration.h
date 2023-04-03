@@ -8,6 +8,9 @@
 #ifndef SOURCES_SPEAKERCONFIGURATION_H_
 #define SOURCES_SPEAKERCONFIGURATION_H_
 
+#include "MQX_To_FreeRTOS.h"
+#include <stdio.h>
+
 //#include "mqx.h"
 //#include "event.h"
 

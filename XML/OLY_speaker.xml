@@ -56,7 +56,7 @@
 			
 		</Segment>
 		<Segment 	name="status">
-			<Param name="angle" format="signed" default="0" min="-360" max="360"/>
+			<Param name="angle" format="signed" default="90" min="-360" max="360"/>
 			<Param name="amp1_temp" format="float" default="0" min="0" max="100"/>
 			<Param name="amp2_temp" format="float" default="0" min="0" max="100"/>
 			<Param name="amp_fault" format="bool" default="false"/>
