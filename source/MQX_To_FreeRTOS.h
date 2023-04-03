@@ -52,7 +52,7 @@ typedef QueueHandle_t _queue_id;          /* What a queue_id looks like */
 //   0 (failure)
 _pool_id _msgpool_create(uint16_t message_size, uint16_t num_messages, uint16_t grow_number, uint16_t grow_limit);
 
-// pool_id [IN] ï¿½ A pool ID from _msgpool_create()
+// pool_id [IN] ? A pool ID from _msgpool_create()
 // Returns  Pointer to a message (success)
 //          NULL (failure)
 void *_msg_alloc(_pool_id pool_id);
@@ -121,19 +121,19 @@ typedef struct message_header_struct
 } MESSAGE_HEADER_STRUCT, * MESSAGE_HEADER_STRUCT_PTR;
 
 
-// processor_number [IN] ï¿½ One of the following:
+// processor_number [IN] ? One of the following:
 //          processor on which the message queue resides
 //          0 (indicates the local processor)
-// queue_number [IN] ï¿½ Image-wide unique number that identifies the message queue
+// queue_number [IN] ? Image-wide unique number that identifies the message queue
 // Returns  Queue ID for the queue (success)
 //          MSGQ_NULL_QUEUE_ID (failure: _processor_number is not valid)
 _queue_id _msgq_get_id(_processor_number processor_number, _queue_number queue_number);
 
-// queue_number [IN] ï¿½ One of the following:
+// queue_number [IN] ? One of the following:
 //          queue number of the message queue to be opened on this processor (min. 8, max. as defined in
 //          the MQX RTOS initialization structure)
 //          MSGQ_FREE_QUEUE (MQX RTOS opens an unopened message queue)
-// max_queue_size [IN] ï¿½ One of the following:
+// max_queue_size [IN] ? One of the following:
 //          maximum queue size
 //          0 (unlimited size)
 // Returns  Queue ID (success)
@@ -147,23 +147,23 @@ void *_msgq_poll( _queue_id queue_id );
 
 // queue_id [IN] 	Private message queue from which to receive a message
 //                  >>>> NOTE : New addition to prototype, therefore code changes required. <<<<
-// msg_ptr IN] ï¿½ Pointer to the message to be sent
+// msg_ptr IN] ? Pointer to the message to be sent
 // Returns  TRUE (success: see description)
 //          FALSE (failure)
 bool _msgq_send(_queue_id queue_id, void *msg_ptr);
 // ORIGINAL Prototype : bool _msgq_send(void *msg_ptr);
 
-// queue_id [IN] ï¿½ One of the following:
+// queue_id [IN] ? One of the following:
 //                  private message queue from which to receive a message
 //                  MSGQ_ANY_QUEUE (any queue that the task owns)
-// ms_timeout [IN] ï¿½ One of the following:
+// ms_timeout [IN] ? One of the following:
 //                  maximum number of milliseconds to wait. After the timeout elapses without the message, the function returns.
 //                  0 (unlimited wait)
 // Returns      Pointer to a message (success)
 //              NULL (failure)
 void*_msgq_receive(_queue_id queue_id, uint32_t ms_timeout);
 
-// queue_id [IN] — One of the following:
+// queue_id [IN] ? One of the following:
 // 			queue ID of the queue to be checked
 //			MSGQ_ANY_QUEUE (get the number of messages waiting in all message queues that the task has open)
 // Returns
@@ -261,6 +261,7 @@ typedef struct mqx_tick_struct
 typedef void (* TIMER_NOTIFICATION_TICK_FPTR)( _timer_id );
 
 _timer_id  _timer_start_periodic_every_ticks(TIMER_NOTIFICATION_TICK_FPTR, void *, _mqx_uint, MQX_TICK_STRUCT_PTR);
+bool retrieveNotificationParams( TIMER_NOTIFICATION_TICK_FPTR notification_function, uint32_t **notification_data_ptr );
 _mqx_uint  _timer_cancel(_timer_id);
 _timer_id  _timer_start_oneshot_after_ticks(TIMER_NOTIFICATION_TICK_FPTR, void *, _mqx_uint, MQX_TICK_STRUCT_PTR);
 
