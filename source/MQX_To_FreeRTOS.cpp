@@ -471,6 +471,13 @@ _mqx_uint _lwsem_post(LWSEM_STRUCT_PTR sem_ptr)
 // -----------------------------------------------------------------------------------------------
 /// TIMER FUNCTIONS :
 ///==================
+#define MAX_PERIODIC_PARAM_TIMERS     2   // We only have 2 periodic timers with params for CDDLive
+static struct
+{
+    TIMER_NOTIFICATION_TICK_FPTR    notification_function;
+    uint32_t                        *notification_data_ptr;
+} s_timerCallbackParams[MAX_PERIODIC_PARAM_TIMERS];
+
 
 // Start a periodic timer every number of ticks
 // Parameters
@@ -490,7 +497,20 @@ _timer_id  _timer_start_periodic_every_ticks(TIMER_NOTIFICATION_TICK_FPTR notifi
 												_mqx_uint mode, MQX_TICK_STRUCT_PTR tick_time_wait_ptr)
 {
 	// Notes : 1 use in code (ConfigManager.cpp) : With notification_data_ptr = NULL and mode = TIMER_ELAPSED_TIME_MODE
-	TimerCallbackFunction_t pxCallbackFunction = notification_function;	// TODO : Callback prototypes are different between MQX and FreeRTOS
+	TimerCallbackFunction_t pxCallbackFunction = notification_function;	// Callback prototypes are different between MQX and FreeRTOS
+    if (notification_data_ptr != 0)
+    {   // Bodge to get around differences in callback prototypes between MQX and FreeRTOS
+        for ( uint32_t i = 0; i < MAX_PERIODIC_PARAM_TIMERS; i++)
+        {
+            if (s_timerCallbackParams[i].notification_function == NULL)
+            {   // Free slot
+                s_timerCallbackParams[i].notification_function = notification_function;
+                s_timerCallbackParams[i].notification_data_ptr = (uint32_t*) notification_data_ptr;
+                break;
+            }
+        }       
+    }
+    
 	TimerHandle_t handle = xTimerCreate( "TMR",			// Just a text name not used by kernel
 								 tick_time_wait_ptr->ticks,
 								 pdTRUE,		// Timer will Auto-Reload after expiry
@@ -500,6 +520,21 @@ _timer_id  _timer_start_periodic_every_ticks(TIMER_NOTIFICATION_TICK_FPTR notifi
 	BaseType_t result = xTimerStart( handle, portMAX_DELAY );
 	configASSERT( result != pdFALSE );
 	return handle;
+}
+
+bool retrieveNotificationParams( TIMER_NOTIFICATION_TICK_FPTR notification_function, uint32_t **notification_data_ptr )
+{   // Bodge to get around differences in callback prototypes between MQX and FreeRTOS
+    for ( uint32_t i = 0; i < MAX_PERIODIC_PARAM_TIMERS; i++)
+    {
+        if (s_timerCallbackParams[i].notification_function == notification_function)
+        {   // Matching callback function
+            *notification_data_ptr = s_timerCallbackParams[i].notification_data_ptr;
+            return true;
+        }
+    } 
+
+	configASSERT( pdFALSE );	// Shouldn't get here if we have accounted for all the CDDLive timers
+    return false;   
 }
 
 // Cancels an outstanding timer request

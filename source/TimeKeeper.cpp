@@ -67,16 +67,23 @@ void TriggerFlashWrite( _timer_id id)
 	_lwevent_set( &timer_event, event_timer_flashwrite_expired );
 }
 
-
-void NetworkSubscriptionUpdater( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr )
-{
+#ifdef FREERTOS_CONFIG_H
+	void NetworkSubscriptionUpdater( _timer_id id )
+#else
+    void NetworkSubscriptionUpdater( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr )
+#endif
+{       
 	//	eventually needs to be multi-port, now just multi-list
-
 	uint32_t tmpID = *(uint32_t*)&id;
-	uint32_t * pSubsciptionArray = (uint32_t*)data_ptr;
+	uint32_t * pSubsciptionArray = NULL;
 	uint8_t ix;
-
 	int nLists = 2;
+	
+	// Look up parameter information based on timer ID (Workaround for differences between MQX and FreeRTOS timer callback prototypes)
+    if (retrieveNotificationParams(NetworkSubscriptionUpdater, &pSubsciptionArray) == false)
+    {
+        return; //Can't retrieve params for this callback so skip.
+    }
 
 	// Check which subscription timer ID has expired //
 	for(ix=0; ix<nLists; ix++) {
@@ -87,14 +94,22 @@ void NetworkSubscriptionUpdater( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_
 	_lwevent_set( &timer_event, event_timer_subscription_Network1<<ix );
 }
 
-void VoicingSubscriptionUpdater( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr )
+#ifdef FREERTOS_CONFIG_H
+	void VoicingSubscriptionUpdater( _timer_id id )
+#else
+    void VoicingSubscriptionUpdater( _timer_id id, void * data_ptr, MQX_TICK_STRUCT_PTR tick_ptr )
+#endif
 {
-
 	uint32_t tmpID = *(uint32_t*)&id;
-	uint32_t * pSubsciptionArray = (uint32_t*)data_ptr;
+	uint32_t * pSubsciptionArray = NULL;
 	uint8_t ix;
-
 	int nLists = 2;
+	
+	// Look up parameter information based on timer ID (Workaround for differences between MQX and FreeRTOS timer callback prototypes)
+    if (retrieveNotificationParams(VoicingSubscriptionUpdater, &pSubsciptionArray) == false)
+    {
+        return; //Can't retrieve params for this callback so skip.
+    }
 
 	// Check which subscription timer ID has expired //
 	for(ix=0; ix<nLists; ix++) {

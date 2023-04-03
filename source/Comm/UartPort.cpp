@@ -14,8 +14,9 @@
 extern "C" {
 //#include "gpio_pins.h"
 //#include "uart_voice.h"
-//#include "timekeeper.h"
 }
+
+#include "timekeeper.h"
 
 extern mandolin_fifo UartVoiceRxFifo;
 
@@ -61,7 +62,7 @@ void UartPort::ConfigureMeters(int nAutoMetersListId, int nAutoMetersRate, int n
 	{
 		_time_init_ticks(&m_SubscriptionTicks[nList], 0);
 		_time_add_msec_to_ticks(&m_SubscriptionTicks[nList], m_nAutoMetersRate[nList]);
-//		m_SubscriptionTimer[nList] = _timer_start_periodic_every_ticks(VoicingSubscriptionUpdater, m_SubscriptionTimer, TIMER_ELAPSED_TIME_MODE, &m_SubscriptionTicks[nList]);
+		m_SubscriptionTimer[nList] = _timer_start_periodic_every_ticks(VoicingSubscriptionUpdater, m_SubscriptionTimer, TIMER_ELAPSED_TIME_MODE, &m_SubscriptionTicks[nList]);
 	}
 }
 #endif	//	_SECONDARY_BOOT
