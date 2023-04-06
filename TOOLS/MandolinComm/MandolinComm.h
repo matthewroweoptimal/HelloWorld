@@ -11,6 +11,7 @@
 extern "C"
 {
 #include "mandolin.h"
+#include "Upgrade.h"
 }
 extern "C" uint32 tick_count;
 
@@ -120,6 +121,7 @@ public:
 	bool CreateIdentify(mandolin_message* pMsg, uint8 uiSequence, int nIndentifyPeriodMSec);
 	bool CreateSyncState(mandolin_message* pMsg, uint8 uiSequence );
 	bool CreateFileOpen(mandolin_message* pMsg, uint8 uiSequence, char* pcFileName, uint32 uiFileType, bool bWrite );
+	bool CreateFileOpenCDDLive(mandolin_message* pMsg, uint8 uiSequence, OLY_REGION* pRegion);
 	bool CreateFileClose(mandolin_message* pMsg, uint8 uiSequence,  uint32 uiFileId );
 	bool CreateFileDelete(mandolin_message* pMsg, uint8 uiSequence,  uint32 uiFileId );
 	bool CreateFilePost(mandolin_message* pMsg, uint8 uiSequence,  uint32 uiFileId, uint32 uiFileByteSize, uint32 uiFileBytePos, uint32 uiByteLength, uint8* pData );

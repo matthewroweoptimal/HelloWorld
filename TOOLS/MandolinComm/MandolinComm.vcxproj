@@ -96,6 +96,7 @@
     <ClInclude Include="mandolin.h" />
     <ClInclude Include="MandolinComm.h" />
     <ClInclude Include="tick.h" />
+    <ClInclude Include="Upgrade.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

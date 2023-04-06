@@ -80,7 +80,7 @@
       </Command>
     </PreLinkEvent>
     <PostBuildEvent>
-      <Command>copy $(OutDir)$(TargetName)$(TargetExt) ..\..\Host\K64_host_application\Tools</Command>
+      <Command>copy $(OutDir)$(TargetName)$(TargetExt) ..\..\TOOLS\$(TargetName)$(TargetExt)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

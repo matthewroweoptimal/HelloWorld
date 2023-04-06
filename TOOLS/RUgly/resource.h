@@ -163,7 +163,10 @@
 #define IDC_STARTAUTOOPTIMIZE2          1069
 #define IDC_RESETAUTOOPTIMIZE           1069
 #define IDC_ZIMPEDANCE_TEMPERATURECH2   1070
+#define IDC_SELECT_FW_FILE              1070
 #define IDC_ZIMPEDANCE_MESSAGERX        1071
+#define IDC_SELECT_FW_FILE2             1071
+#define IDC_SEND_FW_FILE                1071
 #define IDC_LEVEL_INPUT1                1072
 #define IDC_LEVEL_OUTPUTHF              1073
 #define IDC_LEVEL_OUTPUTLF              1074
@@ -571,7 +574,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        151
+#define _APS_NEXT_RESOURCE_VALUE        152
 #define _APS_NEXT_COMMAND_VALUE         32777
 #define _APS_NEXT_CONTROL_VALUE         1316
 #define _APS_NEXT_SYMED_VALUE           101

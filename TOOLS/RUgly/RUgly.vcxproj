@@ -124,6 +124,7 @@
     <ClCompile Include="DSPSignalFlow.cpp" />
     <ClCompile Include="Ecomplex.cpp" />
     <ClCompile Include="EQGraph.cpp" />
+    <ClCompile Include="FirmwareFile.cpp" />
     <ClCompile Include="LevelAdjust.cpp" />
     <ClCompile Include="MandolinCommOLYTestManu.cpp" />
     <ClCompile Include="MandolinTextSummary.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="DSPSignalFlow.h" />
     <ClInclude Include="Ecomplex.h" />
     <ClInclude Include="EQGraph.h" />
+    <ClInclude Include="FirmwareFile.h" />
     <ClInclude Include="LevelAdjust.h" />
     <ClInclude Include="LOUD_enums.h" />
     <ClInclude Include="MandolinCommOLYTestManu.h" />

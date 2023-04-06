@@ -117,6 +117,9 @@
     <ClCompile Include="REDLINEspeaker1\REDLINEspeaker1_meter.c">
       <Filter>REDLINESpeaker1</Filter>
     </ClCompile>
+    <ClCompile Include="FirmwareFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AppProductDefs_OLY.h">
@@ -274,6 +277,9 @@
     </ClInclude>
     <ClInclude Include="REDLINEspeaker1\REDLINEspeaker1_size.h">
       <Filter>REDLINESpeaker1</Filter>
+    </ClInclude>
+    <ClInclude Include="FirmwareFile.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

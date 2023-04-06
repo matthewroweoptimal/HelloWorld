@@ -11,6 +11,7 @@
 #include "MandolinComm.h"
 #include "ParameterAdjust.h"
 #include "SettingsFile.h"
+#include "FirmwareFile.h"
 #include "MetersDlg.h"
 #include "DSPSignalFlow.h"
 #include "ZImpedanceDlg.h"
@@ -141,6 +142,7 @@ typedef enum {
 	MSGSEND_TIMERID,
 	//UPGRADE_TIMERID,
 	SETTINGSFILE_TIMERID,
+	FIRMWAREFILE_TIMERID,
 	EQGRAPH_COEFFSDIRTY_TIMERID,
 	PARAMETERADJUST_GETPARAMETER_TIMERID,
 	PARAMETERTEST_TIMERID,
@@ -427,6 +429,12 @@ public:
 	CSettingsFile m_SettingsFile;
 	char	m_pcSettingsFileName[_MAX_PATH];
 
+	// -------------------------------------
+	// Firmware File
+	// -------------------------------------
+	CFirmwareFile m_firmwareFile;
+	char	m_pcFirmwareFileName[_MAX_PATH];
+
 
 	// -------------------------------------
 	// Meters
@@ -558,4 +566,6 @@ public:
 	afx_msg void OnBnClickedScannetwork();
 	afx_msg void OnBnClickedStartautooptimize();
 	afx_msg void OnBnClickedResetautooptimize();
+	afx_msg void OnBnClickedSelectFwFile();
+	afx_msg void OnBnClickedSendFwFile();
 };

@@ -1683,7 +1683,40 @@ bool CMandolinComm::CreateFileOpen(mandolin_message* pMsg, uint8 uiSequence, cha
 
 	MANDOLIN_MSG_pack(pMsg, uiSequence);
 	return true;
+}
 
+// -------------------------------------------------------------------------------------------------------
+bool CMandolinComm::CreateFileOpenCDDLive(mandolin_message* pMsg, uint8 uiSequence, OLY_REGION* pRegion)
+{
+	//Reply (success):	1 -> SUCCESS
+	//		File ID.
+	//Reply (failure):	0 -> FAIL
+	//			0 -> NO REASON, 1 -> FILE LOCKED, 1 -> BAD TYPE, 2 -> BAD NAME
+
+	// The CDDLive receiving code expects the message payload to be data in the form of an 'OLY_REGION' 
+	uint8* pPayload = (uint8*)pMsg->payload;
+	if (pMsg->payload == 0) return false;
+	int nPos = 0;
+	uint32 i;
+
+	pMsg->transport = 0;
+	pMsg->id = MANDOLIN_MSG_FILE_OPEN;
+
+	uint8* pData = (uint8*) pRegion;
+	uint32  uiByteLength = sizeof(OLY_REGION);
+	for (i = 0; i < uiByteLength; i++)
+	{
+		pPayload[i] = *pData++;
+	}
+	// pad for word align
+	for (i = 0; i < (int)((uiByteLength + 3) / 4) * 4 - uiByteLength; i++)
+	{
+		pPayload[uiByteLength + i] = 0;
+	}
+	pMsg->length = ((int)(uiByteLength + 3) / 4);
+
+	MANDOLIN_MSG_pack(pMsg, uiSequence);
+	return true;
 }
 
 // -------------------------------------------------------------------------------------------------------

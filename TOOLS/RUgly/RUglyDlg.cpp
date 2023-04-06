@@ -239,6 +239,8 @@ BEGIN_MESSAGE_MAP(CRUglyDlg, CDialog)
 	ON_BN_CLICKED(IDC_SCANNETWORK, &CRUglyDlg::OnBnClickedScannetwork)
 	ON_BN_CLICKED(IDC_STARTAUTOOPTIMIZE, &CRUglyDlg::OnBnClickedStartautooptimize)
 	ON_BN_CLICKED(IDC_RESETAUTOOPTIMIZE, &CRUglyDlg::OnBnClickedResetautooptimize)
+	ON_BN_CLICKED(IDC_SEND_FW_FILE, &CRUglyDlg::OnBnClickedSendFwFile)
+	ON_BN_CLICKED(IDC_SELECT_FW_FILE, &CRUglyDlg::OnBnClickedSelectFwFile)
 END_MESSAGE_MAP()
 
 
@@ -438,10 +440,10 @@ BOOL CRUglyDlg::OnInitDialog()
 	m_dlgParameterTest.m_dlgParent = this;
 	m_dlgParameterTest.Create( IDD_PARAMETERTEST );
 
-
 	SetDlgItemText(IDC_SETTINGSFILE_FILENAME,m_pcSettingsFileName); 
 	m_SettingsFile.m_dlgParent = this;
-
+	 
+	m_firmwareFile.m_dlgParent = this;
 
 	m_dlgMeters.m_dlgParent = this;
 	m_dlgMeters.Create( IDD_METERDIALOG );
@@ -1053,6 +1055,12 @@ void CRUglyDlg::OnTimer(UINT nIDEvent)
 			}
 			break;
 
+		case FIRMWAREFILE_TIMERID:
+			if (m_firmwareFile.m_bFirmwareFileInProgress)
+			{
+				m_firmwareFile.OnTimer(nIDEvent);
+			}
+			break;
 
 		case	ZIMPEDANCE_TIMERID:
 			if (m_dlgZImpedance.m_bInProgress)
@@ -1082,148 +1090,140 @@ void CRUglyDlg::OnTimer(UINT nIDEvent)
 
 
 		case MSGSEND_TIMERID:
+#if 0
+{
+			if (!m_bDownloading)
+				break;
+			if (m_nSendFilePos >= m_nSendFileSize  )
+			{
+				m_nSendFilePos = 	m_nSendFileSize;
+				nLength = 0;
+			}
+			else
+			{
+				nLength = GetNextMessage(theMessage);
+			}
+			
+			int i,nPos;
+			char drive[_MAX_DRIVE];
+			char dir[_MAX_DIR];
+			char fname[_MAX_FNAME];
+			char ext[_MAX_EXT];
+    		int nFileNameLength;
 
+			_splitpath(m_strPostFileName.GetBuffer(0), drive, dir, fname, ext );
+			m_strPostFileName.ReleaseBuffer();
 
-			//if (!m_bDownloading)
-			//	break;
-			//if (m_nSendFilePos >= m_nSendFileSize  )
-			//{
-			//	m_nSendFilePos = 	m_nSendFileSize;
-			//	nLength = 0;
-			//}
-			//else
-			//{
-			//	nLength = GetNextMessage(theMessage);
-			//}
-			//		int i,nPos;
-			//	   char drive[_MAX_DRIVE];
-			//	   char dir[_MAX_DIR];
-			//	   char fname[_MAX_FNAME];
-			//	   char ext[_MAX_EXT];
+			strcat(fname,ext);
 
-			//	//int nFileNameLength;
+			msgDownload.id =  MANDOLIN_MSG_POST_FILE;
+			msgDownload.transport =  0;
+			msgDownload.payload = pPayloadValues;
 
+			// fill in the id
+			i = 0;
+			nPos = 0;
+			pPayloadValues[nPos++] = m_nHALFileId & 0x0ff;
+			pPayloadValues[nPos++] = (m_nHALFileId>>8) & 0x0ff;
+			pPayloadValues[nPos++] = (m_nHALFileId >> 16) & 0x0ff;
+			pPayloadValues[nPos++] = (m_nHALFileId >> 24) & 0x0ff;	// file type
+			
+			// reverse the file string
+			for (i=0;i< (nPos/4);i++)
+			{
+				a1 = pPayloadValues[i*4 + 0];
+				a2 = pPayloadValues[i*4 + 1];
+				a3 = pPayloadValues[i*4 + 2];
+				a4 = pPayloadValues[i*4 + 3];
+			
+				pPayloadValues[i*4 + 0] = a4;
+				pPayloadValues[i*4 + 1] = a3;
+				pPayloadValues[i*4 + 2] = a2;
+				pPayloadValues[i*4 + 3] = a1;
+			}
 
+			// put in the file offset
+			//	Payload:	FileID
+			//		File size (in bytes) - 32-bit
+			//		Fileoffset (in bytes) - 32-bit
+			//		Bytes to Post - 32-bit (0 <= BtP <= page size)
+			//		file data
+			//	Reply:		Payload:  0 -> DELETE, 1 -> POST.
 
-			//	_splitpath(m_strPostFileName.GetBuffer(0), drive, dir, fname, ext );
-			//	m_strPostFileName.ReleaseBuffer();
+			pPayloadValues[nPos++] = (m_nSendFileSize >> 0) & 0x0ff;
+			pPayloadValues[nPos++] = (m_nSendFileSize >> 8) & 0x0ff;
+			pPayloadValues[nPos++] = (m_nSendFileSize >> 16) & 0x0ff;
+			pPayloadValues[nPos++] = (m_nSendFileSize >> 24) & 0x0ff;
 
-			//	strcat(fname,ext);
+			pPayloadValues[nPos++] = (m_nSendFilePos >> 0) & 0x0ff;
+			pPayloadValues[nPos++] = (m_nSendFilePos >> 8) & 0x0ff;
+			pPayloadValues[nPos++] = (m_nSendFilePos >> 16) & 0x0ff;
+			pPayloadValues[nPos++] = (m_nSendFilePos >> 24) & 0x0ff;
 
+			pPayloadValues[nPos++] = ((nLength) >> 0) & 0x0ff;
+			pPayloadValues[nPos++] = ((nLength) >> 8) & 0x0ff;
+			pPayloadValues[nPos++] = ((nLength) >> 16) & 0x0ff;
+			pPayloadValues[nPos++] = ((nLength) >> 24) & 0x0ff;
 
-			//	msgDownload.id =  MANDOLIN_MSG_POST_FILE;
-			//	msgDownload.transport =  0;
-			//	msgDownload.payload = pPayloadValues;
+			// pad the Mesasge with 0 to make it word allign
+			for(i=0;i< (int)((nLength+3)/4)*4-nLength;i++)
+			{
+				theMessage[nLength+i] = 0;
+			}
+			nLength += i;
+			
+			for(i=0;i<(nLength/4);i++)
+			{
+				pPayloadValues[nPos++] = theMessage[i*4+0] & 0x0ff;
+				pPayloadValues[nPos++] = theMessage[i*4+1] & 0x0ff;
+				pPayloadValues[nPos++] = theMessage[i*4+2] & 0x0ff;
+				pPayloadValues[nPos++] = theMessage[i*4+3] & 0x0ff;
+			}
 
-			//	// fill in the id
-			//	i = 0;
-			//	nPos = 0;
-			//	pPayloadValues[nPos++] = m_nHALFileId & 0x0ff;
-			//	pPayloadValues[nPos++] = (m_nHALFileId>>8) & 0x0ff;
-			//	pPayloadValues[nPos++] = (m_nHALFileId >> 16) & 0x0ff;
-			//	pPayloadValues[nPos++] = (m_nHALFileId >> 24) & 0x0ff;	// file type
-			//	//// reverse the file string
-			//	//for (i=0;i< (nPos/4);i++)
-			//	//{
-			//	//	a1 = pPayloadValues[i*4 + 0];
-			//	//	a2 = pPayloadValues[i*4 + 1];
-			//	//	a3 = pPayloadValues[i*4 + 2];
-			//	//	a4 = pPayloadValues[i*4 + 3];
-			//	//
-			//	//	pPayloadValues[i*4 + 0] = a4;
-			//	//	pPayloadValues[i*4 + 1] = a3;
-			//	//	pPayloadValues[i*4 + 2] = a2;
-			//	//	pPayloadValues[i*4 + 3] = a1;
-			//	//
-			//	//}
+			msgDownload.length = nPos/4;
 
-			//	// put in the file offset
-			//	//	Payload:	FileID
-			//	//		File size (in bytes) - 32-bit
-			//	//		Fileoffset (in bytes) - 32-bit
-			//	//		Bytes to Post - 32-bit (0 <= BtP <= page size)
-			//	//		file data
-			//	//	Reply:		Payload:  0 -> DELETE, 1 -> POST.
-
-			//	pPayloadValues[nPos++] = (m_nSendFileSize >> 0) & 0x0ff;
-			//	pPayloadValues[nPos++] = (m_nSendFileSize >> 8) & 0x0ff;
-			//	pPayloadValues[nPos++] = (m_nSendFileSize >> 16) & 0x0ff;
-			//	pPayloadValues[nPos++] = (m_nSendFileSize >> 24) & 0x0ff;
-
-			//	pPayloadValues[nPos++] = (m_nSendFilePos >> 0) & 0x0ff;
-			//	pPayloadValues[nPos++] = (m_nSendFilePos >> 8) & 0x0ff;
-			//	pPayloadValues[nPos++] = (m_nSendFilePos >> 16) & 0x0ff;
-			//	pPayloadValues[nPos++] = (m_nSendFilePos >> 24) & 0x0ff;
-
-			//	pPayloadValues[nPos++] = ((nLength) >> 0) & 0x0ff;
-			//	pPayloadValues[nPos++] = ((nLength) >> 8) & 0x0ff;
-			//	pPayloadValues[nPos++] = ((nLength) >> 16) & 0x0ff;
-			//	pPayloadValues[nPos++] = ((nLength) >> 24) & 0x0ff;
-
-
-			//	// pad the Mesasge with 0 to make it word allign
-			//	for(i=0;i< (int)((nLength+3)/4)*4-nLength;i++)
-			//	{
-			//		theMessage[nLength+i] = 0;
-			//	}
-			//	nLength += i;
-			//	
-			//	for(i=0;i<(nLength/4);i++)
-			//	{
-			//		pPayloadValues[nPos++] = theMessage[i*4+0] & 0x0ff;
-			//		pPayloadValues[nPos++] = theMessage[i*4+1] & 0x0ff;
-			//		pPayloadValues[nPos++] = theMessage[i*4+2] & 0x0ff;
-			//		pPayloadValues[nPos++] = theMessage[i*4+3] & 0x0ff;
-			//	}
-
-			//	msgDownload.length = nPos/4;
-
-			//	TryToSendMandolinMessage(&msgDownload, false);
+			TryToSendMandolinMessage(&msgDownload, false);
 
 	
-			//	if (m_nSendFilePos >= m_nSendFileSize )
-			//	{
-			//		m_bDownloading = false;
-			//		m_cfDownloadFile.Close();
-			//		m_strResponseStatusDisplay.Format("Download Complete - Total Byte Size %d",m_nSendFileSize);
-			//		SetDlgItemText(IDC_RESPONSESTATUS,m_strResponseStatusDisplay);
-			//		if (m_dlgUpgrade.m_bUpgrade)
-			//		{
-			//			m_dlgUpgrade.OnSetUpgradeProgress(100);
-			//			m_dlgUpgrade.OnSetStatus("File Send Complete");
-			//		}
+			if (m_nSendFilePos >= m_nSendFileSize )
+			{
+				m_bDownloading = false;
+				m_cfDownloadFile.Close();
+				m_strResponseStatusDisplay.Format("Download Complete - Total Byte Size %d",m_nSendFileSize);
+				SetDlgItemText(IDC_RESPONSESTATUS,m_strResponseStatusDisplay);
+				if (m_dlgUpgrade.m_bUpgrade)
+				{
+					m_dlgUpgrade.OnSetUpgradeProgress(100);
+					m_dlgUpgrade.OnSetStatus("File Send Complete");
+				}
+			}
+			else
+			{
+				if (m_dlgUpgrade.m_bUpgrade)
+				{
+					if (!m_nSendFileSize)
+					{
+						m_dlgUpgrade.OnSetUpgradeProgress(0);
+					}
+					else
+					{
+						m_dlgUpgrade.OnSetUpgradeProgress(m_nSendFilePos*1.0/m_nSendFileSize*100);
+					}
+				}
 
-			//	}
-			//	else
-			//	{
-			//		if (m_dlgUpgrade.m_bUpgrade)
-			//		{
-			//			if (!m_nSendFileSize)
-			//			{
-			//				m_dlgUpgrade.OnSetUpgradeProgress(0);
-			//			}
-			//			else
-			//			{
-			//				m_dlgUpgrade.OnSetUpgradeProgress(m_nSendFilePos*1.0/m_nSendFileSize*100);
-			//			}
-			//		}
-
-			//		m_strResponseStatusDisplay.Format("Download %d bytes from offset %d of %d",nLength, m_nSendFilePos,m_nSendFileSize);
-			//		SetDlgItemText(IDC_RESPONSESTATUS,m_strResponseStatusDisplay);
-			//		m_nSendFilePos += nLength; // go to the next packet
-			//		SetTimer (MSGSEND_TIMERID, 3000 , NULL);	// set timeout
-
-			//	}
-
-
-
+				m_strResponseStatusDisplay.Format("Download %d bytes from offset %d of %d",nLength, m_nSendFilePos,m_nSendFileSize);
+				SetDlgItemText(IDC_RESPONSESTATUS,m_strResponseStatusDisplay);
+				m_nSendFilePos += nLength; // go to the next packet
+				SetTimer (MSGSEND_TIMERID, 3000 , NULL);	// set timeout
+		    }
+		}
+		break;
+#endif // 0
 
 	
 	default:
 			break;
 	}
-
-
 }
 
 
@@ -5502,4 +5502,88 @@ void CRUglyDlg::OnBnClickedScannetwork()
 	m_dlgScanNetwork.ShowWindow( SW_RESTORE  );
 
 }
+
+
+
+void CRUglyDlg::OnBnClickedSelectFwFile()
+{
+	// TODO: Select Firmware File to send to Connected Device
+	char szSelectFileTitle[_MAX_PATH];
+	char szSelectFileFilter[256];
+	BOOL bStatus;
+	char szInputFileName[_MAX_PATH];
+
+	strcpy(szInputFileName, m_firmwareFile.m_strFirmwareFileName.GetBuffer());
+	m_firmwareFile.m_strFirmwareFileName.ReleaseBuffer();
+
+	OPENFILENAME ofnSelectFileOpen = {
+	0,					//   DWORD        lStructSize;
+	NULL,				//   HWND         hwndOwner;
+	0,					//   HINSTANCE    hInstance;
+	szSelectFileFilter,	//   LPCWSTR      lpstrFilter;
+	NULL,				//   LPWSTR       lpstrCustomFilter;
+	256,				//   DWORD        nMaxCustFilter;
+	1,					//   DWORD        nFilterIndex;
+	szInputFileName,	//   LPWSTR       lpstrFile;
+	256,				//   DWORD        nMaxFile;
+	szSelectFileTitle,	//  LPWSTR       lpstrFileTitle;
+	256,				//   DWORD        nMaxFileTitle;
+	NULL,				//szSelectFileInitialDir,// LPCWSTR      lpstrInitialDir;
+	"Select Firmware File",	//   LPCWSTR      lpstrTitle;
+	0,					//   DWORD        Flags;
+	0,					//   WORD         nFileOffset;
+	0,					//   WORD         nFileExtension;
+	"*.bin",			//   LPCWSTR      lpstrDefExt;
+	0,					//   LPARAM       lCustData;
+	NULL,				//   LPOFNHOOKPROC lpfnHook;
+	NULL				//   LPCWSTR      lpTemplateName;
+	};
+
+	sprintf(szSelectFileFilter,
+		"%s%c%s%c%s%c%s%c",
+		"Bin files (*.bin)", 0, "*.bin", 0,
+		"All Files", 0, "*.*", 0, 0);
+
+	if (NULL != strstr(szInputFileName, ".bin")) {
+		ofnSelectFileOpen.nFilterIndex = 1;
+	}
+
+	ofnSelectFileOpen.lStructSize = sizeof(ofnSelectFileOpen);
+	ofnSelectFileOpen.hwndOwner = this->m_hWnd;
+	bStatus = GetOpenFileName(&ofnSelectFileOpen);
+	if (bStatus)
+	{
+		strcpy(m_pcFirmwareFileName, ofnSelectFileOpen.lpstrFile);
+
+		//m_SettingsFile.m_strSettingsFileName = ;
+	}
+	else
+	{
+		m_pcFirmwareFileName[0] = 0;
+		//m_SettingsFile.m_strSettingsFileName.Empty();
+	}
+
+	char* pName = strrchr(m_pcFirmwareFileName, '\\' );
+	if (pName)
+		pName++;	// Skip '\' character to get to filename without path
+	else
+		pName = m_pcFirmwareFileName;
+
+	SetDlgItemText(IDC_SELECT_FW_FILE, pName);
+	//OnSetFileDisplayNames();
+
+	CString strErrorMsg;
+	m_firmwareFile.FirmwareFileInit(m_pcFirmwareFileName, strErrorMsg);
+	if (!strErrorMsg.IsEmpty())
+	{
+		UpdateOutputText(strErrorMsg); // SetDlgItemText(IDC_RICHEDIT_OUTPUT, strErrorMsg);
+	}
+}
+
+
+void CRUglyDlg::OnBnClickedSendFwFile()
+{
+	m_firmwareFile.OnStart();
+}
+
 

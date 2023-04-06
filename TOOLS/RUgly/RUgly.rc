@@ -16,13 +16,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -125,6 +123,8 @@ BEGIN
     PUSHBUTTON      "Scan Network",IDC_SCANNETWORK,7,144,77,14
     PUSHBUTTON      "Start Auto Optimize",IDC_STARTAUTOOPTIMIZE,320,258,71,14
     PUSHBUTTON      "Reset Auto Optimize",IDC_RESETAUTOOPTIMIZE,322,273,71,14
+    PUSHBUTTON      "Select Firmware File",IDC_SELECT_FW_FILE,321,186,77,14
+    PUSHBUTTON      "Send Firmware File",IDC_SEND_FW_FILE,321,202,77,14
 END
 
 
@@ -173,7 +173,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_ABOUTBOX, DIALOG
     BEGIN
@@ -196,15 +196,26 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_RUGLY_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // String Table
 //
 
-STRINGTABLE 
+STRINGTABLE
 BEGIN
     IDS_ABOUTBOX            "&About RUgly..."
 END
 
-#endif    // English (U.S.) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -212,10 +223,8 @@ END
 // English (Canada) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENC)
-#ifdef _WIN32
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_CAN
 #pragma code_page(1252)
-#endif //_WIN32
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -593,10 +602,10 @@ STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSM
 CAPTION "DSP Signal Flow"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    CONTROL         141,IDC_DSPSIGNALFLOWGROUP_IMAGE,"Static",SS_BITMAP,114,87,638,262
+    CONTROL         IDB_OLYDSPFLOWGROUP,IDC_DSPSIGNALFLOWGROUP_IMAGE,"Static",SS_BITMAP,114,87,638,262
     COMBOBOX        IDC_DSPSIGNALFLOW_SELECT,24,28,240,65,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
-    CONTROL         144,IDC_OLYDSPFLOWINPUT_IMAGE,"Static",SS_BITMAP,103,71,167,120
-    CONTROL         137,IDC_DSPSIGNALFLOW2_IMAGE,"Static",SS_BITMAP,101,68,727,119
+    CONTROL         IDB_OLYDSPFLOW_INPUT,IDC_OLYDSPFLOWINPUT_IMAGE,"Static",SS_BITMAP,103,71,167,120
+    CONTROL         IDD_SOCKETSETTINGS,IDC_DSPSIGNALFLOW2_IMAGE,"Static",SS_BITMAP,101,68,727,119
 END
 
 IDD_EQGRAPH DIALOGEX 0, 0, 704, 269
@@ -912,7 +921,7 @@ END
 //
 
 #ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
+GUIDELINES DESIGNINFO
 BEGIN
     IDD_COMMSETTINGS, DIALOG
     BEGIN
@@ -1076,14 +1085,16 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\RUgly.ico"
+
 IDI_EAW                 ICON                    "res\\E.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Menu
 //
 
-IDR_MENU1 MENU 
+IDR_MENU1 MENU
 BEGIN
     MENUITEM "&File",                       ID_FILE
     POPUP "&Connection"
@@ -1104,8 +1115,11 @@ END
 //
 
 IDB_OLYDSPFLOW          BITMAP                  "res\\OLY_DSP_SIGNAL_FLOW.bmp"
+
 IDB_OLYDSPFLOWGROUP     BITMAP                  "res\\OLY_DSP_SIGNAL_GROUP.bmp"
+
 IDB_OLYDSPFLOW_INPUT    BITMAP                  "res\\OLY_DSP_SIGNAL_INPUT.bmp"
+
 #endif    // English (Canada) resources
 /////////////////////////////////////////////////////////////////////////////
 
