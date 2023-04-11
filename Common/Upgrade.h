@@ -20,13 +20,19 @@
 
 #define OLY_MAGIC_WORD					0x57102957	//	word to identify  contents is a valid structure
 #define OLY_BLOCK_VERSION				0			//	Increment to force structure to initialize on boot
-#define OLY_BLOCK_LOCATION				((P_OLY_BLOCK)0x000FF000)	//	location of where Shared Upgrade region structure OLY_BLOCK is located.
-#define OLY_IDENTITY_OFFSET				(0x00000410)//	location of where Shared identity (mac, rev, brand, model) is located.
+
+// We allow 8kB at top of Flash for the Data Flash Region, comprised of :
+//      0x0007E000 :  OLY_BLOCK         (4096 bytes - 1 flash sector)
+//      0x0007F000 :  OLY_IDENTITY      (4096 bytes - 1 flash sector)
+//
+#define OLY_BLOCK_LOCATION				((P_OLY_BLOCK)0x0007E000)	//	Data Flash location of where Shared Upgrade region structure OLY_BLOCK is located.
+#define OLY_IDENTITY_OFFSET				(0x0007F000)                //	location of where Shared identity (mac, rev, brand, model) is located.
 #define OLY_IDENTITY_LOCATION			((P_OLY_IDENTITY)OLY_IDENTITY_OFFSET)	//	location of where Shared identity (mac, rev, brand, model) is located.
-#define OLY_DEFAULT_VECTOR_TABLE		0x4000	//	location of vector table to use if there is not valid option from application selection algorithm, typically, the secondary bootloader
-#define OLY_DEFAULT_MAX_LENGTH			0x60000		//	maximum bytes that the secondary boot loader can consume before interferring with main firmware
-#define OLY_DEFAULT_STACK_PTR			0x20030000	//	location of stack pointer to use if there is not valid option from application selection algorithm, typically, the secondary bootloader
-#define OLY_MAX_REGIONS					8			//	maximum number of flash regions defined
+
+#define OLY_DEFAULT_START_ADDR			0x00000000  //	Start address for the application (used by bootloader)
+#define OLY_DEFAULT_VECTOR_TABLE		0x00000000  //	location of vector table to use if there is not valid option from application selection algorithm, typically, the bootloader
+#define OLY_DEFAULT_STACK_PTR			0x00028000	//	location of stack pointer to use if there is not valid option from application selection algorithm, typically, the bootloader
+#define OLY_MAX_REGIONS					1			//	maximum number of flash regions defined
 
 #define OLY_DEFAULT_STATIC_IP			IPADDR(0,0,0,0)	//	IPADDR(10,1,7,233)
 #define OLY_DEFAULT_GATEWAY				IPADDR(0,0,0,0)	//	IPADDR(10,1,0,0)

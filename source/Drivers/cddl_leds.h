@@ -8,9 +8,7 @@
 #ifndef _CDDLLEDS_H_
 #define _CDDLLEDS_H_
 
-#ifndef _SECONDARY_BOOT
 #include "Model_Info.h"
-#endif
 
 #define CDDP_PANEL_LED1(value)		(GPIO_DRV_WritePinOutput(DISPLAY_D2, ! value))
 #define CDDP_PANEL_LED2(value)		(GPIO_DRV_WritePinOutput(DISPLAY_D3, ! value))

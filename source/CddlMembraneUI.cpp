@@ -69,7 +69,7 @@ void cddlMembraneUI::SW2()
 			GPIO_DRV_WritePinOutput(LOGO_ON_RED, 1);
 
 
-#elif !defined(_SECONDARY_BOOT)
+#else
 		pConfig->SetActivePreset(eTARGET_USER, cddl_current_preset);
 #endif
 	}

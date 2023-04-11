@@ -5,8 +5,7 @@
  *	  Author: Ted.Wolfe
  *
  *	  Management of Regions for firmware updating
- *	  Code is written for both upgrade firmware and secondary boot loader.
- *	  _SECONDARY_BOOT should be defined if it is compiled into the Secondary Boot loader
+ *	  Code is written for upgrade of APP firmware
  */
 
 #include "Region.h"
@@ -20,9 +19,59 @@
 
 extern "C" {
 #include "oly.h"
-#include "flash_params.h"
 #include "LOUD_types.h"
 }
+
+#include "flash_params.h"
+
+// Define OLY_BLOCK within Data Flash Region
+OLY_BLOCK __attribute__ ((section(".oly_block"))) g_dataFlashOlyBlock =
+{
+	sizeof(OLY_BLOCK),	// size
+	0,					// generation
+	OLY_MAGIC_WORD,		// magicWord
+	OLY_BLOCK_VERSION,  // version
+	0,					// isIpv6
+	{OLY_DEFAULT_STATIC_IP, 0},	// staticIp
+	{OLY_DEFAULT_GATEWAY, 0},	// gatewayIp
+	{OLY_DEFAULT_MASK, 0},	// mask
+	OLY_REGION_APPLICATION,	// launchType
+	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},	// reserved[21]
+	{					// rgn[0]
+		OLY_REGION_APPLICATION,	// type
+		{						// version
+		 (OLY_FW_VERSION >> 24) & 0xFF,
+		 (OLY_FW_VERSION >> 16) & 0xFF,
+		 (OLY_FW_VERSION >> 8) & 0xFF,
+		 BUILD_VERSION
+		},
+		OLY_DEFAULT_START_ADDR,	// address
+		DATA_FLASH_ADDR,		// length (504kB)
+		OLY_DEFAULT_VECTOR_TABLE,// vectorTable
+		OLY_DEFAULT_STACK_PTR,	// stackPtr
+		0,						// crc
+		{0, 0},					// align[2]
+		{0, 0, 0, 0, 0, 0, 0, 0, 0}	// reserved[9]
+	}
+};
+
+// Define OLY_IDENTITY within Data Flash Region
+OLY_IDENTITY __attribute__ ((section(".oly_identity"))) g_dataFlashOlyIdentity =
+{
+	{								// mac
+		OLY_DEFAULT_MAC_ADDR0,
+		OLY_DEFAULT_MAC_ADDR1,
+		OLY_DEFAULT_MAC_ADDR2,
+		OLY_DEFAULT_MAC_ADDR3,
+		OLY_DEFAULT_MAC_ADDR4,
+		OLY_DEFAULT_MAC_ADDR5
+	},
+	OLY_DEFAULT_HARDWARE_VERSION,	// hardwareRev
+	OLY_DEFAULT_BRAND,				// nBrand
+	OLY_DEFAULT_MODEL,				// nModel
+	OLY_DEFAULT_SERIAL_NUMBER 		// uiSerialNumber
+};
+
 
 //#define FORCE_STATIC_IP 1
 
@@ -50,15 +99,9 @@ Region::Region()
 	const char *pszBrand;
 	const char *pszModel;
 
-#ifdef _SECONDARY_BOOT
-	m_defaultType = OLY_REGION_SECONDARY_BOOT;
-	m_uiDefaultStart = OLY_DEFAULT_VECTOR_TABLE;
-	m_uiDefaultLength = OLY_DEFAULT_MAX_LENGTH;
-#else	//	_SECONDARY_BOOT
 	m_defaultType = OLY_REGION_APPLICATION;
-	m_uiDefaultStart = OLY_DEFAULT_VECTOR_TABLE + OLY_DEFAULT_MAX_LENGTH;
-	m_uiDefaultLength = (unsigned int)FLASH_PARAMS_ADDR-m_uiDefaultStart;
-#endif	//	_SECONDARY_BOOT
+	m_uiDefaultStart = OLY_DEFAULT_VECTOR_TABLE;
+	m_uiDefaultLength = (unsigned int)OLY_BLOCK_LOCATION - m_uiDefaultStart;
 
 	memcpy(systemMac, OLY_IDENTITY_LOCATION->mac, sizeof(systemMac));
 	printf("Checking MAC Address at 0x%08X - %02x:%02x:%02x:%02x:%02x:%02x\r\n",
@@ -291,15 +334,15 @@ Region::Region()
 	Load();
 
 	if (!Verify())
-	{
+	{   // Initialise to defaults and save Region to Data Flash.
 		Initialize();
 		Save();
 	}
 
-	//	if you need to force to static IP - due it here
+	//	if you need to force to static IP - do it here
 #ifdef	FORCE_STATIC_IP
-	olyBlock.staticIp.ipv4.ip = IPADDR(192,168,0,69);
-	olyBlock.gatewayIp.ipv4.ip = IPADDR(192,168,0,0);
+	olyBlock.staticIp.ipv4.ip = IPADDR(192,168,1,50);
+	olyBlock.gatewayIp.ipv4.ip = IPADDR(192,168,1,0);
 	olyBlock.mask.ipv4.ip = IPADDR(255,255,255,0);
 #endif	//	FORCE_STATIC_IP
 
@@ -364,41 +407,16 @@ bool Region::ValidateMAC(uint8 mac[6])
 //	Load region data from Flash
 void Region::Load()
 {
-#ifdef SC_COMMENTED_OUT
 	// Need the proper Flash layout for this to work on Nuvoton board
 	memcpy(&olyBlock, OLY_BLOCK_LOCATION, sizeof(olyBlock));
-#endif
 }
 
 //	Verify the RAM version is valid
 //	In future, will have to deal with changes to structure for backwards compatibility
 bool Region::Verify()
 {
-#if 1
-	return false;	// SC : Force Verification fail to ensure Region initialised to defaults in RAM by Initialize()
-#else	// SC_COMMENTED_OUT
 	bool bValid = true;
 
-#ifdef _SECONDARY_BOOT
-	//	Is it a valid header?
-	if ((sizeof(OLY_BLOCK)!=olyBlock.size) || (OLY_MAGIC_WORD!=olyBlock.magicWord))
-		bValid = false;
-	else
-	{
-		//	Check header version
-		printf("System block has header version %d\r\n", olyBlock.version);
-		if (OLY_BLOCK_VERSION<olyBlock.version)
-		{
-			//	Do any necessary upgrades or special interpretation of newer header here!
-		}
-		else if (OLY_BLOCK_VERSION>olyBlock.version)
-		{
-			//	If secondary boot loader, and stored region header version is older than me, then upgrade it to me, effectively wiping out any main firmware images.
-			printf("System block has older header version than current version %d!\r\n", OLY_BLOCK_VERSION);
-			bValid = false;
-		}
-	}
-#else	//	_SECONDARY_BOOT
 	//	Is it a valid header?
 	if ((sizeof(OLY_BLOCK)!=olyBlock.size) || (OLY_MAGIC_WORD!=olyBlock.magicWord))
 		bValid = false;
@@ -412,29 +430,27 @@ bool Region::Verify()
 			printf("Warning! System block is newer header version than main firmware!\r\n");
 			//	Do any necessary upgrades or special interpretation of newer header here!
 		}
-		else if (OLY_BLOCK_VERSION>olyBlock.version)
+		else if (OLY_BLOCK_VERSION > olyBlock.version)
 		{
 			//	Do any necessary upgrades or special interpretation of older header here!
 		}
 	}
-#endif	//	_SECONDARY_BOOT
 
 	//	Look for invalid launch application
-	if ((OLY_REGION_SECONDARY_BOOT!=olyBlock.launchType) && (OLY_REGION_APPLICATION!=olyBlock.launchType))
+	if ( olyBlock.launchType != OLY_REGION_APPLICATION )
 		bValid = false;
 
 	//	Verify region descriptors as best as possible, not knowing what the future will change
-	for(int nRegion=0;nRegion<OLY_MAX_REGIONS;nRegion++)
+	for (uint32_t nRegion=0; nRegion < OLY_MAX_REGIONS; nRegion++)
 	{
-		if ((OLY_REGION_SECONDARY_BOOT==olyBlock.rgn[nRegion].type) && (OLY_REGION_APPLICATION==olyBlock.rgn[nRegion].type))
+		if ( olyBlock.rgn[nRegion].type == OLY_REGION_APPLICATION )
 		{
-			if ((!olyBlock.rgn[nRegion].length) || (0xFFFFFFFF==olyBlock.rgn[nRegion].length))
+			if ((olyBlock.rgn[nRegion].length == 0) || (olyBlock.rgn[nRegion].length == 0xFFFFFFFF))
 				bValid = false;
 		}
 	}
 	printf(bValid?"System block valid.\r\n":"System block invalid!\r\n");
 	return(bValid);
-#endif	// SC_COMMENTED_OUT
 }
 
 //	Initialize an invalid region database
@@ -454,26 +470,21 @@ void Region::Initialize()
 	olyBlock.mask.ipv4.ip = OLY_DEFAULT_MASK;
 
 	olyBlock.rgn[0].type = m_defaultType;
-#ifdef _SECONDARY_BOOT
-	olyBlock.rgn[0].version.u32 = OLY_BOOT_VERSION;
-#else
 	olyBlock.rgn[0].version.u32 = OLY_FW_VERSION;
-#endif
 	olyBlock.rgn[0].address = m_uiDefaultStart;
 	olyBlock.rgn[0].length = m_uiDefaultLength;
 	olyBlock.rgn[0].vectorTable = m_uiDefaultStart;
 	olyBlock.rgn[0].stackPtr = OLY_DEFAULT_STACK_PTR;
 
-#ifdef SC_COMMENTED_OUT
 	//	Calculate CRC
 	unsigned char *pCrcPtr = (unsigned char *)olyBlock.rgn[0].address;
 	unsigned short crcCalc;
 	REGION_CRC rgnCrc;
 	Crc16Init(&rgnCrc);
-	Crc16Update(&rgnCrc, pCrcPtr, olyBlock.rgn[0].length);
+	// Need to CRC APROM image and store CRC in olyBlock
+	Crc16UpdateFromApromFlash(&rgnCrc, pCrcPtr, olyBlock.rgn[0].length);
 	Crc16Finalize(&rgnCrc, &crcCalc);
 	olyBlock.rgn[0].crc =crcCalc;
-#endif // SC_COMMENTED_OUT
 }
 
 void Region::SetStaticIp(uint32_t uiIp)
@@ -521,17 +532,18 @@ void Region::SetIpSettings(uint32_t uiIp, uint32_t uiGateway, uint32_t uiMask)
 	Save();
 }
 
-//	Save region data to Flash
+//---------------------------------------------------------------------------
+// Save region data to DATA Flash
+//---------------------------------------------------------------------------
 void Region::Save()
 {
-	printf("Saving Region Block to Flash.\r\n");
-#ifdef SC_COMMENTED_OUT
+	printf("Saving Region Block to Data Flash.\r\n");
 	uint32_t uiFlashAdddress = (unsigned int)OLY_BLOCK_LOCATION;
 
 	olyBlock.generation++;
-
-	write_sector((unsigned int)uiFlashAdddress, (uint8_t*)&olyBlock);
-#endif // SC_COMMENTED_OUT
+	
+	data_flash_program( uiFlashAdddress, (uint32_t *)&olyBlock, sizeof(OLY_BLOCK)/sizeof(uint32_t) );
+//	write_sector((unsigned int)uiFlashAdddress, (uint8_t*)&olyBlock);
 }
 
 //	Search RAM copy of Region Table for matching region type
@@ -547,9 +559,9 @@ int Region::FindFirst(OLY_REGION_TYPE type)
 	return(-1);
 }
 
+// Verify the Region held in Data Flash against APROM contents
 bool Region::VerifyRegion(int nRegion)
 {
-#ifdef SC_COMMENTED_OUT
 	if ((nRegion>=0) && (nRegion<OLY_MAX_REGIONS))
 	{
 		if ((olyBlock.rgn[nRegion].length) && (0xFFFFFFFF!=olyBlock.rgn[nRegion].length))
@@ -558,7 +570,7 @@ bool Region::VerifyRegion(int nRegion)
 			unsigned short crcCalc;
 			REGION_CRC rgnCrc;
 			Crc16Init(&rgnCrc);
-			Crc16Update(&rgnCrc, pCrcPtr, olyBlock.rgn[nRegion].length);
+			Crc16UpdateFromApromFlash(&rgnCrc, pCrcPtr, olyBlock.rgn[nRegion].length);
 			Crc16Finalize(&rgnCrc, &crcCalc);
 			printf("Verifying region %d Adr=0x%08X, Len=0x%08X, C1=0x%08X C2=0x%08X...\r\n",
 					nRegion, olyBlock.rgn[nRegion].address, olyBlock.rgn[nRegion].length, olyBlock.rgn[nRegion].crc, crcCalc);
@@ -575,9 +587,8 @@ bool Region::VerifyRegion(int nRegion)
 	}
 	else
 		printf("Region number invalid!\r\n");
+		
 	return(false);
-#endif // SC_COMMENTED_OUT
-	return true;
 }
 
 //	Clear out a region that will be upgraded
@@ -592,7 +603,7 @@ bool Region::ClearRegion(int nRegion)
 	return(false);
 }
 
-//	Copy region to table
+//	Copy region information (e.g. from FW upgrade) to olyBlock
 bool Region::WriteRegion(int nRegion, P_OLY_REGION pOlyRegion)
 {
 	printf("Writing Region #%d.\r\n", nRegion);
@@ -605,34 +616,24 @@ bool Region::WriteRegion(int nRegion, P_OLY_REGION pOlyRegion)
 	return(false);
 }
 
-//	 I am told we currently can't write less than a full sector, so length ignored
-bool Region::WriteChunk(uint32_t uiFlashAdddress, uint8_t *pChunk)
+//------------------------------------------------------------------------------------
+// Program a chunk of SPI flash firmware area 
+//	 (I am told we currently can't write less than a full sector, so length ignored)
+//------------------------------------------------------------------------------------
+bool Region::WriteChunk( uint32_t uiFlashOffset, uint8_t *pChunk )
 {
-	uint32_t uiResult;
-#ifdef SC_COMMENTED_OUT
-	uiResult = write_sector(uiFlashAdddress, pChunk);
-#endif // SC_COMMENTED_OUT
-
-	return(!uiResult);
+//	uiResult = write_sector( uiFlashAdddress, pChunk );
+	printf("\tFW: Write Chunk, offset 0x%08X (%d kB)\n", uiFlashOffset, uiFlashOffset/1024);
+	bool bResult = spi_flash_write_fw( pChunk, uiFlashOffset, (uint32_t)FW_UPGRADE_CHUNK_SIZE );  // Write sector to SPI flash FW area
+	return( bResult );
 }
 
-bool Region::VerifyChunk(uint32_t uiFlashAdddress, uint8_t *pChunk)
+//------------------------------------------------------------------------------------
+// Verify the programming of a chunk of SPI flash firmware area
+//------------------------------------------------------------------------------------
+bool Region::VerifyChunk(uint32_t uiFlashOffset, uint8_t *pChunk)
 {
-	uint32_t uiResult;
-	bool bMatch = true;
-
-	unsigned char *pFlash = (unsigned char  *)uiFlashAdddress;
-	for(int nX=0;nX<4096;nX++)
-	{
-		if (*(pFlash+nX)!=*(pChunk+nX))
-		{
-//			printf("Sector different at offset 0x%04X 0x%02X != 0x%02X\r\n", nX, (unsigned int)*(pFlash+nX),  (unsigned int)*(pChunk+nX));
-			bMatch = FALSE;
-			break;
-		}
-	}
-
-	return(bMatch);
+	return spi_flash_verify_fw_chunk( uiFlashOffset, pChunk );
 }
 
 //	Called by Mandolin Process when it received the upgrade file header
@@ -642,23 +643,30 @@ bool Region::StartUpgrade(P_OLY_REGION pOlyRegion)
 
 	printf("Starting Upgrade Process for region type %d.\r\n", (int)pOlyRegion->type);
 
+	// 	CDDLive : We are upgrading image in SPI Flash Region, so OK to accept APP type image, so check below not necessary.
+#if 0
+
+
 	//	Verify that region is compatible with upgrade type
 	//	Only allow one of eeach type for now
 	if (m_defaultType==pOlyRegion->type)
 	{
-		printf("Aborting trying to upgrade currently running applicaiton type %d.\r\n", (int)pOlyRegion->type);
+		printf("Aborting trying to upgrade currently running application type %d.\r\n", (int)pOlyRegion->type);
 		return(false);
 	}
+#endif
 
 	//	determine which region will be updated
 	nRegion = FindFirst(pOlyRegion->type);
 
 	//	Delete existing region
-	if (-1!=nRegion)
+	if ( -1 != nRegion )
 	{
 		printf("Found existing region #%d of type %d to upgrade.\r\n", nRegion, (int)pOlyRegion->type);
 		ClearRegion(nRegion);
-		Save();
+		// New Upgrade process will just erase the firmware area in SPI Flash.
+        printf("Erasing SPI Flash FW....\r\n");
+        spi_flash_fw_erase();
 	}
 	else
 	{
@@ -666,11 +674,11 @@ bool Region::StartUpgrade(P_OLY_REGION pOlyRegion)
 		printf("No existing region of type %d found, choosing first empty region #%d.\r\n", (int)pOlyRegion->type, nRegion);
 	}
 
-	if (-1!=nRegion)
+	if ( -1 != nRegion )
 	{
 		//	Save for later updating
 		m_nUpgradeRegion = nRegion;
-		m_rgnUpgrade = *pOlyRegion;
+		m_rgnUpgrade = *pOlyRegion;		// Region info from firmware update file.
 		m_UpgradeState = usmStarted;
 		m_uiUpgradeFilled = 0;
 		printf("Upgrade Process Started.\r\n");
@@ -679,49 +687,51 @@ bool Region::StartUpgrade(P_OLY_REGION pOlyRegion)
 }
 
 //	Called by Mandolin Process when it received the upgrade file header
-bool Region::UpgradeChunk(unsigned char *pChunk, unsigned int uiBytes)
+bool Region::UpgradeChunk(unsigned char *pChunk, unsigned int uiOffset, unsigned int uiBytes)
 {
-	unsigned char *pChar = (unsigned char *)(m_rgnUpgrade.address+m_uiUpgradeFilled);
+	unsigned char *pChar = (unsigned char *)(m_rgnUpgrade.address + uiOffset);
 
-	if (usmStarted!=m_UpgradeState)
+	if (usmStarted != m_UpgradeState)
 	{
 		printf("UpgradeChunk rejected because not in upgrade mode!\r\n");
 		return(false);
 	}
 
-	if ((uiBytes+m_uiUpgradeFilled)>m_rgnUpgrade.length)
+	if ((uiBytes + uiOffset) > (m_rgnUpgrade.length + sizeof(OLY_REGION)))
 	{
 		printf("UpgradeChunk rejected because of too many bytes received!\r\n");
 		return(false);
 	}
 
-	if (((m_rgnUpgrade.address+m_uiUpgradeFilled)>=0) && ((m_rgnUpgrade.address+m_uiUpgradeFilled)<P_SECTOR_SIZE))
+#if 0	// CDDLive : This check not necessary since we are now upgrading to SPI flash FW region
+	if (((m_rgnUpgrade.address + uiOffset) >= 0) && ((m_rgnUpgrade.address + uiOffset) < FW_UPGRADE_CHUNK_SIZE))
 	{
 		printf("UpgradeChunk rejected because overwriting first sector!\r\n");
 		return(false);
 	}
+#endif
 
-	if (m_uiUpgradeFilled&(P_SECTOR_SIZE-1))
+	if (uiOffset &(FW_UPGRADE_CHUNK_SIZE-1))
 	{
 		printf("UpgradeChunk rejected because start of write not on sector boundary!\r\n");
 		return(false);
 	}
 
-	printf("UpgradeChunk writing %d bytes to flash address 0x%08X...", uiBytes, m_rgnUpgrade.address+m_uiUpgradeFilled);
+	printf("UpgradeChunk writing %d bytes to offset 0x%08X...\r\n", uiBytes, m_rgnUpgrade.address + uiOffset);
 
-	if (VerifyChunk(m_rgnUpgrade.address+m_uiUpgradeFilled, pChunk))
-		printf("Skipping.\r\n");
-	else if (!WriteChunk(m_rgnUpgrade.address+m_uiUpgradeFilled, pChunk))
+	if ( VerifyChunk(m_rgnUpgrade.address + uiOffset, pChunk) )
+		printf("\tSkipping.\r\n");
+	else if ( !WriteChunk(m_rgnUpgrade.address + uiOffset, pChunk) )
 	{
-		printf("Failed!\r\n");
+		printf("\tFailed!\r\n");
 		return(false);
 	}
 	else
-		printf("Done.\r\n");
+		printf("\tDone.\r\n");
 
-	if (!VerifyChunk(m_rgnUpgrade.address+m_uiUpgradeFilled, pChunk))
+	if (!VerifyChunk(m_rgnUpgrade.address + uiOffset, pChunk))
 	{
-		printf("Verify failed at flash address 0x%08X!\r\n", m_rgnUpgrade.address+m_uiUpgradeFilled);
+		printf("\tVerify failed @ offset 0x%08X\r\n", m_rgnUpgrade.address + uiOffset);
 		return(false);
 	}
 
@@ -736,13 +746,13 @@ bool Region::GetUpgradeRemaining(uint32_t &uiTotal, uint32_t &uiRemaining)
 	uiTotal = 0;
 	uiRemaining = 0;
 
-	if (usmStarted!=m_UpgradeState)
+	if (usmStarted != m_UpgradeState)
 	{
 		return(false);
 	}
 
 	uiTotal = m_rgnUpgrade.length;
-	uiRemaining = uiTotal-m_uiUpgradeFilled;
+	uiRemaining = uiTotal - m_uiUpgradeFilled + sizeof(OLY_REGION);
 
 	return(true);
 }
@@ -771,7 +781,7 @@ bool Region::EndUpgrade()
 	}
 
 	//	Finished?
-	if (m_uiUpgradeFilled!=m_rgnUpgrade.length)
+	if (m_uiUpgradeFilled != (m_rgnUpgrade.length + sizeof(OLY_REGION)))
 	{
 		printf("EndUpgrade failed because not enough bytes have been written!\r\n");
 		return(false);
@@ -779,9 +789,9 @@ bool Region::EndUpgrade()
 
 	//	Verify CRC
 	Crc16Init(&rgnCrc);
-	Crc16Update(&rgnCrc, pCrcPtr, m_rgnUpgrade.length);
+	Crc16UpdateFromSpiFlash(&rgnCrc, pCrcPtr, m_rgnUpgrade.length);
 	Crc16Finalize(&rgnCrc, &crcCalc);
-	if (m_rgnUpgrade.crc!=crcCalc)
+	if (m_rgnUpgrade.crc != crcCalc)
 	{
 		printf("EndUpgrade failed because CRC didn't match Adr=0x%08X, Len=0x%08X, C1=0x%08X, C2=0x%08X!\r\n",
 			m_rgnUpgrade.address, m_rgnUpgrade.length, m_rgnUpgrade.crc, crcCalc);
@@ -790,12 +800,15 @@ bool Region::EndUpgrade()
 	printf("EndUpgrade CRC matched Adr=0x%08X, Len=0x%08X, C1=0x%08X.\r\n",
 		m_rgnUpgrade.address, m_rgnUpgrade.length, m_rgnUpgrade.crc);
 
-	//	Write region
+	//	Write new region to 'olyBlock', then Save that to Data Flash Region area.
 	WriteRegion(m_nUpgradeRegion, &m_rgnUpgrade);
 	Save();
 
 	printf("Upgrade complete.\n");
 	m_UpgradeState = usmInvalid;	// Clear upgrade state in case called again before reboot
+	
+	// TODO : Launch into BOOTLOADER which will detect image in SPI Flash and program it into APROM Flash.
+	
 	return(true);
 }
 
@@ -952,7 +965,9 @@ const char *Region::GetMandolinBrandName(LOUD_brand mandolinBrand)
 	return pszBrand;
 };
 
+//---------------------------------------------------------------------------
 //	Changes are not used in current session, must be rebooted to take effect.
+//---------------------------------------------------------------------------
 void Region::WriteIdentity(uint8_t mac[6], int32_t nBrand, int32_t nModel, uint16_t hardwareRev, uint32_t uiSerialNumber)
 {
 	uint8_t *pSectorZero = new uint8_t[P_SECTOR_SIZE];
@@ -1021,10 +1036,10 @@ void Region::WriteIdentity(uint8_t mac[6], int32_t nBrand, int32_t nModel, uint1
 		}
 
 		printf("Saving Identity Sector, hold on...");
-#ifdef SC_COMMENTED_OUT
-		write_sector_zero(pSectorZero);
-		printf("Success.\r\n");
-#endif // SC_COMMENTED_OUT
+        if ( data_flash_program((uint32_t)OLY_IDENTITY_LOCATION, (uint32_t *)pIdentity, sizeof(OLY_IDENTITY)/sizeof(uint32_t)) )
+        {
+		    printf("Success.\r\n");
+	    }
 		delete pSectorZero;
 	}
 }
@@ -1039,18 +1054,44 @@ void Region::Crc16Init(P_REGION_CRC rgnCrc)
 	rgnCrc->currentCrc = 0;
 }
 
-//	called for each new block to CRC
-void Region::Crc16Update(P_REGION_CRC rgnCrc, const uint8_t * pSrc, uint32_t uiBytes)
+// Called for each new block in SPI Flash to CRC
+void Region::Crc16UpdateFromSpiFlash(P_REGION_CRC rgnCrc, const uint8_t * pSrc, uint32_t uiBytes)
 {
     uint32_t crc = rgnCrc->currentCrc;
 
     uint32_t j;
-    for (j=0; j < uiBytes; ++j)
+    uint32_t flashOffset = sizeof(OLY_REGION) + (uint32_t)pSrc;
+    for ( j = 0; j < uiBytes; ++j )
     {
         uint32_t i;
-        uint32_t byte = pSrc[j];
+        uint32_t byte = spi_flash_read_fw_byte(flashOffset + j);
         crc ^= byte << 8;
-        for (i = 0; i < 8; ++i)
+        for ( i = 0; i < 8; ++i )
+        {
+            uint32_t temp = crc << 1;
+            if (crc & 0x8000)
+            {
+                temp ^= 0x1021;
+            }
+            crc = temp;
+        }
+    }
+
+    rgnCrc->currentCrc = crc;
+}
+
+// Called for each new block in APROM Flash to CRC
+void Region::Crc16UpdateFromApromFlash(P_REGION_CRC rgnCrc, const uint8_t *pSrc, uint32_t uiBytes)
+{
+    uint32_t crc = rgnCrc->currentCrc;
+
+    uint32_t j;
+    for ( j = 0; j < uiBytes; ++j )
+    {
+        uint32_t i;
+        uint32_t byte = *pSrc;
+        crc ^= byte << 8;
+        for ( i = 0; i < 8; ++i )
         {
             uint32_t temp = crc << 1;
             if (crc & 0x8000)

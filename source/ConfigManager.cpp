@@ -22,16 +22,14 @@ extern "C" {
 //#include "Drivers/SpiFlash/spi_flash_fs.h"
 //#include "pascal_spro2.h"
 //#include "CS42526.h"
-#ifndef _SECONDARY_BOOT
 #include "Voicing_Info.h"
-#endif	//	_SECONDARY_BOOT
 
 //#include "AmpMonitor.h"
 //#include "MMA8653FC.h"
 //#include "ftm_lcdbacklight.h"
 #include "OLYspeaker1_map.h"
 #include "oly_logo.h"
-//#include "UltimoPort.h"
+
 //#include "IRDAManager.h"
 //#include "uart_irda.h"
 #include <math.h>
@@ -39,6 +37,8 @@ extern "C" {
 //#include "cddl_leds.h"
 #endif
 }
+
+#include "UltimoPort.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -63,15 +63,12 @@ MQX_TICK_STRUCT selfTest_ticks;
 static _timer_id selfTest_timer;
 uint8_t g_nLastMeterSeq = 0;
 
-//extern UltimoPort * g_pUltimoPort;
+extern UltimoPort * g_pUltimoPort;
 bool g_ScreenInTransition = false;
 
 namespace oly {
 
 #if 1
-
-#ifndef _SECONDARY_BOOT
-
     void Config::EncoderL()
     {
     #if USE_OLY_UI
@@ -2088,9 +2085,8 @@ namespace oly {
     
     void Config::RestoreIPAddresses()
     {
-// TODO : SC Commented out
-//    	if(g_pUltimoPort) // Send Dante IP Reset message (Ultimo switch to DHCP and reboot)
-//    		g_pUltimoPort->TriggerIpReset();
+    	if(g_pUltimoPort) // Send Dante IP Reset message (Ultimo switch to DHCP and reboot)
+    		g_pUltimoPort->TriggerIpReset();
     
     	SwitchToDHCP(); // Switch Network IP to DHCP
     	if(m_pUpgrade->SetLaunchType(OLY_REGION_APPLICATION)) // Make sure that the launch type is application
@@ -2306,20 +2302,14 @@ namespace oly {
     {
     	olyStatus.Angle = 90;
     }
-    
-    #endif // _SECONDARY_BOOT
-        
+            
     void Config::SetLcdBrightness(int level)
     {
     		if( level < 0 )	level = 0;
     		if( level > 100) level = 100;
-    #ifndef _SECONDARY_BOOT
     		olyParams.Device->LCD_Brightness = level;
-    #endif	//	_SECONDARY_BOOT
     		RampLcdBrightness(false, (uint32_t) level);
-    #ifndef _SECONDARY_BOOT
     		StoreParams();
-    #endif	//	_SECONDARY_BOOT
     }
     
     void Config::RampLcdBrightness(bool set_ramp, uint32_t level)
@@ -2435,10 +2425,6 @@ namespace oly {
     	olyUI.UpdateFwVersion(Region::GetSystemBrand(), Region::GetSystemModel(), FwVer, Region::GetHardwareRevision());
     	olyUI.UpdateMacAddress(Region::GetSystemMAC(), false);
     	olyUI.UpdateIPaddress(g_CurrentIpAddress, 0==uiStaticIp);
-    #ifdef _SECONDARY_BOOT
-    	olyUI.UpdateVolume(0.f);
-    	olyUI.UpdateInputSource(src_none);
-    #else	//	_SECONDARY_BOOT
     	olyUI.UpdateVolume(ParamGetValue(olyParams.Device->Active_User, ePID_OLYspeaker1_USER_SPEAKER_FADER));
     	olyUI.UpdateInputSource(GetAudioSource());
     	olyUI.UpdateProfileName(eOLY_PROFILES_PRESET1, (char*)c_Preset1Name);
@@ -2482,9 +2468,7 @@ namespace oly {
     						sprintf(tempString, "DSP Unmuted");
     					olyUI.DebugLineOut(1, tempString);
     				}
-        #endif
-    #endif	//	_SECONDARY_BOOT
-    
+        #endif    
     #endif // USE_OLY_UI
     
     }
@@ -2799,14 +2783,11 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     void Config::OnNetworkConnectionChanged(bool connected)
     {
     	OpenNetworkPort(connected, 0);
-    
-    #ifndef _SECONDARY_BOOT
-    
+       
     	RefreshLogoState();
     
     		//if(!connected)
     		//SetSelfTestMode(eTEST_MODE_DISABLED);
-    #endif	//	_SECONDARY_BOOT
     }
     
     char * Config::GetDiscoServiceName()
@@ -2891,7 +2872,7 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     // i.e. if the dante config IP address is 0.0.0.0 (Dante is DHCP) the current Dante IP address will be something else (DHCP assigned).
     void Config::OnDanteChange_ConfigIpAddress(uint32_t ipAddress, uint32_t ipGateway, uint32_t ipMask)
     {
-#ifdef SC_COMMENTED_OUT
+//#ifdef SC_COMMENTED_OUT
     	if(!g_pUltimoPort)
     		return;
     
@@ -2952,7 +2933,7 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     		}
     	}
     #endif
-#endif // SC_COMMENTED_OUT
+//#endif // SC_COMMENTED_OUT
     }
     
     void Config::OnDanteChange_IpAddress(uint32_t ipAddress)
@@ -3135,12 +3116,7 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     //		olyUI.Run(nMs);
     }
     
-    #ifdef _SECONDARY_BOOT
-    bool Config::IsInitialized() { return true; }
-    #else //	_SECONDARY_BOOT
-    bool Config::IsInitialized() { return olyStoredParams.XML_Version == OLYspeaker1_XML_VERSION; }
-    #endif	//	_SECONDARY_BOOT
-    
+    bool Config::IsInitialized() { return olyStoredParams.XML_Version == OLYspeaker1_XML_VERSION; }    
     
     Config::Config() :
     #if USE_OLY_UI

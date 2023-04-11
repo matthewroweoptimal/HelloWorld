@@ -21,10 +21,8 @@ namespace oly {
 MandolinPort::MandolinPort(mandolin_fifo * rx_fifo) {
 	RxFifo = rx_fifo;
 	OpenPort(false);
-#ifndef _SECONDARY_BOOT
 	InitializeMeters();
 	InitSync(false);
-#endif	//	_SECONDARY_BOOT
 }
 
 void MandolinPort::RxByte(uint8_t byte) {
@@ -55,9 +53,7 @@ void MandolinPort::OpenPort(bool bPortOpen)
 		m_uiIdleTimeElapsed = 0;
 		m_uiIdleTimeoutMs = MCS_DEFAULT_IDLE_TIMEOUT;
 	}
-#ifndef _SECONDARY_BOOT
 	InitializeMeters();
-#endif	//	_SECONDARY_BOOT
 }
 
 bool MandolinPort::GetForceClose()
@@ -98,7 +94,7 @@ void MandolinPort::Run(int nMs)
 	case mcsConnected:
 		break;
 	}
-#ifndef _SECONDARY_BOOT
+	
 	// Advance sync state machine (moved to allow offline sync)
 	if (m_bSyncing)
 	{
@@ -106,7 +102,6 @@ void MandolinPort::Run(int nMs)
 			SendParameterSync();
 
 	}
-#endif	//	_SECONDARY_BOOT
 
 	m_uiStateTimeElapsed += nMs;
 	m_uiIdleTimeElapsed += nMs;
@@ -183,7 +178,6 @@ void MandolinPort::ChangeConnectState(MANDOLIN_CONNECT_STATE newState, uint32_t 
 	m_uiStateTimeoutMs = uiTimeoutMs;
 }
 
-#ifndef _SECONDARY_BOOT
 //	Syncing methods
 
 //	Receipt of Sync command inititates sync process
@@ -509,9 +503,7 @@ void MandolinPort::SyncTarget(OLY_target Group, int Instance, uint32_t PID1, uin
 		nStartParam += nMaxIds;
 		_time_delay(10);
 	}
- }
-
-#endif	//	_SECONDARY_BOOT
+}
 
 void MandolinPort::Ping(mandolin_message * pMsg)
 {

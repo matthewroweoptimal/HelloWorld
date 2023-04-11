@@ -15,7 +15,9 @@
 
 
 #define CONFIG_HOST_FLASH_ENABLE_MSK	0x00000001
-#define DATA_FLASH_ADDR					0x00070000
+#define DATA_FLASH_ADDR					0x0007E000	// Allows 8kB at top of Flash for region which will include :
+													//     0x0007E000 : OLY_BLOCK			(See : Upgrade.h)
+													//     0x0007F000 : OLY_IDENTITY
 
 
 /* Starting address of Program Flash */
@@ -38,9 +40,9 @@
 
 #define	FLASH_WRITE_BLOCKSIZE	32
 
-/* Can be written to */
-#define FLASH_PARAMS_ADDR		0x00070000
-#define FLASH_PARAMS_SIZE		0x10000
+/* Can be written to : Flash Parameter Storage is now in SPI Flash for Nuvoton System */
+//#define FLASH_PARAMS_ADDR		0x00070000
+//#define FLASH_PARAMS_SIZE		0x10000
 
 #define FMC_RESULT_OK					0
 
@@ -69,17 +71,9 @@
 #define ONE_MB                  (ONE_KB*ONE_KB)             //0x100000:     20 zeros
 #define ONE_GB                  (ONE_KB*ONE_KB*ONE_KB)      //0x40000000:   30 zeros
 
-//#define EnableInterrupts asm(" CPSIE i");
-//#define DisableInterrupts asm(" CPSID i");
-
 
 void flash_init();
-void flash_driver_init();
-uint32_t flash_check_for_valid_data(uint32_t p_startAddress, uint32_t size);
-uint32_t flash_param_reinit(void);
-uint32_t write_oly_params(oly_flash_params_t * pParams);
-uint32_t write_sector(uint32_t uiFlashAddress, uint8 *pData);
-uint32_t write_sector_zero(uint8 *pData);
+bool data_flash_program( uint32_t dataFlashAddr, uint32_t *pu32Data, uint32_t numU32s );
 
 extern void* p_CurrentParamMemLoc;
 

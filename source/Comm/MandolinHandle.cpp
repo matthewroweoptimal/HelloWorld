@@ -13,36 +13,32 @@
 
 extern "C" {
 #include "flash_params.h"
-//#include "TimeKeeper.h"
+
 //#include "lwevent.h"
 //#include <timer.h>
-#ifndef _SECONDARY_BOOT
 //#include "CurrentSense.h"
 //#include "AUX_Spi_task.h"
 #include "OLYspeaker1_map.h"
 #include "Model_Info.h"
-#endif	//	_SECONDARY_BOOT
 }
 
+#include "TimeKeeper.h"
 
 #include <stdio.h>
 #include <string.h>
 #include "ConfigManager.h"
-//#include "UltimoPort.h"
+#include "UltimoPort.h"
 
 
 #include "Region.h"
 #include "oly_logo.h"
-#ifndef _SECONDARY_BOOT
-
 //#include "IRDA_Task.h"
-#endif
 
 extern uint32_t g_CurrentIpAddress;
 extern uint8_t g_nLastMeterSeq;
 extern bool g_bMeterComplete;
 
-//extern UltimoPort * g_pUltimoPort;
+extern UltimoPort * g_pUltimoPort;
 
 bool b_tx_response_flag = false;
 
@@ -61,7 +57,6 @@ void Config::MandolinHandle(MandolinPort * srcPort, mandolin_mqx_message * msg_p
 	if (IS_MANDOLIN_REPLY(pMsg->transport)){
 		//TODO: Update ACK tracker
 		switch (pMsg->id) {
-#ifndef _SECONDARY_BOOT
 			case MANDOLIN_MSG_GET_APPLICATION_PARAMETER:
 				if (MANDOLIN_EDIT_TARGET(ReadParameterFlags(pMsg)) == eTARGET_METERS) {
 					HandleMetersResponse(pMsg);
@@ -77,7 +72,6 @@ void Config::MandolinHandle(MandolinPort * srcPort, mandolin_mqx_message * msg_p
 			case MANDOLIN_MSG_SET_APPLICATION_STRING:
 				srcPort->SetParameterReply(pMsg);
 				break;
-#endif	//	_SECONDARY_BOOT
 			case MANDOLIN_MSG_GET_HARDWARE_INFO:
 				srcPort->GetHardwareInfoReply(pMsg);
 				break;
@@ -119,7 +113,6 @@ void Config::MandolinHandle(MandolinPort * srcPort, mandolin_mqx_message * msg_p
 			case MANDOLIN_MSG_GET_SYSTEM_STATUS:
 				HandleGetSystemStatus(srcPort, pMsg);
 				break;
-#ifndef _SECONDARY_BOOT
 			case MANDOLIN_MSG_TRIGGER_APPLICATION_EVENT:
 				switch(eventID){
 					case MANDOLIN_AE_LOAD_SNAPSHOT:
@@ -185,7 +178,6 @@ void Config::MandolinHandle(MandolinPort * srcPort, mandolin_mqx_message * msg_p
 			case MANDOLIN_MSG_GET_APPLICATION_STRING:
 				HandleGetApplicationString(srcPort, pMsg);
 				break;
-#endif
 			case MANDOLIN_MSG_FILE_OPEN:
 			case MANDOLIN_MSG_FILE_CLOSE:
 			case MANDOLIN_MSG_POST_FILE:
@@ -198,9 +190,6 @@ void Config::MandolinHandle(MandolinPort * srcPort, mandolin_mqx_message * msg_p
 		}
 	}
 }
-
-#ifndef _SECONDARY_BOOT
-
 
 void Config::HandleMetersResponse(mandolin_message * pMsg)
 {
@@ -697,8 +686,8 @@ void Config::HandleGetSoftwareInfo(MandolinPort * srcPort, mandolin_message * pM
 {
 	uint32 dante_ver, cap_ver, cap_build;
 
-//	g_pUltimoPort->GetCapVersion(&cap_ver, &cap_build);
-//	g_pUltimoPort->GetOsVersion(&dante_ver);
+	g_pUltimoPort->GetCapVersion(&cap_ver, &cap_build);
+	g_pUltimoPort->GetOsVersion(&dante_ver);
 
 	srcPort->WriteMessage(GetSoftwareInfoResponse(dante_ver, cap_ver, cap_build, pMsg->sequence));
 }
@@ -813,7 +802,6 @@ void Config::KillAllSubscriptions(void)
 	for(i=0; i<ePID_OLYspeaker1_STATUS_FENCE; i++)	_timer_cancel(SubscriptionTimers[i]);
 }
 
-#endif	//	_SECONDARY_BOOT
 
 void Config::HandleTestCommand(MandolinPort * srcPort, mandolin_message * pMsg)
 {
@@ -909,7 +897,6 @@ void Config::HandleTestCommand(MandolinPort * srcPort, mandolin_message * pMsg)
 			TestValue1 = Region::GetHardwareRevision();
 			srcPort->WriteMessage(GetAckResponseWithData(pMsg, (uint8_t*)&TestValue1, sizeof(TestValue1)));
 			break;
-#ifndef _SECONDARY_BOOT
 		case(TEST_CMD_RESTORE_DEFAULTS):
 			RestoreDefaults(false);
 			srcPort->WriteMessage(GetAckResponse(pMsg));
@@ -917,7 +904,6 @@ void Config::HandleTestCommand(MandolinPort * srcPort, mandolin_message * pMsg)
 		case(TEST_CMD_GET_STATUS_ALL):
 			srcPort->WriteMessage(GetStatusAllResponse(olyStatus.Values, pMsg->sequence));
 			break;
-#endif	//	_SECONDARY_BOOT
 
 #if MFG_TEST_EAW || MFG_TEST_MARTIN
 		case TEST_CMD_SET_INPUT:
@@ -1036,15 +1022,13 @@ void Config::SoftwareReset(MandolinPort * srcPort, mandolin_message * pMsg)
 			//	Change launch type in flash
 			if (m_pUpgrade)
 			{
-#ifdef SC_COMMENTED_OUT
-				bool bSuccess = m_pUpgrade->SetLaunchType((uiRebootType==OLY_APPID_BOOTLOADER)?OLY_REGION_SECONDARY_BOOT:OLY_REGION_APPLICATION);
-#endif //  SC_COMMENTED_OUT
-				error =  MANDOLIN_ERROR_INVALID_DATA; // SC : bSuccess?MANDOLIN_NO_ERROR:MANDOLIN_ERROR_INVALID_DATA;
+				bool bSuccess = m_pUpgrade->SetLaunchType(OLY_REGION_APPLICATION);
+				error = (bSuccess ? MANDOLIN_NO_ERROR : MANDOLIN_ERROR_INVALID_DATA);
 			}
 
 			//	 only schedule reset if everything worked
-//			if (MANDOLIN_NO_ERROR==error)
-//				DeferredReboot(500);	//	wait 500 milliseconds to reboot
+			if (MANDOLIN_NO_ERROR==error)
+				DeferredReboot(500);	//	wait 500 milliseconds to reboot
 		}
 		else
 			error = MANDOLIN_ERROR;
@@ -1142,12 +1126,8 @@ void Config::HandleSystemEvent(MandolinPort * srcPort, mandolin_message * pMsg)
 				break;
 			case MANDOLIN_SE_CONNECT:
 				if (pPayload[1]){
-#ifdef _SECONDARY_BOOT
-					error = MANDOLIN_ERROR_INVALID_ID;
-#else
 					HandleFastConnect(srcPort, pMsg);
 					return;
-#endif	// _SECONDARY_BOOT
 				} else {
 					IdentifyStop();
 					error = srcPort->Connect(pMsg);
@@ -1165,12 +1145,10 @@ void Config::HandleSystemEvent(MandolinPort * srcPort, mandolin_message * pMsg)
 				     IdentifyStop();
 				 }
 				break;
-#ifndef  _SECONDARY_BOOT
 			case MANDOLIN_SE_SYNC_CURRENT_STATE:
 				srcPort->Sync(pMsg);
 				error = MANDOLIN_NO_ERROR;
 				break;
-#endif	//	_SECONDARY_BOOT
 			default:
 				error = MANDOLIN_ERROR_UNIMPLEMENTED_MSGID;
 				break;
@@ -1217,16 +1195,6 @@ void Config::HandleFastConnect(MandolinPort * srcPort, mandolin_message * pMsg)
 	uint32_t * response = new uint32_t[FAST_CONNECT_PAYLOAD_LENGTH];
 
 	response[0] = version;
-#ifdef _SECONDARY_BOOT
-	oly_version.u32 = OLY_BOOT_VERSION;
-	response[1] = OLY_APPID_BOOTLOADER;
-	response[2] = (oly_version.major << 24) | (oly_version.minor << 16) | (oly_version.sub << 8) | (oly_version.build);
-	response[3] = 0;
-	response[4] = 0;
-	response[5] = 0;
-	response[6] = 0;
-	response[7] = 0;
-#else
 	oly_version.u32 = OLY_FW_VERSION;
 	response[1] = OLY_APPID_MAIN;
 	response[2] = (oly_version.major << 24) | (oly_version.minor << 16) | (oly_version.sub << 8) | (oly_version.build);
@@ -1235,8 +1203,6 @@ void Config::HandleFastConnect(MandolinPort * srcPort, mandolin_message * pMsg)
 	response[5] = olyStatus.Array_Index;
 	response[6] = olyStatus.Array_ID_Above;
 	response[7] = olyStatus.Array_ID_Below;
-
-#endif	//	_SECONDARY_BOOT
 
 	srcPort->WriteMessage(GetSysEventResponseWithData(pMsg, (uint8_t*)response, FAST_CONNECT_PAYLOAD_LENGTH * 4), false);
 
@@ -1276,7 +1242,7 @@ void Config::HandleFileMessage(MandolinPort * srcPort, mandolin_message * pMsg)
 				{
 					error = MANDOLIN_NO_ERROR;
 					//	return chunksize
-					uiResponse =  P_SECTOR_SIZE;
+					uiResponse =  FW_UPGRADE_CHUNK_SIZE; // P_SECTOR_SIZE;  - CDDLive reduced mandonlin max message support
 					uiResponseBytes = sizeof(uiResponse);
 					pResponse = (uint8_t *)&uiResponse;
 				}
@@ -1296,7 +1262,8 @@ void Config::HandleFileMessage(MandolinPort * srcPort, mandolin_message * pMsg)
 			if (m_pUpgrade)
 			{
 				uint32_t uiBytes = *(pPayload+3);
-				if (!m_pUpgrade->UpgradeChunk((uint8_t*)(pPayload+4), uiBytes))
+				uint32_t uiOffset = *(pPayload+2);
+				if (!m_pUpgrade->UpgradeChunk((uint8_t*)(pPayload+4), uiOffset, uiBytes))
 					error =  MANDOLIN_ERROR_INVALID_DATA;
 				else
 				{
@@ -1330,8 +1297,6 @@ void Config::HandleFileMessage(MandolinPort * srcPort, mandolin_message * pMsg)
 		srcPort->WriteMessage(pM);
 	}
 }
-
-#ifndef _SECONDARY_BOOT
 
 mandolin_error_code Config::ParamValidate(OLY_target group, uint32_t PID, mandolin_parameter_value * pValue)
 {
@@ -1530,8 +1495,6 @@ oly_status_t *Config::GetStatusParamsDatabase()
 {
 	return (&olyStatus);
 }
-
-#endif	//	_SECONDARY_BOOT
 
 }	/* namespace oly */
 
