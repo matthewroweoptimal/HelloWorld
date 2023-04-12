@@ -330,10 +330,12 @@ void Config_Task(uint32_t task_init_data)
 	//}
 
 #if USE_CDD_UI
-	olyConfig->SetFanEnabled(true);  //enable fan for first 2 seconds on startup
+//	olyConfig->SetFanEnabled(true);  //IQ odd bodge to get fan off after start up.
 #else
 	olyConfig->SetFanEnabled(false);
 #endif
+	olyConfig->SetFanEnabled(true);
+	olyConfig->SetFanEnabled(false);
 
 	MSGQ_INIT()
 
@@ -351,7 +353,9 @@ void Config_Task(uint32_t task_init_data)
 	olyConfig->InitStatusParams();
 	olyConfig->InitUI();
 
-	/* unmnute the amps! maybe fade up the DSP? The logic here is inverted by the transistors!*/
+
+	/* delay then unmnute the amps! maybe fade up the DSP? The logic here is inverted by the transistors!*/
+	_time_delay(2000);
     Gpio::setGpio(AMP1_DISABLE_MUTE_CNTRL,LOW);
     Gpio::setGpio(AMP2_DISABLE_MUTE_CNTRL,LOW);
     Gpio::setGpio(AMP1_2_STANDBY_CNTRL,LOW);

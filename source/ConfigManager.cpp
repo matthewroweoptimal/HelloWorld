@@ -355,19 +355,38 @@ namespace oly {
     		break;
     	case eTARGET_FIR:
     		if (instance < FIR_PRESETS) {
-    			olyParams.Device->Active_FIR = instance;
-    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_HF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302));
-    			_time_delay(10);
-    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_HF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300));
-    			_time_delay(10);
-    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_MF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302));
-    			_time_delay(10);
-    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_MF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300));
-    			_time_delay(10);
-    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_LF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302));
-    			_time_delay(10);
-    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_LF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300));
-    			_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_COEF127_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_COEF255_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_COEF383_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_COEF511_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],ePID_OLYspeaker1_FIR_MF_FIR_ENABLE-ePID_OLYspeaker1_FIR_HF_FIR_COEF511_VALUE));
+    	    	_time_delay(10);
+
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_COEF127_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_COEF255_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_COEF383_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_COEF511_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],ePID_OLYspeaker1_FIR_LF_FIR_ENABLE-ePID_OLYspeaker1_FIR_MF_FIR_COEF511_VALUE));
+    	    	_time_delay(10);
+
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_COEF127_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_COEF255_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_COEF383_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_COEF511_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],ePID_OLYspeaker1_FIR_FENCE-ePID_OLYspeaker1_FIR_LF_FIR_COEF511_VALUE));
+    	    	_time_delay(10);
     		}
     		break;
     	default:
@@ -1492,10 +1511,16 @@ namespace oly {
 		printf("ParamSetVoicing for PID: %d Value: %d\n",PID, Value);
 		/*
 		 * To use the old test app we must check for routing changes, these will not work with the Nuvoton
+		 * For ASM20005-00 test. We want to set AMP2 to the value being sent AMP4. i.e. AMP1 = 3 (LF), AMP2 = 2 (HF).
+		 * For ASM20007-00 test. We want AMP1 and AMP2 set to 3 LF.
 		 */
 		if(PID==ePID_OLYspeaker1_VOICING_AMP4_ROUTING)
 		{
+			if (Value) //only copy the AMP2 if it is trying to set.
+			{
+			printf("Overriding AMP routing to AMP2, setting to %d\n", Value);
 			PID = ePID_OLYspeaker1_VOICING_AMP2_ROUTING;
+			}
 		}
 
 #endif
@@ -2519,7 +2544,7 @@ namespace oly {
     
     void Config::SetFanEnabled(bool fan_on)
     {
-#ifdef SC_COMMENTED_OUT
+
     #if !MFG_TEST_EAW && !MFG_TEST_MARTIN
     
     	if (fan_on != olyStatus.Fan_Enabled)
@@ -2534,7 +2559,7 @@ namespace oly {
     	GPIO_DRV_WritePinOutput(FAN_CONTROL, fan_on);
     	olyStatus.Fan_Enabled = fan_on;
     #endif // !MFG_TEST_EAW && !MFG_TEST_MARTIN
-#endif //  SC_COMMENTED_OUT
+
     }
     
     void Config::UpdateNeighbourHardwareStatus(void)

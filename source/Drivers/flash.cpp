@@ -64,7 +64,7 @@ static void flash_driver_init()
     if (result != DATA_FLASH_ADDR)
     {
     	printf("Data Flash Base Address 0x%08x does not match expected : [0x%08x] (Try Reboot)\n", result, DATA_FLASH_ADDR);
-    	while (1);
+    	//while (1);
     } else
     {
     	printf("Data Flash Base Address as expected : [0x%08x]\n", result);

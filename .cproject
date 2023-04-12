@@ -873,7 +873,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="${cross_rm} -rf" description="Debug 8 Nu" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1790202927.975934149" name="Debug 8" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=" parent="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug" postannouncebuildStep="Pack Binary into Firmware file with attached REGION header" postbuildStep="${cross_prefix}${cross_objcopy}${cross_suffix} -O binary &quot;${ProjName}.elf&quot; &quot;${ProjName}.bin&quot; &amp; sleep 10 &amp; ${ProjDirPath}/TOOLS/OlyPack/Release/OlyPack.exe -L ${ProjName}.log -I ${ProjName}.bin -O ${ProjName}.Fw.bin -V 1.0.0 -S 0x0 -T 0x0 -P 0x28000">
+				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="${cross_rm} -rf" description="Debug 8 Nu" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1790202927.975934149" name="Debug 8" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=" parent="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug" postannouncebuildStep="Pack Binary into Firmware file with attached REGION header" postbuildStep="${cross_prefix}${cross_objcopy}${cross_suffix} -O binary &quot;${ProjName}.elf&quot; &quot;${ProjName}.bin&quot; &amp; sleep 10 &amp; &quot;${ProjDirPath}/TOOLS/OlyPack/Release/OlyPack.exe&quot; -L ${ProjName}.log -I ${ProjName}.bin -O ${ProjName}.Fw.bin -V 1.0.0 -S 0x0 -T 0x0 -P 0x28000">
 					<folderInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1790202927.975934149." name="/" resourcePath="">
 						<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug.1741403715" name="Cross ARM GCC" superClass="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug">
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.1595674123" name="Optimization Level" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.debug" valueType="enumerated"/>
@@ -926,6 +926,7 @@
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.63336939" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
 							</tool>
@@ -975,6 +976,7 @@
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.1151941947" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -1019,6 +1021,7 @@
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.450592982" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1810215699" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
@@ -1548,7 +1551,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="${cross_rm} -rf" description="Debug Manf build" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1790202927.324956088" name="Debug Manf" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=" parent="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug" postannouncebuildStep="Pack Binary into Firmware file with attached REGION header" postbuildStep="${cross_prefix}${cross_objcopy}${cross_suffix} -O binary &quot;${ProjName}.elf&quot; &quot;${ProjName}.bin&quot; &amp; sleep 10 &amp; ${ProjDirPath}/TOOLS/OlyPack/Release/OlyPack.exe -L ${ProjName}.log -I ${ProjName}.bin -O ${ProjName}.Fw.bin -V 1.0.0 -S 0x0 -T 0x0 -P 0x28000">
+				<configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="${cross_rm} -rf" description="Debug Manf build" id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1790202927.324956088" name="Debug Manf" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=" parent="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug" postannouncebuildStep="Pack Binary into Firmware file with attached REGION header" postbuildStep="${cross_prefix}${cross_objcopy}${cross_suffix} -O binary &quot;${ProjName}.elf&quot; &quot;${ProjName}.bin&quot; &amp; sleep 10 &amp; &quot;${ProjDirPath}/TOOLS/OlyPack/Release/OlyPack.exe&quot; -L ${ProjName}.log -I ${ProjName}.bin -O ${ProjName}.Fw.bin -V 1.0.0 -S 0x0 -T 0x0 -P 0x28000">
 					<folderInfo id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1790202927.324956088." name="/" resourcePath="">
 						<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug.1085734911" name="Cross ARM GCC" superClass="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug">
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.1154099653" name="Optimization Level" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.debug" valueType="enumerated"/>
