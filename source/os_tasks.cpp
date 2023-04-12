@@ -330,10 +330,12 @@ void Config_Task(uint32_t task_init_data)
 	//}
 
 #if USE_CDD_UI
-	olyConfig->SetFanEnabled(true);  //enable fan for first 2 seconds on startup
+//	olyConfig->SetFanEnabled(true);  //IQ odd bodge to get fan off after start up.
 #else
 	olyConfig->SetFanEnabled(false);
 #endif
+	olyConfig->SetFanEnabled(true);
+	olyConfig->SetFanEnabled(false);
 
 	MSGQ_INIT()
 
