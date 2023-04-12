@@ -23,9 +23,7 @@ public:
 	NetworkPort();
 	void WriteMessage(mandolin_message * pMsg, bool bRequireConnection=false);	//	set bRequireConnection if mandolin connection process must have completed to send this message
 
-#ifndef _SECONDARY_BOOT
 	virtual void ConfigureMeters(int nAutoMetersListId, int nAutoMetersRate, int nAutoMetersFlags, bool bAutoMetersNoAck);
-#endif	//	_SECONDARY_BOOT
 };
 
 } /* namespace oly */

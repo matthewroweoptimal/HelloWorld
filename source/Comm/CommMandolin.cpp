@@ -202,7 +202,6 @@ mandolin_message * GetSoftwareInfoResponse(uint32_t dante_fw_ver, uint32_t dante
     uint32_t version = ((MANDOLIN_MAJOR_VERSION & 0x0ff) << 24) | ((MANDOLIN_MINOR_VERSION & 0x0ff) << 16) | ((OLYspeaker1_XML_VERSION & 0x0ffff) << 0);
 
     volatile oly_version_t oly_version;
-
     oly_version.u32 = OLY_FW_VERSION;
 
     tmpMsg.payload   = pPayload;
@@ -211,13 +210,11 @@ mandolin_message * GetSoftwareInfoResponse(uint32_t dante_fw_ver, uint32_t dante
 	tmpMsg.length    = 9;
 
 	pPayload[0] = version;
-#ifdef _SECONDARY_BOOT
-	pPayload[1] = OLY_APPID_BOOTLOADER;
-#elif MFG_TEST_EAW || MFG_TEST_MARTIN
+#if defined(MFG_TEST_EAW) || defined(MFG_TEST_MARTIN)
 	pPayload[1] = OLY_APPID_MFG_TEST;
-#else	//	_SECONDARY_BOOT
+#else
 	pPayload[1] = OLY_APPID_MAIN;
-#endif	//	_SECONDARY_BOOT
+#endif
 	pPayload[2] = (oly_version.major << 24) | (oly_version.minor << 16) | (oly_version.sub << 8) | (oly_version.build);
 
 	pPayload[3] = OLY_FIRM_DANTE_APP;         // Ultimo2 OS version

@@ -19,10 +19,8 @@
 #include "LOUD_enums.h"
 #include "LOUD_types.h"
 
-#ifndef _SECONDARY_BOOT
 #ifndef _WIN32
 #include "Model_Info.h"
-#endif
 #endif
 
 
@@ -222,7 +220,6 @@ typedef struct {
 
 } oly_flash_params_t;
 
-#ifndef _SECONDARY_BOOT
 #ifndef _WIN32
 typedef struct {
 	/* Pointers to Parameter Preset values */
@@ -236,7 +233,6 @@ typedef struct {
 	uint32_t *		  Airloss;
 	uint32_t *        NoiseGate;
 } oly_params_t;
-#endif
 #endif
 
 #endif /* OLY_H_ */

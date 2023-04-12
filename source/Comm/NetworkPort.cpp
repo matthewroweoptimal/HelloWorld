@@ -98,7 +98,7 @@ void NetworkPort::Run(int nMs)
 	}
 #endif
 }
-#ifndef _SECONDARY_BOOT
+
 //	Set up meters
 void NetworkPort::ConfigureMeters(int nAutoMetersListId, int nAutoMetersRate, int nAutoMetersFlags, bool bAutoMetersNoAck)
 {
@@ -119,7 +119,6 @@ void NetworkPort::ConfigureMeters(int nAutoMetersListId, int nAutoMetersRate, in
 		m_SubscriptionTimer[nList] = _timer_start_periodic_every_ticks(NetworkSubscriptionUpdater, m_SubscriptionTimer, TIMER_ELAPSED_TIME_MODE, &m_SubscriptionTicks[nList]);
 	}
 }
-#endif	//	_SECONDARY_BOOT
 
 } /* namespace oly */
 

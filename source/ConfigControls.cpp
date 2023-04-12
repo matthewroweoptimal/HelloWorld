@@ -10,7 +10,6 @@
 //#include "IRDAManager.h"
 #include "OLYspeaker1_map.h"
 
-#ifndef _SECONDARY_BOOT
 
 namespace oly {
 
@@ -357,4 +356,3 @@ bool Config::Controls_GetUnitType()
 
 } // namespace oly
 
-#endif // _SECONDARY_BOOT

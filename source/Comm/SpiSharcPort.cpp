@@ -327,12 +327,10 @@ uint32 SpiSharcPort::CallMasterTransferBlocking(uint32_t instance,
 	}
 
 	result = DSPI_DRV_MasterTransferBlocking(instance, sendBuffer, receiveBuffer, transferByteCount, timeout);
-#ifndef _SECONDARY_BOOT
 	if(kStatus_DSPI_Success != result)	{
 		printf("ERR: DSP Write Error: kStatus: %d ... Resetting Driver \n", result);
 		dsp_sharc_SetMode_Host();
 	}
-#endif	//	_SECONDARY_BOOT
 	if (kStatus_DSPI_Success == result)
 	{
 		return transferByteCount;

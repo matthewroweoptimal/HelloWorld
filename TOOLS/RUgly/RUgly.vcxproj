@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{323D5F2E-65F4-454F-A681-279B3FD67D2D}</ProjectGuid>
+    <RootNamespace>RUgly</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>16.0.31401.40</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.;../MandolinComm;./OlySpeaker;./REDLINEspeaker1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_UGLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>Version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <ValidateAllParameters>true</ValidateAllParameters>
+    </Midl>
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>.;../MandolinComm;./OlySpeaker;./REDLINEspeaker1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_UGLY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>Version.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="ActivePreset.cpp" />
+    <ClCompile Include="AppProductDefs_OLY.cpp" />
+    <ClCompile Include="AppProductDefs_REDLINE.cpp" />
+    <ClCompile Include="CommSettings.cpp" />
+    <ClCompile Include="ComStuff.cpp" />
+    <ClCompile Include="CreatePresetHeaders.cpp" />
+    <ClCompile Include="DSPEffect.cpp" />
+    <ClCompile Include="DSPSignalFlow.cpp" />
+    <ClCompile Include="Ecomplex.cpp" />
+    <ClCompile Include="EQGraph.cpp" />
+    <ClCompile Include="FirmwareFile.cpp" />
+    <ClCompile Include="LevelAdjust.cpp" />
+    <ClCompile Include="MandolinCommOLYTestManu.cpp" />
+    <ClCompile Include="MandolinTextSummary.cpp" />
+    <ClCompile Include="MetersDlg.cpp" />
+    <ClCompile Include="OlyImpedanceDlg.cpp" />
+    <ClCompile Include="OlySpeaker\OLYspeaker1_map.c" />
+    <ClCompile Include="OlySpeaker\OLYspeaker1_meter.c" />
+    <ClCompile Include="OlySpeaker\OLYspeaker1_ParamTable.c" />
+    <ClCompile Include="ParameterAdjust.cpp" />
+    <ClCompile Include="ParameterTest.cpp" />
+    <ClCompile Include="REDLINEspeaker1\REDLINEspeaker1_map.c" />
+    <ClCompile Include="REDLINEspeaker1\REDLINEspeaker1_meter.c" />
+    <ClCompile Include="RUgly.cpp" />
+    <ClCompile Include="RUglyDlg.cpp" />
+    <ClCompile Include="ScanNetwork.cpp" />
+    <ClCompile Include="SettingsFile.cpp" />
+    <ClCompile Include="SocketComm.cpp" />
+    <ClCompile Include="SocketSettings.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TestManuDlg.cpp" />
+    <ClCompile Include="WinGUI.cpp" />
+    <ClCompile Include="ZImpedanceDlg.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ActivePreset.h" />
+    <ClInclude Include="AcumaProject.h" />
+    <ClInclude Include="AcumaTypes.h" />
+    <ClInclude Include="AppProductDefs_OLY.h" />
+    <ClInclude Include="AppProductDefs_REDLINE.h" />
+    <ClInclude Include="Comm.h" />
+    <ClInclude Include="CommSettings.h" />
+    <ClInclude Include="comstuff.h" />
+    <ClInclude Include="CreatePresetHeaders.h" />
+    <ClInclude Include="DSPEffect.h" />
+    <ClInclude Include="DSPSignalFlow.h" />
+    <ClInclude Include="Ecomplex.h" />
+    <ClInclude Include="EQGraph.h" />
+    <ClInclude Include="FirmwareFile.h" />
+    <ClInclude Include="LevelAdjust.h" />
+    <ClInclude Include="LOUD_enums.h" />
+    <ClInclude Include="MandolinCommOLYTestManu.h" />
+    <ClInclude Include="MandolinTextSummary.h" />
+    <ClInclude Include="MetersDlg.h" />
+    <ClInclude Include="OlyImpedanceDlg.h" />
+    <ClInclude Include="OlySpeaker\OLYspeaker1_arch.h" />
+    <ClInclude Include="OlySpeaker\OLYspeaker1_inst.h" />
+    <ClInclude Include="OlySpeaker\OLYspeaker1_lookup.h" />
+    <ClInclude Include="OlySpeaker\OLYspeaker1_map.h" />
+    <ClInclude Include="OlySpeaker\OLYspeaker1_meter.h" />
+    <ClInclude Include="OlySpeaker\OLYspeaker1_ParamTable.h" />
+    <ClInclude Include="OlySpeaker\OLYspeaker1_pids.h" />
+    <ClInclude Include="OlySpeaker\OLYspeaker1_size.h" />
+    <ClInclude Include="OlySpeaker\OLY_meta.h" />
+    <ClInclude Include="OLY_MT_enums.h" />
+    <ClInclude Include="ParameterAdjust.h" />
+    <ClInclude Include="ParameterTest.h" />
+    <ClInclude Include="ProductMap.h" />
+    <ClInclude Include="Product_arch.h" />
+    <ClInclude Include="REDLINEspeaker1\REDLINEspeaker1_arch.h" />
+    <ClInclude Include="REDLINEspeaker1\REDLINEspeaker1_inst.h" />
+    <ClInclude Include="REDLINEspeaker1\REDLINEspeaker1_lookup.h" />
+    <ClInclude Include="REDLINEspeaker1\REDLINEspeaker1_map.h" />
+    <ClInclude Include="REDLINEspeaker1\REDLINEspeaker1_meter.h" />
+    <ClInclude Include="REDLINEspeaker1\REDLINEspeaker1_pids.h" />
+    <ClInclude Include="REDLINEspeaker1\REDLINEspeaker1_size.h" />
+    <ClInclude Include="REDLINEspeaker1\REDLINE_meta.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="RUgly.h" />
+    <ClInclude Include="RUglyDlg.h" />
+    <ClInclude Include="ScanNetwork.h" />
+    <ClInclude Include="SettingsFile.h" />
+    <ClInclude Include="SocketComm.h" />
+    <ClInclude Include="SocketSettings.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="TestManuDlg.h" />
+    <ClInclude Include="ZImpedanceDlg.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\bitmap1.bmp" />
+    <Image Include="res\E.ico" />
+    <Image Include="res\icon1.ico" />
+    <Image Include="res\OLY_DSP_SIGNAL_FLOW.bmp" />
+    <Image Include="res\OLY_DSP_SIGNAL_GROUP.bmp" />
+    <Image Include="res\OLY_DSP_SIGNAL_INPUT.bmp" />
+    <Image Include="res\RUgly.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="RUgly.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\RUgly.rc2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MandolinComm\MandolinComm.vcxproj">
+      <Project>{0533484c-2739-41db-96c7-213d8318b5a5}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="RUgly.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

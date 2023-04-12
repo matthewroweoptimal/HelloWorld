@@ -456,8 +456,8 @@ static void peripherals_init(void)
 	//Init I2C for ADC - Does it need any init or do we just do the setup?
 
 
-	/* Initialize Flash IQ - probably omit use of internal flash*/
-	//flash_init();
+	// Initialize Data Flash : Stores OLY_BLOCK (0x7E000) & OLY_IDENTITY (0x7F000)
+	flash_init();
 
 //	ext_flash_int(); TODO tidy up the init functions.
 

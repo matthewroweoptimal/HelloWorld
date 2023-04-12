@@ -103,7 +103,7 @@
 #define configUSE_TIMERS                        1
 #define configTIMER_TASK_PRIORITY               17
 #define configTIMER_QUEUE_LENGTH                10
-#define configTIMER_TASK_STACK_DEPTH            512
+#define configTIMER_TASK_STACK_DEPTH            612
 
 /* Define to trap errors during development. */
 //#define configASSERT(x) if((x) == 0) {taskDISABLE_INTERRUPTS(); for (;;);}
@@ -167,10 +167,9 @@ extern unsigned long RTOS_AppGetRuntimeCounterValueFromISR(void);
 #ifdef NDEBUG
 
 // In Release Builds, just log the assert failure. Note: Must be pure 'C' only, so can't use Logger.cpp/.h
-
-#include "configAssertFunc.h"
-
-#define configASSERT(x) ((x) ? (void)0 : configAssert_func(__FILE__, __FUNCTION__, #x))
+//#include "configAssertFunc.h"
+//#define configASSERT(x) ((x) ? (void)0 : configAssert_func(__FILE__, __FUNCTION__, #x))
+#define configASSERT(x)		// Asserts will do nothing in Release build
 
 #else
 

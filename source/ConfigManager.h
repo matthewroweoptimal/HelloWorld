@@ -13,9 +13,7 @@
 extern "C" {
 #include "oly.h"
 #include "timer.h"
-#ifndef _SECONDARY_BOOT
 #include "CurrentSense.h"
-#endif
 }
 
 #if USE_OLY_UI
@@ -31,9 +29,7 @@ extern "C" {
 //#include "uart_voice.h"
 //#include "uart_irda.h"
 #include "NetworkPort.h"
-#ifndef _SECONDARY_BOOT
 //#include "IRDAUartPort.h"
-#endif
 
 enum{
 	optimize_source_panel,
@@ -62,8 +58,6 @@ namespace oly {
 class Config
 {
 protected:
-#ifdef _SECONDARY_BOOT
-#else	//	_SECONDARY_BOOT
 	oly_params_t 	   olyParams;
 	oly_flash_params_t olyStoredParams;
 	oly_status_t 	olyStatus;
@@ -92,8 +86,6 @@ protected:
 	int8_t arrayOptSubSize;					//count of optimizable subs in array
 	int8_t arrayOptSubPosition;				//position of device in sub array (0 = not in optimizable array)
 	int8_t arrayOptOrientation;
-
-#endif	//	_SECONDARY_BOOT
 
 	Region *m_pUpgrade = 0;
 	bool m_bCycle;
@@ -129,12 +121,10 @@ public:
 	UartPort		olyVoicingPort;
 #endif
 	NetworkPort		olyNetworkPort;
-#ifndef _SECONDARY_BOOT
 //	IRDAUartPort	olyIrdaPortA;
 //	IRDAUartPort	olyIrdaPortB;
 //	IRDAUartPort	olyIrdaPortC;
 //	IRDAUartPort	olyIrdaPortD;
-#endif
 
 	Config();
 
@@ -145,8 +135,6 @@ public:
 	bool GetDhcp();
 	void Run(int nMs);
 
-
-#ifndef _SECONDARY_BOOT
 	oly_params_t *GetParamsDatabase();
 	oly_flash_params_t *GetStoredParamsDatabase();
 	oly_status_t *GetStatusParamsDatabase();
@@ -325,7 +313,6 @@ public:
 #endif // 0
 
 	void DSPErrorTimer_Reset(void); 
-#endif // _SECONDARY_BOOT
 	
 #if 1
 	void SendGetHardwareInfo(MandolinPort * srcPort);
@@ -382,7 +369,7 @@ public:
 #endif // 0
 
 private:
-#ifndef _SECONDARY_BOOT
+	void HandleGetSoftwareInfo(MandolinPort * srcPort, mandolin_message * pMsg);
 	void SelfTestEnableChannel(int channel);
 	void ParamSetDevice(OLYspeaker1_DEVICE_pid PID, void * Value);
 	void ParamSetUser(uint32_t instance, OLYspeaker1_USER_pid PID, mandolin_parameter_value Value);
@@ -397,11 +384,9 @@ private:
 	void HandleGetApplicationParameters(MandolinPort * srcPort, mandolin_message * pMsg);
 	void HandleSetApplicationString(MandolinPort * srcPort, mandolin_message * pMsg);
 	void HandleGetApplicationString(MandolinPort * srcPort, mandolin_message * pMsg);
-	void HandleGetSoftwareInfo(MandolinPort * srcPort, mandolin_message * pMsg);
 	void HandleCreateParameterList(MandolinPort * srcPort, mandolin_message * pMsg);
 	void HandleSubscribeParameter(MandolinPort * srcPort, mandolin_message * pMsg);
 	void HandleMetersResponse(mandolin_message * pMsg);
-#endif
 	void HandleFastConnect(MandolinPort * srcPort, mandolin_message * pMsg);
 
 	/* Test Functions */

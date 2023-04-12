@@ -1,12 +1,19 @@
 /* Linker script to configure memory regions. */
 MEMORY
 {
+  /* TODO : MAC / ID Location : OTP Area ??? */
+  /* M487 datasheet states : 512k Flash, 160k RAM (this can optionally include 32kB cache for external SPI Flash) */
+/*  FLASH_BOOT (rx)      : ORIGIN = 0x00000000, LENGTH = 44k    // BootLoader area 
+    FLASH_APP (rx)       : ORIGIN = 0x00010000, LENGTH = 448K	// 448k (3 * 128k) for APP data flash - address 0x00010000 - 0x0007FFFF
+*/
 
-
-  /* M487 datasheet states : 512k Flash, 160k RAM (but this includes 32kB cache for external SPI Flash) */
-  FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 448K	/* 64k for data flash - address 0x00070000 - 0x0007FFFF */
-  RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 160K   /* IQ - The 32kB extra is included*/
-  EXT_RAM (rwx) : ORIGIN = 0x60000000, LENGTH = 128K 
+  /* Debugging APP without BootLoader */
+  FLASH_APP (rx)       : ORIGIN = 0x00000000, LENGTH = 448K	/* 448k (3 * 128k) for APP data flash - address 0x00000000 - 0x00070000 */
+  m_oly_block (rx)     : ORIGIN = 0x0007E000, LENGTH = 4K	/* Reserved for the System Parameters (OLY_BLOCK) - written to by the APP */
+  m_oly_identity (rx)  : ORIGIN = 0x0007F000, LENGTH = 4K	/* Reserved for the System Identity (OLY_IDENTITYK) - written to by the APP */
+  
+  RAM (rwx)            : ORIGIN = 0x20000000, LENGTH = 160K   /* IQ - The 32kB extra is included, not used for SPI Flash cache. */
+  EXT_RAM (rwx)        : ORIGIN = 0x60000000, LENGTH = 128K 
 }
 
 /* 
@@ -55,7 +62,17 @@ GROUP(libgcc.a libc.a libm.a libnosys.a)
 ENTRY(Reset_Handler)
 
 SECTIONS
-{
+{  
+	.oly_block 0x0007E000 :
+	{
+		KEEP(*(.oly_block))  /* keep my variable even if not referenced */
+	} > m_oly_block
+
+	.oly_identity 0x0007F000 :
+	{
+		KEEP(*(.oly_identity))  /* keep my variable even if not referenced */
+	} > m_oly_identity
+
 	.text :
 	{
 		KEEP(*(.vectors))
@@ -85,18 +102,18 @@ SECTIONS
 		*(.rodata*)
 
 		KEEP(*(.eh_frame*))
-	} > FLASH
+	} > FLASH_APP
 
 	.ARM.extab :
 	{
 		*(.ARM.extab* .gnu.linkonce.armextab.*)
-	} > FLASH
+	} > FLASH_APP
 
 	__exidx_start = .;
 	.ARM.exidx :
 	{
 		*(.ARM.exidx* .gnu.linkonce.armexidx.*)
-	} > FLASH
+	} > FLASH_APP
 	__exidx_end = .;
 
 	/* To copy multiple ROM to RAM sections,
@@ -114,7 +131,7 @@ SECTIONS
 		LONG (__data2_start__)
 		LONG (__data2_end__ - __data2_start__)
 		__copy_table_end__ = .;
-	} > FLASH
+	} > FLASH_APP
 	*/
 
 	/* To clear multiple BSS sections,
@@ -130,7 +147,7 @@ SECTIONS
 		LONG (__bss2_start__)
 		LONG (__bss2_end__ - __bss2_start__)
 		__zero_table_end__ = .;
-	} > FLASH
+	} > FLASH_APP
 	*/
 
 	__etext = .;

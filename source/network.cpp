@@ -70,6 +70,7 @@ void dhcp_callback(struct netif* pnetif)
 	{
 		printf("\nIPv4 Address changed to %d.%d.%d.%d.\r\n", IPBYTES(pnetif->ip_addr.addr));
 		g_CurrentIpAddress = pnetif->ip_addr.addr;
+
 		olyConfig->OnIPAddressChanged(pnetif->ip_addr.addr);
 	}
 }

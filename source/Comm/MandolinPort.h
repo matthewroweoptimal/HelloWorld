@@ -71,7 +71,6 @@ public:
 	void Ping(mandolin_message * pMsg);
 	void SetForceClose();
 
-#ifndef _SECONDARY_BOOT
 	//	Meters
 	void InitializeMeters();
 	int GetParameterListFlags(int listId);
@@ -126,7 +125,6 @@ public:
 	void SetParameterReply(mandolin_message * pMsg);
 	void SyncTarget(OLY_target Group, int Instance, uint32_t PID1, uint32_t * Values, uint32_t numParams);
 
-#endif	//	_SECONDARY_BOOT
 };
 
 } /* namespace oly */

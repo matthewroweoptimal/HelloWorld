@@ -38,7 +38,7 @@ public:
 
 	//	!!!! Kris - This is the API you need to run from the Mandolin message handler
 	bool StartUpgrade(P_OLY_REGION pOlyRegion);
-	bool UpgradeChunk(unsigned char *pChunk, unsigned int uiBytes);
+	bool UpgradeChunk(unsigned char *pChunk, unsigned int uiOffset, unsigned int uiBytes);
 	bool GetUpgradeRemaining(uint32_t &uiTotal, uint32_t &uiRemaining);
 	void CancelUpgrade();
 	bool EndUpgrade();
@@ -75,7 +75,8 @@ private:
 	bool VerifyRegion(int nRegion);
 
 	void Crc16Init(P_REGION_CRC crc);
-	void Crc16Update(P_REGION_CRC crc, const uint8_t * pSrc, uint32_t uiBytes);
+	void Crc16UpdateFromSpiFlash(P_REGION_CRC crc, const uint8_t * pSrc, uint32_t uiBytes);
+	void Crc16UpdateFromApromFlash(P_REGION_CRC rgnCrc, const uint8_t *pSrc, uint32_t uiBytes);
 	void Crc16Finalize(P_REGION_CRC crc, uint16_t * usHash);
 
 private:

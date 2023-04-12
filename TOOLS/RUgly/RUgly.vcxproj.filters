@@ -1,0 +1,321 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="OlySpeaker">
+      <UniqueIdentifier>{745566f0-d26b-4e00-9275-dbe2479c9f5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="REDLINESpeaker1">
+      <UniqueIdentifier>{e7d14581-f00c-4c76-8c52-662991c9dd96}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ActivePreset.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AppProductDefs_OLY.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AppProductDefs_REDLINE.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CommSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ComStuff.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CreatePresetHeaders.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DSPEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DSPSignalFlow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Ecomplex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EQGraph.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelAdjust.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MandolinCommOLYTestManu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MandolinTextSummary.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MetersDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OlyImpedanceDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParameterAdjust.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ParameterTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RUgly.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RUglyDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScanNetwork.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SocketComm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SocketSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestManuDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WinGUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ZImpedanceDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OlySpeaker\OLYspeaker1_map.c">
+      <Filter>OlySpeaker</Filter>
+    </ClCompile>
+    <ClCompile Include="OlySpeaker\OLYspeaker1_meter.c">
+      <Filter>OlySpeaker</Filter>
+    </ClCompile>
+    <ClCompile Include="OlySpeaker\OLYspeaker1_ParamTable.c">
+      <Filter>OlySpeaker</Filter>
+    </ClCompile>
+    <ClCompile Include="REDLINEspeaker1\REDLINEspeaker1_map.c">
+      <Filter>REDLINESpeaker1</Filter>
+    </ClCompile>
+    <ClCompile Include="REDLINEspeaker1\REDLINEspeaker1_meter.c">
+      <Filter>REDLINESpeaker1</Filter>
+    </ClCompile>
+    <ClCompile Include="FirmwareFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AppProductDefs_OLY.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AppProductDefs_REDLINE.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Comm.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="comstuff.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DSPEffect.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Ecomplex.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ProductMap.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsFile.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActivePreset.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AcumaProject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AcumaTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CreatePresetHeaders.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DSPSignalFlow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EQGraph.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelAdjust.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LOUD_enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MandolinCommOLYTestManu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MandolinTextSummary.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MetersDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OLY_MT_enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OlyImpedanceDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ParameterAdjust.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ParameterTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Product_arch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RUgly.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RUglyDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScanNetwork.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketComm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SocketSettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestManuDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ZImpedanceDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OlySpeaker\OLY_meta.h">
+      <Filter>OlySpeaker</Filter>
+    </ClInclude>
+    <ClInclude Include="OlySpeaker\OLYspeaker1_arch.h">
+      <Filter>OlySpeaker</Filter>
+    </ClInclude>
+    <ClInclude Include="OlySpeaker\OLYspeaker1_inst.h">
+      <Filter>OlySpeaker</Filter>
+    </ClInclude>
+    <ClInclude Include="OlySpeaker\OLYspeaker1_lookup.h">
+      <Filter>OlySpeaker</Filter>
+    </ClInclude>
+    <ClInclude Include="OlySpeaker\OLYspeaker1_map.h">
+      <Filter>OlySpeaker</Filter>
+    </ClInclude>
+    <ClInclude Include="OlySpeaker\OLYspeaker1_meter.h">
+      <Filter>OlySpeaker</Filter>
+    </ClInclude>
+    <ClInclude Include="OlySpeaker\OLYspeaker1_ParamTable.h">
+      <Filter>OlySpeaker</Filter>
+    </ClInclude>
+    <ClInclude Include="OlySpeaker\OLYspeaker1_pids.h">
+      <Filter>OlySpeaker</Filter>
+    </ClInclude>
+    <ClInclude Include="OlySpeaker\OLYspeaker1_size.h">
+      <Filter>OlySpeaker</Filter>
+    </ClInclude>
+    <ClInclude Include="REDLINEspeaker1\REDLINE_meta.h">
+      <Filter>REDLINESpeaker1</Filter>
+    </ClInclude>
+    <ClInclude Include="REDLINEspeaker1\REDLINEspeaker1_arch.h">
+      <Filter>REDLINESpeaker1</Filter>
+    </ClInclude>
+    <ClInclude Include="REDLINEspeaker1\REDLINEspeaker1_inst.h">
+      <Filter>REDLINESpeaker1</Filter>
+    </ClInclude>
+    <ClInclude Include="REDLINEspeaker1\REDLINEspeaker1_lookup.h">
+      <Filter>REDLINESpeaker1</Filter>
+    </ClInclude>
+    <ClInclude Include="REDLINEspeaker1\REDLINEspeaker1_map.h">
+      <Filter>REDLINESpeaker1</Filter>
+    </ClInclude>
+    <ClInclude Include="REDLINEspeaker1\REDLINEspeaker1_meter.h">
+      <Filter>REDLINESpeaker1</Filter>
+    </ClInclude>
+    <ClInclude Include="REDLINEspeaker1\REDLINEspeaker1_pids.h">
+      <Filter>REDLINESpeaker1</Filter>
+    </ClInclude>
+    <ClInclude Include="REDLINEspeaker1\REDLINEspeaker1_size.h">
+      <Filter>REDLINESpeaker1</Filter>
+    </ClInclude>
+    <ClInclude Include="FirmwareFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\bitmap1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\E.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\OLY_DSP_SIGNAL_FLOW.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\OLY_DSP_SIGNAL_GROUP.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\OLY_DSP_SIGNAL_INPUT.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\RUgly.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="RUgly.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\RUgly.rc2">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>

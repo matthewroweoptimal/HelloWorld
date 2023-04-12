@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RUgly", "RUgly.vcxproj", "{323D5F2E-65F4-454F-A681-279B3FD67D2D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MandolinComm", "..\MandolinComm\MandolinComm.vcxproj", "{0533484C-2739-41DB-96C7-213D8318B5A5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{323D5F2E-65F4-454F-A681-279B3FD67D2D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{323D5F2E-65F4-454F-A681-279B3FD67D2D}.Debug|Win32.Build.0 = Debug|Win32
+		{323D5F2E-65F4-454F-A681-279B3FD67D2D}.Release|Win32.ActiveCfg = Release|Win32
+		{323D5F2E-65F4-454F-A681-279B3FD67D2D}.Release|Win32.Build.0 = Release|Win32
+		{0533484C-2739-41DB-96C7-213D8318B5A5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0533484C-2739-41DB-96C7-213D8318B5A5}.Debug|Win32.Build.0 = Debug|Win32
+		{0533484C-2739-41DB-96C7-213D8318B5A5}.Release|Win32.ActiveCfg = Release|Win32
+		{0533484C-2739-41DB-96C7-213D8318B5A5}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1F9799D7-48B7-4208-B02C-447BD1DC5092}
+	EndGlobalSection
+EndGlobal

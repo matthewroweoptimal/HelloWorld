@@ -16,6 +16,8 @@
 //#include "spi_aux.h"
 #include <string.h>     // needed for memcpy()
 
+#define USE_DATA_FLASH     			0   // Not using data flash for params
+
 #define FLASH_BLOCK_SIZE            (64*1024)    /* Flash block size. Depend on the physical flash. */
 #define TEST_BLOCK_ADDR             0      /* Test block address on SPI flash. */
 #define BUFFER_SIZE                 8
@@ -41,10 +43,6 @@ uint32_t memory_check_for_flash_presence ()
     else
     	return 1;
 }
-
-
-
-
 
 spi_flash_status_t spi_flash_init(oly_flash_params_t * olyStoredParams)
 {
@@ -294,28 +292,41 @@ uint32_t system_flash_init(oly_flash_params_t * olyStoredParams)
 		spi_flash_status = SPI_FLASH_LOAD_OK;
 	}
 	return spi_flash_status;
- }
+}
 
 void system_flash_write_oly_params(oly_flash_params_t * olyStoredParams)
 {
-	if(use_spi_flash){
+	if(use_spi_flash)
+	{
 		spi_flash_write_oly_params(olyStoredParams);
+    #if USE_DATA_FLASH
 		//make sure we always have one good copy in internal flash
-		if(system_flash_write_counter == 0)
+		if (system_flash_write_counter == 0)
+		{
 			write_oly_params(olyStoredParams);
+			system_flash_write_counter++;
+        }
+    #endif
 	}
+#if USE_DATA_FLASH
 	else
+	{
 		write_oly_params(olyStoredParams);
-	system_flash_write_counter++;
+		system_flash_write_counter++;
+	}
+#endif
 }
 
 void system_flash_param_reinit()
 {
-	if(use_spi_flash)
+	if (use_spi_flash)
 		spi_flash_param_reinit();
+		
+#if USE_DATA_FLASH
 	//always re-init internal flash	- need to look into - WHAT!!
 	flash_param_reinit();
 	system_flash_write_counter=0;
+#endif
 }
 
 
@@ -325,7 +336,6 @@ void system_flash_param_reinit()
   * @param      u32BlockSize	size of block
   * @return     uint32_t		result = 0 if not erased, 1 if erased.
   */
-
 uint32_t spi_flash_check_block_erased(uint32_t u32Addr, uint32_t u32BlockSize)
 {
 	uint32_t result=0;
@@ -352,4 +362,84 @@ uint32_t spi_flash_check_block_erased(uint32_t u32Addr, uint32_t u32BlockSize)
 }
 
 
+//-----------------------------------------------------------------------------
+// Erases the whole firmware allocated region within the SPI flash
+//-----------------------------------------------------------------------------
+uint32_t spi_flash_fw_erase()
+{
+	uint32_t sector, result;
 
+	for ( sector = 0; sector < SPI_FW_SECTORS; sector++ )
+	{
+		SPIM_EraseBlock( SPI_FLASH_FW_BASE + sector * SPI_FLASH_FW_SECTOR_SIZE,
+		                 USE_4_BYTE_ADDR_MODE, OPCODE_BE_32K, NBIT_ONE, IS_BLOCK );
+		result = spi_flash_check_block_erased( SPI_FLASH_FW_BASE + sector * SPI_FLASH_FW_SECTOR_SIZE,
+		                                       SPI_FLASH_FW_SECTOR_SIZE );
+		if ( result != 1 )
+		{
+			break;
+		}
+	}
+	
+	if ( result == 1 )
+	{
+		printf("SPI Flash FW Erased\n");
+	}
+	else
+	{
+		printf("SPI Flash FW Erase failed\n");
+	}
+	return result;  // 0 = fail, non-zero : success
+}
+
+//-----------------------------------------------------------------------------
+// Write something to the firmware flash area (the whole FW area is already erased)
+//-----------------------------------------------------------------------------
+bool spi_flash_write_fw( uint8_t* pData, uint32_t offset, uint32_t dataLength )
+{
+	uint32_t destAddress = (SPI_FLASH_FW_BASE + offset);
+
+    SPIM_IO_Write( destAddress,
+                   USE_4_BYTE_ADDR_MODE, dataLength, pData, OPCODE_PP, 1,1,1 );
+
+	printf("\t\tSPI FW Flash Write : Addr 0x%08X, Len %d\n", destAddress, dataLength);
+	return( true );	// Always SUCCESS, confirmed on flash verification
+}
+
+//-----------------------------------------------------------------------------
+// Verify content of FW SPI Flash matches buffer
+//-----------------------------------------------------------------------------
+bool spi_flash_verify_fw_chunk( uint32_t uiFlashOffset, uint8_t* pChunk )
+{
+	uint8_t  flashContent[FW_UPGRADE_CHUNK_SIZE];
+	
+	uint32_t uiFlashPhyAddress = SPI_FLASH_FW_BASE + uiFlashOffset; // Actual SPI Flash address
+
+	memset(flashContent, 0, FW_UPGRADE_CHUNK_SIZE);
+	SPIM_IO_Read( uiFlashPhyAddress, USE_4_BYTE_ADDR_MODE, FW_UPGRADE_CHUNK_SIZE, flashContent, OPCODE_FAST_READ, 1, 1, 1, 1);
+
+	uint32_t *pFlashWord = (uint32_t *)flashContent;
+	uint32_t *pChunkWord = (uint32_t *)pChunk;
+	for ( uint32_t i = 0; i < FW_UPGRADE_CHUNK_SIZE; i += 4, pFlashWord++, pChunkWord++ )
+	{
+		if ( *pFlashWord != *pChunkWord )
+		{
+			return false;
+		}
+	}
+
+    return true;
+}
+
+//-----------------------------------------------------------------------------
+// Verify content of FW SPI Flash matches buffer
+//-----------------------------------------------------------------------------
+uint8_t spi_flash_read_fw_byte( uint32_t uiFlashOffset )
+{	// Firmware content is after the OLY_REGION header.
+	uint32_t uiFlashFwAddress = SPI_FLASH_FW_BASE + uiFlashOffset; // Actual FW SPI Flash address
+	uint8_t flashContent;
+	
+	SPIM_IO_Read( uiFlashFwAddress, USE_4_BYTE_ADDR_MODE, 1, &flashContent, OPCODE_FAST_READ, 1, 1, 1, 1);
+
+    return flashContent;
+}

@@ -44,7 +44,6 @@ void UartPort::ProcessRxFifo(int nTaskId)
 	ParseMandolinMQX(port_qid, COMM_RS232_UART, RxFifo, 2, nTaskId);  // called in GUI_task
 }
 
-#ifndef _SECONDARY_BOOT
 //	Set up meters
 void UartPort::ConfigureMeters(int nAutoMetersListId, int nAutoMetersRate, int nAutoMetersFlags, bool bAutoMetersNoAck)
 {
@@ -65,7 +64,6 @@ void UartPort::ConfigureMeters(int nAutoMetersListId, int nAutoMetersRate, int n
 		m_SubscriptionTimer[nList] = _timer_start_periodic_every_ticks(VoicingSubscriptionUpdater, m_SubscriptionTimer, TIMER_ELAPSED_TIME_MODE, &m_SubscriptionTicks[nList]);
 	}
 }
-#endif	//	_SECONDARY_BOOT
 
 
 } /* namespace oly */
