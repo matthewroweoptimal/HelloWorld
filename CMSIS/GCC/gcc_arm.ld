@@ -9,8 +9,8 @@ MEMORY
 
   /* Debugging APP without BootLoader */
   FLASH_APP (rx)       : ORIGIN = 0x00000000, LENGTH = 448K	/* 448k (3 * 128k) for APP data flash - address 0x00000000 - 0x00070000 */
-  m_oly_block (rx)     : ORIGIN = 0x0007E000, LENGTH = 4K	/* Reserved for the System Parameters (OLY_BLOCK) - written to by the APP */
-  m_oly_identity (rx)  : ORIGIN = 0x0007F000, LENGTH = 4K	/* Reserved for the System Identity (OLY_IDENTITYK) - written to by the APP */
+  m_oly_block (rx)     : ORIGIN = 0x0007C000, LENGTH = 4K	/* Reserved for the System Parameters (OLY_BLOCK) - written to by the APP */
+  m_oly_identity (rx)  : ORIGIN = 0x0007D000, LENGTH = 4K	/* Reserved for the System Identity (OLY_IDENTITYK) - written to by the APP */
   
   RAM (rwx)            : ORIGIN = 0x20000000, LENGTH = 160K   /* IQ - The 32kB extra is included, not used for SPI Flash cache. */
   EXT_RAM (rwx)        : ORIGIN = 0x60000000, LENGTH = 128K 
@@ -63,12 +63,12 @@ ENTRY(Reset_Handler)
 
 SECTIONS
 {  
-	.oly_block 0x0007E000 :
+	.oly_block 0x0007C000 :
 	{
 		KEEP(*(.oly_block))  /* keep my variable even if not referenced */
 	} > m_oly_block
 
-	.oly_identity 0x0007F000 :
+	.oly_identity 0x0007D000 :
 	{
 		KEEP(*(.oly_identity))  /* keep my variable even if not referenced */
 	} > m_oly_identity
