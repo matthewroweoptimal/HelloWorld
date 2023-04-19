@@ -48,13 +48,19 @@ extern void PutChar(char ch);
 // **************************************************************
 //	CRC Utilities
 // **************************************************************
+
+//---------------------------------------------------------------
 // Called at start of calculation
+//---------------------------------------------------------------
 void Crc16Init(P_REGION_CRC rgnCrc)
 {
      // initialize running crc and byte count
 	rgnCrc->currentCrc = 0;
 }
 
+//---------------------------------------------------------------
+// Accumulate a Byte from an image into the CRC calculation
+//---------------------------------------------------------------
 static void Crc16AccumulateByte( uint32_t* pCrc, uint8_t byte )
 {
     *pCrc ^= byte << 8;
@@ -69,7 +75,9 @@ static void Crc16AccumulateByte( uint32_t* pCrc, uint8_t byte )
     }
 }
 
+//------------------------------------------------------------------
 // CRC each byte within either the SPI flash area or the APROM area
+//------------------------------------------------------------------
 void Crc16Update(P_REGION_CRC rgnCrc, const uint8_t * pSrc, uint32_t uiBytes, enum CRC_SOURCE sourceType)
 {
     uint32_t crc = rgnCrc->currentCrc;
@@ -108,7 +116,9 @@ void Crc16Update(P_REGION_CRC rgnCrc, const uint8_t * pSrc, uint32_t uiBytes, en
     rgnCrc->currentCrc = crc;
 }
 
-//	Called to complete CRC calc
+//---------------------------------------------------------------
+// Called to complete CRC calculation
+//---------------------------------------------------------------
 void Crc16Finalize(P_REGION_CRC rgnCrc, uint16_t * pHash)
 {
      *pHash = rgnCrc->currentCrc;

@@ -1,17 +1,13 @@
 /*
- * spi_flash.c
+ * spi_flash_nu.c
  *
- *  Created on: May 2, 2016
- *      Author: Ben.Huber - Adapted by Iain Quarmby for Nuvoton
+ *  Created on: April 19, 2023
+ *      Author: Stuart Campbell
  */
-
 #include <stdio.h>
 #include "flash_params.h"
 #include "spim.h"
 #include "spi_flash_nu.h"
-//#include "crc16.h"
-#include <string.h>     // needed for memcpy()
-//#include "Upgrade.h"
 
 
 // Define 'NO_DEBUG_MSG_OUTPUT' in 'flash_params.h' to control serial information messages (code size reduction)
@@ -24,6 +20,9 @@
 extern void PutChar(char ch);
 
 
+//-----------------------------------------------------------------------------
+// Initialise the SPI Flash
+//-----------------------------------------------------------------------------
 spi_flash_status_t spi_flash_init(void)
 {
     uint32_t result = SPIM_InitFlash(FLASH_WRITE_CLEAR_PROTECT);
@@ -39,6 +38,7 @@ spi_flash_status_t spi_flash_init(void)
 
 //-----------------------------------------------------------------------------
 // Read Region Header from Start of SPI Flash Firmware area into provided buffer
+// @param pHeader   Storage for the OLY_REGION header which is read
 //-----------------------------------------------------------------------------
 void spi_flash_readFwHeader( OLY_REGION* pHeader )
 {
@@ -46,7 +46,8 @@ void spi_flash_readFwHeader( OLY_REGION* pHeader )
 }
 
 //-----------------------------------------------------------------------------
-// Read Chunk from actual firmware areaa in SPI flash
+// Read Chunk from actual firmware area in SPI flash
+// @param uiFlashOffset     This is the byte offset with the actual APP image (i.e. after the OLY_REGION header)
 //-----------------------------------------------------------------------------
 void spi_flash_readFwSector( uint32_t uiFlashOffset, uint32_t* pSector )
 {
@@ -55,7 +56,8 @@ void spi_flash_readFwSector( uint32_t uiFlashOffset, uint32_t* pSector )
 }
 
 //-----------------------------------------------------------------------------
-// Verify content of FW SPI Flash matches buffer
+// Read a single byte from actual firmware area in SPI flash
+// @param uiFlashOffset     This is the byte offset from SPI_FLASH_FW_BASE
 //-----------------------------------------------------------------------------
 uint8_t spi_flash_read_fw_byte( uint32_t uiFlashOffset )
 {	// Firmware content is after the OLY_BLOCK header.

@@ -1,8 +1,8 @@
 /*
  * flash.c
  *
- *  Created on: Mar 20, 2015
- *      Author: Kris.Simonsen  - IQ Refashioned for Nuvoton 2022
+ *  Created on: April 19, 2023
+ *      Author: Stuart Campbell
  */
 
 #include "NuMicro.h"
@@ -20,11 +20,16 @@
 
 extern void PutChar(char ch);
 
-//-----------------------------------------------------------------------------
-// Program the specified block of memory to Data Flash
-//-----------------------------------------------------------------------------
+
 static uint32_t verifyFailCount = 0;
 static uint32_t lastFlashAddr = 0;
+
+//-----------------------------------------------------------------------------
+// Program the specified block of memory to APROM Flash
+// @param flashAddress  The actual APROM Flash address
+// @param pu32Data      Holds the sector of data to be written to the APROM area
+// @param numU32s       The number of U32s to write to APROM
+//-----------------------------------------------------------------------------
 bool flash_writeChunk( uint32_t flashAddress, uint32_t pu32Data[], uint32_t numU32s )
 {
     if ( (flashAddress & 0xFFF) != 0 )
@@ -48,7 +53,8 @@ bool flash_writeChunk( uint32_t flashAddress, uint32_t pu32Data[], uint32_t numU
             return false;
         }
 
-#if 1	// Would be nice, but not enough space as pulls in Read code. Rely on CRC check at end.
+#if 1	// Found enough space for this Verifiction step to go in.
+        // Could be removed if more space needed for further code (would then rely on CRC check at end)
 		volatile uint32_t verification = FMC_Read(addr);
 		if ( verification != pu32Data[i] )
 		{
@@ -56,7 +62,7 @@ bool flash_writeChunk( uint32_t flashAddress, uint32_t pu32Data[], uint32_t numU
 			PutChar('V');
 			PutString("Verify Failed\n");
 		}
-#endif // 0
+#endif
     }  
     
     return true;

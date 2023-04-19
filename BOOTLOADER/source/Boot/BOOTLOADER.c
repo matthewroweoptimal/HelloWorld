@@ -1,12 +1,45 @@
 /**************************************************************************//**
- * @file     LDROM_iap.c
+ * @file     BOOTLOADER.c
  * @version  V1.00
- * @brief    FMC LDROM IAP sample program run on LDROM.
+ * @brief    Runs the BOOTLOADER for CDDLive Projects in LDROM flash area.
+ *           Only 4kB LDROM Flash is available, so code is minimised to the
+ *           absolutely necessary.
+ *           Looks for a valid firmware image in the SPI Flash area,
+ *           if found, it is programmed into the APROM area, CRC checked
+ *           and the APP is then launched.
+ *           The APP clears the 'OLY_UPGRADE_THE_FIRMWARE' word in the
+ *           OLY_REGION header, so if APP fails to launch the BOOTLOADER
+ *           will retry the firmware upgrade once more.
  *
+ *           The Nuvoton programming tools are the 'get out of jail' fallback
+ *           if the APP somehow loses the ability to upgrade the SPI Flash firmware.
  *
- * @copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 #include <stdio.h>
+
+
+// SPI Flash Layout is as follows :
+//
+//      - First 1 MiByte are allocated to CDDLive Parameters.
+//      - Second 1 MiByte are allocated to the APP firmware image (see below)
+//
+//    +--------------------------+  0x0010 0000
+//    |    OLY_REGION header     |
+//    |       (0x40 bytes)       |
+//    |                          |
+//    |      'upgradeFwCode'     | (Signal to BOOTLOADER to upgrade if set to 'OLY_UPGRADE_THE_FIRMWARE')
+//    |                          |    (Cleared by APP on successful launch - ensure Upgrade.h in line with APP)
+//    |                          |
+//    +--------------------------+  0x0010 0040
+//    |                          |
+//    |    APP Firmware Area     |
+//    |                          |
+//    |                          |
+//    |                          |
+//    |                          |
+//    |                          |
+//    +--------------------------+
+//
 
 #include "NuMicro.h"
 #include "spi_flash_nu.h"
@@ -15,12 +48,15 @@
 
 typedef void (FUNC_PTR)(void);
 
-
 OLY_REGION  g_firmwareHeader;
 uint32_t    g_flashSector[P_SECTOR_SIZE_U32];   // Can hold one 4kB sector data
 uint32_t	g_retryCount = 0;
 const uint32_t FLASH_WRITE_RETRIES = 3;			// Retry 3 times before giving up on a sector write
 
+
+//---------------------------------------------------------------------------
+// Hardware initialisation
+//---------------------------------------------------------------------------
 void SYS_Init(void)
 {
     /* Unlock protected registers */
@@ -85,11 +121,13 @@ void SYS_Init(void)
 
     SPIM_SET_DCNUM(8);                /* Set 8 dummy cycle. */
 
-
     /* Lock protected registers */
     SYS_LockReg();
 }
 
+//---------------------------------------------------------------------------
+// Serial UART0 initialisation
+//---------------------------------------------------------------------------
 void UART0_Init(void)
 {
     /* Configure UART0 and set UART0 baud rate */
@@ -97,8 +135,10 @@ void UART0_Init(void)
     UART0->BAUD = 0x30000066;
 }
 
-
-// Allow output to UART0
+//---------------------------------------------------------------------------
+// Send a single character to UART0
+// @param ch    Character to output to serial
+//---------------------------------------------------------------------------
 void PutChar(char ch)
 {
 	while (UART0->FIFOSTS & UART_FIFOSTS_TXFULL_Msk);
@@ -124,12 +164,9 @@ void PutChar(char ch)
 	}
 #endif
 
-/**
- * @brief       Hard fault handler
- * @param[in]   stack pointer points to the dumped registers in SRAM
- * @return      None
- * @details     Replace while(1) at the end of this function with chip reset if WDT is not enabled for end product
- */
+//---------------------------------------------------------------------------
+// Minimal HardFault Handler (Space limitaions)
+//---------------------------------------------------------------------------
 void Hard_Fault_Handler(uint32_t stack[])
 {
     PutString("Hard Fault\n");
@@ -137,24 +174,9 @@ void Hard_Fault_Handler(uint32_t stack[])
     while(1);
 }
 
-void disableDataFlash()
-{
-#if 0
-    uint32_t UserConfig0 = FMC_Read(FMC_CONFIG_BASE);
-    if ( (UserConfig0 & 0x1) == 0 )
-    {	// Data flash currently enabled, we need to disable it.
-      	FMC_ENABLE_CFG_UPDATE();         /* Enable User Configuration update. */
-       	UserConfig0 |= ~0x1;             /* Set CONFIG0 bit0 to disable Data Flash */
-
-        if (FMC_Write(FMC_CONFIG_BASE, UserConfig0) == 0) 	/* Update User Configuration CONFIG0 and CONFIG1. */
-        {	// Success, Perform chip reset to make new User Config take effect
-        	SYS->IPRST0 = SYS_IPRST0_CHIPRST_Msk;
-        }
-        FMC_DISABLE_CFG_UPDATE();
-    }
-#endif
-}
-
+//---------------------------------------------------------------------------
+// BOOTLOADER main entry point
+//---------------------------------------------------------------------------
 int main()
 {
     uint32_t    u32Data;
@@ -173,12 +195,7 @@ int main()
     spi_flash_init();
     spi_flash_readFwHeader( &g_firmwareHeader );
 
-    // TODO : Put the check for OLY_UPGRADE_THE_FIRMWARE back in
-#if 1
     if ( (g_firmwareHeader.upgradeFwCode == OLY_UPGRADE_THE_FIRMWARE) &&
-#else
-    if ( true &&	// Debug Hack to always upgrade the image
-#endif
          (g_firmwareHeader.length > 0) && (g_firmwareHeader.length != 0xFFFFFFFF) )
     {	// Check the validity of the firmware image in SPI flash by Verifying CRC
     	unsigned char *pCrcPtr = (unsigned char *)g_firmwareHeader.address;
@@ -196,10 +213,7 @@ int main()
     	    FMC_Open();                        /*--- Enable FMC ISP function ---*/
     	    FMC_ENABLE_AP_UPDATE();            /*--- Enable APROM update. ---*/
 
-//    	    disableDataFlash();
-
     		uint32_t flashAddress = g_firmwareHeader.address;
-
     		for ( uint32_t sector = 0; sector <= g_firmwareHeader.length/P_SECTOR_SIZE; )
     		{
         		uint32_t spiFlashOffset = flashAddress - g_firmwareHeader.address;
@@ -251,7 +265,7 @@ int main()
     PutChar('-');
     PutChar(')');
     PutChar('\n');
-//    while (!(UART0->FIFOSTS & UART_FIFOSTS_TXEMPTY_Msk));       /* wait until UART3 TX FIFO is empty */
+//  while (!(UART0->FIFOSTS & UART_FIFOSTS_TXEMPTY_Msk));       /* wait until UART3 TX FIFO is empty */
 
     /*  NOTE!
      *     Before change VECMAP, user MUST disable all interrupts.
@@ -287,4 +301,3 @@ int main()
     while (1);
 }
 
-/*** (C) COPYRIGHT 2016 Nuvoton Technology Corp. ***/
