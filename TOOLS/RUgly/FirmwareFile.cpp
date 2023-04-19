@@ -128,7 +128,16 @@ void CFirmwareFile::OnTimer(UINT nIDEvent)
 				m_bFirmwareFileWaitingAck = false;
 			}
 			else
-				m_dlgParent->SetTimer(FIRMWAREFILE_TIMERID, 500, NULL);	// Every 0.5s process timer
+			{
+				if (m_nFirmwareFilePos == 0)
+				{	// Delay 1s after first 'OPEN FILE' message to allow time for erase
+					m_dlgParent->SetTimer(FIRMWAREFILE_TIMERID, 2000, NULL);	// Process timer after 2s
+				}
+				else
+				{	// Delay 0.1s between sending file chunks
+					m_dlgParent->SetTimer(FIRMWAREFILE_TIMERID, 200, NULL);	// Every 0.2s process timer
+				}
+			}
 		}
 		break;
 	}
@@ -187,7 +196,7 @@ bool CFirmwareFile::FirmwareSendNextChunk(char* strInputTextFile, int& nFilePos,
 			m_dlgParent->m_MandolinComm.CreateFileOpenCDDLive(&m_dlgParent->m_msgTx, m_dlgParent->m_nTxSequence, (OLY_REGION*)pcBinData);
 			m_dlgParent->TryToSendMandolinMessage(&m_dlgParent->m_msgTx, true);
 			m_bStartFwTransfer = false;
-			m_bFirmwareFileWaitingAck = true;
+//			m_bFirmwareFileWaitingAck = true;
 			fReadFile.Close();
 		}
 	}

@@ -1,0 +1,30 @@
+*.d
+*.o
+*.obj
+*.pch
+*.pdb
+*.idb
+*.ilk
+*.map
+*.hex
+*.elf
+*.mk
+/Release/
+/Debug/
+/Debug 15/
+/Debug 12/
+/Debug 8/
+/Debug 118/
+/Debug 218/
+/Debug Manf/
+/SecBootloader/
+/ReleaseSizeOptimised/
+/TOOLS/MandolinComm/Debug/
+/TOOLS/MandolinComm/Release/
+/TOOLS/MandolinComm/.vs/
+/TOOLS/OlyPack/Debug/
+/TOOLS/OlyPack/.vs/
+/TOOLS/RUgly/Debug/
+/TOOLS/RUgly/Release/
+/TOOLS/RUgly/.vs/
+
