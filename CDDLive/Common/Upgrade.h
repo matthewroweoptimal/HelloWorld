@@ -38,7 +38,7 @@
 #define OLY_DEFAULT_GATEWAY				IPADDR(0,0,0,0)	//	IPADDR(10,1,0,0)
 #define OLY_DEFAULT_MASK				IPADDR(0,0,0,0)	//	IPADDR(255,255,0,0)
 
-#define OLY_UPGRADE_THE_FIRMWARE		OLY_MAGIC_WORD  //0xDEADDEAD
+#define OLY_UPGRADE_THE_FIRMWARE		OLY_MAGIC_WORD  // Don't change this otherwise BOOTLOADER needs rebuilding to match
 
 typedef	union ip_address_union_t {
 	struct {

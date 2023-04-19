@@ -11,6 +11,14 @@ RM := rm -rf
 -include User/Drivers/subdir.mk
 -include User/Boot/subdir.mk
 -include User/subdir.mk
+-include ReleaseOptimised/User/Drivers/subdir.mk
+-include ReleaseOptimised/User/Boot/subdir.mk
+-include ReleaseOptimised/User/subdir.mk
+-include ReleaseOptimised/Library/Library/subdir.mk
+-include ReleaseOptimised/Library/subdir.mk
+-include ReleaseOptimised/CMSIS/CMSIS/GCC/subdir.mk
+-include ReleaseOptimised/CMSIS/CMSIS/subdir.mk
+-include ReleaseOptimised/subdir.mk
 -include Library/Library/subdir.mk
 -include Library/subdir.mk
 -include CMSIS/CMSIS/GCC/subdir.mk
@@ -58,7 +66,7 @@ all: BOOTLOADER.elf secondary-outputs
 BOOTLOADER.elf: $(OBJS) $(USER_OBJS) makefile objects.mk $(OPTIONAL_TOOL_DEPS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross ARM GNU C Linker'
-	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "C:\DEVELOPMENT\MatthewRoweOptomal_NEW\BOOTLOADER\GCC\BOOTLOADER.ld" -Xlinker --gc-sections -Wl,-Map,"BOOTLOADER.map" --specs=nano.specs -o "BOOTLOADER.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -Os -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections  -g -T "C:\DEVELOPMENT\MatthewRoweOptimal\BOOTLOADER\GCC\BOOTLOADER.ld" -Xlinker --gc-sections -Wl,-Map,"BOOTLOADER.map" --specs=nano.specs -o "BOOTLOADER.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build
