@@ -18,15 +18,16 @@
 #include "network.h"
 
 extern "C" {
-#include "oly.h"
-#include "LOUD_types.h"
-#include "cddl_leds.h"
+ #include "oly.h"
+ #include "LOUD_types.h"
 }
 
 #include "flash_params.h"
 
-#define ALL_LEDS_OFF    0
-#define ALL_LEDS_ON     (CDDL_LED1 | CDDL_LED2 | CDDL_LED3 | CDDL_LED4)
+// Definitions for the Firmware upgrade LEDs
+#define ALL_LEDS_OFF    		0x00
+#define ALL_LEDS_ON     		0x0F
+#define NUM_OF_FW_UPDATE_LEDS	4
 
 
 // Define OLY_BLOCK within Data Flash Region
@@ -116,7 +117,8 @@ uint16 g_hardwareRev     = OLY_DEFAULT_HARDWARE_VERSION;
 uint32 g_uiSerialNumber  = OLY_DEFAULT_SERIAL_NUMBER;
 
 
-Region::Region()
+Region::Region() :
+		m_fwUpdateLedPattern(0x01)
 {
 	uint8_t systemMac[6];
 	int32 nBrand;
@@ -357,35 +359,6 @@ Region::Region()
 	m_UpgradeState = usmInvalid;
 
 	Load();
-#if 0	// SC DEBUGGING
-	printf("REGION DATA LOAD FROM DATA FLASH :\n");
-	OLY_REGION *pOlyRegion = &olyBlock.rgn[0];
-	printf("\tFIRMWARE VERSION %d.%d.%d Build %d\n",
-	        pOlyRegion->version.major, pOlyRegion->version.minor, pOlyRegion->version.sub, pOlyRegion->version.build );
-	printf("\tupgradeFwCode = %08X\n", pOlyRegion->upgradeFwCode);
-/*
-    static uint8_t myData[FW_UPGRADE_CHUNK_SIZE];
-    for ( uint32_t i = 0; i < FW_UPGRADE_CHUNK_SIZE; i++)
-        myData[i] = i;
-    	
-	printf("Erasing SPI Flash FW....\r\n");
-    spi_flash_fw_erase();
-	pOlyRegion->upgradeFwCode = OLY_UPGRADE_THE_FIRMWARE;
-    bool bResult = WriteSpiFlashHeader(pOlyRegion);
-    if (!bResult) printf("FAILED\n");
-    
-	printf("Erasing SPI Flash FW....\r\n");
-    spi_flash_fw_erase();
-    bResult = WriteChunk(0x40, myData);	
-    if (!bResult) printf("FAILED\n");
-    bResult = VerifyChunk(0x40, myData);
-    if (!bResult) printf("FAILED\n");
-    
-    pOlyRegion->upgradeFwCode = OLY_UPGRADE_THE_FIRMWARE;
-    bResult = WriteSpiFlashHeader(pOlyRegion);
-    if (!bResult) printf("FAILED\n");
-    */
-#endif
 
 	if (!Verify())
 	{   // Initialise to defaults and save Region to Data Flash.
@@ -784,12 +757,9 @@ bool Region::StartUpgrade(P_OLY_REGION pOlyRegion)
 		printf("Upgrade Process Started.\r\n");
 	}
 
-	// TODO : Need some sort of visual indication to user that we are in UPDATE mode (e.g flashing LEDs ?)
-/*
+	// Initialise visual indication to user that we are in UPDATE mode (rotating LEDs)
+	cddl_getLedStatePriorToFwUpdate( m_storedLedState );	// Remember the current state of the LEDs
 	cddl_set_meter_override(BACKPANEL_LED_MODE);
-	cddl_show_LEDs(ALL_LEDS_OFF);			// All OFF
-	cdd_show_LEDs(ALL_LEDS_ON);				// All ON
-*/
 	return(true);
 }
 
@@ -801,12 +771,14 @@ bool Region::UpgradeChunk(unsigned char *pChunk, unsigned int uiOffset, unsigned
 	if (usmStarted != m_UpgradeState)
 	{
 		printf("UpgradeChunk rejected because not in upgrade mode!\r\n");
+		cddl_restoreLedState( m_storedLedState );	// Restore the LED state
 		return(false);
 	}
 
 	if ((uiBytes + uiOffset) > (m_rgnUpgrade.length + sizeof(OLY_REGION)))
 	{
 		printf("UpgradeChunk rejected because of too many bytes received!\r\n");
+		cddl_restoreLedState( m_storedLedState );	// Restore the LED state
 		return(false);
 	}
 
@@ -821,6 +793,7 @@ bool Region::UpgradeChunk(unsigned char *pChunk, unsigned int uiOffset, unsigned
 	if (uiOffset &(FW_UPGRADE_CHUNK_SIZE-1))
 	{
 		printf("UpgradeChunk rejected because start of write not on sector boundary!\r\n");
+		cddl_restoreLedState( m_storedLedState );	// Restore the LED state
 		return(false);
 	}
 
@@ -832,6 +805,7 @@ bool Region::UpgradeChunk(unsigned char *pChunk, unsigned int uiOffset, unsigned
 	else if ( !WriteChunk(m_rgnUpgrade.address + uiOffset, pChunk) )
 	{
 		printf("Failed\r\n");
+		cddl_restoreLedState( m_storedLedState );	// Restore the LED state
 		return(false);
 	}
 	else
@@ -840,9 +814,11 @@ bool Region::UpgradeChunk(unsigned char *pChunk, unsigned int uiOffset, unsigned
 	if (!VerifyChunk(m_rgnUpgrade.address + uiOffset, pChunk))
 	{
 		printf("\tVerify failed @ offset 0x%08X\r\n", m_rgnUpgrade.address + uiOffset);
+		cddl_restoreLedState( m_storedLedState );	// Restore the LED state
 		return(false);
 	}
 
+	cddl_showNextFwUpdateLedPattern();
 	m_uiUpgradeFilled += uiBytes;
 
 	return(true);
@@ -870,6 +846,7 @@ void Region::CancelUpgrade()
 {
 	m_UpgradeState = usmInvalid;
 	printf("Upgrade Cancelled!\r\n");
+	cddl_restoreLedState( m_storedLedState );	// Restore the LED state
 }
 
 //	Called to finalize an upgrade and verify it is good
@@ -892,6 +869,7 @@ bool Region::EndUpgrade()
 	if (m_uiUpgradeFilled != (m_rgnUpgrade.length + sizeof(OLY_REGION)))
 	{
 		printf("EndUpgrade failed because not enough bytes have been written!\r\n");
+		cddl_restoreLedState( m_storedLedState );	// Restore the LED state
 		return(false);
 	}
 
@@ -903,6 +881,7 @@ bool Region::EndUpgrade()
 	{
 		printf("EndUpgrade failed because CRC didn't match Adr=0x%08X, Len=0x%08X, C1=0x%08X, C2=0x%08X!\r\n",
 			m_rgnUpgrade.address, m_rgnUpgrade.length, m_rgnUpgrade.crc, crcCalc);
+		cddl_restoreLedState( m_storedLedState );	// Restore the LED state
 		return(false);
 	}
 	printf("EndUpgrade CRC matched Adr=0x%08X, Len=0x%08X, C1=0x%08X.\r\n",
@@ -913,14 +892,17 @@ bool Region::EndUpgrade()
 	if ( WriteSpiFlashHeader( &m_rgnUpgrade ) == false )
 	{
 		printf("Failed to write SPI Flash Header\n");
+		cddl_restoreLedState( m_storedLedState );	// Restore the LED state
 		return false;
 	}
 
-//	WriteRegion(m_nUpgradeRegion, &m_rgnUpgrade);
+//	WriteRegion(m_nUpgradeRegion, &m_rgnUpgrade);	// Not required since Upgrade is now updating SPI Flash region
 //	Save();
 
 	printf("Upgrade complete.\n");
 	m_UpgradeState = usmInvalid;	// Clear upgrade state in case called again before reboot
+
+	cddl_restoreLedState( m_storedLedState );	// Restore the LED state
 	
 	// Launch into BOOTLOADER which will detect new image in SPI Flash and program it into APROM Flash.
 	// TODO : Cleaner way of re-booting (e.g. Close connections etc ?)

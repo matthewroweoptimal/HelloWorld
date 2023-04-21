@@ -71,6 +71,13 @@ typedef enum
 
 #define CDDL_BLINK_PERIOD 500
 #define CDDL_NETWORK_BLINK_PERIOD 200
+
+typedef struct
+{
+	uint32_t  overrideState;
+	uint32_t  ledMask;
+} CURRENT_LED_STATE;
+
 void cddl_show_preset(int32_t current_preset, uint32_t blink_rate);
 void cddl_show_LEDs(uint32_t led_mask);
 void cddl_show_meter(float db);
@@ -84,6 +91,10 @@ void cddl_set_meter_override(uint32_t override);
 uint32_t cddl_get_meter_override();
 void cddl_standby_500ms_timer_callback();
 void cddl_standby_meter_trigger();
+
+void cddl_showNextFwUpdateLedPattern();
+void cddl_getLedStatePriorToFwUpdate( CURRENT_LED_STATE &ledState );
+void cddl_restoreLedState( CURRENT_LED_STATE ledState );
 
 
 #endif /* _CDDLLEDS_H_ */

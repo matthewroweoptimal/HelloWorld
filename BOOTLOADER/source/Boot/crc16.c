@@ -35,15 +35,6 @@
 // Code
 ////////////////////////////////////////////////////////////////////////////////
 
-// Define 'NO_DEBUG_MSG_OUTPUT' in 'flash_params.h' to control serial information messages (code size reduction)
-#if NO_DEBUG_MSG_OUTPUT
-	#define PutString(x)	// To save space, take away all serial information messages
-#else
-	extern void PutString(char *str);
-#endif
-
-extern void PutChar(char ch);
-
 
 // **************************************************************
 //	CRC Utilities

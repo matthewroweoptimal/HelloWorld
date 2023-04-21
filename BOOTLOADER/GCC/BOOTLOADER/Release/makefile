@@ -89,7 +89,7 @@ clean:
 	-@echo ' '
 
 post-build:
-	-arm-none-eabi-objcopy -O binary BOOTLOADER.elf ../../BOOTLOADER.bin
+	-arm-none-eabi-objcopy -O binary BOOTLOADER.elf ../../../BOOTLOADER.bin
 	-@echo ' '
 
 secondary-outputs: $(SECONDARY_FLASH) $(SECONDARY_SIZE)

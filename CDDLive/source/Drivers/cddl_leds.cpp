@@ -24,6 +24,8 @@ uint32_t cddl_blinkRate = 0;
 uint32_t cddl_network_blinkRate = 0;
 uint32_t cddl_enable_meter_override = BACKPANEL_LED_MODE;
 
+CURRENT_LED_STATE storedLedState = {BACKPANEL_LED_MODE, 0x00};
+
 void cddl_show_preset(int32_t current_preset, uint32_t blink_rate)
 {
 	uint32_t temp_mask;
@@ -55,6 +57,7 @@ void cddl_show_meter(float db)
 void cddl_set_meter_override(uint32_t override)
 {
 	cddl_enable_meter_override = override;
+	storedLedState.overrideState = override;
 }
 
 uint32_t cddl_get_meter_override()
@@ -103,12 +106,48 @@ void cddl_poll_led_blink(int ms)
 
 }
 
-void cddl_show_LEDs(uint32_t led_mask) {
-	//this mapping is inefficient but universal:
-	if(led_mask & 1) CDDP_PANEL_LED1(1); else CDDP_PANEL_LED1(0);
-	if(led_mask & 2) CDDP_PANEL_LED2(1); else CDDP_PANEL_LED2(0);
-	if(led_mask & 4) CDDP_PANEL_LED3(1); else CDDP_PANEL_LED3(0);
-	if(led_mask & 8) CDDP_PANEL_LED4(1); else CDDP_PANEL_LED4(0);
+//---------------------------------------------------------------------------
+// Set the next firmware upgrade LED indication
+//---------------------------------------------------------------------------
+static uint32_t m_fwUpdateLedPattern = 0x01;
+static bool bFwUpdateInProgress = false;
+void cddl_showNextFwUpdateLedPattern()
+{
+	bFwUpdateInProgress = true;
+	if(m_fwUpdateLedPattern & 1) CDDP_PANEL_LED1(1); else CDDP_PANEL_LED1(0);
+	if(m_fwUpdateLedPattern & 2) CDDP_PANEL_LED2(1); else CDDP_PANEL_LED2(0);
+	if(m_fwUpdateLedPattern & 4) CDDP_PANEL_LED3(1); else CDDP_PANEL_LED3(0);
+	if(m_fwUpdateLedPattern & 8) CDDP_PANEL_LED4(1); else CDDP_PANEL_LED4(0);
+
+	m_fwUpdateLedPattern = m_fwUpdateLedPattern << 1;
+	if (m_fwUpdateLedPattern == (1 << 4))
+		m_fwUpdateLedPattern = 0x01;	// Back to LED1
+}
+
+void cddl_show_LEDs(uint32_t led_mask)
+{	// Only update with this function if not in firmware update mode
+	if ( !bFwUpdateInProgress )
+	{	// This mapping is inefficient but universal:
+		if(led_mask & 1) CDDP_PANEL_LED1(1); else CDDP_PANEL_LED1(0);
+		if(led_mask & 2) CDDP_PANEL_LED2(1); else CDDP_PANEL_LED2(0);
+		if(led_mask & 4) CDDP_PANEL_LED3(1); else CDDP_PANEL_LED3(0);
+		if(led_mask & 8) CDDP_PANEL_LED4(1); else CDDP_PANEL_LED4(0);
+		storedLedState.ledMask = led_mask;
+	}
+}
+
+void cddl_getLedStatePriorToFwUpdate( CURRENT_LED_STATE &ledState )
+{	// Restore the specified condition to the LEDs
+	ledState.overrideState = storedLedState.overrideState;
+	ledState.ledMask = storedLedState.ledMask;
+
+}
+
+void cddl_restoreLedState( CURRENT_LED_STATE ledState )
+{	// Restore the specified condition to the LEDs
+	cddl_enable_meter_override = ledState.overrideState;
+	cddl_show_LEDs( ledState.ledMask );
+	bFwUpdateInProgress = false;
 }
 
 void cddl_show_network_LED(uint32_t led_mask)

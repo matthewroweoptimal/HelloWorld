@@ -8,6 +8,7 @@
  */
 #include "Upgrade.h"
 #include "LOUD_defines.h"
+#include "cddl_leds.h"
 
 extern LOUD_brand g_systemBrand;
 
@@ -81,6 +82,7 @@ private:
 	void Crc16UpdateFromApromFlash(P_REGION_CRC rgnCrc, const uint8_t *pSrc, uint32_t uiBytes);
 	void Crc16Finalize(P_REGION_CRC crc, uint16_t * usHash);
 	void launchBootloader(void);
+	void showNextFwUpdateLedPattern();
 
 private:
 	OLY_REGION_TYPE m_defaultType;
@@ -90,4 +92,6 @@ private:
 	RGN_STATE m_UpgradeState;
 	int m_nUpgradeRegion;
 	unsigned int m_uiUpgradeFilled;
+	uint32_t	 		m_fwUpdateLedPattern;	// Holds pattern for rotating LED firmware update indication
+	CURRENT_LED_STATE 	m_storedLedState;
 };

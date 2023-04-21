@@ -15,9 +15,6 @@
  *           if the APP somehow loses the ability to upgrade the SPI Flash firmware.
  *
 *****************************************************************************/
-#include <stdio.h>
-
-
 // SPI Flash Layout is as follows :
 //
 //      - First 1 MiByte are allocated to CDDLive Parameters.
@@ -41,6 +38,7 @@
 //    +--------------------------+
 //
 
+#include <stdio.h>
 #include "NuMicro.h"
 #include "spi_flash_nu.h"
 #include "flash_params.h"
@@ -48,22 +46,66 @@
 
 typedef void (FUNC_PTR)(void);
 
+
+#define INCLUDE_FLASH_WRITE_RETRIES		0		// Define as 0 to save LDROM space by excluding flash write retries
+//#define INCLUDE_FLASH_WRITE_RETRIES	1
+#if INCLUDE_FLASH_WRITE_RETRIES
+	static uint32_t	g_retryCount = 0;
+	const uint32_t FLASH_WRITE_RETRIES = 3;		// Retry 3 times before giving up on a sector write
+#endif
+
+
+#define ROTATING_LED_INDICATOR		0			// Define to 0 to save LDROM space and use simple blinking LED indicator
+//#define ROTATING_LED_INDICATOR	1
+#if ROTATING_LED_INDICATOR
+	static volatile uint8_t 	s_fwUpdateLedPattern = 0x01;
+#else
+	static bool	s_toggleLed = false;	// We only have enough space for a simple blinking LED indication
+#endif
+
+
 OLY_REGION  g_firmwareHeader;
 uint32_t    g_flashSector[P_SECTOR_SIZE_U32];   // Can hold one 4kB sector data
-uint32_t	g_retryCount = 0;
-const uint32_t FLASH_WRITE_RETRIES = 3;			// Retry 3 times before giving up on a sector write
 
+
+#define GPIOB_PIN_BASE (GPIO_PIN_DATA_BASE+(0x40*(1)))
+#define GPIOC_PIN_BASE (GPIO_PIN_DATA_BASE+(0x40*(2)))
+
+#define CDDP_PANEL_LED1(value)      (*(volatile uint32_t *)(GPIOB_PIN_BASE + (3<<2)) = value)
+#define CDDP_PANEL_LED2(value)      (*(volatile uint32_t *)(GPIOB_PIN_BASE + (2<<2)) = value)
+#define CDDP_PANEL_LED3(value)      (*(volatile uint32_t *)(GPIOC_PIN_BASE + (12<<2)) = value)
+#define CDDP_PANEL_LED4(value)      (*(volatile uint32_t *)(GPIOC_PIN_BASE + (11<<2)) = value)
+
+
+
+//---------------------------------------------------------------------------
+// Set the specified LED to the specified output state
+//---------------------------------------------------------------------------
+static void setNextLed(void)
+{
+#if ROTATING_LED_INDICATOR
+	if(s_fwUpdateLedPattern & 1) CDDP_PANEL_LED1(1); else CDDP_PANEL_LED1(0);
+	if(s_fwUpdateLedPattern & 2) CDDP_PANEL_LED2(1); else CDDP_PANEL_LED2(0);
+	if(s_fwUpdateLedPattern & 4) CDDP_PANEL_LED3(1); else CDDP_PANEL_LED3(0);
+	if(s_fwUpdateLedPattern & 8) CDDP_PANEL_LED4(1); else CDDP_PANEL_LED4(0);
+
+	s_fwUpdateLedPattern = s_fwUpdateLedPattern << 1;
+	if (s_fwUpdateLedPattern == (1 << 4))
+		s_fwUpdateLedPattern = 0x01;	// Back to LED1
+#else
+	// Simple blinking LED indicator to save LDROM flash space
+	s_toggleLed = !s_toggleLed;
+	if (s_toggleLed) CDDP_PANEL_LED1(1); else CDDP_PANEL_LED1(0);
+	if (!s_toggleLed) CDDP_PANEL_LED2(1); else CDDP_PANEL_LED2(0);
+#endif
+}
 
 //---------------------------------------------------------------------------
 // Hardware initialisation
 //---------------------------------------------------------------------------
 void SYS_Init(void)
 {
-    /* Unlock protected registers */
-    SYS_UnlockReg();
-
-    /* Unlock protected registers */
-    SYS_UnlockReg();
+    /* Protected registers should be unlocked already */
 
     /* Set XT1_OUT(PF.2) and XT1_IN(PF.3) to input mode */
     PF->MODE &= ~(GPIO_MODE_MODE2_Msk | GPIO_MODE_MODE3_Msk);
@@ -121,8 +163,18 @@ void SYS_Init(void)
 
     SPIM_SET_DCNUM(8);                /* Set 8 dummy cycle. */
 
-    /* Lock protected registers */
-    SYS_LockReg();
+    // Enable LED output GPIO pins
+
+    /* LEDs (PB.3, PB.2, PC.12, PC.11) */
+    PB->MODE = (PB->MODE & ~(GPIO_MODE_MODE3_Msk | GPIO_MODE_MODE2_Msk)) |
+               (GPIO_MODE_OUTPUT << GPIO_MODE_MODE3_Pos) |
+               (GPIO_MODE_OUTPUT << GPIO_MODE_MODE2_Pos);  // Set to output mode
+#if ROTATING_LED_INDICATOR
+    // Also initialise LED3 and LED4 if rotating LED pattern configured
+    PC->MODE = (PC->MODE & ~(GPIO_MODE_MODE12_Msk | GPIO_MODE_MODE11_Msk)) |
+               (GPIO_MODE_OUTPUT << GPIO_MODE_MODE12_Pos) |
+               (GPIO_MODE_OUTPUT << GPIO_MODE_MODE11_Pos);  // Set to output mode
+#endif
 }
 
 //---------------------------------------------------------------------------
@@ -182,13 +234,12 @@ int main()
     uint32_t    u32Data;
     FUNC_PTR    *func;                 /* function pointer */
 
+    SYS_UnlockReg();                   /* Unlock protected registers */
     SYS_Init();                        /* Init System, IP clock and multi-function I/O */
 
     UART0_Init();                      /* Initialize UART0 */
 
     PutString("\nBOOTING...\n");
-
-    SYS_UnlockReg();                   /* Unlock protected registers */
 
     // Check for Firmware image in SPI Flash
     // (Note : Validation has been carried out by the APP, so just basic sanity checking here (as we have limited 4kB LDROM))
@@ -218,8 +269,11 @@ int main()
     		{
         		uint32_t spiFlashOffset = flashAddress - g_firmwareHeader.address;
         		spi_flash_readFwSector( spiFlashOffset, g_flashSector );
+
         		if ( !flash_writeChunk( flashAddress, g_flashSector, P_SECTOR_SIZE_U32 ))
+#if INCLUDE_FLASH_WRITE_RETRIES
         		{	// Failed
+        			// Can take this out to save space. If flashing fails a reboot will attempt the update again.
         			if ( g_retryCount == 0 )
         			{
         				PutChar('X');
@@ -239,6 +293,18 @@ int main()
         			sector++;
         			PutChar('.');
         		}
+#else // No Retries
+        		{	// Failed
+    				PutChar('X');
+        		}
+        		else
+        		{	// Success
+        			PutChar('.');
+        		}
+    			flashAddress += P_SECTOR_SIZE;
+    			sector++;
+#endif
+    			setNextLed();	// Animate LED indication
     		}
     		
     		Crc16Init( &rgnCrc );
