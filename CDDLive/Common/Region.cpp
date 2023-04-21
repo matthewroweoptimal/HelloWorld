@@ -117,7 +117,8 @@ uint16 g_hardwareRev     = OLY_DEFAULT_HARDWARE_VERSION;
 uint32 g_uiSerialNumber  = OLY_DEFAULT_SERIAL_NUMBER;
 
 
-Region::Region() :
+Region::Region( oly::Config *pConfigOwner ) :
+        m_pConfigOwner(pConfigOwner),
 		m_fwUpdateLedPattern(0x01)
 {
 	uint8_t systemMac[6];
@@ -818,7 +819,7 @@ bool Region::UpgradeChunk(unsigned char *pChunk, unsigned int uiOffset, unsigned
 		return(false);
 	}
 
-	cddl_showNextFwUpdateLedPattern();
+	cddl_showNextFwUpdateLedPattern(false);
 	m_uiUpgradeFilled += uiBytes;
 
 	return(true);
@@ -874,6 +875,7 @@ bool Region::EndUpgrade()
 	}
 
 	//	Verify CRC
+	cddl_showNextFwUpdateLedPattern(true);      // Clear LEDs as verification takes a little while.
 	Crc16Init(&rgnCrc);
 	Crc16UpdateFromSpiFlash(&rgnCrc, pCrcPtr, m_rgnUpgrade.length);
 	Crc16Finalize(&rgnCrc, &crcCalc);
@@ -905,7 +907,13 @@ bool Region::EndUpgrade()
 	cddl_restoreLedState( m_storedLedState );	// Restore the LED state
 	
 	// Launch into BOOTLOADER which will detect new image in SPI Flash and program it into APROM Flash.
-	// TODO : Cleaner way of re-booting (e.g. Close connections etc ?)
+	if ( m_pConfigOwner )
+	{   // Try to close TCP connections gracefully before the reboot
+    	m_pConfigOwner->olyNetworkPort.SetForceClose();
+    	// Delay to allow TCP connections to be terminated
+    	_time_delay(2000);
+	}
+	
 	launchBootloader();	// Never returns
 
 	return(true);

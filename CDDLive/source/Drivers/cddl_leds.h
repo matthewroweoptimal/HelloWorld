@@ -92,7 +92,7 @@ uint32_t cddl_get_meter_override();
 void cddl_standby_500ms_timer_callback();
 void cddl_standby_meter_trigger();
 
-void cddl_showNextFwUpdateLedPattern();
+void cddl_showNextFwUpdateLedPattern( bool bClear );
 void cddl_getLedStatePriorToFwUpdate( CURRENT_LED_STATE &ledState );
 void cddl_restoreLedState( CURRENT_LED_STATE ledState );
 

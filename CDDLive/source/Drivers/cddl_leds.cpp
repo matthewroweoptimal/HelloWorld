@@ -111,17 +111,27 @@ void cddl_poll_led_blink(int ms)
 //---------------------------------------------------------------------------
 static uint32_t m_fwUpdateLedPattern = 0x01;
 static bool bFwUpdateInProgress = false;
-void cddl_showNextFwUpdateLedPattern()
+void cddl_showNextFwUpdateLedPattern( bool bClear )
 {
 	bFwUpdateInProgress = true;
-	if(m_fwUpdateLedPattern & 1) CDDP_PANEL_LED1(1); else CDDP_PANEL_LED1(0);
-	if(m_fwUpdateLedPattern & 2) CDDP_PANEL_LED2(1); else CDDP_PANEL_LED2(0);
-	if(m_fwUpdateLedPattern & 4) CDDP_PANEL_LED3(1); else CDDP_PANEL_LED3(0);
-	if(m_fwUpdateLedPattern & 8) CDDP_PANEL_LED4(1); else CDDP_PANEL_LED4(0);
-
-	m_fwUpdateLedPattern = m_fwUpdateLedPattern << 1;
-	if (m_fwUpdateLedPattern == (1 << 4))
-		m_fwUpdateLedPattern = 0x01;	// Back to LED1
+	if ( bClear )
+	{
+    	CDDP_PANEL_LED1(0);
+    	CDDP_PANEL_LED2(0);
+    	CDDP_PANEL_LED3(0);
+    	CDDP_PANEL_LED4(0);
+	}
+	else
+	{	    
+    	if(m_fwUpdateLedPattern & 1) CDDP_PANEL_LED1(1); else CDDP_PANEL_LED1(0);
+    	if(m_fwUpdateLedPattern & 2) CDDP_PANEL_LED2(1); else CDDP_PANEL_LED2(0);
+    	if(m_fwUpdateLedPattern & 4) CDDP_PANEL_LED3(1); else CDDP_PANEL_LED3(0);
+    	if(m_fwUpdateLedPattern & 8) CDDP_PANEL_LED4(1); else CDDP_PANEL_LED4(0);
+    
+    	m_fwUpdateLedPattern = m_fwUpdateLedPattern << 1;
+    	if (m_fwUpdateLedPattern == (1 << 4))
+    		m_fwUpdateLedPattern = 0x01;	// Back to LED1
+	}
 }
 
 void cddl_show_LEDs(uint32_t led_mask)

@@ -9,6 +9,7 @@
 #include "Upgrade.h"
 #include "LOUD_defines.h"
 #include "cddl_leds.h"
+#include "ConfigManager.h"
 
 extern LOUD_brand g_systemBrand;
 
@@ -19,6 +20,7 @@ extern uint16 g_hardwareRev;
 extern uint32 g_uiSerialNumber;
 
 #pragma once
+
 
 typedef enum regionState {
 	usmInvalid = 0,
@@ -34,7 +36,7 @@ protected:
 	OLY_BLOCK 	olyBlock;
 
 public:
-	Region();
+	Region( oly::Config *pConfigOwner );
 	~Region();
 
 	//	!!!! Kris - This is the API you need to run from the Mandolin message handler
@@ -85,13 +87,14 @@ private:
 	void showNextFwUpdateLedPattern();
 
 private:
-	OLY_REGION_TYPE m_defaultType;
-	uint32_t m_uiDefaultStart;
-	uint32_t m_uiDefaultLength;
-	OLY_REGION m_rgnUpgrade;
-	RGN_STATE m_UpgradeState;
-	int m_nUpgradeRegion;
-	unsigned int m_uiUpgradeFilled;
+    oly::Config         *m_pConfigOwner; // Owning Config object
+	OLY_REGION_TYPE     m_defaultType;
+	uint32_t            m_uiDefaultStart;
+	uint32_t            m_uiDefaultLength;
+	OLY_REGION          m_rgnUpgrade;
+	RGN_STATE           m_UpgradeState;
+	int                 m_nUpgradeRegion;
+	unsigned int        m_uiUpgradeFilled;
 	uint32_t	 		m_fwUpdateLedPattern;	// Holds pattern for rotating LED firmware update indication
 	CURRENT_LED_STATE 	m_storedLedState;
 };

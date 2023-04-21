@@ -3139,7 +3139,7 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
 #endif // SC_COMMENTED_OUT
     {
     	int i;
-    	m_pUpgrade = new Region;
+    	m_pUpgrade = new Region( this );
     
     	olyParams.Device = &olyStoredParams.Device;
     
