@@ -118,7 +118,7 @@
 /* MEMP_NUM_SYS_TIMEOUT: the number of simultaneously active
    timeouts. */
 #ifndef MEMP_NUM_SYS_TIMEOUT
-#define MEMP_NUM_SYS_TIMEOUT    10
+#define MEMP_NUM_SYS_TIMEOUT    11  // Increased from 10 since AUTO-IP configured
 #endif
 
 /* ---------- Pbuf options ---------- */
@@ -190,6 +190,11 @@
 #ifndef LWIP_DHCP
 #define LWIP_DHCP               1
 #endif
+
+// Configure Auto-IP where a 169.254.x.x address will be configured in the absence of a DHCP server
+#define LWIP_AUTOIP						1
+#define LWIP_DHCP_AUTOIP_COOP			1   // Allow DHCP and AUTOIP to both be enabled at the same time
+#define LWIP_DHCP_AUTOIP_COOP_TRIES     4	// Get Auto-IP address after 4 tries if no DHCP server present
 
 /* ---------- UDP options ---------- */
 #ifndef LWIP_UDP
