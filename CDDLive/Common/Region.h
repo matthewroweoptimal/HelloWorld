@@ -54,7 +54,7 @@ public:
 	uint32_t GetStaticMask();
 	void WriteIdentity(uint8_t mac[6], int32_t nBrand, int32_t nModel, uint16_t hardwareRev, uint32_t uiSerialNumber);
 
-	//	Stataic methods
+	//	Static methods
 	static void SetSystemBrand(LOUD_brand brand);
 	static void SetSystemModel(int32 nModel);
 	static const char *GetMandolinModelName(LOUD_brand mandolinBrand, int nMandolinModel);

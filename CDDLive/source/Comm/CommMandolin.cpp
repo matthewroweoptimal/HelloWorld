@@ -250,6 +250,26 @@ mandolin_message * GetHardwareInfoResponse(uint8_t brand, uint16_t model, uint8 
     return &tmpMsg;
 }
 
+mandolin_message * GetMacAddrResponse(uint8 mac_addr[6], uint8_t sequenceID)
+{
+    uint32_t *pPayload = (uint32_t*)tmpMsgPayload;
+
+    tmpMsg.payload   = pPayload;
+    tmpMsg.id        = MANDOLIN_MSG_TEST;
+    tmpMsg.transport = MANDOLIN_TRANSPORT_REPLY;
+    tmpMsg.length    = 3;
+
+    pPayload[0] = TEST_CMD_GET_MAC_ADDR;
+    pPayload[1] = ((mac_addr[0] & 0xFF) << 8) | ((mac_addr[1] & 0xFF));
+    pPayload[2] = ((mac_addr[2] & 0xFF) << 24) | ((mac_addr[3] & 0xFF) << 16) | ((mac_addr[4] & 0xFF) << 8) | (mac_addr[5] & 0xFF);
+
+    MANDOLIN_MSG_pack(&tmpMsg, sequenceID);
+
+	printf("Connection: Sent GetMacAddr reply.\n");
+
+    return &tmpMsg;
+}
+
 mandolin_message * GetStatusAllResponse(uint32_t * pValues, uint8_t sequenceID)
 {
 	uint32_t *pPayload = (uint32_t*)tmpMsgPayload;

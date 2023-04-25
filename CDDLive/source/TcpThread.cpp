@@ -13,6 +13,11 @@
 #include "ConfigManager.h"
 #include <cstring>
 
+extern "C" {
+ #include "otpFlash.h"
+}
+
+
 extern oly::Config *olyConfig;
 
 /* Private typedef -----------------------------------------------------------*/
@@ -23,7 +28,16 @@ extern oly::Config *olyConfig;
 /* Private variables ---------------------------------------------------------*/
 
 
-unsigned char macAddr[6] = {0x00, 0x0F, 0xF2, 0x08, 0x5B, 0xB9};
+// Define global macAddr[] which is used in LWIP low_level_init()
+unsigned char macAddr[6] =
+{
+    	OLY_DEFAULT_MAC_ADDR0,  // Match with Defaults.h definition of default MAC address
+		OLY_DEFAULT_MAC_ADDR1,
+		OLY_DEFAULT_MAC_ADDR2,
+		OLY_DEFAULT_MAC_ADDR3,
+		OLY_DEFAULT_MAC_ADDR4,
+		OLY_DEFAULT_MAC_ADDR5
+};
 const char mdnsName[] = "cddlive";
 
 NETIF_DECLARE_EXT_CALLBACK(netif_callback)
@@ -89,6 +103,9 @@ void TcpThread::Run()
     IP4_ADDR(&netmask, 255,255,255,0);
 
     tcpip_init(NULL, NULL);
+    
+    // Get the MAC address from Flash in this order : OTP Flash MAC, Data Flash MAC, Default MAC
+    readMACAddressFromOTP(macAddr);
 
     netif_add(&netif, &ipaddr, &netmask, &gw, NULL, ethernetif_init, tcpip_input);
 

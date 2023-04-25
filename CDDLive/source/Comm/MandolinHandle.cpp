@@ -828,6 +828,9 @@ void Config::HandleTestCommand(MandolinPort * srcPort, mandolin_message * pMsg)
 			m_pUpgrade->SetIpSettings(pPayload[1], pPayload[2], pPayload[3]);
 			srcPort->WriteMessage(GetAckResponse(pMsg));
 			break;
+		case(TEST_CMD_GET_MAC_ADDR):
+			srcPort->WriteMessage(GetMacAddrResponse(Region::GetSystemMAC(), pMsg->sequence));
+		    break;
 		case(TEST_CMD_GET_STATIC_ALL):
 			srcPort->WriteMessage(GetStaticAllResponse(m_pUpgrade->GetStaticIp(), m_pUpgrade->GetStaticGateway(), m_pUpgrade->GetStaticMask(), pMsg->sequence));
 			break;

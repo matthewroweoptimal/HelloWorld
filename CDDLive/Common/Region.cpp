@@ -20,6 +20,7 @@
 extern "C" {
  #include "oly.h"
  #include "LOUD_types.h"
+ #include "otpFlash.h"
 }
 
 #include "flash_params.h"
@@ -130,34 +131,9 @@ Region::Region( oly::Config *pConfigOwner ) :
 	m_defaultType = OLY_REGION_APPLICATION;
 	m_uiDefaultStart = OLY_DEFAULT_VECTOR_TABLE;
 	m_uiDefaultLength = (unsigned int)OLY_BLOCK_LOCATION - m_uiDefaultStart;
-
-	memcpy(systemMac, OLY_IDENTITY_LOCATION->mac, sizeof(systemMac));
-	printf("Checking MAC Address at 0x%08X - %02x:%02x:%02x:%02x:%02x:%02x\r\n",
-		(unsigned int)&OLY_IDENTITY_LOCATION->mac,
-		systemMac[0],
-		systemMac[1],
-		systemMac[2],
-		systemMac[3],
-		systemMac[4],
-		systemMac[5]);
-
-	//	Needs to  move inside Config object
-	if (!ValidateMAC((unsigned char *)OLY_IDENTITY_LOCATION->mac))
-	{
-		/* MAC not set, load defaults */
-		printf("MAC Address not set or invalid range, loading default %02x:%02x:%02x:%02x:%02x:%02x!\r\n",
-				g_System_MAC[0],
-				g_System_MAC[1],
-				g_System_MAC[2],
-				g_System_MAC[3],
-				g_System_MAC[4],
-				g_System_MAC[5]);
-	}
-	else
-	{
-		memcpy(g_System_MAC, (unsigned char *)OLY_IDENTITY_LOCATION->mac, sizeof(g_System_MAC));
-		printf("MAC Address is valid\r\n");
-	}
+	
+    // Get the MAC address from Flash in this order : OTP Flash MAC, Data Flash MAC, Default MAC
+    readMACAddressFromOTP(g_System_MAC);
 
 	//	Evaluate Brand
 	nBrand = OLY_IDENTITY_LOCATION->nBrand;
@@ -1118,78 +1094,84 @@ const char *Region::GetMandolinBrandName(LOUD_brand mandolinBrand)
 //---------------------------------------------------------------------------
 void Region::WriteIdentity(uint8_t mac[6], int32_t nBrand, int32_t nModel, uint16_t hardwareRev, uint32_t uiSerialNumber)
 {
-	uint8_t *pSectorZero = new uint8_t[P_SECTOR_SIZE];
-	if (pSectorZero)
+	OLY_IDENTITY olyIdentity;   // Temporary storage for new identity info
+
+	memcpy( &olyIdentity, (uint8_t *)0, sizeof(OLY_IDENTITY) );
+
+	if ( ValidateMAC(mac) )
+		memcpy(olyIdentity.mac, mac, sizeof(olyIdentity.mac));
+
+	//	Assign additional info if available
+	if (-1!=nBrand)
+		olyIdentity.nBrand = nBrand;
+	if (-1!=nModel)
+		olyIdentity.nModel = nModel;
+	if (0xFFFF!=hardwareRev)
+		olyIdentity.hardwareRev = hardwareRev;
+	if (0xFFFFFFFF!=uiSerialNumber)
+		olyIdentity.uiSerialNumber = uiSerialNumber;
+
+	//	Verify contents are valid values
+	if (!ValidateMAC(olyIdentity.mac))
 	{
-		memcpy(pSectorZero, (uint8_t *)0, P_SECTOR_SIZE);
-		P_OLY_IDENTITY pIdentity = (P_OLY_IDENTITY)(pSectorZero+OLY_IDENTITY_OFFSET);
-		if (ValidateMAC(mac))
-			memcpy(pIdentity->mac, mac, sizeof(pIdentity->mac));
-
-		//	Assign additional info if available
-		if (-1!=nBrand)
-			pIdentity->nBrand = nBrand;
-		if (-1!=nModel)
-			pIdentity->nModel = nModel;
-		if (0xFFFF!=hardwareRev)
-			pIdentity->hardwareRev = hardwareRev;
-		if (0xFFFFFFFF!=uiSerialNumber)
-			pIdentity->uiSerialNumber = uiSerialNumber;
-
-		//	Verify contents are valid values
-		if (!ValidateMAC(pIdentity->mac))
-		{
-			printf("Invalid MAC in identity flash replaced with default!\r\n");
-			pIdentity->mac[0] = OLY_DEFAULT_MAC_ADDR0;
-			pIdentity->mac[1] = OLY_DEFAULT_MAC_ADDR1;
-			pIdentity->mac[2] = OLY_DEFAULT_MAC_ADDR2;
-			pIdentity->mac[3] = OLY_DEFAULT_MAC_ADDR3;
-			pIdentity->mac[4] = OLY_DEFAULT_MAC_ADDR4;
-			pIdentity->mac[5] = OLY_DEFAULT_MAC_ADDR5;
-		}
-
-		if ((LOUD_BRAND_EAW!=pIdentity->nBrand) && (LOUD_BRAND_MARTIN!=pIdentity->nBrand) && (LOUD_BRAND_MACKIE!=pIdentity->nBrand))
-		{
-			printf("Invalid brand in identity flash replaced with default!\r\n");
-			pIdentity->nBrand = LOUD_BRAND_EAW;
-		}
-
-		if ((LOUD_BRAND_EAW==pIdentity->nBrand) && (EAW_MODEL_GENERIC!=pIdentity->nModel) && ((pIdentity->nModel<(int32_t)EAW_MODEL_RSX208L) || (pIdentity->nModel>(int32_t)EAW_MODEL_RSX212L)   ) )
-		{
-			printf("Invalid EAW model in identity flash replaced with default!\r\n");
-			pIdentity->nModel = (int32_t)EAW_MODEL_GENERIC;
-		}
-
-		if ((LOUD_BRAND_MARTIN==pIdentity->nBrand) && (MARTIN_MODEL_GENERIC!=pIdentity->nModel)  && ((pIdentity->nModel<(int32_t)MARTIN_MODEL_GENERIC) || (pIdentity->nModel>=((int32_t)MARTIN_MODEL_GENERIC+0x20)) ) )
-		{
-			printf("Invalid Martin Model in identity flash replaced with default!\r\n");
-			pIdentity->nModel = (int32_t)MARTIN_MODEL_GENERIC;
-		}
-		if ((LOUD_BRAND_MACKIE==pIdentity->nBrand) && (MACKIE_MODEL_GENERIC!=pIdentity->nModel)  && ((pIdentity->nModel<(int32_t)MACKIE_MODEL_GENERIC) || (pIdentity->nModel>=((int32_t)MACKIE_MODEL_MASTER_RIG+0x20)) ) )
-		{
-			printf("Invalid Mackie Model in identity flash replaced with default!\r\n");
-			pIdentity->nModel = (int32_t)MARTIN_MODEL_GENERIC;
-		}
-
-		if (0xFFFF==pIdentity->hardwareRev)
-		{
-			printf("Invalid hardware revision in identity flash replaced with default!\r\n");
-			pIdentity->hardwareRev = 0;
-		}
-
-		if (0xFFFFFFFF==pIdentity->uiSerialNumber)
-		{
-			printf("Invalid serial number in identity flash replaced with default!\r\n");
-			pIdentity->hardwareRev = 0;
-		}
-
-		printf("Saving Identity Sector, hold on...");
-        if ( data_flash_program((uint32_t)OLY_IDENTITY_LOCATION, (uint32_t *)pIdentity, sizeof(OLY_IDENTITY)/sizeof(uint32_t)) )
-        {
-		    printf("Success.\r\n");
-	    }
-		delete pSectorZero;
+		printf("Invalid MAC in identity flash replaced with default!\r\n");
+		olyIdentity.mac[0] = OLY_DEFAULT_MAC_ADDR0;
+		olyIdentity.mac[1] = OLY_DEFAULT_MAC_ADDR1;
+		olyIdentity.mac[2] = OLY_DEFAULT_MAC_ADDR2;
+		olyIdentity.mac[3] = OLY_DEFAULT_MAC_ADDR3;
+		olyIdentity.mac[4] = OLY_DEFAULT_MAC_ADDR4;
+		olyIdentity.mac[5] = OLY_DEFAULT_MAC_ADDR5;
 	}
+	else
+	{   // Valid MAC address is received. Try to set it into OTP flash area if available.
+	    if ( setMACAddressIntoOTP(olyIdentity.mac) )
+	        printf("MAC Address %02X:%02X:%02X:%02X:%02X:%02X programmed into OTP Flash\n", 
+	                    olyIdentity.mac[0], olyIdentity.mac[1], olyIdentity.mac[2], olyIdentity.mac[3], olyIdentity.mac[4], olyIdentity.mac[5]);
+	}
+
+	if ((LOUD_BRAND_EAW!=olyIdentity.nBrand) && (LOUD_BRAND_MARTIN!=olyIdentity.nBrand) && (LOUD_BRAND_MACKIE!=olyIdentity.nBrand))
+	{
+		printf("Invalid brand in identity flash replaced with default!\r\n");
+		olyIdentity.nBrand = LOUD_BRAND_EAW;
+	}
+
+	if ((LOUD_BRAND_EAW==olyIdentity.nBrand) && (EAW_MODEL_GENERIC!=olyIdentity.nModel) && ((olyIdentity.nModel<(int32_t)EAW_MODEL_RSX208L) ||
+			(olyIdentity.nModel>(int32_t)EAW_MODEL_RSX212L)   ) )
+	{
+		printf("Invalid EAW model in identity flash replaced with default!\r\n");
+		olyIdentity.nModel = (int32_t)EAW_MODEL_GENERIC;
+	}
+
+	if ((LOUD_BRAND_MARTIN==olyIdentity.nBrand) && (MARTIN_MODEL_GENERIC!=olyIdentity.nModel)  && ((olyIdentity.nModel<(int32_t)MARTIN_MODEL_GENERIC) ||
+			(olyIdentity.nModel>=((int32_t)MARTIN_MODEL_GENERIC+0x20)) ) )
+	{
+		printf("Invalid Martin Model in identity flash replaced with default!\r\n");
+		olyIdentity.nModel = (int32_t)MARTIN_MODEL_GENERIC;
+	}
+	if ((LOUD_BRAND_MACKIE==olyIdentity.nBrand) && (MACKIE_MODEL_GENERIC!=olyIdentity.nModel)  && ((olyIdentity.nModel<(int32_t)MACKIE_MODEL_GENERIC) ||
+			(olyIdentity.nModel>=((int32_t)MACKIE_MODEL_MASTER_RIG+0x20)) ) )
+	{
+		printf("Invalid Mackie Model in identity flash replaced with default!\r\n");
+		olyIdentity.nModel = (int32_t)MARTIN_MODEL_GENERIC;
+	}
+
+	if (0xFFFF==olyIdentity.hardwareRev)
+	{
+		printf("Invalid hardware revision in identity flash replaced with default!\r\n");
+		olyIdentity.hardwareRev = 0;
+	}
+
+	if (0xFFFFFFFF==olyIdentity.uiSerialNumber)
+	{
+		printf("Invalid serial number in identity flash replaced with default!\r\n");
+		olyIdentity.hardwareRev = 0;
+	}
+
+	printf("Saving Identity Sector, hold on...");
+    if ( data_flash_program((uint32_t)OLY_IDENTITY_LOCATION, (uint32_t *)&olyIdentity, sizeof(OLY_IDENTITY)/sizeof(uint32_t)) )
+    {
+	    printf("Success.\r\n");
+    }
 }
 
 // **************************************************************
