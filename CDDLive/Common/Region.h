@@ -53,6 +53,7 @@ public:
 	uint32_t GetStaticGateway();
 	uint32_t GetStaticMask();
 	void WriteIdentity(uint8_t mac[6], int32_t nBrand, int32_t nModel, uint16_t hardwareRev, uint32_t uiSerialNumber);
+	OLY_REGION_TYPE GetLaunchType(void);
 
 	//	Static methods
 	static void SetSystemBrand(LOUD_brand brand);
@@ -64,6 +65,7 @@ public:
 	static int32 GetSystemModel();
 	static uint16 GetHardwareRevision();
 	static uint32 GetSerialNumber();
+	static void launchBootloader(void);
 
 private:
 	void Load();
@@ -83,8 +85,8 @@ private:
 	void Crc16UpdateFromSpiFlash(P_REGION_CRC crc, const uint8_t * pSrc, uint32_t uiBytes);
 	void Crc16UpdateFromApromFlash(P_REGION_CRC rgnCrc, const uint8_t *pSrc, uint32_t uiBytes);
 	void Crc16Finalize(P_REGION_CRC crc, uint16_t * usHash);
-	void launchBootloader(void);
 	void showNextFwUpdateLedPattern();
+	void abortFwUpgrade( void );
 
 private:
     oly::Config         *m_pConfigOwner; // Owning Config object
@@ -97,4 +99,6 @@ private:
 	unsigned int        m_uiUpgradeFilled;
 	uint32_t	 		m_fwUpdateLedPattern;	// Holds pattern for rotating LED firmware update indication
 	CURRENT_LED_STATE 	m_storedLedState;
+	bool                m_spoofingBootLoader;   // true when we need to spoof a reboot into bootloader for firmware upgrade
+	                                            // to keep VU-NET happy.
 };

@@ -201,13 +201,13 @@ bool CFirmwareFile::FirmwareSendNextChunk(char* strInputTextFile, int& nFilePos,
 		}
 	}
 	else if (!m_bEndFwTransfer)
-	{	// Send ALL the FW chunks across - including the header which goes to SPI Flash FW region also
+	{	// Send ALL the FW chunks across - BUT exclude the header (already sent by POST FILE msg)
 		if (!fReadFile.Open(strInputTextFile, CFile::modeRead))
 		{
 			strErrorMsg.Format("Error Opening file: %s", strInputTextFile);
 			return false;
 		}
-		fReadFile.Seek(nFilePos, CFile::begin);
+		fReadFile.Seek(sizeof(OLY_REGION) + nFilePos, CFile::begin);
 
 		UINT readLength = fReadFile.Read(pcBinData, FW_UPGRADE_CHUNK_SIZE);
 		if (readLength > 0)

@@ -689,7 +689,7 @@ void Config::HandleGetSoftwareInfo(MandolinPort * srcPort, mandolin_message * pM
 	g_pUltimoPort->GetCapVersion(&cap_ver, &cap_build);
 	g_pUltimoPort->GetOsVersion(&dante_ver);
 
-	srcPort->WriteMessage(GetSoftwareInfoResponse(dante_ver, cap_ver, cap_build, pMsg->sequence));
+	srcPort->WriteMessage(GetSoftwareInfoResponse(dante_ver, cap_ver, cap_build, m_pUpgrade->GetLaunchType(), pMsg->sequence));
 }
 
 void Config::HandleCreateParameterList(MandolinPort * srcPort, mandolin_message * pMsg)
@@ -1025,13 +1025,16 @@ void Config::SoftwareReset(MandolinPort * srcPort, mandolin_message * pMsg)
 			//	Change launch type in flash
 			if (m_pUpgrade)
 			{
-				bool bSuccess = m_pUpgrade->SetLaunchType(OLY_REGION_APPLICATION);
+				bool bSuccess = m_pUpgrade->SetLaunchType((uiRebootType==OLY_APPID_BOOTLOADER) ? OLY_REGION_SECONDARY_BOOT:OLY_REGION_APPLICATION);
 				error = (bSuccess ? MANDOLIN_NO_ERROR : MANDOLIN_ERROR_INVALID_DATA);
 			}
-
+			
+#if 0   // SoftwareReset() called by VU-NET twice during firmware upgrade process to switch between APP & Secondary BootLoader.
+		// In new Nuvoton CDDLive system, we don't do an actual software reset as now the firmware upgrade process spoofs bootloader.
 			//	 only schedule reset if everything worked
 			if (MANDOLIN_NO_ERROR==error)
 				DeferredReboot(500);	//	wait 500 milliseconds to reboot
+#endif
 		}
 		else
 			error = MANDOLIN_ERROR;

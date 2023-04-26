@@ -16,6 +16,7 @@
 #include <errno.h>
 #include "MQX_To_FreeRTOS.h"
 #include "network.h"
+#include "TimeKeeper.h"
 
 extern "C" {
  #include "oly.h"
@@ -120,7 +121,8 @@ uint32 g_uiSerialNumber  = OLY_DEFAULT_SERIAL_NUMBER;
 
 Region::Region( oly::Config *pConfigOwner ) :
         m_pConfigOwner(pConfigOwner),
-		m_fwUpdateLedPattern(0x01)
+		m_fwUpdateLedPattern(0x01),
+		m_spoofingBootLoader(false)
 {
 	uint8_t systemMac[6];
 	int32 nBrand;
@@ -678,7 +680,10 @@ bool Region::VerifyChunk(uint32_t uiFlashOffset, uint8_t *pChunk)
 	return spi_flash_verify_fw_chunk( uiFlashOffset, pChunk );
 }
 
-//	Called by Mandolin Process when it received the upgrade file header
+//----------------------------------------------------------------------------------------------
+// Called by Mandolin Process when it received the upgrade file header
+// via 'MANDOLIN_MSG_FILE_OPEN' msg
+//----------------------------------------------------------------------------------------------
 bool Region::StartUpgrade(P_OLY_REGION pOlyRegion)
 {
 	int nRegion;
@@ -692,6 +697,14 @@ bool Region::StartUpgrade(P_OLY_REGION pOlyRegion)
 		  (pOlyRegion->version.sub < MIN_FW_VERSION_SUB)) )
 	{
 		printf("Firmware version too old for upgrade\n");
+		m_spoofingBootLoader = false;
+		return( false );
+	}
+
+	if ( pOlyRegion->address != 0x00000000 )
+	{	// This should avoid any old unsupported CDDLive firmware files being accepted
+		printf("Only APP firmware with starting address 0x0 is accepted\n");
+		m_spoofingBootLoader = false;
 		return( false );
 	}
 
@@ -702,6 +715,7 @@ bool Region::StartUpgrade(P_OLY_REGION pOlyRegion)
 	if (m_defaultType==pOlyRegion->type)
 	{
 		printf("Aborting trying to upgrade currently running application type %d.\r\n", (int)pOlyRegion->type);
+		m_spoofingBootLoader = false;
 		return(false);
 	}
 #endif
@@ -740,7 +754,15 @@ bool Region::StartUpgrade(P_OLY_REGION pOlyRegion)
 	return(true);
 }
 
-//	Called by Mandolin Process when it received the upgrade file header
+void Region::abortFwUpgrade( void )
+{
+	m_spoofingBootLoader = false;
+	cddl_restoreLedState( m_storedLedState );	// Restore the LED state
+}
+
+//----------------------------------------------------------------------------------------------
+//	Called by Mandolin Process when it received firmware chunk via 'MANDOLIN_MSG_POST_FILE' msg
+//----------------------------------------------------------------------------------------------
 bool Region::UpgradeChunk(unsigned char *pChunk, unsigned int uiOffset, unsigned int uiBytes)
 {
 	unsigned char *pChar = (unsigned char *)(m_rgnUpgrade.address + uiOffset);
@@ -748,14 +770,14 @@ bool Region::UpgradeChunk(unsigned char *pChunk, unsigned int uiOffset, unsigned
 	if (usmStarted != m_UpgradeState)
 	{
 		printf("UpgradeChunk rejected because not in upgrade mode!\r\n");
-		cddl_restoreLedState( m_storedLedState );	// Restore the LED state
+		abortFwUpgrade();
 		return(false);
 	}
 
 	if ((uiBytes + uiOffset) > (m_rgnUpgrade.length + sizeof(OLY_REGION)))
 	{
 		printf("UpgradeChunk rejected because of too many bytes received!\r\n");
-		cddl_restoreLedState( m_storedLedState );	// Restore the LED state
+		abortFwUpgrade();
 		return(false);
 	}
 
@@ -763,6 +785,7 @@ bool Region::UpgradeChunk(unsigned char *pChunk, unsigned int uiOffset, unsigned
 	if (((m_rgnUpgrade.address + uiOffset) >= 0) && ((m_rgnUpgrade.address + uiOffset) < FW_UPGRADE_CHUNK_SIZE))
 	{
 		printf("UpgradeChunk rejected because overwriting first sector!\r\n");
+		abortFwUpgrade();
 		return(false);
 	}
 #endif
@@ -770,7 +793,7 @@ bool Region::UpgradeChunk(unsigned char *pChunk, unsigned int uiOffset, unsigned
 	if (uiOffset &(FW_UPGRADE_CHUNK_SIZE-1))
 	{
 		printf("UpgradeChunk rejected because start of write not on sector boundary!\r\n");
-		cddl_restoreLedState( m_storedLedState );	// Restore the LED state
+		abortFwUpgrade();
 		return(false);
 	}
 
@@ -782,7 +805,7 @@ bool Region::UpgradeChunk(unsigned char *pChunk, unsigned int uiOffset, unsigned
 	else if ( !WriteChunk(m_rgnUpgrade.address + uiOffset, pChunk) )
 	{
 		printf("Failed\r\n");
-		cddl_restoreLedState( m_storedLedState );	// Restore the LED state
+		abortFwUpgrade();
 		return(false);
 	}
 	else
@@ -791,11 +814,14 @@ bool Region::UpgradeChunk(unsigned char *pChunk, unsigned int uiOffset, unsigned
 	if (!VerifyChunk(m_rgnUpgrade.address + uiOffset, pChunk))
 	{
 		printf("\tVerify failed @ offset 0x%08X\r\n", m_rgnUpgrade.address + uiOffset);
-		cddl_restoreLedState( m_storedLedState );	// Restore the LED state
+		abortFwUpgrade();
 		return(false);
 	}
 
-	cddl_showNextFwUpdateLedPattern(false);
+	if ((m_uiUpgradeFilled % 0x2000) == 0)
+	{	// Move on LED pattern every 8kB
+		cddl_showNextFwUpdateLedPattern(false);
+	}
 	m_uiUpgradeFilled += uiBytes;
 
 	return(true);
@@ -823,12 +849,16 @@ void Region::CancelUpgrade()
 {
 	m_UpgradeState = usmInvalid;
 	printf("Upgrade Cancelled!\r\n");
-	cddl_restoreLedState( m_storedLedState );	// Restore the LED state
+	abortFwUpgrade();
 }
 
-//	Called to finalize an upgrade and verify it is good
+//----------------------------------------------------------------------------------------------
+//Called by Mandolin Process (via 'MANDOLIN_MSG_FILE_CLOSE' msg) to finalize an upgrade
+// and verify it is good 
+//----------------------------------------------------------------------------------------------
 bool Region::EndUpgrade()
 {
+	const uint32_t FW_UPGRADE_REBOOT_DELAY_MS = 500;
 	unsigned char *pCrcPtr = (unsigned char *)m_rgnUpgrade.address;
 	unsigned short crcCalc;
 	REGION_CRC rgnCrc;
@@ -842,11 +872,12 @@ bool Region::EndUpgrade()
 		return(false);
 	}
 
-	//	Finished?
-	if (m_uiUpgradeFilled != (m_rgnUpgrade.length + sizeof(OLY_REGION)))
+	//	Finished ?
+	if (m_uiUpgradeFilled != m_rgnUpgrade.length)
 	{
-		printf("EndUpgrade failed because not enough bytes have been written!\r\n");
-		cddl_restoreLedState( m_storedLedState );	// Restore the LED state
+		printf("EndUpgrade failed because not enough bytes have been written, %d file, expected (Header %d + FW %d)\r\n",
+		            m_uiUpgradeFilled, sizeof(OLY_REGION), m_rgnUpgrade.length);
+		abortFwUpgrade();
 		return(false);
 	}
 
@@ -859,7 +890,7 @@ bool Region::EndUpgrade()
 	{
 		printf("EndUpgrade failed because CRC didn't match Adr=0x%08X, Len=0x%08X, C1=0x%08X, C2=0x%08X!\r\n",
 			m_rgnUpgrade.address, m_rgnUpgrade.length, m_rgnUpgrade.crc, crcCalc);
-		cddl_restoreLedState( m_storedLedState );	// Restore the LED state
+		abortFwUpgrade();
 		return(false);
 	}
 	printf("EndUpgrade CRC matched Adr=0x%08X, Len=0x%08X, C1=0x%08X.\r\n",
@@ -870,7 +901,7 @@ bool Region::EndUpgrade()
 	if ( WriteSpiFlashHeader( &m_rgnUpgrade ) == false )
 	{
 		printf("Failed to write SPI Flash Header\n");
-		cddl_restoreLedState( m_storedLedState );	// Restore the LED state
+		abortFwUpgrade();
 		return false;
 	}
 
@@ -883,14 +914,8 @@ bool Region::EndUpgrade()
 	cddl_restoreLedState( m_storedLedState );	// Restore the LED state
 	
 	// Launch into BOOTLOADER which will detect new image in SPI Flash and program it into APROM Flash.
-	if ( m_pConfigOwner )
-	{   // Try to close TCP connections gracefully before the reboot
-    	m_pConfigOwner->olyNetworkPort.SetForceClose();
-    	// Delay to allow TCP connections to be terminated
-    	_time_delay(2000);
-	}
-	
-	launchBootloader();	// Never returns
+	// We wait 500 milliseconds to reboot, this allows this routine to return and send response message to VU-NET.
+	DeferredReboot(FW_UPGRADE_REBOOT_DELAY_MS);
 
 	return(true);
 }
@@ -939,6 +964,7 @@ void Region::launchBootloader(void)
 //	returns true if launch type needed to be changed
 bool Region::SetLaunchType(OLY_REGION_TYPE launchType)
 {
+#if 0	// Not Required since we do not have secondary BootLoader
 	printf("Setting launch type to %d.\n", launchType);
 
 	if (olyBlock.launchType != launchType)
@@ -961,7 +987,23 @@ bool Region::SetLaunchType(OLY_REGION_TYPE launchType)
 		Save();
 		return(true);
 	}
+#else
+	// During firmware upgrade we spoof being the Secondary BootLoader so that 'GetSoftwareInfo' replies to VU-NET
+	// will identify us as having rebooted into bootloader so that VU-NET sends across the firmware file.
+	m_spoofingBootLoader = (launchType == OLY_REGION_SECONDARY_BOOT);
+	printf("Launch type set to %s\n", m_spoofingBootLoader ? "BOOT":"APP");
+#endif
 	return(true);
+}
+
+// Required when we spoof being the secondary bootloader during firmware upgrade to keep VU-NET happy.
+// Called to formulate the reply to GetSoftwareInfo mandolin message sent by VU-NET
+OLY_REGION_TYPE Region::GetLaunchType(void)
+{
+	if ( m_spoofingBootLoader )
+		return OLY_REGION_SECONDARY_BOOT;
+	else
+		return OLY_REGION_APPLICATION;
 }
 
 //	Get the model name based on a Mandolin brand and model

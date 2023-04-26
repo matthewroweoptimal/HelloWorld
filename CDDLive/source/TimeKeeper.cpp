@@ -15,6 +15,7 @@
 #if	USE_CDD_UI
 #include "cddl_leds.h"
 #endif
+#include "Region.h"
 
 LWEVENT_STRUCT timer_event;
 
@@ -35,6 +36,9 @@ void HeartbeatTimer(_timer_id id)
 		if (g_nDeferredRebootDowncount<=0)
 		{
 			g_nDeferredRebootDowncount = 0;
+			
+			// For new CDDLive system, launch into BootLoader to reboot
+			Region::launchBootloader();
 
 #ifdef SC_COMMENTED_OUT
 			//	Soft Reset Now

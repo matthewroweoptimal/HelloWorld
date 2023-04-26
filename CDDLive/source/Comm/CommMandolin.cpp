@@ -196,7 +196,7 @@ mandolin_message * GetParameterResponse(OLY_target Group, int Instance, uint32_t
 	return &tmpMsg;
 }
 
-mandolin_message * GetSoftwareInfoResponse(uint32_t dante_fw_ver, uint32_t dante_cap_ver, uint32_t dante_cap_build, uint8_t sequenceID)
+mandolin_message * GetSoftwareInfoResponse(uint32_t dante_fw_ver, uint32_t dante_cap_ver, uint32_t dante_cap_build, OLY_REGION_TYPE launchType, uint8_t sequenceID)
 {
     uint32_t *pPayload = (uint32_t*)tmpMsgPayload;
     uint32_t version = ((MANDOLIN_MAJOR_VERSION & 0x0ff) << 24) | ((MANDOLIN_MINOR_VERSION & 0x0ff) << 16) | ((OLYspeaker1_XML_VERSION & 0x0ffff) << 0);
@@ -213,7 +213,14 @@ mandolin_message * GetSoftwareInfoResponse(uint32_t dante_fw_ver, uint32_t dante
 #if defined(MFG_TEST_EAW) || defined(MFG_TEST_MARTIN)
 	pPayload[1] = OLY_APPID_MFG_TEST;
 #else
-	pPayload[1] = OLY_APPID_MAIN;
+    if ( launchType == OLY_REGION_APPLICATION )
+    {   // We identify as APP in ressponse at all times except during firmware upgrade where VU-NET expects a reboot into Bootloader.
+    	pPayload[1] = OLY_APPID_MAIN;
+	}
+	else
+	{   // Spoof being the Secondary Bootloader (to keep VU-NET happy during firmware upgrade)
+        pPayload[1] = OLY_APPID_BOOTLOADER;
+	}
 #endif
 	pPayload[2] = (oly_version.major << 24) | (oly_version.minor << 16) | (oly_version.sub << 8) | (oly_version.build);
 

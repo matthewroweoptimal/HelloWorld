@@ -212,7 +212,7 @@ mandolin_message * GetParameterBlockResponse(OLY_target Group, int Instance, uin
 mandolin_message * SetParameter(OLY_target Group, int Instance, uint32_t PID, uint32_t Value);
 mandolin_message * SetParameters(OLY_target Group, int Instance, uint32_t * PIDs, uint32_t * Values, uint32_t numParams);
 mandolin_message * SetParameterBlock(OLY_target Group, int Instance, uint32_t PID1, uint32_t * Values, uint32_t numParams);
-mandolin_message * GetSoftwareInfoResponse(uint32_t dante_fw_ver, uint32_t dante_cap_ver, uint32_t dante_cap_build, uint8_t sequenceID);
+mandolin_message * GetSoftwareInfoResponse(uint32_t dante_fw_ver, uint32_t dante_cap_ver, uint32_t dante_cap_build, OLY_REGION_TYPE launchType, uint8_t sequenceID);
 mandolin_message * GetHardwareInfoResponse(uint8_t brand, uint16_t model, uint8 mac_addr[6], uint8_t sequenceID);
 mandolin_message * GetMacAddrResponse(uint8 mac_addr[6], uint8_t sequenceID);
 mandolin_message * GetStatusAllResponse(uint32_t * pValues, uint8_t sequenceID);

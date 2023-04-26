@@ -408,20 +408,12 @@ uint32_t spi_flash_fw_erase_block( uint32_t sector )
 
 //-----------------------------------------------------------------------------
 // Write something to the firmware flash area (the whole FW area is already erased)
-// With this function we avoid writing to the OLY_REGION header area at the start
-// since this will get updated later (and can only update once after erase)
 //-----------------------------------------------------------------------------
 bool spi_flash_write_fw( uint8_t* pData, uint32_t offset, uint32_t dataLength )
 {
-	uint32_t destAddress = (SPI_FLASH_FW_BASE + offset);
+	uint32_t destAddress = (SPI_FLASH_FW_BASE + sizeof(OLY_REGION) + offset);
 	uint32_t bytesToWrite = dataLength;
 	uint8_t *pDataToWrite = pData;
-	if (offset == 0)
-	{	// Avoid writing to OLY_REGION Header, adjust the write accordingly
-		destAddress += sizeof(OLY_REGION);
-		pDataToWrite += sizeof(OLY_REGION);
-		bytesToWrite -= sizeof(OLY_REGION);
-	}
 
     SPIM_IO_Write( destAddress, USE_4_BYTE_ADDR_MODE, bytesToWrite, pDataToWrite, OPCODE_PP, 1,1,1 );
 
@@ -446,15 +438,9 @@ bool spi_flash_writeFwHeader( OLY_REGION* pHeader )
 bool spi_flash_verify_fw_chunk( uint32_t uiFlashOffset, uint8_t* pChunk )
 {
 	static uint8_t flashContent[FW_UPGRADE_CHUNK_SIZE];
-	uint32_t uiFlashPhyAddress = SPI_FLASH_FW_BASE + uiFlashOffset; // Actual SPI Flash address
+	uint32_t uiFlashPhyAddress = SPI_FLASH_FW_BASE + sizeof(OLY_REGION) + uiFlashOffset; // Actual SPI Flash address
 	uint32_t *pChunkWord = (uint32_t *)pChunk;
 	uint32_t bytesToVerify = FW_UPGRADE_CHUNK_SIZE;
-	if (uiFlashOffset == 0)
-	{	// Avoid verifying the OLY_REGION Header, adjust the verify accordingly
-		uiFlashPhyAddress += sizeof(OLY_REGION);
-		pChunkWord += (sizeof(OLY_REGION)/sizeof(uint32_t));
-		bytesToVerify -= sizeof(OLY_REGION);
-	}
 
 	memset(flashContent, 0, bytesToVerify);
 	SPIM_IO_Read( uiFlashPhyAddress, USE_4_BYTE_ADDR_MODE, bytesToVerify, flashContent, OPCODE_FAST_READ, 1, 1, 1, 1);
