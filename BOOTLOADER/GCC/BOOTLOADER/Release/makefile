@@ -21,6 +21,14 @@ RM := rm -rf
 -include ReleaseOptimised/subdir.mk
 -include Library/Library/subdir.mk
 -include Library/subdir.mk
+-include Debug/User/Drivers/subdir.mk
+-include Debug/User/Boot/subdir.mk
+-include Debug/User/subdir.mk
+-include Debug/Library/Library/subdir.mk
+-include Debug/Library/subdir.mk
+-include Debug/CMSIS/CMSIS/GCC/subdir.mk
+-include Debug/CMSIS/CMSIS/subdir.mk
+-include Debug/subdir.mk
 -include CMSIS/CMSIS/GCC/subdir.mk
 -include CMSIS/CMSIS/subdir.mk
 -include subdir.mk
