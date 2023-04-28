@@ -24,6 +24,14 @@ xcopy "Release 118\OLY_APPLICATION*.img"   %IMAGES_DIR% /y /i
 xcopy "Release 218\OLY_APPLICATION*.img"   %IMAGES_DIR% /y /i
 xcopy "Release Manf\OLY_APPLICATION*.img"  %IMAGES_DIR% /y /i
 
+xcopy "Release\OLY_APPLICATION*.bin"       %IMAGES_DIR% /y /i
+xcopy "Release 8\OLY_APPLICATION*.bin"     %IMAGES_DIR% /y /i
+xcopy "Release 12\OLY_APPLICATION*.bin"    %IMAGES_DIR% /y /i
+xcopy "Release 15\OLY_APPLICATION*.bin"    %IMAGES_DIR% /y /i
+xcopy "Release 118\OLY_APPLICATION*.bin"   %IMAGES_DIR% /y /i
+xcopy "Release 218\OLY_APPLICATION*.bin"   %IMAGES_DIR% /y /i
+xcopy "Release Manf\OLY_APPLICATION*.bin"  %IMAGES_DIR% /y /i
+
 xcopy "..\BOOTLOADER\BOOTLOADER.bin"  %IMAGES_DIR% /y /i
 
 REM Copying of Debug Images commented out for now. 

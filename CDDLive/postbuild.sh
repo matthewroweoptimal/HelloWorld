@@ -14,6 +14,7 @@ PROJ=$3
 PROJPATH=$4
 
 # Extract the Firmware Version automatically from oly.h into variable 'VERSION'
+VERSION=""
 olyHeaderFile=$PROJPATH/Common/oly.h
 found=0
 while read -r line
@@ -31,6 +32,7 @@ done < "$olyHeaderFile"
 
 
 IMGNAME="OLY_APPLICATION_${VERSION}_${MODEL}.img"
+BINNAME="OLY_APPLICATION_${VERSION}_${MODEL}.bin"
 
 
 echo ==========================================================================================================================
@@ -41,7 +43,7 @@ echo
 echo ==========================================================================================================================
 
 echo Creating $PROJ.bin
-$OBJCOPY -O binary "$PROJ.elf" "$PROJ.bin"
+$OBJCOPY -O binary "$PROJ.elf" $BINNAME
 
 #echo Delay 5s
 #sleep 5
