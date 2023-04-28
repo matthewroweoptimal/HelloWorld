@@ -42,18 +42,18 @@ echo NOTE : VERSION $VERSION will be applied, extracted from oly.h
 echo
 echo ==========================================================================================================================
 
-echo Creating $PROJ.bin
+echo Creating $BINNAME
 $OBJCOPY -O binary "$PROJ.elf" $BINNAME
 
 #echo Delay 5s
 #sleep 5
 
-if [ -e $PROJ.bin ]
+if [ -e $BINNAME ]
 then
     echo Creating $IMGNAME
-    "$PROJPATH/../TOOLS/OlyPack.exe" -L $PROJ.log -I $PROJ.bin -O $IMGNAME -V $VERSION -S 0x0 -T 0x0 -P 0x28000
+    "$PROJPATH/../TOOLS/OlyPack.exe" -L $PROJ.log -I $BINNAME -O $IMGNAME -V $VERSION -S 0x0 -T 0x0 -P 0x28000
 else
-    echo WARNING : $PROJ.bin was not created
+    echo WARNING : $BINNAME was not created
 fi
 
 echo === post build end ===
