@@ -12,6 +12,8 @@
 #include "crc16.h"	//we can change to the crc32 native to nuvoton?
 #include "FreeRTOS.h"
 #include "task.h"
+#include "Upgrade.h"
+#include <string.h>
 
 //oly_flash_params_t	__attribute__ ((section(".flash_params"))) g_flash_params;		// Global NV params block - IQ this was commented out, even in the NXP version.
 
@@ -33,7 +35,6 @@ static void flash_driver_init()
 	uint32_t UserConfig[2];
 
 	SYS_UnlockReg();
-	//result = FlashInit(pFlashSSDConfig);
     FMC_Open();                        /* Enable FMC ISP function */
 
     //We should check the dataflash is enabled and the base address is correct.
@@ -69,14 +70,14 @@ static void flash_driver_init()
         //---- Perform chip reset to make new User Config take effect ----
         SYS_ResetChip();
     	while (1);
-    } else
+    }
+    else
     {
     	printf("Data Flash Base Address as expected : [0x%08x]\n", result);
     }
 
-
-    //we now need to copy critical command sequence to RAM. The following is how the original driver worked. I can't just use it but might be able to re-write!
-	//IQ ?!? pFlashCommandSequence = (pFLASHCOMMANDSEQUENCE)RelocateFunction((uint32_t)__ram_for_launch_cmd , LAUNCH_CMD_SIZE ,(uint32_t)FlashCommandSequence);
+	FMC_Close();
+	SYS_LockReg();
 }
 
 void flash_init()
@@ -87,36 +88,41 @@ void flash_init()
 //-----------------------------------------------------------------------------
 // Program the specified block of memory to Data Flash
 //-----------------------------------------------------------------------------
-
 bool data_flash_program( uint32_t dataFlashAddr, uint32_t *pu32Data, uint32_t numU32s )
 {   
     if ( dataFlashAddr < DATA_FLASH_ADDR )
     {
-        printf("Data Flash address 0x%x is below 0x%x\n", dataFlashAddr, DATA_FLASH_ADDR);
+        printf("Data Flash address %08X is below 0x%x\n", dataFlashAddr, DATA_FLASH_ADDR);
         return false;
     }
 
+	SYS_UnlockReg();
     FMC_Open();                        /*--- Enable FMC ISP function ---*/
 
-    bool bRet = true;;
+    bool bRet = true;
     if ( FMC_Erase(dataFlashAddr) != 0 )                // Erase 4kB page
     {
-        printf("Data Flash Erase @ 0x%x failed!\n", dataFlashAddr);
+        printf("Data Flash Erase @ %08X failed!\n", dataFlashAddr);
         bRet = false;
     }
     else
     {
-		for ( uint32_t addr = dataFlashAddr, i = 0; addr < dataFlashAddr + numU32s; addr += 4, i++ )
+		for ( uint32_t addr = dataFlashAddr, i = 0; i < numU32s; addr += 4, i++ )
 		{
 			if ( FMC_Write(addr, pu32Data[i]) != 0 )        /* Program flash */
 			{
-				printf("Data Flash Write @ 0x%x failed!\n", addr);
+				printf("Data Flash Write @ %08X failed!\n", addr);
 				bRet = false;
 			}
 			else
 			{
 				uint32_t verification = FMC_Read(addr);
-				if ( verification != pu32Data[i] )
+	            if (g_FMC_i32ErrCode != 0)
+	            {
+	                printf("Data Flash Verify Failed @ %08X\n", addr);
+	                bRet = false;
+	            }
+	            else if ( verification != pu32Data[i] )
 				{
 					printf("Data Flash Verify Failed @ 0x%08X, wrote 0x%08X, read 0x%08X\n", addr, pu32Data[i], verification);
 				}
@@ -125,7 +131,38 @@ bool data_flash_program( uint32_t dataFlashAddr, uint32_t *pu32Data, uint32_t nu
     }
 
     FMC_Close();                       /*--- Disable FMC ISP function ---*/
-    
+	SYS_LockReg();
+    return bRet;
+}
+
+//-----------------------------------------------------------------------------
+// Read a block of data from Data Flash
+//-----------------------------------------------------------------------------
+bool data_flash_read( uint32_t dataFlashAddr, uint32_t *pu32Data, uint32_t numU32s )
+{
+    if ( dataFlashAddr < DATA_FLASH_ADDR )
+    {
+        printf("Data Flash address 0x%x is below 0x%x\n", dataFlashAddr, DATA_FLASH_ADDR);
+        return false;
+    }
+
+	SYS_UnlockReg();
+    FMC_Open();                        /*--- Enable FMC ISP function ---*/
+
+    bool bRet = true;
+	for ( uint32_t addr = dataFlashAddr, i = 0; i < numU32s; addr += 4, i++ )
+	{
+		pu32Data[i] = FMC_Read(addr);
+        if (g_FMC_i32ErrCode != 0)
+        {
+            printf("Data Flash Read Failed @ %08X\n", addr);
+            bRet = false;
+            break;
+        }
+    }
+
+    FMC_Close();                       /*--- Disable FMC ISP function ---*/
+	SYS_LockReg();
     return bRet;
 }
 

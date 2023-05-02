@@ -74,6 +74,7 @@
 
 void flash_init();
 bool data_flash_program( uint32_t dataFlashAddr, uint32_t *pu32Data, uint32_t numU32s );
+bool data_flash_read( uint32_t dataFlashAddr, uint32_t *pu32Data, uint32_t numU32s );
 
 extern void* p_CurrentParamMemLoc;
 

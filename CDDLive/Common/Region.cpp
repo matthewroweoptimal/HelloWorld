@@ -1136,12 +1136,31 @@ const char *Region::GetMandolinBrandName(LOUD_brand mandolinBrand)
 //---------------------------------------------------------------------------
 void Region::WriteIdentity(uint8_t mac[6], int32_t nBrand, int32_t nModel, uint16_t hardwareRev, uint32_t uiSerialNumber)
 {
+	bool bOtpMacUpdated = false;
 	OLY_IDENTITY olyIdentity;   // Temporary storage for new identity info
 
-	memcpy( &olyIdentity, (uint8_t *)0, sizeof(OLY_IDENTITY) );
+	// Set defaults
+	olyIdentity.hardwareRev = OLY_DEFAULT_HARDWARE_VERSION;
+	olyIdentity.nBrand = OLY_DEFAULT_BRAND;
+	olyIdentity.nModel = OLY_DEFAULT_MODEL;
+	olyIdentity.uiSerialNumber = OLY_DEFAULT_SERIAL_NUMBER;
 
 	if ( ValidateMAC(mac) )
+	{	// Valid MAC address is received. Try to set it into OTP flash area if available.
 		memcpy(olyIdentity.mac, mac, sizeof(olyIdentity.mac));
+		if ( setMACAddressIntoOTP(olyIdentity.mac) )
+		{
+		    printf("MAC Address %02X:%02X:%02X:%02X:%02X:%02X programmed into OTP Flash\n",
+		                olyIdentity.mac[0], olyIdentity.mac[1], olyIdentity.mac[2], olyIdentity.mac[3], olyIdentity.mac[4], olyIdentity.mac[5]);
+		    // Also set into g_System_MAC for reporting via Mandolin message system.
+		    memcpy( g_System_MAC, olyIdentity.mac, sizeof(g_System_MAC) );
+		    bOtpMacUpdated = true;
+		}
+	}
+	else
+	{   // Get the MAC address from Flash in this order : OTP Flash MAC, Data Flash MAC, Default MAC
+	    readMACAddressFromOTP(olyIdentity.mac);
+	}
 
 	//	Assign additional info if available
 	if (-1!=nBrand)
@@ -1152,24 +1171,6 @@ void Region::WriteIdentity(uint8_t mac[6], int32_t nBrand, int32_t nModel, uint1
 		olyIdentity.hardwareRev = hardwareRev;
 	if (0xFFFFFFFF!=uiSerialNumber)
 		olyIdentity.uiSerialNumber = uiSerialNumber;
-
-	//	Verify contents are valid values
-	if (!ValidateMAC(olyIdentity.mac))
-	{
-		printf("Invalid MAC in identity flash replaced with default!\r\n");
-		olyIdentity.mac[0] = OLY_DEFAULT_MAC_ADDR0;
-		olyIdentity.mac[1] = OLY_DEFAULT_MAC_ADDR1;
-		olyIdentity.mac[2] = OLY_DEFAULT_MAC_ADDR2;
-		olyIdentity.mac[3] = OLY_DEFAULT_MAC_ADDR3;
-		olyIdentity.mac[4] = OLY_DEFAULT_MAC_ADDR4;
-		olyIdentity.mac[5] = OLY_DEFAULT_MAC_ADDR5;
-	}
-	else
-	{   // Valid MAC address is received. Try to set it into OTP flash area if available.
-	    if ( setMACAddressIntoOTP(olyIdentity.mac) )
-	        printf("MAC Address %02X:%02X:%02X:%02X:%02X:%02X programmed into OTP Flash\n", 
-	                    olyIdentity.mac[0], olyIdentity.mac[1], olyIdentity.mac[2], olyIdentity.mac[3], olyIdentity.mac[4], olyIdentity.mac[5]);
-	}
 
 	if ((LOUD_BRAND_EAW!=olyIdentity.nBrand) && (LOUD_BRAND_MARTIN!=olyIdentity.nBrand) && (LOUD_BRAND_MACKIE!=olyIdentity.nBrand))
 	{
@@ -1206,13 +1207,20 @@ void Region::WriteIdentity(uint8_t mac[6], int32_t nBrand, int32_t nModel, uint1
 	if (0xFFFFFFFF==olyIdentity.uiSerialNumber)
 	{
 		printf("Invalid serial number in identity flash replaced with default!\r\n");
-		olyIdentity.hardwareRev = 0;
+		olyIdentity.uiSerialNumber = OLY_DEFAULT_SERIAL_NUMBER;
 	}
 
 	printf("Saving Identity Sector, hold on...");
     if ( data_flash_program((uint32_t)OLY_IDENTITY_LOCATION, (uint32_t *)&olyIdentity, sizeof(OLY_IDENTITY)/sizeof(uint32_t)) )
     {
 	    printf("Success.\r\n");
+	    // Update Global variables with new information (for reporting via Mandolin message system)
+	    g_systemBrand    = (LOUD_brand)olyIdentity.nBrand;
+	    g_nSystemModel   = olyIdentity.nModel;
+	    g_hardwareRev    = olyIdentity.hardwareRev;
+	    g_uiSerialNumber = olyIdentity.uiSerialNumber;
+	    if ( bOtpMacUpdated == false )
+	    	memcpy( g_System_MAC, olyIdentity.mac, sizeof(g_System_MAC) );
     }
 }
 

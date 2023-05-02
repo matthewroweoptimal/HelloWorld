@@ -18,7 +18,7 @@ const uint32_t OTP_MAC_ADDRESS_LOC = 0;	// First location in OTP used for MAC (8
 //--------------------------------------------------------------
 // @brief   Program MAC address into OTP Flash area.
 // @param   mac     - MAC address to program into OTP Flash
-// @return  true = OTP programmed ok,  false = OTP programming not possible.
+// @return  true = OTP programmed ok (or value already set),  false = OTP programming not possible.
 //--------------------------------------------------------------
 bool setMACAddressIntoOTP( const uint8_t *pMac )
 {
@@ -69,7 +69,12 @@ bool setMACAddressIntoOTP( const uint8_t *pMac )
     }
     else
     {	// OTP MAC is already programmed.
-    	retCode = false;
+    	uint32_t lsWord = ((pMac[2]&0xFF) << 24) | ((pMac[3]&0xFF) << 16) | ((pMac[4]&0xFF) << 8) | (pMac[5] & 0xFF);
+    	uint32_t msWord = ((pMac[0]&0xFF) << 8) | (pMac[1] & 0xFF);
+    	if ( (lowWord == lsWord) && (highWord == msWord) )
+    		retCode = true;		// OTP MAC matches what we desire.
+    	else
+    		retCode = false;	// OTP MAC not set to what we want
     }
 
     FMC_Close();					 /* Disable FMC ISP function */
