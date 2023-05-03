@@ -2666,6 +2666,7 @@ namespace oly {
     	return IPREVERSEBYTES(ipAddress);
     }
     
+    // Called as a result of mandolin SetStaticIP() or SetIpSettings() call
     void Config::SetIP()
     {
     	g_CurrentIpAddress = m_pUpgrade->GetStaticIp();
@@ -2674,10 +2675,17 @@ namespace oly {
     
     	if (0!=g_CurrentIpAddress)
     	{
-    		network_UseStaticIP(&g_CurrentIpAddress, &uiStaticGateway, &uiStaticMask);
-    	}else{
+        	// Allow this change to take place on reboot as this is what VU-NET expects, it needs a mandolin ACK reply back on same IP
+//    		network_UseStaticIP(&g_CurrentIpAddress, &uiStaticGateway, &uiStaticMask);
+    	}
+    	else
+    	{
     		network_UseDHCP();
     	}
+    	
+    	// REBOOT to let network changes take effect.
+    	// (Note : Deferred by 1s, since we need to return from this to send mandolin ACK reply back to VU-NET)
+	    DeferredReboot( 1000 );
     }
     
     void Config::SwitchToDHCP()
@@ -3119,8 +3127,17 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     bool Config::IsInitialized()
     {
         return olyStoredParams.XML_Version == OLYspeaker1_XML_VERSION;
-    }    
+    }   
     
+    void Config::getIpSettings( uint32_t &ip, uint32_t &subnet, uint32_t &gw )
+    {  	
+        ip = m_pUpgrade->GetStaticIp();
+        subnet = m_pUpgrade->GetStaticGateway();
+        gw = m_pUpgrade->GetStaticMask();  
+    }
+    
+    // Constructor
+    //------------
     Config::Config() :
     #if USE_OLY_UI
     olyUI(this),
@@ -3207,8 +3224,7 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     	olyParams.Airloss = olyStoredParams.Stored_Airloss;
     	olyParams.NoiseGate = olyStoredParams.Stored_NoiseGate;
     
-    	UpdateNeighbourHardwareStatus();
-    
+    	UpdateNeighbourHardwareStatus();  	
     }
 #endif // 0
 

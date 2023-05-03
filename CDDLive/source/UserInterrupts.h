@@ -130,14 +130,16 @@ void vApplicationIdleHook( void )
     memory allocated by the kernel to any task that has since been deleted. */
 }
 /*-----------------------------------------------------------*/
-
-
+static TaskStatus_t xTaskDetails;
 void vApplicationStackOverflowHook( TaskHandle_t pxTask, signed char *pcTaskName )
 {
     /* Run time stack overflow checking is performed if
     configCHECK_FOR_STACK_OVERFLOW is defined to 1 or 2.  This hook
     function is called if a stack overflow is detected. */
     printf("StackOverflowHook : TaskHandle %p (%s)\n", pxTask, pcTaskName );
+	vTaskGetInfo( pxTask, &xTaskDetails, pdTRUE, eInvalid );
+	printf("Task '%s' (HWM %d)\n", xTaskDetails.pcTaskName, xTaskDetails.usStackHighWaterMark );
+
 #ifndef NDEBUG
     __BKPT(3);    // Stack will be available for examination under debugger
 #endif

@@ -22,11 +22,9 @@ public:
 
 protected:
     void Run();
-
-    struct netif netif;
     
 private:
-    SemaphoreHandle_t   _semMainThreadComplete;    
+    SemaphoreHandle_t   _semMainThreadComplete;
 };
 
 #endif /* TCPTHREAD_H_ */

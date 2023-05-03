@@ -38,7 +38,8 @@ extern uint8_t				netRxFifo_bytes[NETWORK_MANDOLIN_FIFO_SIZE];
 //	Public API
 //	retrieves read-only pointer to network data and optionally copies to passed structure if pointer non-zero
 const struct netif *network_get_netif(struct netif *p_netif);
+void networkInitialisation(ip_addr_t *pIpAddr, ip_addr_t *pGateway, ip_addr_t *pNetmask);
 void network_UseDHCP(void);
-void network_UseStaticIP(uint32_t * ipaddr, uint32_t * gateway, uint32_t * mask);
+void network_UseStaticIP(uint32_t *ipaddr, uint32_t *gateway, uint32_t *mask);
 
 #endif /* SOURCES_NETWORK_H_ */

@@ -41,6 +41,7 @@ extern "C" {
 //#include "MMA8653FC.h"
 //#include "IRDAManager.h"
 //#include "sys.h"
+#include "netif/ethernetif.h"
 }
 
 #include "MQX_To_FreeRTOS.h"
@@ -341,7 +342,33 @@ void Config_Task(uint32_t task_init_data)
 
 	/* Init Ethernet driver */
 	network_init();
-	olyConfig->SetIP();
+    uint32_t   ip, subnet, gw;
+	ip4_addr_t ipAddr, subnetMask, gateway;
+	
+    olyConfig->getIpSettings( ip, subnet, gw ); // Retrieve saved settings from data flash OLY_BLOCK
+    
+	ipAddr.addr     = ip;
+	subnetMask.addr = subnet;
+	gateway.addr    = gw;
+
+    if ( ip == 0 )
+    {	// DHCP / AUTO-IP address
+        printf("Starting DHCP\n");
+        networkInitialisation( &ipAddr, &gateway, &subnetMask );
+     	network_UseDHCP();
+    }
+    else
+    {	// Static IP address
+        printf( "Using Static IP '%s'\n", ipaddr_ntoa(&ipAddr) );
+        networkInitialisation( &ipAddr, &gateway, &subnetMask );
+		network_UseStaticIP( &ip, &gw, &subnet );
+    }
+
+	NVIC_SetPriority(EMAC_TX_IRQn, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1);
+	NVIC_EnableIRQ(EMAC_TX_IRQn);
+	NVIC_SetPriority(EMAC_RX_IRQn, configLIBRARY_MAX_SYSCALL_INTERRUPT_PRIORITY + 1);
+	NVIC_EnableIRQ(EMAC_RX_IRQn);
+
 	network_initialized = true;
 
 #if USE_OLY_UI
@@ -358,9 +385,6 @@ void Config_Task(uint32_t task_init_data)
 
 	configtask_initialized = true;
 	 _time_get_elapsed_ticks(&startTicks);
-
-
-
 
 	while (1) {
 		nMsgs = MSGQ_GET_COUNT(config_qid);

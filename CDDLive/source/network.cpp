@@ -13,56 +13,49 @@
 
 // Standard C Included Files
 #include <stdio.h>
+#include <cstring>
 #include "network.h"
-
-#if 0
-// lwip Included Files
-#include "lwip/opt.h"
-#include "lwip/mem.h"
-#include "lwip/raw.h"
-#include "lwip/icmp.h"
-#include "lwip/netif.h"
-#include "lwip/sys.h"
-
-//#include "lwip/timers.h"
-#include "lwip/timeouts.h"
-
-#include "lwip/inet_chksum.h"
-#include "lwip/init.h"
-#include "netif/etharp.h"
-#include "lwip/tcpip.h"
-#include "lwip/sockets.h"
-#include "lwip/inet.h"
-#include "lwip/dhcp.h"
-#include "lwip/tcp.h"
-#endif
+#include "lwip/apps/mdns.h"
 
 // SDK Included Files
-//#include "fsl_clock_manager.h"
-//#include "fsl_os_abstraction.h"
-extern "C" {
-#include "lwip/opt.h"
-#include "lwip/api.h"
-#include "lwip/netif.h"
-
-//#include "ethernetif.h"
+extern "C"
+{
+ #include "lwip/opt.h"
+ #include "lwip/api.h"
+ #include "lwip/netif.h"
+ #include "otpFlash.h"
 }
 #include "board.h"
-//#include "lwevent.h"
 #include "ConfigManager.h"
 
 #include "os_tasks.h"
+#include "TcpThread.h"
+#include "Region.h"
 
 
 mandolin_fifo	netRxFifo;
 uint8_t			__attribute__ ((section(".external_ram"))) netRxFifo_bytes[NETWORK_MANDOLIN_FIFO_SIZE];
 uint32_t		g_CurrentIpAddress;
+_queue_id		tcp_qid;
 
-_queue_id	tcp_qid;
+// Define global macAddr[] which is used in LWIP low_level_init()
+unsigned char macAddr[6] =
+{
+        OLY_DEFAULT_MAC_ADDR0,  // Match with Defaults.h definition of default MAC address
+        OLY_DEFAULT_MAC_ADDR1,
+        OLY_DEFAULT_MAC_ADDR2,
+        OLY_DEFAULT_MAC_ADDR3,
+        OLY_DEFAULT_MAC_ADDR4,
+        OLY_DEFAULT_MAC_ADDR5
+};
+const char mdnsName[] = "cddlive";
+
 
 struct netif fsl_netif0;
+NETIF_DECLARE_EXT_CALLBACK( netif_callback )
 
 extern oly::Config *olyConfig;	//	Messy going through Config object, won't be necessary when this file combined with NetworkPort.cpp
+
 
 void dhcp_callback(struct netif* pnetif)
 {
@@ -75,6 +68,47 @@ void dhcp_callback(struct netif* pnetif)
 	}
 }
 
+static void netifStatusCallback(struct netif *netif, netif_nsc_reason_t reason, const netif_ext_callback_args_t *args)
+{
+	LWIP_UNUSED_ARG(netif);
+	LWIP_UNUSED_ARG(args);
+
+	if (reason & LWIP_NSC_LINK_CHANGED) {
+		printf("Netif link %s\n", args->link_changed.state? "up" : "down");
+	}
+
+	if (reason & (LWIP_NSC_IPV4_ADDRESS_CHANGED | LWIP_NSC_IPV4_GATEWAY_CHANGED |
+			LWIP_NSC_IPV4_NETMASK_CHANGED | LWIP_NSC_IPV4_SETTINGS_CHANGED ))
+	{
+		printf("Netif IP change: %s\n", ip_ntoa(&(netif->ip_addr)));
+		mdns_resp_netif_settings_changed(netif);
+	}
+}
+
+static void srv_txt(struct mdns_service *service, void *txt_userdata)
+{
+    char szText[64];
+
+	sprintf(szText, "Brand=%s", Region::GetMandolinBrandName(Region::GetSystemBrand()));
+    int res = mdns_resp_add_service_txtitem(service, szText, strlen(szText));
+    LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
+
+	sprintf(szText, "Model=%s", Region::GetMandolinModelName(Region::GetSystemBrand(), Region::GetSystemModel()));
+    res = mdns_resp_add_service_txtitem(service, szText, strlen(szText));
+    LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
+
+	sprintf(szText, "Revision=%d", (int)Region::GetHardwareRevision());
+    res = mdns_resp_add_service_txtitem(service, szText, strlen(szText));
+    LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
+
+   	sprintf(szText, "Serial=%d", (int)Region::GetSerialNumber());
+    res = mdns_resp_add_service_txtitem(service, szText, strlen(szText));
+    LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
+}
+
+//-------------------------------------------------------------------------------------
+// MANDOLIN Processing Thread
+//-------------------------------------------------------------------------------------
 static void tcp_mandolin_thread(void *arg)
 {
     struct netconn *conn, *newconn;
@@ -93,11 +127,6 @@ static void tcp_mandolin_thread(void *arg)
 
     // Create a new connection identifier
     conn = netconn_new(NETCONN_TCP);
-
-#if LWIP_DHCP
-//    if(fsl_netif0.dhcp)
-//    	netconn_set_recvtimeout(conn, 10000);
-#endif
 
     netconn_bind(conn, NULL, MANDOLIN_PORT_TCP);
 
@@ -324,70 +353,44 @@ static void tcp_mandolin_thread(void *arg)
     }
 }
 
-#if 0
-void network_test(void)
+static bool bMandolinThreadRunning = false;
+
+// Called on startup
+void network_UseStaticIP(uint32_t *ipaddr, uint32_t *gateway, uint32_t *mask)
 {
-	ip_addr_t fsl_netif0_ipaddr, fsl_netif0_netmask, fsl_netif0_gw;
+    if ( !bMandolinThreadRunning )
+    {
+        network_init();
+    	sys_thread_new("tcp_mandolin_thread", tcp_mandolin_thread, NULL, TCP_MANDOLIN_STACK_SIZE, TCP_MANDOLIN_THREAD_PRIORITY);
+    	bMandolinThreadRunning = true;
+	}
 
-	LWIP_DEBUGF(PING_DEBUG,("TCP/IP initializing...\r\n"));
-	tcpip_init(NULL,NULL);
-	LWIP_DEBUGF(PING_DEBUG,("TCP/IP initialized.\r\n"));
+    printf("Stopping DHCP to go to STATIC IP\n");
+    netifapi_dhcp_release_and_stop( &fsl_netif0 );
 
-	IP4_ADDR(&fsl_netif0_ipaddr, 10,1,7,200);
-	IP4_ADDR(&fsl_netif0_netmask, 255,255,255,0);
-	IP4_ADDR(&fsl_netif0_gw, 10,1,1,1);
+    ip4_addr_t ip, subnet, gw;
+    ip.addr = *ipaddr;
+    subnet.addr = *mask;
+    gw.addr = *gateway;
+    netifapi_netif_set_addr( &fsl_netif0, &ip, &subnet, &gw );
 
-	netif_add(&fsl_netif0, &fsl_netif0_ipaddr, &fsl_netif0_netmask, &fsl_netif0_gw, NULL, ethernetif_init, tcpip_input);
-	netif_set_default(&fsl_netif0);
-
-	netif_set_up(&fsl_netif0);
-	sys_thread_new("tcp_mandolin_thread", tcp_mandolin_thread, NULL, 3000, 3);
-}
-#endif // 0
-
-void network_UseStaticIP(uint32_t * ipaddr, uint32_t * gateway, uint32_t * mask)
-{
-#if 0
-	LWIP_DEBUGF(PING_DEBUG,("\r\nTCP/IP initializing..."));
-	tcpip_init(NULL,NULL);
-	LWIP_DEBUGF(PING_DEBUG,("\nTCP/IP initialized.\r\n"));
-	printf("IPv4 Address: %d.%d.%d.%d\r\n", IPBYTES(((ip_addr_t*)ipaddr)->addr));
-
-	netif_add(&fsl_netif0, (ip_addr_t*)ipaddr, (ip_addr_t*)mask, (ip_addr_t*)gateway, NULL, ethernetif_init, tcpip_input);
-	netif_set_default(&fsl_netif0);
-
-	netif_set_up(&fsl_netif0);
-#endif // 0
-	sys_thread_new("tcp_mandolin_thread", tcp_mandolin_thread, NULL, TCP_MANDOLIN_STACK_SIZE, TCP_MANDOLIN_THREAD_PRIORITY);
+    mdns_resp_rename_netif(&fsl_netif0, mdnsName);
 }
 
+// Called on startup
 void network_UseDHCP(void)
 {
-#if 0 // Handled in TcpThread::Run()
-	ip_addr_t fsl_netif0_ipaddr, fsl_netif0_netmask, fsl_netif0_gateway;
+    if ( !bMandolinThreadRunning )
+    {	
+	    network_init();
+	    sys_thread_new("tcp_mandolin_thread", tcp_mandolin_thread, NULL, TCP_MANDOLIN_STACK_SIZE, TCP_MANDOLIN_THREAD_PRIORITY);
+	    bMandolinThreadRunning = true;
+    }
 
-	LWIP_DEBUGF(PING_DEBUG,("TCP/IP initializing...\r\n"));
-	tcpip_init(NULL,NULL);
-	LWIP_DEBUGF(PING_DEBUG,("TCP/IP initialized.\r\n"));
+    printf("Starting DHCP\n");
+	dhcp_start(&fsl_netif0 );
 
-	IP4_ADDR(&fsl_netif0_ipaddr, 0,0,0,0);
-	IP4_ADDR(&fsl_netif0_netmask, 0,0,0,0);
-	IP4_ADDR(&fsl_netif0_gateway, 0,0,0,0);
-
-	netif_add(&fsl_netif0, &fsl_netif0_ipaddr, &fsl_netif0_netmask, &fsl_netif0_gateway, NULL, ethernetif_init, tcpip_input);
-	netif_set_default(&fsl_netif0);
-
-	//netif_set_up(&fsl_netif0);
-
-	netif_set_status_callback(&fsl_netif0, dhcp_callback);
-
-	dhcp_start(&fsl_netif0);
-//	autoip_start(&fsl_netif0);
-#endif
-
-	network_init();
-	sys_thread_new("tcp_mandolin_thread", tcp_mandolin_thread, NULL, TCP_MANDOLIN_STACK_SIZE, TCP_MANDOLIN_THREAD_PRIORITY);
-
+    mdns_resp_rename_netif(&fsl_netif0, mdnsName);
 }
 
 void network_init(void)
@@ -395,6 +398,30 @@ void network_init(void)
 	uint32_t 	result;
 
 	MANDOLIN_FIFO_init(&netRxFifo,NETWORK_MANDOLIN_FIFO_SIZE, netRxFifo_bytes);
+}
+
+void networkInitialisation(ip_addr_t *pIpAddr, ip_addr_t *pGateway, ip_addr_t *pNetmask)
+{
+	ip_addr_t ipaddr = *pIpAddr;
+    ip_addr_t netmask = *pNetmask;
+    ip_addr_t gw = *pGateway;
+
+	tcpip_init(NULL, NULL);
+
+	// Get the MAC address from Flash in this order : OTP Flash MAC, Data Flash MAC, Default MAC
+	readMACAddressFromOTP(macAddr);
+
+	netif_add(&fsl_netif0, &ipaddr, &netmask, &gw, NULL, ethernetif_init, tcpip_input);
+
+	netif_set_default(&fsl_netif0);
+	netif_set_up(&fsl_netif0);
+
+	// register a callback for interface changes
+	netif_add_ext_callback(&netif_callback, netifStatusCallback);
+
+	mdns_resp_init();
+	mdns_resp_add_netif(&fsl_netif0, mdnsName);
+	mdns_resp_add_service(&fsl_netif0, olyConfig->GetDiscoServiceName(), "_mandolin", DNSSD_PROTO_TCP, 50001, srv_txt, NULL);
 }
 
 #if 0

@@ -118,7 +118,7 @@
 /* MEMP_NUM_SYS_TIMEOUT: the number of simultaneously active
    timeouts. */
 #ifndef MEMP_NUM_SYS_TIMEOUT
-#define MEMP_NUM_SYS_TIMEOUT    11  // Increased from 10 since AUTO-IP configured
+#define MEMP_NUM_SYS_TIMEOUT    14  // Increased from 10 since AUTO-IP configured
 #endif
 
 /* ---------- Pbuf options ---------- */

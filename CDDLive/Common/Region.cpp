@@ -503,6 +503,9 @@ void Region::SetStaticIp(uint32_t uiIp)
 {
 	olyBlock.staticIp.ipv4.ip = uiIp;
 	Save();
+	
+	if ( m_pConfigOwner )
+		m_pConfigOwner->SetIP();	// Force network change
 }
 
 uint32_t Region::GetStaticIp()
@@ -542,6 +545,9 @@ void Region::SetIpSettings(uint32_t uiIp, uint32_t uiGateway, uint32_t uiMask)
 	olyBlock.gatewayIp.ipv4.ip = uiGateway;
 	olyBlock.mask.ipv4.ip = uiMask;
 	Save();
+	
+	if ( m_pConfigOwner )
+		m_pConfigOwner->SetIP();	// Force network change
 }
 
 //---------------------------------------------------------------------------

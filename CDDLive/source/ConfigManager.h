@@ -140,7 +140,6 @@ public:
 	oly_status_t *GetStatusParamsDatabase();
 	void SetActivePreset(OLY_target group, uint32_t instance);
 	
-#if 1
 	void SetInputSelectMode(LOUD_audio_mode mode);
 	uint8_t GetInputSelectMode();
 	void SetDisplayUserMode(LOUD_disp_mode display_mode);
@@ -158,13 +157,11 @@ public:
 			int8_t arrayMismatch, bool arrayReady);
 
 	uint32_t ReverseIpValues(uint32_t ipAddress);
-#endif // 0
 
 	/* Status Functions */
 	void SetSelfTestMode(LOUD_test_mode test_mode);
 	LOUD_test_mode GetSelfTestMode(void);
 
-#if 1
 	void ResetSelfTestTimer();
 	void DestroySelfTestTimer();
 	void SelfTestSequence();
@@ -184,13 +181,11 @@ public:
 	void SetLFSolo(bool solo);
 	float GetCurrentAmpTemp(amp_instance_t amp);
 	void UpdateCurrentTiltAngle(void);
-#endif // 0
 	
 	void OnIPAddressChanged(uint32_t ip);
 	void OnAmpFaultStatusChanged(bool fault);
 	void OnLimiterStatusChanged(bool limiting);
 
-#if 1	
 	void OnArrayConfigurationChanged(void);
 	void OnFanStatusChanged(bool fan_on);
 	void OnAmpTempChanged(amp_instance_t amp, float32 temp);
@@ -203,11 +198,9 @@ public:
 	void OnSelfTestModeChanged(LOUD_test_mode mode);
 	void SetSelfTestSequence(dsp_channels_t sequence);
 	void OnMuteSoloChanged();
-#endif // 0
 
 	void KillAllSubscriptions(void);
 	
-#if 1
 	void GetCurrentMeter();
 	float GetCurrentUIMeter();
 	bool MeterRangeCheck(float min, float max);
@@ -254,11 +247,8 @@ public:
 	uint32_t Controls_GetArrayIndex(void);
 	void Controls_SetArraySizeFromStatus(void);
 	uint32_t Controls_GetArraySize(void);
-#endif // 0
 
 	void Controls_RestoreDefaults(void);
-
-#if 1
 	void Controls_RestoreIPAddresses(void);
 
 	void Controls_SetLogoMode(LOUD_logo_mode mode);
@@ -275,20 +265,15 @@ public:
 
 	/* System Functions */
 	void LoadAllFromFlash();
-#endif // 0
 	
 	void StoreParams();			// Starts the countdown before writing to flash
 	
-#if 1
 	void WriteParamsToFlash();	// Actually writes to flash
-#endif // 0
 	
 	void RestoreDefaults(bool startup);
 	
-#if 1	
 	void RestoreIPAddresses();
 	void RestoreUserEQ(int instance);
-#endif // 0
 	
 	void ClearOptimization();
 	float ParamGetMin(OLYspeaker1_USER_pid PID);
@@ -300,7 +285,6 @@ public:
 	float ParamXoverGetValue(uint32_t instance, OLYspeaker1_XOVER_pid PID);
 	mandolin_error_code ParamValidate(OLY_target group, uint32_t PID, mandolin_parameter_value * pValue);
 	
-#if 1	
 	void SetAudioSource(oly_audio_source_t source);
 	oly_audio_source_t GetAudioSource(void);
 	void EvaluateFanControl();
@@ -310,11 +294,9 @@ public:
 
 	/* Error Functions */
 	void DSPErrorTimer_Cancel(void);
-#endif // 0
 
 	void DSPErrorTimer_Reset(void); 
 	
-#if 1
 	void SendGetHardwareInfo(MandolinPort * srcPort);
 
 	void SetLcdBrightness(int level);
@@ -329,7 +311,6 @@ public:
 	void InitStatusParams();	
 	char * GetDiscoServiceName();
 	void OnNetworkConnectionChanged(bool connected);
-#endif // 0
 	
 	void OpenNetworkPort(bool bOpen, int nPort);
 	bool GetForceNetworkPortClose(int nPort);
@@ -343,7 +324,7 @@ public:
 	void MandolinProcess(int nTaskId);
 	void MandolinHandle(MandolinPort * srcPort, mandolin_mqx_message * msg_ptr);
 	bool IsInitialized();
-#if 1
+	void getIpSettings( uint32_t &ip, uint32_t &subnet, uint32_t &gw );
 	uint32_t GetUserParamsValidIndicator();
 	bool32 ComputeAutoOptimize(void);
 	void OptiCalcAndSetAirloss(uint32_t compEQ);
@@ -366,7 +347,6 @@ public:
 	void OnDanteChange_Reboot(void);
 	void OnDanteChange_Upgrade(void);
 	void OnDanteChange_CodecReset(void);
-#endif // 0
 
 private:
 	void HandleGetSoftwareInfo(MandolinPort * srcPort, mandolin_message * pMsg);
