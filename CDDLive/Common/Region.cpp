@@ -31,6 +31,8 @@ extern "C" {
 #define ALL_LEDS_ON     		0x0F
 #define NUM_OF_FW_UPDATE_LEDS	4
 
+#define OLY_MANF_STATIC_IP			IPADDR(169,254,1,101)	// Manufacturing Static IP 169.254.1.101
+#define OLY_MANF_MASK				IPADDR(255,255,0,0)		//Manufacturing Static IP Mask is : 255.255.0.0
 
 // Define OLY_BLOCK within Data Flash Region
 OLY_BLOCK __attribute__ ((section(".oly_block"))) g_dataFlashOlyBlock =
@@ -40,9 +42,15 @@ OLY_BLOCK __attribute__ ((section(".oly_block"))) g_dataFlashOlyBlock =
 	OLY_MAGIC_WORD,		// magicWord
 	OLY_BLOCK_VERSION,  // version
 	0,					// isIpv6
+#if defined(Martin_Generic)         // 'Debug Manf' build configuration
+	{OLY_MANF_STATIC_IP, 0},		// Manufacturing build Static IP configured is	: 169.254.1.101
+	{OLY_DEFAULT_GATEWAY, 0},		// Manufacturing build, No Gateway configured
+	{OLY_MANF_MASK, 0},				// Manufacturing build, Static IP mask is 		: 255.255.0.0
+#else
 	{OLY_DEFAULT_STATIC_IP, 0},	// staticIp
 	{OLY_DEFAULT_GATEWAY, 0},	// gatewayIp
-	{OLY_DEFAULT_MASK, 0},	// mask
+	{OLY_DEFAULT_MASK, 0},		// mask
+#endif
 	OLY_REGION_APPLICATION,	// launchType
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},	// reserved[21]
 	{					// rgn[0]
