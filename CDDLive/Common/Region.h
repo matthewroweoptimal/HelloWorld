@@ -33,7 +33,8 @@ typedef struct regionCrc16Data {
 
 class Region {
 protected:
-	OLY_BLOCK 	olyBlock;
+	OLY_BLOCK 	    olyBlock;
+	OLY_IDENTITY    m_olyIdentity;  // Copy of OLY_IDENTITY block read from Data Flash
 
 public:
 	Region( oly::Config *pConfigOwner );
@@ -68,6 +69,10 @@ public:
 	static void launchBootloader(void);
 
 private:
+	void LoadIdentity();
+	void SaveIdentity();
+	bool VerifyIdentity();
+	void InitializeIdentity();
 	void Load();
 	void Save();
 	bool Verify();
