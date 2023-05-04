@@ -142,14 +142,14 @@ void MainThread::Run()
 	if(readByte!=ASP_CLK_CNFG)
 	{
 		printf("DAC failed to initialise\n");
-		while(1)
-		{
-			if(count++ > 2500000)
-				{
-				Leds::toggleLed(GREEN_LED2);
-				count = 0;
-				}
-		}
+//		while(1)
+//		{
+//			if(count++ > 2500000)
+//				{
+//				Leds::toggleLed(GREEN_LED2);
+//				count = 0;
+//				}
+//		}
 	}
 
 

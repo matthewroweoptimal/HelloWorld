@@ -96,6 +96,7 @@ void readMACAddressFromOTP( uint8_t *pMac )
     SYS_UnlockReg();                   /* Unlock protected registers */
     FMC_Open();                        /* Enable FMC ISP function */
 
+#if 0 //	IQ - NOT CHECKING OTP
     if (FMC_Read_OTP(OTP_MAC_ADDRESS_LOC, &lowWord, &highWord) != 0)
     {
         printf("Read OTP failed!\n");
@@ -125,6 +126,7 @@ void readMACAddressFromOTP( uint8_t *pMac )
 	
 	if ( retCode == false )
     {   // No valid MAC in OTP Flash, so next try OLY_IDENTITY block
+#endif//	IQ - NOT CHECKING OTP
     	memcpy(mac, OLY_IDENTITY_LOCATION->mac, sizeof(mac));
 
     	//	Needs to  move inside Config object
@@ -142,7 +144,7 @@ void readMACAddressFromOTP( uint8_t *pMac )
     	    mac[5] = OLY_DEFAULT_MAC_ADDR5;
     		printf( "Using DEFAULT MAC : " );
     	}
-	}
+	//}	IQ - NOT CHECKING OTP
 
 	// Return the MAC to the user
 	printf("%02x:%02x:%02x:%02x:%02x:%02x\r\n",	mac[0],	mac[1], mac[2], mac[3], mac[4], mac[5] );
