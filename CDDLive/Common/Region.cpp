@@ -484,13 +484,18 @@ void Region::InitializeIdentity()
 {
 	// Initialise Identity to defaults according to Brand / Model.
 	// (Currently only MARTIN models : CDDL8, CDDL12, CDDL15, CSXL118, CSXL218 are supported)
-	printf("Initialising Identity to Defaults\n");
-	m_olyIdentity.mac[0] = OLY_DEFAULT_MAC_ADDR0;
-	m_olyIdentity.mac[1] = OLY_DEFAULT_MAC_ADDR1;
-	m_olyIdentity.mac[2] = OLY_DEFAULT_MAC_ADDR2;
-	m_olyIdentity.mac[3] = OLY_DEFAULT_MAC_ADDR3;
-	m_olyIdentity.mac[4] = OLY_DEFAULT_MAC_ADDR4;
-	m_olyIdentity.mac[5] = OLY_DEFAULT_MAC_ADDR5;
+	if ( !ValidateMAC(m_olyIdentity.mac) )
+	{   // Only initialise MAC to default if it is invalid.
+    	m_olyIdentity.mac[0] = OLY_DEFAULT_MAC_ADDR0;
+    	m_olyIdentity.mac[1] = OLY_DEFAULT_MAC_ADDR1;
+    	m_olyIdentity.mac[2] = OLY_DEFAULT_MAC_ADDR2;
+    	m_olyIdentity.mac[3] = OLY_DEFAULT_MAC_ADDR3;
+    	m_olyIdentity.mac[4] = OLY_DEFAULT_MAC_ADDR4;
+    	m_olyIdentity.mac[5] = OLY_DEFAULT_MAC_ADDR5;
+    }
+    printf("Initialising Identity to Defaults, Data Flash MAC is %02X:%02X:%02X:%02X:%02X:%02X\r\n",
+        	m_olyIdentity.mac[0], m_olyIdentity.mac[1], m_olyIdentity.mac[2],
+        	m_olyIdentity.mac[3], m_olyIdentity.mac[4], m_olyIdentity.mac[5] );
 	m_olyIdentity.hardwareRev = OLY_DEFAULT_HARDWARE_VERSION;
 	m_olyIdentity.nBrand = OLY_DEFAULT_BRAND;		// Default Brand is : LOUD_BRAND_MARTIN
 	m_olyIdentity.uiSerialNumber = OLY_DEFAULT_SERIAL_NUMBER;
