@@ -1022,19 +1022,24 @@ void Config::SoftwareReset(MandolinPort * srcPort, mandolin_message * pMsg)
 			//	Send Disconnect messages to all other ports - don't know if should send to calling port (Alex?)
 //			srcPort->WriteMessage(Disconnect(MANDOLIN_DISCONNECT_UPDATING, broadcastExcludeNoSHARC);	//	Not currently supported
 
-			//	Change launch type in flash
+			// Change launch type in flash
 			if (m_pUpgrade)
 			{
 				bool bSuccess = m_pUpgrade->SetLaunchType((uiRebootType==OLY_APPID_BOOTLOADER) ? OLY_REGION_SECONDARY_BOOT:OLY_REGION_APPLICATION);
 				error = (bSuccess ? MANDOLIN_NO_ERROR : MANDOLIN_ERROR_INVALID_DATA);
 			}
 			
-#if 0   // SoftwareReset() called by VU-NET twice during firmware upgrade process to switch between APP & Secondary BootLoader.
-		// In new Nuvoton CDDLive system, we don't do an actual software reset as now the firmware upgrade process spoofs bootloader.
-			//	 only schedule reset if everything worked
+            // SoftwareReset() called by VU-NET twice during firmware upgrade process to switch between APP & Secondary BootLoader.
+		    // For the new Nuvoton CDDLive system, we don't do an actual software reset to launch 'secondary bootloader' as
+		    // running the 'secondary bootloader' is now spoofed during the firmware upgrade process.
+		    // Only schedule reset if everything worked & it's an APP type launch
 			if (MANDOLIN_NO_ERROR==error)
-				DeferredReboot(500);	//	wait 500 milliseconds to reboot
-#endif
+			{
+    			if ( uiRebootType != OLY_APPID_BOOTLOADER )
+    			{   // Only perform the actual reboot if it is not an attempted launch into the Secondary BootLoader (this is spoofed)
+				    DeferredReboot(500);	//	wait 500 milliseconds to reboot
+			    }
+			}
 		}
 		else
 			error = MANDOLIN_ERROR;
