@@ -86,6 +86,8 @@ enum GPIO_t {
 	DISPLAY_D5,
 	DISPLAY_D6,
 	LOGO_LED_RED,
+	LOGO_LED_AMBER,
+	LOGO_LED_WHITE,		
 	FAN_CONTROL,
 	NUM_GPIO
 };
@@ -126,6 +128,8 @@ static Pin gpioPins[NUM_GPIO] = {
 	{GPIOC_PIN_BASE, 11},	// DISPLAY_D5 on C11
 	{GPIOC_PIN_BASE, 10},	// DISPLAY_D6 on C10
 	{GPIOA_PIN_BASE, 1},	// LOGO_LED_RED on A1
+	{GPIOA_PIN_BASE, 1},	// LOGO_LED_AMBER on A1     // TODO : Mapping for LOGO_LED_AMBER (currently just same as LOGO_LED_RED)
+	{GPIOA_PIN_BASE, 1},	// LOGO_LED_WHITE on A1     // TODO : Mapping for LOGO_LED_WHITE (currently just same as LOGO_LED_RED)	
 	{GPIOA_PIN_BASE, 0},	// FAN_CONTROL on A0
 };
 

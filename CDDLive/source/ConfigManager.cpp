@@ -28,7 +28,7 @@ extern "C" {
 //#include "MMA8653FC.h"
 //#include "ftm_lcdbacklight.h"
 #include "OLYspeaker1_map.h"
-#include "oly_logo.h"
+//#include "oly_logo.h"
 
 //#include "IRDAManager.h"
 //#include "uart_irda.h"
@@ -39,6 +39,7 @@ extern "C" {
 }
 
 #include "UltimoPort.h"
+#include "oly_logo.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -973,8 +974,6 @@ namespace oly {
     
     void Config::RefreshLogoState()
     {
-// TODO : SC Commented Out : Do we need to bring Logo stuff in for Nuvoton Hardware ?????
-#ifdef SC_COMMENTED_OUT
     #if !MFG_TEST_EAW && !MFG_TEST_MARTIN
     #if USE_OLY_UI
     	if (olyStatus.Amp_Fault)
@@ -1005,7 +1004,6 @@ namespace oly {
     #elif MFG_TEST_MARTIN
     	LogoSetState(LOGO_OFF);
     #endif // !MFG_TEST_EAW && !MFG_TEST_MARTIN
-#endif //  SC_COMMENTED_OUT
     }
     
     void Config::DSPErrorTimer_Cancel()

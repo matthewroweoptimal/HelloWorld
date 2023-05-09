@@ -855,7 +855,7 @@ _mqx_uint _event_wait_any(void *event_group_ptr, _mqx_uint bit_mask, uint32_t ms
 {
 	configASSERT( event_group_ptr != NULL );
 	if ( event_group_ptr == NULL )
-	    return LWEVENT_INVALID_EVENT;
+	    return MQX_LWEVENT_INVALID;
 	    	
 	struct eventGroupDetail *pEvent = (struct eventGroupDetail *) event_group_ptr;
 	EventBits_t uxBitsToWaitFor = bit_mask;
@@ -876,7 +876,7 @@ _mqx_uint _event_get_value(void *event_group_ptr, _mqx_uint_ptr event_group_valu
 {
 	configASSERT( event_group_ptr != NULL );
 	if ( event_group_ptr == NULL )
-	    return LWEVENT_INVALID_EVENT;
+	    return MQX_LWEVENT_INVALID;
 	    	
 	struct eventGroupDetail *pEvent = (struct eventGroupDetail *) event_group_ptr;
 	EventBits_t bits = pEvent->pEventGroup->GetBits();
@@ -895,7 +895,7 @@ _mqx_uint _event_set(void *event_group_ptr, _mqx_uint flags)
 {
 	configASSERT( event_group_ptr != NULL );
 	if ( event_group_ptr == NULL )
-	    return LWEVENT_INVALID_EVENT;	
+	    return MQX_LWEVENT_INVALID;
 	    
     struct eventGroupDetail *pEvent = (struct eventGroupDetail *) event_group_ptr;
 	EventBits_t uxBitsToSet = flags;
@@ -910,12 +910,12 @@ _mqx_uint _event_set(void *event_group_ptr, _mqx_uint flags)
 //		bit_mask [IN] — Each set bit represents an event bit to clear
 // Returns
 //		MQX_OK (success)
-//		LWEVENT_INVALID_EVENT (failure: event group is not valid)
+//		MQX_LWEVENT_INVALID (failure: event group is not valid)
 _mqx_uint _event_clear(void *event_group_ptr, _mqx_uint bit_mask)
 {
 	configASSERT( event_group_ptr != NULL );
 	if ( event_group_ptr == NULL )
-	    return LWEVENT_INVALID_EVENT;
+	    return MQX_LWEVENT_INVALID;
 	    
     struct eventGroupDetail *pEvent = (struct eventGroupDetail *) event_group_ptr;
 	EventBits_t uxBitsToClear = bit_mask;
