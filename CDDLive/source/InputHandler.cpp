@@ -182,6 +182,7 @@ void poll_inputs(void){
 
 void poll_encoder(void)
 {
+// TODO : SC Commented Out : No Encoder on Nuvoton Hardware.     
 #ifdef SC_COMMENTED_OUT
 	enc_pos = FTM_DRV_CounterRead(FSL_ENCODER_FTM2);
 

@@ -25,6 +25,8 @@ int g_nDeferredRebootDowncount = 0;
 void HeartbeatTimer(_timer_id id)
 {
 	//	Toggle LEDs every tick (500 ms)
+	
+// TODO : SC Commented Out : No Debug LED on Nuvoton Hardware ????
 #ifdef SC_COMMENTED_OUT
 	GPIO_DRV_TogglePinOutput(DEBUG_LED_A);
 #endif // SC_COMMENTED_OUT
@@ -37,13 +39,8 @@ void HeartbeatTimer(_timer_id id)
 		{
 			g_nDeferredRebootDowncount = 0;
 			
-			// For new CDDLive system, launch into BootLoader to reboot
+			// For new Nuvoton CDDLive system, launch into BootLoader to reboot
 			Region::launchBootloader();
-
-#ifdef SC_COMMENTED_OUT
-			//	Soft Reset Now
-			WDOG_DRV_ResetSystem();
-#endif // SC_COMMENTED_OUT
 		}
 	}
 #if	USE_CDD_UI

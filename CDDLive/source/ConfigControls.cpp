@@ -17,7 +17,7 @@ namespace oly {
 
 void Config::Controls_SetVolume(float level_db)
 {
-#ifdef SC_COMMENTED_OUT
+
 	mandolin_parameter_value new_level;
 	if (level_db < ParamGetMin(ePID_OLYspeaker1_USER_SPEAKER_FADER))
 		new_level.f = ParamGetMin(ePID_OLYspeaker1_USER_SPEAKER_FADER);
@@ -32,10 +32,12 @@ void Config::Controls_SetVolume(float level_db)
 	if(level_db != ParamGetDefault(ePID_OLYspeaker1_USER_SPEAKER_FADER))
 	{
 		ParamSetDevice(ePID_OLYspeaker1_DEVICE_ARRAY_SIZE_LAST, (void*)&gOLYspeaker1DeviceParameterTable[ePID_OLYspeaker1_DEVICE_ARRAY_SIZE_LAST].maxValue);
+// TODO : SC Commented Out : No IRDA on Nuvoton Hardware.
+#ifdef SC_COMMENTED_OUT
 		IRDATask_AutoOptimizeError(IRDA_Opti_Mismatch);
 		_lwevent_set(&irda_lwevent, irda_event_array_status_update);	//notify task to update
-	}
 #endif // SC_COMMENTED_OUT
+	}
 }
 
 float Config::Controls_GetVolume()
@@ -64,7 +66,6 @@ float Config::Controls_GetFuncGenVolume()
 
 void Config::Controls_SetSpeakerDelay(float delay_ms)
 {
-#ifdef SC_COMMENTED_OUT
 	mandolin_parameter_value new_delay;
 	if (delay_ms < ParamGetMin(ePID_OLYspeaker1_USER_SPEAKER_DELAY_TIME))
 		new_delay.f = ParamGetMin(ePID_OLYspeaker1_USER_SPEAKER_DELAY_TIME);
@@ -78,10 +79,12 @@ void Config::Controls_SetSpeakerDelay(float delay_ms)
 
 	if(delay_ms != ParamGetDefault(ePID_OLYspeaker1_USER_SPEAKER_DELAY_TIME)) {
 		ParamSetDevice(ePID_OLYspeaker1_DEVICE_ARRAY_SIZE_LAST, (void*)&gOLYspeaker1DeviceParameterTable[ePID_OLYspeaker1_DEVICE_ARRAY_SIZE_LAST].maxValue);
+// TODO : SC Commented Out : No IRDA on Nuvoton Hardware.
+#ifdef SC_COMMENTED_OUT
 		IRDATask_AutoOptimizeError(IRDA_Opti_Mismatch);
 		_lwevent_set(&irda_lwevent, irda_event_array_status_update);	//notify task to update
-	}
 #endif // SC_COMMENTED_OUT
+	}
 }
 
 float Config::Controls_GetSpeakerDelay()
@@ -91,6 +94,7 @@ float Config::Controls_GetSpeakerDelay()
 
 void Config::Controls_SetProfile(LOUD_oly_profiles profile)
 {
+// TODO : SC Commented Out : No IRDA on Nuvoton Hardware.
 #ifdef SC_COMMENTED_OUT
 	array_opt_vals_t opt_vals;
 
@@ -100,6 +104,7 @@ void Config::Controls_SetProfile(LOUD_oly_profiles profile)
 	IRDA_GetOptMsgValues(&opt_vals);
 	if(*(uint32_t*)&profile != opt_vals.irda_Active_Profile_instance) {
 		ParamSetDevice(ePID_OLYspeaker1_DEVICE_ARRAY_SIZE_LAST, (void*)&gOLYspeaker1DeviceParameterTable[ePID_OLYspeaker1_DEVICE_ARRAY_SIZE_LAST].maxValue);
+
 		IRDATask_AutoOptimizeError(IRDA_Opti_Mismatch);
 		_lwevent_set(&irda_lwevent, irda_event_array_status_update);	//notify task to update
 	}
@@ -184,6 +189,7 @@ bool Config::Controls_GetPolarityInvert()
 //void __attribute__((optimize("O0")))Config::Controls_AutoOptimize(float dMax, float dMin, float height, uint8_t source)
 void Config::Controls_AutoOptimize(float dMax, float dMin, float height, uint8_t source, uint32_t active_profile)
 {
+// TODO : SC Commented Out : No IRDA on Nuvoton Hardware.   
 #ifdef SC_COMMENTED_OUT
 	bool32 optResult;
 	Controls_SetArrayIndexFromStatus();
