@@ -38,6 +38,9 @@ void Threads::StartThreads()
 
     _timerKeeperThread = new TimerKeeperThread(TIMERKEEPERTHREAD_STACKSIZE, TIMERKEEPER_THREAD_PRIORITY,_semMainThreadComplete);
     _timerKeeperThread->Start();
+    
+    _speakerConfigThread = new SpeakerConfigThread(SPEAKERCONFIGTHREAD_STACKSIZE, SPEAKERCONFIG_THREAD_PRIORITY,_semMainThreadComplete);
+    _speakerConfigThread->Start();    
 
     _sysEventsThread = new SysEventsThread(SYSEVENTSTHREAD_STACKSIZE, SYSEVENTS_THREAD_PRIORITY,_semMainThreadComplete);
     _sysEventsThread->Start();

@@ -30,7 +30,6 @@ extern "C" {
 //#include "Discovery.h"
 //#include <timer.h>
 
-//#include "SpeakerConfiguration.h"
 //#include "math.h"
 //#include "CurrentSense.h"
 //#include "AUX_Spi_task.h"
@@ -43,6 +42,8 @@ extern "C" {
 //#include "sys.h"
 #include "netif/ethernetif.h"
 }
+
+#include "SpeakerConfiguration.h"
 
 #include "MQX_To_FreeRTOS.h"
 #define FSL_UART_ULTIMO 1
@@ -1075,6 +1076,7 @@ void Discovery_Task(uint32_t task_init_data)
 		_time_delay(100);
 	}
 }
+#endif // EXCLUDE OTHER TASKS FOR THE MOMENT
 
 /*	Handles configuration of speaker parameters, currently only used by Dante link status */
 void SpkrCnfg_Task( uint32_t task_init_data )
@@ -1127,7 +1129,6 @@ void SpkrCnfg_Task( uint32_t task_init_data )
 
 	}
 }
-#endif // EXCLUDE OTHER TASKS FOR THE MOMENT
 
 /*	Handles meter polling, limiter LED control, and meter subscription */
 #if(1)

@@ -47,7 +47,7 @@
 #define METERS_THREAD_PRIORITY			( TCPIP_THREAD_PRIO - 6 )		//3
 #define SYSEVENTS_THREAD_PRIORITY		( TCPIP_THREAD_PRIO - 6 )		//3
 #define TIMERKEEPER_THREAD_PRIORITY		( TCPIP_THREAD_PRIO - 6)		//3
-
+#define SPEAKERCONFIG_THREAD_PRIORITY	( TCPIP_THREAD_PRIO - 6)		//3
 
 #define MAIN_THREAD_STACKSIZE      	(configMINIMAL_STACK_SIZE + 128)
 #define MONITORING_TIMER_STACKSIZE 	(configMINIMAL_STACK_SIZE + 128)
@@ -59,6 +59,8 @@
 #define METERSTHREAD_STACKSIZE  	(configMINIMAL_STACK_SIZE + 128)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
 #define SYSEVENTSTHREAD_STACKSIZE  	(configMINIMAL_STACK_SIZE + 344)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
 #define TIMERKEEPERTHREAD_STACKSIZE (configMINIMAL_STACK_SIZE + 344)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
+#define SPEAKERCONFIGTHREAD_STACKSIZE (configMINIMAL_STACK_SIZE + 128)    	// FreeRTOS stack size for GUI thread - seen ???? HWM
+
 
 #define MONITORING_TIMER_TICK  ( pdMS_TO_TICKS(500))
 
@@ -78,9 +80,10 @@ private:
     DanteThread 	*_danteThread; 	// This is Dante_Task
     GuiThread 		*_guiThread; 	// This is Gui_Task
     UiThread 		*_uiThread; 	// This is ui_Task
-    MetersThread 	*_metersThread; 	// This is Meter_Task
-    TimerKeeperThread *_timerKeeperThread; 	// This is Meter_Task
-    SysEventsThread *_sysEventsThread; 	// This is Meter_Task
+    MetersThread 	*_metersThread; // This is Meter_Task
+    TimerKeeperThread   *_timerKeeperThread; 	// This is TimeKeeper_Task
+    SpeakerConfigThread *_speakerConfigThread; 	// This is SpkrCnfg_Task    
+    SysEventsThread     *_sysEventsThread; 	    // This is SysEvents_Task
 
 
     /* Timers */

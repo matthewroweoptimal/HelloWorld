@@ -500,12 +500,10 @@ namespace oly {
     #if USE_OLY_UI
     	SetLogoMeter(temp);
     #elif USE_CDD_UI
-    #if 0
     	if(olyStatus.Limiting)
     		cddl_show_meter(METER_THRESH_LIMIT);		//force limiter to come on
     	else
     		cddl_show_meter(temp);
-    #endif
     #if 0
     	if(olyParams.Device->cs_Z_limit_low_ch4 <= 2.0)  // take care of bad initial state
     		olyParams.Device->cs_Z_limit_low_ch4 = -METER_THRESHOLD_STANDBY;
@@ -973,7 +971,9 @@ namespace oly {
     	return (LOUD_disp_mode)olyParams.Device->Display_Mode;
     }
     
-    void Config::RefreshLogoState() {
+    void Config::RefreshLogoState()
+    {
+// TODO : SC Commented Out : Do we need to bring Logo stuff in for Nuvoton Hardware ?????
 #ifdef SC_COMMENTED_OUT
     #if !MFG_TEST_EAW && !MFG_TEST_MARTIN
     #if USE_OLY_UI
@@ -1750,8 +1750,10 @@ namespace oly {
     	printf("Restoring parameters to factory defaults.\n");
     	GlobalMute = 0;
 
-// TODO : SC Commented out
-//    	amp_init();	// Mutes output
+// TODO : SC Commented out : amp_init() does things with GPIO which need verifying on Nuvoton Hardware
+#ifdef SC_COMENTED_OUT
+    	amp_init();	// Mutes output
+#endif // SC_COMENTED_OUT
     
     #if OLY_UI_MODE_RSX18 && OLY_UI_MODE_HIDDEN_MENU
     	bool use_revA_woofer = GetAmpRoutingHasChanged();
@@ -2065,7 +2067,8 @@ namespace oly {
     	SetSelfTestMode(eTEST_MODE_DISABLED);
     	OnDanteMuteChanged();
 
-// TODO : SC Commented out
+// TODO : SC Commented out : No IRDA on Nuvoton Harware.
+//                           amp_mute() does things with GPIO which need verifying on Nuvoton Hardware
 #ifdef SC_COMENTED_OUT
     	_lwevent_set(&irda_lwevent, irda_event_array_status_update);	//notify IR task of changes
 
@@ -2214,8 +2217,6 @@ namespace oly {
     
     void Config::OnDanteMuteChanged()
     {
-// TODO : SC Commented out
-#ifdef SC_COMENTED_OUT
     	uint16_t tempInt;
     
     	DanteMute = get_dante_mute_state();
@@ -2248,7 +2249,6 @@ namespace oly {
     		g_pUltimoPort->GetLinkFlags(&tempInt);
     		OnDanteChange_LinkFlags(tempInt);		// Update Network Indicator
     	}
-#endif // SC_COMENTED_OUT
     }
     
     void Config::SetGlobalMute(bool mute)
@@ -2314,6 +2314,7 @@ namespace oly {
     
     void Config::RampLcdBrightness(bool set_ramp, uint32_t level)
     {
+// SC Commented out : No LCD on Nuvoton Hardware        
 #ifdef SC_COMENTED_OUT
     	static uint32_t target;
     	static uint32_t count = 0;
@@ -2344,8 +2345,8 @@ namespace oly {
     
     uint32_t Config::GetActiveBrightness( void )
     {
-    	// SC_COMMENTED_OUT
     	return 0;
+    	// SC Commented out : No LCD on Nuvoton Hardware 
     	//return GetAppliedBrightnessLevel();
     }
     
@@ -2519,7 +2520,6 @@ namespace oly {
     
     void Config::SetFanEnabled(bool fan_on)
     {
-#ifdef SC_COMMENTED_OUT
     #if !MFG_TEST_EAW && !MFG_TEST_MARTIN
     
     	if (fan_on != olyStatus.Fan_Enabled)
@@ -2534,11 +2534,11 @@ namespace oly {
     	GPIO_DRV_WritePinOutput(FAN_CONTROL, fan_on);
     	olyStatus.Fan_Enabled = fan_on;
     #endif // !MFG_TEST_EAW && !MFG_TEST_MARTIN
-#endif //  SC_COMMENTED_OUT
     }
     
     void Config::UpdateNeighbourHardwareStatus(void)
     {
+// TODO : SC Commented Out : No IRDA on Nuvoton Hardware.        
 #ifdef SC_COMMENTED_OUT
     	int8_t ports;
     	position_hw_data_t *pPortData = 0;
@@ -2646,6 +2646,7 @@ namespace oly {
     	}
     #endif
 
+// TODO : SC Commented Out : No IRDA on Nuvoton Hardware.    
 #ifdef SC_COMMENTED_OUT
     	IRDATask_OnArrayMismatchChange(((olyParams.Device->Array_Size_Last == array_size) && (olyParams.Device->Array_Index_Last == device_index)) ? false : true);
 #endif //  SC_COMMENTED_OUT
@@ -2880,7 +2881,6 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     // i.e. if the dante config IP address is 0.0.0.0 (Dante is DHCP) the current Dante IP address will be something else (DHCP assigned).
     void Config::OnDanteChange_ConfigIpAddress(uint32_t ipAddress, uint32_t ipGateway, uint32_t ipMask)
     {
-//#ifdef SC_COMMENTED_OUT
     	if(!g_pUltimoPort)
     		return;
     
@@ -2941,7 +2941,6 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     		}
     	}
     #endif
-//#endif // SC_COMMENTED_OUT
     }
     
     void Config::OnDanteChange_IpAddress(uint32_t ipAddress)
@@ -3150,6 +3149,8 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     #if !USES_FOUR_IRDA
     olyVoicingPort(&UartVoiceRxFifo) // SC_COMMENTED_OUT : ,
     #endif
+    
+// TODO : SC Commented Out : No IRDA on Nuvoton Hardware.     
 #ifdef SC_COMMENTED_OUT
     olyIrdaPortA(COMM_IRDA_A, irdaTopPortTask), olyIrdaPortB(COMM_IRDA_B, irdaBottomPortTask),
     olyIrdaPortC(COMM_IRDA_C, irdaTopRearPortTask),  olyIrdaPortD(COMM_IRDA_D, irdaBottomRearPortTask)

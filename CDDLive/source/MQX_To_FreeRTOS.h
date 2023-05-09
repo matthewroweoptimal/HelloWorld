@@ -317,6 +317,8 @@ _mqx_uint _event_create(char *);
 _mqx_uint _event_open(char *, void **);
 _mqx_uint _event_wait_any(void *, _mqx_uint, uint32_t);
 _mqx_uint _event_get_value(void *, _mqx_uint_ptr);
+_mqx_uint _event_set(void *event_group_ptr, _mqx_uint flags);
+_mqx_uint _event_clear(void *event_group_ptr, _mqx_uint bit_mask);
 
 _mqx_uint _task_set_error(_mqx_uint);
 

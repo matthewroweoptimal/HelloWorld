@@ -97,3 +97,23 @@ void TimerKeeperThread::Run()
 
     Suspend();
 }
+
+SpeakerConfigThread::SpeakerConfigThread(uint16_t usStackDepth, UBaseType_t uxPriority, SemaphoreHandle_t& semMainThreadComplete)
+     : Thread("Speaker Config Thread", usStackDepth, uxPriority),
+       _semMainThreadComplete(semMainThreadComplete)
+{
+}
+
+void SpeakerConfigThread::Run()
+{
+	printf("Speaker Config thread waiting on MainThread completing...\n");
+	//--- Wait until MainThread complete ---
+    xSemaphoreTake(_semMainThreadComplete, portMAX_DELAY);
+    xSemaphoreGive(_semMainThreadComplete);					//this feels dodgy, any thread that picks up the semaphore gives again for other threads to start.
+
+    printf("Speaker Config thread running\n");
+
+    SpkrCnfg_Task(0);		//runs the code from original NXP version...
+
+    Suspend();
+}

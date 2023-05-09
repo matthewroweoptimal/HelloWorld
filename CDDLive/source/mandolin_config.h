@@ -28,12 +28,12 @@
 // FIFO Size Switches
 #define MANDOLIN_FIFO_IS_POWER_OF_TWO   0      // 0 -> any FIFO size is OK, 1 -> all FIFO sizes must be powers of two
 
-#ifdef SC_COMMENTED_OUT
-#define MANDOLIN_MAX_PAYLOAD_DATA_WORDS 1040u    // 2^16 - 1 data words - the maximum words the current protocol supports
+#ifdef SC_COMMENTED_OUT     // Reduce Heap Memory overhead on Nuvoton Hardware
+  #define MANDOLIN_MAX_PAYLOAD_DATA_WORDS 1040u// 2^16 - 1 data words - the maximum words the current protocol supports
                                                // You may want to shrink this (significantly) if you don't anticipate using 16-bits of length
                                                // or if you have set MANDOLIN_FIFO_IS_POWER_OF_TWO, and want to use MANDOLIN_FIFO_BYTES in your code.
 #else
-#define MANDOLIN_MAX_PAYLOAD_DATA_WORDS 264u // 155u    // 2^16 - 1 data words - the maximum words the current protocol supports
+  #define MANDOLIN_MAX_PAYLOAD_DATA_WORDS 264u // 155u    // 2^16 - 1 data words - the maximum words the current protocol supports
                                                // You may want to shrink this (significantly) if you don't anticipate using 16-bits of length
                                                // or if you have set MANDOLIN_FIFO_IS_POWER_OF_TWO, and want to use MANDOLIN_FIFO_BYTES in your code.
 #endif // SC_COMMENTED_OUT

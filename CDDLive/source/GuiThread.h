@@ -13,6 +13,7 @@
 
 using Thread = cpp_freertos::Thread;
 
+
 class GuiThread : public Thread
 {
 public:
@@ -20,11 +21,11 @@ public:
 
 protected:
     void Run();
-
-    
+ 
 private:
     SemaphoreHandle_t   _semMainThreadComplete;    
 };
+
 
 class MetersThread : public Thread
 {
@@ -34,10 +35,10 @@ public:
 protected:
     void Run();
 
-
 private:
     SemaphoreHandle_t   _semMainThreadComplete;
 };
+
 
 class TimerKeeperThread : public Thread
 {
@@ -47,6 +48,18 @@ public:
 protected:
     void Run();
 
+private:
+    SemaphoreHandle_t   _semMainThreadComplete;
+};
+
+
+class SpeakerConfigThread : public Thread
+{
+public:
+	SpeakerConfigThread(uint16_t usStackDepth, UBaseType_t uxPriority, SemaphoreHandle_t& semMainThreadComplete);
+
+protected:
+    void Run();
 
 private:
     SemaphoreHandle_t   _semMainThreadComplete;
@@ -60,7 +73,6 @@ public:
 
 protected:
     void Run();
-
 
 private:
     SemaphoreHandle_t   _semMainThreadComplete;

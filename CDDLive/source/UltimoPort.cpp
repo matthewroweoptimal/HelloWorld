@@ -25,12 +25,14 @@ extern "C" {
 //#include "fsl_uart_driver_modified.h"
 //#include "fsl_uart_driver_modified.h"
 #include "rx_ddp.h"
-#include "SpeakerConfiguration.h"
+//#include "SpeakerConfiguration.h"
 #include "uart_ultimo.h"
 #if USE_OLY_UI
 #include "LcdCoordinates.h"
 #endif
 }
+
+#include "SpeakerConfiguration.h"	// Now .cpp file
 
 extern uint8_t cobs_rx_buffer[];
 #ifdef DEBUG
@@ -693,13 +695,13 @@ void UltimoPort::Check(int nMSec)
 
 			if (usChannelActive && usChannelAvail)
 			{
-				//AutoSelectAudioSource( usChannelStatus ); // could be Dante TODO reimplement
+				AutoSelectAudioSource( usChannelStatus ); // could be Dante TODO reimplement
 				pConfig->OnDanteChange_ChannelStatus(m_usChannelStatus);
 
 			}
 			else
 			{
-				//AutoSelectAudioSource( 0 );		// can not be Dante TODO reimplement
+				AutoSelectAudioSource( 0 );		// can not be Dante TODO reimplement
 				pConfig->OnDanteChange_ChannelStatus(0);
 
 			}
