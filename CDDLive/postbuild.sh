@@ -50,8 +50,20 @@ $OBJCOPY -O binary "$PROJ.elf" $BINNAME
 echo Creating $HEXNAME
 $OBJCOPY -O ihex "$PROJ.elf" $HEXNAME
 
-echo Creating "$BOOTAPPNAME.bin"
-srec_cat.exe "$PROJPATH/../BOOTLOADER/BOOTLOADER.hex" -Intel $HEXNAME -Intel -o "$BOOTAPPNAME.bin" -binary
+
+
+if ! command -v srec_cat.exe &> /dev/null
+then
+    echo "srec_cat.exe not found."
+    echo "    Please install from : https://sourceforge.net/projects/srecord/files/srecord-win32/1.65/"  
+    echo "    and add to PATH environment variable."  
+    exit
+else
+    echo Creating "$BOOTAPPNAME.bin"
+    srec_cat.exe "$PROJPATH/../BOOTLOADER/BOOTLOADER.hex" -Intel $HEXNAME -Intel -o "$BOOTAPPNAME.bin" -binary
+fi
+# If above doesn't work, then add the full path to wherever you have installed srec_cat.exe on your system. e.g. 
+# "C:\Program Files\srecord\bin\srec_cat.exe" "$PROJPATH/../BOOTLOADER/BOOTLOADER.hex" -Intel $HEXNAME -Intel -o "$BOOTAPPNAME.bin" -binary
 
 
 
