@@ -74,7 +74,7 @@ static void MANDOLIN_check_types(void)
 }
 
 
-char *MANDOLIN_MSG_id_string(mandolin_message_id msgid)
+const char *MANDOLIN_MSG_id_string(mandolin_message_id msgid)
 {
     switch(msgid) {
         case MANDOLIN_MSG_INVALID:                          return "INVALID ID";

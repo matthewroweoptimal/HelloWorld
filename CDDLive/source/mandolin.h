@@ -589,7 +589,7 @@ typedef struct {
 #if ENABLE_MANDOLIN_TIMEOUT
 uint32             MANDOLIN_FIFO_valid_stamp(mandolin_fifo *);
 #endif
-char              *MANDOLIN_MSG_id_string(mandolin_message_id msgid);
+const char        *MANDOLIN_MSG_id_string(mandolin_message_id msgid);
 void               MANDOLIN_MSG_print(mandolin_message *);
 mandolin_fifo_type MANDOLIN_FIFO_max_bytes(mandolin_fifo *);
 bool               MANDOLIN_FIFO_is_empty(mandolin_fifo *);

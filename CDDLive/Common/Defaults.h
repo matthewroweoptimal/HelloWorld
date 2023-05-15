@@ -5,7 +5,7 @@
 /* Defaults at manufacturing prior to programming */
 #define	OLY_DEFAULT_BRAND				LOUD_BRAND_MARTIN
 
-#define	OLY_DEFAULT_MODEL				MARTIN_MODEL_CDDL12
+#define	OLY_DEFAULT_MODEL				MARTIN_MODEL_CDDL12_NU
 
 #define	OLY_DEFAULT_HARDWARE_VERSION	1
 

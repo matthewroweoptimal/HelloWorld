@@ -1166,12 +1166,30 @@ void CMandolinTextSummary::MANDOLIN_handle_MsgTextSummary(char *pDest, mandolin_
 					switch ((j.ui >> 16)&0x0fff)
 					{
 
-					case MARTIN_MODEL_GENERIC: strcat(pDest,"GENERIC\n"); break;
-					case     MARTIN_MODEL_CDDL8:			strcat(pDest,"CDDL8\n"); break;
-					case     MARTIN_MODEL_CDDL12:			strcat(pDest,"CDDL12\n"); break;
-					case     MARTIN_MODEL_CDDL15:			strcat(pDest,"CDDL15\n"); break;
-					case     MARTIN_MODEL_CSXL118:			strcat(pDest,"CSXL118\n"); break;
-					case     MARTIN_MODEL_CSXL218:			strcat(pDest,"CSXL218\n"); break;
+					case MARTIN_MODEL_GENERIC:
+						strcat(pDest, "GENERIC\n"); break;
+					case MARTIN_MODEL_GENERIC_NU:
+						strcat(pDest,"GENERIC_NU\n"); break;
+					case MARTIN_MODEL_CDDL8:
+						strcat(pDest, "CDDL8\n"); break;
+					case MARTIN_MODEL_CDDL8_NU:
+						strcat(pDest,"CDDL8_NU\n"); break;
+					case MARTIN_MODEL_CDDL12:
+						strcat(pDest, "CDDL12\n"); break;
+					case MARTIN_MODEL_CDDL12_NU:
+						strcat(pDest,"CDDL12_NU\n"); break;
+					case MARTIN_MODEL_CDDL15:
+						strcat(pDest, "CDDL15\n"); break;
+					case MARTIN_MODEL_CDDL15_NU:
+						strcat(pDest,"CDDL15_NU\n"); break;
+					case MARTIN_MODEL_CSXL118:
+						strcat(pDest, "CSXL118\n"); break;
+					case MARTIN_MODEL_CSXL118_NU:
+						strcat(pDest,"CSXL118_NU\n"); break;
+					case MARTIN_MODEL_CSXL218:
+						strcat(pDest, "CSXL218\n"); break;
+					case MARTIN_MODEL_CSXL218_NU:
+						strcat(pDest,"CSXL218_NU\n"); break;
 					default: strcat(pDest,"UNKNOWN\n"); break;
 					}
 					break;

@@ -544,6 +544,13 @@ tModelBrandInstance gModelBrandInstance[] = {
 	{ LOUD_BRAND_MARTIN, MARTIN_MODEL_CDDL15,			6,		1,			1,		1,			1,		1		},	
 	{ LOUD_BRAND_MARTIN, MARTIN_MODEL_CSXL118,			6,		1,			1,		1,			1,		1		},
 	{ LOUD_BRAND_MARTIN, MARTIN_MODEL_CSXL218,			6,		1,			1,		1,			1,		1		},
+
+	{ LOUD_BRAND_MARTIN, MARTIN_MODEL_GENERIC_NU,		5,		1,			1,		1,			1,		1		},	// Nuvoton hardware
+	{ LOUD_BRAND_MARTIN, MARTIN_MODEL_CDDL8_NU,			5,		1,			1,		1,			1,		1		},
+	{ LOUD_BRAND_MARTIN, MARTIN_MODEL_CDDL12_NU,		5,		1,			1,		1,			1,		1		},
+	{ LOUD_BRAND_MARTIN, MARTIN_MODEL_CDDL15_NU,		6,		1,			1,		1,			1,		1		},
+	{ LOUD_BRAND_MARTIN, MARTIN_MODEL_CSXL118_NU,		6,		1,			1,		1,			1,		1		},
+	{ LOUD_BRAND_MARTIN, MARTIN_MODEL_CSXL218_NU,		6,		1,			1,		1,			1,		1		},
 };
 
 
