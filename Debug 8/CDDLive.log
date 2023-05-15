@@ -1,0 +1,18 @@
+﻿************************************************
+OLY Code Image File Packing Tool V1.0
+Date of Tool Build:Apr  5 2023 10:19:06
+Log File: CDDLive.log
+Image type: Upgrade firmware (default)
+Code start specified:  00000000
+Vector Table specified:  00000000
+Stack pointer specified:  00028000
+Major version specified:  1
+Minor version specified:  0
+Sub version specified:  0
+Opening input file 'CDDLive.bin'
+Opening output file 'CDDLive.Fw.bin'
+Input file is 512020 (0x0007D014) bytes long.
+CRC calclulated: A2B4
+Output file successfully written with 512084 (0x0007D054) bytes
+Closing Log File.
+************************************************
