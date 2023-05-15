@@ -11,17 +11,6 @@
 #include <stdint.h>
 #include "LOUD_types.h"
 
-
-#define NO_DEBUG_MSG_OUTPUT		1	// Define to 1 to take out serial information messages
-//#define NO_DEBUG_MSG_OUTPUT	0	// Define to 0 to include Debug serial information messages
-
-
-//#define CONFIG_HOST_FLASH_ENABLE_MSK	0x00000001
-//#define DATA_FLASH_ADDR					0x0007E000	// Allows 8kB at top of Flash for region which will include :
-													//     0x0007E000 : OLY_BLOCK			(See : Upgrade.h)
-													//     0x0007F000 : OLY_IDENTITY
-
-
 /* Starting address of Program Flash */
 #define P_FLASH_BASE            0x00000000
 //#define FTFx_REG_BASE           0x40020000
@@ -33,35 +22,6 @@
 #define P_SECTOR_SIZE_U32       (P_SECTOR_SIZE/sizeof(uint32_t))
 
 
-/* Data Flash block information */
-//#define FLEXNVM_BASE            DATA_FLASH_ADDR
-//#define FLEXNVM_SECTOR_SIZE     4*ONE_KB
-//#define FLEXNVM_BLOCK_SIZE      4*ONE_KB
-//#define FLEXNVM_BLOCK_NUM       16
-/* Flex Ram block information */
-//#define EERAM_BASE              FSL_FEATURE_FLASH_FLEX_RAM_START_ADDRESS
-//#define EERAM_SIZE              FSL_FEATURE_FLASH_FLEX_RAM_SIZE
-
-//#define	FLASH_WRITE_BLOCKSIZE	32
-
-/* Can be written to : Flash Parameter Storage is now in SPI Flash for Nuvoton System */
-//#define FLASH_PARAMS_ADDR		0x00070000
-//#define FLASH_PARAMS_SIZE		0x10000
-
-//#define FMC_RESULT_OK					0
-
-/* These defines relate to a callback function which must be copied to RAM during runtime */
-//#define LAUNCH_CMD_SIZE         0x100
-
-/* Size of function used for callback.  Change this depending on the size of your function */
-//#define CALLBACK_SIZE           0x80
-
-
-/* Other defines */
-//#define CRC_BLOCK_SIZE			8
-//#define HEADER_BLOCK_SIZE		8
-//#define HEADER_SIGNATURE		0xAA55A55A
-//#define FLASH_WRITE_BLOCK_SIZE  0x100						//512 bytes
 #define ONE_KB                  1024                        //0x400:  10 zeros
 #define TWO_KB                  (2*ONE_KB)
 #define THREE_KB                (3*ONE_KB)

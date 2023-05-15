@@ -1,7 +1,8 @@
 /* Linker script to configure memory regions. */
 MEMORY
 {
-  FLASH (rx) : ORIGIN = 0x00100000, LENGTH = 4K
+  FLASH (rx) : ORIGIN = 0x00000000, LENGTH = 16K	/* BOOTLOADER IS IN FIRST 16k OF APROM */
+/*FLASH (rx) : ORIGIN = 0x00100000, LENGTH = 4K  ---> BOOTLOADER IS NO LONGER IN LDROM */
   RAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 160K
 }
 

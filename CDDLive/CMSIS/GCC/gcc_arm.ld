@@ -2,7 +2,8 @@
 MEMORY
 {
   /* M487 datasheet states : 512k Flash, 160k RAM (this can optionally include 32kB cache for external SPI Flash) */
-  FLASH_APP (rx)       : ORIGIN = 0x00000000, LENGTH = 504K /* 504k for APP data flash during Debug - address 0x00000000 - 0x0007DFFF */
+  BOOTLOADER (rx)      : ORIGIN = 0x00000000, LENGTH = 16K  /* 16k BootLoader is located at the start of APROM */
+  FLASH_APP (rx)       : ORIGIN = 0x00004000, LENGTH = 488K /* 488k for APP data flash during Debug - address 0x00004000 - 0x0007DFFF */
 
   /* DATA Flash : OLY_BLOCK & OLY_IDENTITY regions */
   m_oly_block (rx)     : ORIGIN = 0x0007E000, LENGTH = 4K	/* Reserved for the System Parameters (OLY_BLOCK) - written to by the APP */

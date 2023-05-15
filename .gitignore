@@ -6,27 +6,24 @@
 *.idb
 *.ilk
 *.map
-*.hex
 *.elf
 *.mk
-/Release/
-/Debug/
-/Debug 15/
-/Debug 12/
-/Debug 8/
-/Debug 118/
-/Debug 218/
-/Debug Manf/
-/SecBootloader/
-/ReleaseSizeOptimised/
+/BOOTLOADER/GCC/BOOTLOADER/Release/
+/BOOTLOADER/GCC/BOOTLOADER/Debug/
 /CDDLive/Release/
-/CDDLiveDebug/
-/CDDLiveDebug 15/
-/CDDLiveDebug 12/
-/CDDLiveDebug 8/
-/CDDLiveDebug 118/
-/CDDLiveDebug 218/
-/CDDLiveDebug Manf/
+/CDDLive/Release 15/
+/CDDLive/Release 12/
+/CDDLive/Release 8/
+/CDDLive/Release 118/
+/CDDLive/Release 218/
+/CDDLive/Release Manf/
+/CDDLive/Debug/
+/CDDLive/Debug 15/
+/CDDLive/Debug 12/
+/CDDLive/Debug 8/
+/CDDLive/Debug 118/
+/CDDLive/Debug 218/
+/CDDLive/Debug Manf/
 /TOOLS/MandolinComm/Debug/
 /TOOLS/MandolinComm/Release/
 /TOOLS/MandolinComm/.vs/
@@ -36,4 +33,6 @@
 /TOOLS/RUgly/Debug/
 /TOOLS/RUgly/Release/
 /TOOLS/RUgly/.vs/
+/TOOLS/*.txt
+
 

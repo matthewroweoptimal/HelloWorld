@@ -16,7 +16,6 @@ echo ============================================================
 
 if not exist %IMAGES_DIR% md %IMAGES_DIR%
 del %IMAGES_DIR%\* /F /Q
-xcopy "Release\OLY_APPLICATION*.img"       %IMAGES_DIR% /y /i
 xcopy "Release 8\OLY_APPLICATION*.img"     %IMAGES_DIR% /y /i
 xcopy "Release 12\OLY_APPLICATION*.img"    %IMAGES_DIR% /y /i
 xcopy "Release 15\OLY_APPLICATION*.img"    %IMAGES_DIR% /y /i
@@ -24,13 +23,19 @@ xcopy "Release 118\OLY_APPLICATION*.img"   %IMAGES_DIR% /y /i
 xcopy "Release 218\OLY_APPLICATION*.img"   %IMAGES_DIR% /y /i
 xcopy "Release Manf\OLY_APPLICATION*.img"  %IMAGES_DIR% /y /i
 
-xcopy "Release\OLY_APPLICATION*.bin"       %IMAGES_DIR% /y /i
 xcopy "Release 8\OLY_APPLICATION*.bin"     %IMAGES_DIR% /y /i
 xcopy "Release 12\OLY_APPLICATION*.bin"    %IMAGES_DIR% /y /i
 xcopy "Release 15\OLY_APPLICATION*.bin"    %IMAGES_DIR% /y /i
 xcopy "Release 118\OLY_APPLICATION*.bin"   %IMAGES_DIR% /y /i
 xcopy "Release 218\OLY_APPLICATION*.bin"   %IMAGES_DIR% /y /i
 xcopy "Release Manf\OLY_APPLICATION*.bin"  %IMAGES_DIR% /y /i
+
+xcopy "Release 8\BOOT_APP*.bin"     %IMAGES_DIR% /y /i
+xcopy "Release 12\BOOT_APP*.bin"    %IMAGES_DIR% /y /i
+xcopy "Release 15\BOOT_APP*.bin"    %IMAGES_DIR% /y /i
+xcopy "Release 118\BOOT_APP*.bin"   %IMAGES_DIR% /y /i
+xcopy "Release 218\BOOT_APP*.bin"   %IMAGES_DIR% /y /i
+xcopy "Release Manf\BOOT_APP*.bin"  %IMAGES_DIR% /y /i
 
 xcopy "..\BOOTLOADER\BOOTLOADER.bin"  %IMAGES_DIR% /y /i
 

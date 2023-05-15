@@ -11,14 +11,7 @@
 #include "Upgrade.h"
 
 
-// Define 'NO_DEBUG_MSG_OUTPUT' in 'flash_params.h' to control serial information messages (code size reduction)
-#if NO_DEBUG_MSG_OUTPUT
-	#define PutString(x)	// To save space, take away all serial information messages
-#else
-	extern void PutString(char *str);
-#endif
-
-extern void PutChar(char ch);
+extern void PutString(char *str);
 
 
 static uint32_t verifyFailCount = 0;
@@ -53,16 +46,13 @@ bool flash_writeChunk( uint32_t flashAddress, uint32_t pu32Data[], uint32_t numU
             return false;
         }
 
-#if 1	// Found enough space for this Verifiction step to go in.
-        // Could be removed if more space needed for further code (would then rely on CRC check at end)
+        // Verification
 		volatile uint32_t verification = FMC_Read(addr);
 		if ( verification != pu32Data[i] )
 		{
 			verifyFailCount++;
-			PutChar('V');
 			PutString("Verify Failed\n");
 		}
-#endif
     }  
     
     return true;

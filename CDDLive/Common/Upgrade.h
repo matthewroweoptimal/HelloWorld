@@ -18,6 +18,17 @@
 
 #pragma once
 
+//-------------------------------------------------------------------------------------------------------------------------------------
+// Refer to : CDDLive/CMSIS/GCC/gcc_arm.ld
+//		BOOTLOADER is located 0x00000000..0x00003FFF	(bottom  16k of APROM)
+//		APP        is located 0x00004000..0x0007DFFF    (middle 488k of APROM)
+//		DATAFLASH  is located 0x0007E000..0x0007FFFF	(top      8k of APROM)
+#define APROM_BOOT_LOCATION 		(0x00000000)	// Location of start of BOOTLOADER in APROM
+#define APROM_APP_LOCATION			(0x00004000)	// Location of start of APP in APROM
+#define APROM_DATAFLASH_LOCATION	(0x0007E000)	// Location of start of Data Flash in APROM	(4k OLY_BLOCK, then 4k OLY_IDENTITY)
+//-------------------------------------------------------------------------------------------------------------------------------------
+
+
 #define OLY_MAGIC_WORD					0x57102957	//	word to identify  contents is a valid structure
 #define OLY_BLOCK_VERSION				0			//	Increment to force structure to initialize on boot
 
@@ -25,8 +36,8 @@
 //      0x0007E000 :  OLY_BLOCK         (4096 bytes - 1 flash sector)
 //      0x0007F000 :  OLY_IDENTITY      (4096 bytes - 1 flash sector)
 //
-#define OLY_BLOCK_LOCATION				((P_OLY_BLOCK)0x0007E000)	//	Data Flash location of where Shared Upgrade region structure OLY_BLOCK is located.
-#define OLY_IDENTITY_OFFSET				(0x0007F000)                //	location of where Shared identity (mac, rev, brand, model) is located.
+#define OLY_BLOCK_LOCATION				((P_OLY_BLOCK)APROM_DATAFLASH_LOCATION)	//	Data Flash location of where Shared Upgrade region structure OLY_BLOCK is located.
+#define OLY_IDENTITY_OFFSET				(APROM_DATAFLASH_LOCATION + 0x1000)     //	location of where Shared identity (mac, rev, brand, model) is located.
 #define OLY_IDENTITY_LOCATION			((P_OLY_IDENTITY)OLY_IDENTITY_OFFSET)	//	location of where Shared identity (mac, rev, brand, model) is located.
 
 #define OLY_DEFAULT_START_ADDR			0x00000000  //	Start address for the application (used by bootloader)

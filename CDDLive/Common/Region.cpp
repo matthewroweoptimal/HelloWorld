@@ -824,9 +824,9 @@ bool Region::StartUpgrade(P_OLY_REGION pOlyRegion)
 		return( false );
 	}
 
-	if ( pOlyRegion->address != 0x00000000 )
+	if ( pOlyRegion->address != APROM_APP_LOCATION )
 	{	// This should avoid any old unsupported CDDLive firmware files being accepted
-		printf("Only APP firmware with starting address 0x0 is accepted\n");
+		printf("Only APP firmware with starting address 0x%08X is accepted\n", APROM_APP_LOCATION);
 		m_spoofingBootLoader = false;
 		return( false );
 	}
@@ -982,7 +982,7 @@ void Region::CancelUpgrade()
 bool Region::EndUpgrade()
 {
 	const uint32_t FW_UPGRADE_REBOOT_DELAY_MS = 500;
-	unsigned char *pCrcPtr = (unsigned char *)m_rgnUpgrade.address;
+    unsigned char *pCrcPtr = (unsigned char *)m_rgnUpgrade.address;	// Offset (after SPI Flash FW header) for CRC start
 	unsigned short crcCalc;
 	REGION_CRC rgnCrc;
 
@@ -1045,6 +1045,7 @@ bool Region::EndUpgrade()
 
 void Region::launchBootloader(void)
 {
+	#define APROM_WITH_IAP_MASK		0x00000040	// Mask for CONFIG0, APROM with IAP boot mode
     uint32_t  au32Config[2];           // User Configuration
     printf("Resetting to launch BootLoader\n");
 
@@ -1058,10 +1059,10 @@ void Region::launchBootloader(void)
         return;
     }
 
-    // Check if configured for boot from LDROM with IAP
-    if (au32Config[0] & 0xC0)
+    // Check if configured for boot from APROM with IAP
+    if (au32Config[0] & APROM_WITH_IAP_MASK)
     {
-        au32Config[0] &= ~0xC0;        // Select LDROM with IAP boot mode.
+        au32Config[0] &= ~APROM_WITH_IAP_MASK;        // Select APROM with IAP boot mode.
 
         // Update User Configuration CONFIG0 and CONFIG1.
         if (FMC_WriteConfig(au32Config, 2) != 0)
@@ -1074,6 +1075,17 @@ void Region::launchBootloader(void)
     }
 
     //---- Perform chip reset to make new User Config take effect, Bootloader will launch ----
+    /*  NOTE!
+     *     Before change VECMAP, user MUST disable all interrupts.
+     */
+    __disable_irq();
+    FMC_SetVectorPageAddr(APROM_BOOT_LOCATION);	/* Vector remap APROM page 0 to start of BOOTLOADER at 0x0000. */
+    if (g_FMC_i32ErrCode != 0)
+    {
+        printf("Vector Remap Fail\n");
+        while (1);
+    }
+
     FMC_Close();
     printf("CONFIG0 = %08X, CONFIG1 = %08X\n", au32Config[0], au32Config[1]);
     printf("RESETTING CHIP - Please Reboot if Bootloader doesn't launch\r\n\r\n");
@@ -1371,7 +1383,7 @@ void Region::Crc16UpdateFromSpiFlash(P_REGION_CRC rgnCrc, const uint8_t * pSrc, 
     uint32_t crc = rgnCrc->currentCrc;
 
     uint32_t j;
-    uint32_t flashOffset = sizeof(OLY_REGION) + (uint32_t)pSrc;
+    uint32_t flashOffset = sizeof(OLY_REGION) + (uint32_t)pSrc; // Start after header, plus the app offset (e.g. 0x4000)
     for ( j = 0; j < uiBytes; ++j )
     {
         uint32_t i;

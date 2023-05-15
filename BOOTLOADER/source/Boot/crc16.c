@@ -72,7 +72,7 @@ static void Crc16AccumulateByte( uint32_t* pCrc, uint8_t byte )
 void Crc16Update(P_REGION_CRC rgnCrc, const uint8_t * pSrc, uint32_t uiBytes, enum CRC_SOURCE sourceType)
 {
     uint32_t crc = rgnCrc->currentCrc;
-   	uint32_t spiFlashOffset = (uint32_t)pSrc + sizeof(OLY_REGION);	// For SPI Flash region firmware starts after the OLY_REGION header
+    uint32_t spiFlashOffset = sizeof(OLY_REGION) + (uint32_t)pSrc; // SPI Flash : FW after header + aprom address offset (e.g. 0x4000)
     uint32_t j;
 
     for ( j = 0; j < uiBytes; )

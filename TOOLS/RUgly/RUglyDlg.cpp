@@ -5533,7 +5533,7 @@ void CRUglyDlg::OnBnClickedSelectFwFile()
 	0,					//   DWORD        Flags;
 	0,					//   WORD         nFileOffset;
 	0,					//   WORD         nFileExtension;
-	"*.bin",			//   LPCWSTR      lpstrDefExt;
+	"*.img",			//   LPCWSTR      lpstrDefExt;
 	0,					//   LPARAM       lCustData;
 	NULL,				//   LPOFNHOOKPROC lpfnHook;
 	NULL				//   LPCWSTR      lpTemplateName;
@@ -5541,10 +5541,10 @@ void CRUglyDlg::OnBnClickedSelectFwFile()
 
 	sprintf(szSelectFileFilter,
 		"%s%c%s%c%s%c%s%c",
-		"Bin files (*.bin)", 0, "*.bin", 0,
+		"IMG files (*.img)", 0, "*.img", 0,
 		"All Files", 0, "*.*", 0, 0);
 
-	if (NULL != strstr(szInputFileName, ".bin")) {
+	if (NULL != strstr(szInputFileName, ".img")) {
 		ofnSelectFileOpen.nFilterIndex = 1;
 	}
 

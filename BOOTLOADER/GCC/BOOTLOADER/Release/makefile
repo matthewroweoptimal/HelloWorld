@@ -81,7 +81,8 @@ clean:
 	-@echo ' '
 
 post-build:
-	-arm-none-eabi-objcopy -O binary BOOTLOADER.elf ../../../BOOTLOADER.bin
+	-@echo 'Creating .hex and .bin files under BOOTLOADER directory'
+	-arm-none-eabi-objcopy -O binary BOOTLOADER.elf ../../../BOOTLOADER.bin  &  arm-none-eabi-objcopy -O ihex BOOTLOADER.elf ../../../BOOTLOADER.hex
 	-@echo ' '
 
 secondary-outputs: $(SECONDARY_FLASH) $(SECONDARY_SIZE)

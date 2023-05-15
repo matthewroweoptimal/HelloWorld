@@ -81,9 +81,9 @@ bool CFirmwareFile::FirmwareFileRead(char* strInputTextFile, CString& strErrorMs
 	{	// TODO : Check the Header looks good
 		fReadFile.Close();
 		if ((m_regionHeader.type != OLY_REGION_APPLICATION) ||
-			(m_regionHeader.address != 0) ||
+			(m_regionHeader.address != APROM_APP_LOCATION) ||
 			(m_regionHeader.length < 1024) ||
-			(m_regionHeader.vectorTable != 0) ||
+			(m_regionHeader.vectorTable != APROM_APP_LOCATION) ||
 			(m_regionHeader.stackPtr != 0x28000))
 		{
 			strErrorMsg.Format("Firmware Header Incorrect : %s", strInputTextFile);

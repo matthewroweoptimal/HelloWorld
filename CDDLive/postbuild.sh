@@ -33,6 +33,8 @@ done < "$olyHeaderFile"
 
 IMGNAME="OLY_APPLICATION_${VERSION}_${MODEL}.img"
 BINNAME="OLY_APPLICATION_${VERSION}_${MODEL}.bin"
+HEXNAME="OLY_APPLICATION_${VERSION}_${MODEL}.hex"
+BOOTAPPNAME="BOOT_APP_${VERSION}_${MODEL}"
 
 
 echo ==========================================================================================================================
@@ -45,13 +47,18 @@ echo ===========================================================================
 echo Creating $BINNAME
 $OBJCOPY -O binary "$PROJ.elf" $BINNAME
 
-#echo Delay 5s
-#sleep 5
+echo Creating $HEXNAME
+$OBJCOPY -O ihex "$PROJ.elf" $HEXNAME
+
+echo Creating "$BOOTAPPNAME.bin"
+srec_cat.exe "$PROJPATH/../BOOTLOADER/BOOTLOADER.hex" -Intel $HEXNAME -Intel -o "$BOOTAPPNAME.bin" -binary
+
+
 
 if [ -e $BINNAME ]
 then
     echo Creating $IMGNAME
-    "$PROJPATH/../TOOLS/OlyPack.exe" -L $PROJ.log -I $BINNAME -O $IMGNAME -V $VERSION -S 0x0 -T 0x0 -P 0x28000
+    "$PROJPATH/../TOOLS/OlyPack.exe" -L $PROJ.log -I $BINNAME -O $IMGNAME -V $VERSION -S 0x4000 -T 0x4000 -P 0x28000
 else
     echo WARNING : $BINNAME was not created
 fi
