@@ -92,26 +92,26 @@ OLY_IDENTITY __attribute__ ((section(".oly_identity"))) g_dataFlashOlyIdentity =
 	OLY_DEFAULT_HARDWARE_VERSION,	// hardwareRev
 #if defined(CSXL_118)               // 'Debug 118' build configuration
 	LOUD_BRAND_MARTIN,				// nBrand
-	MARTIN_MODEL_CSXL118,			// nModel
+	MARTIN_MODEL_CSXL118_NU,		// nModel
 #elif defined(CDDL_12)	            // 'Debug 12' build configuration
 	LOUD_BRAND_MARTIN,				// nBrand
-	MARTIN_MODEL_CDDL12,			// nModel
+	MARTIN_MODEL_CDDL12_NU,			// nModel
 #elif defined(CDDL_15)              // 'Debug 15' build configuration
 	LOUD_BRAND_MARTIN,				// nBrand
-	MARTIN_MODEL_CDDL15,			// nModel
+	MARTIN_MODEL_CDDL15_NU,			// nModel
 #elif defined(CSXL_218)             // 'Debug 218' build configuration
 	LOUD_BRAND_MARTIN,				// nBrand
-	MARTIN_MODEL_CSXL218,			// nModel
+	MARTIN_MODEL_CSXL218_NU,		// nModel
 #elif defined(CDDL_8)               // 'Debug 8' build configuration
 	LOUD_BRAND_MARTIN,				// nBrand
-	MARTIN_MODEL_CDDL8,			    // nModel
+	MARTIN_MODEL_CDDL8_NU		    // nModel
 #elif defined(Martin_Generic)       // 'Debug Manf' build configuration
 	LOUD_BRAND_MARTIN,				// nBrand
-	MARTIN_MODEL_GENERIC,			// nModel
+	MARTIN_MODEL_GENERIC_NU			// nModel
 #else
                                     // Defaults used in 'Debug' and 'Release' build configurations
 	OLY_DEFAULT_BRAND,				// nBrand (LOUD_BRAND_MARTIN)
-	OLY_DEFAULT_MODEL,				// nModel (MARTIN_MODEL_CDDL12)
+	OLY_DEFAULT_MODEL,			    // nModel (MARTIN_MODEL_CDDL12_NU)
 #endif
 	OLY_DEFAULT_SERIAL_NUMBER 		// uiSerialNumber
 };
@@ -305,27 +305,45 @@ Region::Region( oly::Config *pConfigOwner ) :
 		switch (nModel) {
 		case MARTIN_MODEL_GENERIC:
 			pszModel = "MARTIN_MODEL_GENERIC.";
+			break;			
+		case MARTIN_MODEL_GENERIC_NU:
+			pszModel = "MARTIN_MODEL_GENERIC_NU.";
 			break;
 		case MARTIN_MODEL_CDDL8:
 			pszModel = "MARTIN_MODEL_CDDL8.";
+			break;			
+		case MARTIN_MODEL_CDDL8_NU:
+			pszModel = "MARTIN_MODEL_CDDL8_NU.";
 			break;
 		case MARTIN_MODEL_CDDL12:
-			pszModel = "MARTIN_MODEL_CDDL12.";
+			pszModel = "MARTIN_MODEL_CDDL12.";	
+			break;				
+		case MARTIN_MODEL_CDDL12_NU:
+			pszModel = "MARTIN_MODEL_CDDL12_NU.";
 			break;
 		case MARTIN_MODEL_CDDL15:
-			pszModel = "MARTIN_MODEL_CDDL15.";
+			pszModel = "MARTIN_MODEL_CDDL15.";	
+			break;				
+		case MARTIN_MODEL_CDDL15_NU:		
+			pszModel = "MARTIN_MODEL_CDDL15_NU.";
 			break;
 		case MARTIN_MODEL_CSXL118:
-			pszModel = "MARTIN_MODEL_CSXL118.";
+			pszModel = "MARTIN_MODEL_CSXL118.";	
+			break;				
+		case MARTIN_MODEL_CSXL118_NU:		
+			pszModel = "MARTIN_MODEL_CSXL118_NU.";
 			break;
 		case MARTIN_MODEL_CSXL218:
 			pszModel = "MARTIN_MODEL_CSXL218.";
+			break;		
+		case MARTIN_MODEL_CSXL218_NU:		
+			pszModel = "MARTIN_MODEL_CSXL218_NU.";
 			break;
 		default:
 			if ((nModel<MARTIN_MODEL_GENERIC) || (nModel>=0x20))
 			{
 				pszModel = "INVALID! - Substituting MARTIN_MODEL_GENERIC!";
-				nModel = MARTIN_MODEL_GENERIC;
+				nModel = MARTIN_MODEL_GENERIC_NU;
 			}
 			else
 			{
@@ -456,17 +474,17 @@ bool Region::VerifyIdentity()
 	switch ( m_olyIdentity.nModel )
 	{
 #if defined(CSXL_118)               // 'Release/Debug 118' build configuration
-	case MARTIN_MODEL_CSXL118:
+	case MARTIN_MODEL_CSXL118_NU:
 #elif defined(CDDL_12)	            // 'Release/Debug 12' build configuration
-	case MARTIN_MODEL_CDDL12:
+	case MARTIN_MODEL_CDDL12_NU:
 #elif defined(CDDL_15)              // 'Release/Debug 15' build configuration
-	case MARTIN_MODEL_CDDL15:
+	case MARTIN_MODEL_CDDL15_NU:
 #elif defined(CSXL_218)             // 'Release/Debug 218' build configuration
-	case MARTIN_MODEL_CSXL218:
+	case MARTIN_MODEL_CSXL218_NU:
 #elif defined(CDDL_8)               // 'Release/Debug 8' build configuration
-	case MARTIN_MODEL_CDDL8:
+	case MARTIN_MODEL_CDDL8_NU:
 #elif defined(Martin_Generic)       // 'Release/Debug Manf' build configuration
-	case MARTIN_MODEL_GENERIC:
+	case MARTIN_MODEL_GENERIC_NU:
 #else								// 'Release/Debug' builds (Identify as CDDL_12)
 	case OLY_DEFAULT_MODEL:
 #endif
@@ -500,17 +518,17 @@ void Region::InitializeIdentity()
 	m_olyIdentity.nBrand = OLY_DEFAULT_BRAND;		// Default Brand is : LOUD_BRAND_MARTIN
 	m_olyIdentity.uiSerialNumber = OLY_DEFAULT_SERIAL_NUMBER;
 #if defined(CSXL_118)               // 'Release/Debug 118' build configuration
-	m_olyIdentity.nModel = MARTIN_MODEL_CSXL118;
+	m_olyIdentity.nModel = MARTIN_MODEL_CSXL118_NU;
 #elif defined(CDDL_12)	            // 'Release/Debug 12' build configuration
-	m_olyIdentity.nModel = MARTIN_MODEL_CDDL12;
+	m_olyIdentity.nModel = MARTIN_MODEL_CDDL12_NU;
 #elif defined(CDDL_15)              // 'Release/Debug 15' build configuration
-	m_olyIdentity.nModel = MARTIN_MODEL_CDDL15;
+	m_olyIdentity.nModel = MARTIN_MODEL_CDDL15_NU;
 #elif defined(CSXL_218)             // 'Release/Debug 218' build configuration
-	m_olyIdentity.nModel = MARTIN_MODEL_CSXL218;
+	m_olyIdentity.nModel = MARTIN_MODEL_CSXL218_NU;
 #elif defined(CDDL_8)               // 'Release/Debug 8' build configuration
-	m_olyIdentity.nModel = MARTIN_MODEL_CDDL8;
+	m_olyIdentity.nModel = MARTIN_MODEL_CDDL8_NU;
 #elif defined(Martin_Generic)       // 'Release/Debug Manf' build configuration
-	m_olyIdentity.nModel = MARTIN_MODEL_GENERIC;
+	m_olyIdentity.nModel = MARTIN_MODEL_GENERIC_NU;
 #else								// 'Release/Debug' builds identify as CDDL_12
 	m_olyIdentity.nModel = OLY_DEFAULT_MODEL;
 #endif
@@ -1220,18 +1238,33 @@ const char *Region::GetMandolinModelName(LOUD_brand mandolinBrand, int nMandolin
 		switch (nMandolinModel) {
 		case MARTIN_MODEL_CDDL8:
 			pszModel = "CDD-L8";
+			break;		
+		case MARTIN_MODEL_CDDL8_NU:		
+			pszModel = "CDD-L8-NU";
 			break;
 		case MARTIN_MODEL_CDDL12:
 			pszModel = "CDD-L12";
+			break;		
+		case MARTIN_MODEL_CDDL12_NU:		
+			pszModel = "CDD-L12-NU";
 			break;
 		case MARTIN_MODEL_CDDL15:
 			pszModel = "CDD-L15";
+			break;		
+		case MARTIN_MODEL_CDDL15_NU:		
+			pszModel = "CDD-L15-NU";
 			break;
 		case MARTIN_MODEL_CSXL118:
 			pszModel = "CSX-L118";
+			break;		
+		case MARTIN_MODEL_CSXL118_NU:		
+			pszModel = "CSX-L118-NU";
 			break;
 		case MARTIN_MODEL_CSXL218:
 			pszModel = "CSX-L218";
+			break;		
+		case MARTIN_MODEL_CSXL218_NU:		
+			pszModel = "CSX-L218-NU";
 			break;
 		default:
 			break;
@@ -1332,7 +1365,7 @@ void Region::WriteIdentity(uint8_t mac[6], int32_t nBrand, int32_t nModel, uint1
 			(m_olyIdentity.nModel>=((int32_t)MARTIN_MODEL_GENERIC+0x20)) ) )
 	{
 		printf("Invalid Martin Model in identity flash replaced with default!\r\n");
-		m_olyIdentity.nModel = (int32_t)MARTIN_MODEL_GENERIC;
+		m_olyIdentity.nModel = (int32_t)MARTIN_MODEL_GENERIC_NU;
 	}
 	if ((LOUD_BRAND_MACKIE==m_olyIdentity.nBrand) && (MACKIE_MODEL_GENERIC!=m_olyIdentity.nModel)  && ((m_olyIdentity.nModel<(int32_t)MACKIE_MODEL_GENERIC) ||
 			(m_olyIdentity.nModel>=((int32_t)MACKIE_MODEL_MASTER_RIG+0x20)) ) )

@@ -31,10 +31,10 @@ do
 done < "$olyHeaderFile"
 
 
-IMGNAME="OLY_APPLICATION_${VERSION}_${MODEL}.img"
-BINNAME="OLY_APPLICATION_${VERSION}_${MODEL}.bin"
-HEXNAME="OLY_APPLICATION_${VERSION}_${MODEL}.hex"
-BOOTAPPNAME="BOOT_APP_${VERSION}_${MODEL}"
+IMGNAME="OLY_APPLICATION_${VERSION}_${MODEL}_NU.img"
+BINNAME="OLY_APPLICATION_${VERSION}_${MODEL}_NU.bin"
+HEXNAME="OLY_APPLICATION_${VERSION}_${MODEL}_NU.hex"
+BOOTAPPNAME="BOOT_APP_${VERSION}_${MODEL}_NU"
 
 
 echo ==========================================================================================================================
