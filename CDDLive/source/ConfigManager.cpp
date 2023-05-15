@@ -357,19 +357,39 @@ namespace oly {
     	case eTARGET_FIR:
     		if (instance < FIR_PRESETS) {
     			olyParams.Device->Active_FIR = instance;
-    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_HF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302));
-    			_time_delay(10);
-    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_HF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300));
-    			_time_delay(10);
-    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_MF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302));
-    			_time_delay(10);
-    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_MF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300));
-    			_time_delay(10);
-    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_LF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],302));
-    			_time_delay(10);
-    			olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, instance, ePID_OLYspeaker1_FIR_LF_FIR_COEF300_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],300));
-    			_time_delay(10);
-    		}
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_COEF127_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_COEF255_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_COEF383_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_HF_FIR_COEF511_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],ePID_OLYspeaker1_FIR_MF_FIR_ENABLE-ePID_OLYspeaker1_FIR_HF_FIR_COEF511_VALUE));
+    	    	_time_delay(10);
+
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_COEF127_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_COEF255_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_COEF383_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_MF_FIR_COEF511_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],ePID_OLYspeaker1_FIR_LF_FIR_ENABLE-ePID_OLYspeaker1_FIR_MF_FIR_COEF511_VALUE));
+    	    	_time_delay(10);
+
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_ENABLE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_COEF127_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_COEF255_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_COEF383_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],128));
+    	    	_time_delay(10);
+    	    	olyDspPort.WriteMessage(SetParameterBlock(eTARGET_FIR, olyParams.Device->Active_FIR, ePID_OLYspeaker1_FIR_LF_FIR_COEF511_VALUE, olyParams.FIR[olyParams.Device->Active_FIR],ePID_OLYspeaker1_FIR_FENCE-ePID_OLYspeaker1_FIR_LF_FIR_COEF511_VALUE));
+    	    	_time_delay(10);
+   		}
     		break;
     	default:
     		printf("ERROR: SET preset failed, invalid GROUP.\n");
