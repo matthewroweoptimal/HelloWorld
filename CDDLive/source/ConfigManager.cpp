@@ -1510,15 +1510,19 @@ namespace oly {
 		printf("ParamSetVoicing for PID: %d Value: %d\n",PID, Value);
 		/*
 		 * To use the old test app we must check for routing changes, these will not work with the Nuvoton
+		 * For ASM20005-00 test. We want to set AMP2 to the value being sent AMP4. i.e. AMP1 = 3 (LF), AMP2 = 2 (HF).
+		 * For ASM20007-00 test. We want AMP1 and AMP2 set to 3 LF.
 		 */
 		if(PID==ePID_OLYspeaker1_VOICING_AMP4_ROUTING)
 		{
+			if (Value) //only copy the AMP2 if it is trying to set.
+			{
+			printf("Overriding AMP routing to AMP2, setting to %d\n", Value);
 			PID = ePID_OLYspeaker1_VOICING_AMP2_ROUTING;
+			}
 		}
 
 #endif
-
-
 
     	if (instance == 0)
     		instance = olyParams.Device->Active_Voicing;
