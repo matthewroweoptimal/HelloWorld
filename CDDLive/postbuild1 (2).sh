@@ -51,7 +51,7 @@ echo Creating $HEXNAME
 $OBJCOPY -O ihex "$PROJ.elf" $HEXNAME
 
 echo Creating "$BOOTAPPNAME.bin"
-"C:\Program Files\srecord\bin\srec_cat.exe" "$PROJPATH/../BOOTLOADER/BOOTLOADER.hex" -Intel $HEXNAME -Intel -o "$BOOTAPPNAME.bin" -binary
+C:\Program Files\srecord\bin\srec_cat.exe "$PROJPATH/../BOOTLOADER/BOOTLOADER.hex" -Intel $HEXNAME -Intel -o "$BOOTAPPNAME.bin" -binary
 
 
 

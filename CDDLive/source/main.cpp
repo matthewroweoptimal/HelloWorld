@@ -480,8 +480,10 @@ static void peripherals_init(void)
     /* EADC */
     EADC_Init();
 
+
     if(g_EADC_i32ErrCode==EADC_TIMEOUT_ERR)
     {
+#if MFG_TEST_MARTIN
     	int32_t count = 0;
 		while(1)
 		{
@@ -491,6 +493,9 @@ static void peripherals_init(void)
 				count = 0;
 				}
 		}
+#else
+		printf("EADC timeout error\n");
+#endif
     }
 
 }

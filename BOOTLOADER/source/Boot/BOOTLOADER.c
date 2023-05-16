@@ -71,6 +71,7 @@ uint32_t    g_flashSector[P_SECTOR_SIZE_U32];   // Can hold one 4kB sector data
 #define CDDP_PANEL_LED3(value)      (*(volatile uint32_t *)(GPIOC_PIN_BASE + (12<<2)) = !value)
 #define CDDP_PANEL_LED4(value)      (*(volatile uint32_t *)(GPIOC_PIN_BASE + (11<<2)) = !value)
 
+#define DELAY_COUNT		10000000000
 
 
 //---------------------------------------------------------------------------
@@ -219,6 +220,13 @@ void Hard_Fault_Handler(uint32_t stack[])
 //---------------------------------------------------------------------------
 int main()
 {
+	uint64_t delayCounter = 0;
+
+	while(delayCounter<DELAY_COUNT) {
+		delayCounter++;
+	}
+
+
     SYS_UnlockReg();                   /* Unlock protected registers */
     SYS_Init();                        /* Init System, IP clock and multi-function I/O */
 
