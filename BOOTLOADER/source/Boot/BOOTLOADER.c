@@ -71,6 +71,16 @@ uint32_t    g_flashSector[P_SECTOR_SIZE_U32];   // Can hold one 4kB sector data
 #define CDDP_PANEL_LED3(value)      (*(volatile uint32_t *)(GPIOC_PIN_BASE + (12<<2)) = !value)
 #define CDDP_PANEL_LED4(value)      (*(volatile uint32_t *)(GPIOC_PIN_BASE + (11<<2)) = !value)
 
+#define STARTUP_DELAY	1	// Uncomment to include short startup delay to get around intermittent boot issues with hardware.
+#ifdef STARTUP_DELAY		// Defines a delay that the compiler can't completely optimise out.
+	#define DELAY(x)            \
+		outer = x;              \
+		while ( --outer ) {     \
+			inner = 0;          \
+			while ( --inner )   \
+				asm("nop");     \
+		}
+#endif
 
 
 //---------------------------------------------------------------------------
@@ -158,12 +168,11 @@ void SYS_Init(void)
     PB->MODE = (PB->MODE & ~(GPIO_MODE_MODE3_Msk | GPIO_MODE_MODE2_Msk)) |
                (GPIO_MODE_OUTPUT << GPIO_MODE_MODE3_Pos) |
                (GPIO_MODE_OUTPUT << GPIO_MODE_MODE2_Pos);  // Set to output mode
-#if ROTATING_LED_INDICATOR
-    // Also initialise LED3 and LED4 if rotating LED pattern configured
+
+    // Also initialise LED3 and LED4 for rotating LED pattern
     PC->MODE = (PC->MODE & ~(GPIO_MODE_MODE12_Msk | GPIO_MODE_MODE11_Msk)) |
                (GPIO_MODE_OUTPUT << GPIO_MODE_MODE12_Pos) |
                (GPIO_MODE_OUTPUT << GPIO_MODE_MODE11_Pos);  // Set to output mode
-#endif
 }
 
 //---------------------------------------------------------------------------
@@ -192,18 +201,17 @@ static void PutChar(char ch)
 	}
 }
 
-// Define 'NO_SERIAL_OUTPUT' in 'flash_params.h' to control serial information messages (code size reduction)
-#if NO_DEBUG_MSG_OUTPUT
-	#define PutString(x)	// To save space, take away all serial information messages
-#else
-	void PutString(char *str)
+//---------------------------------------------------------------------------
+// Send a string to UART0
+// @param str    String to output to serial
+//---------------------------------------------------------------------------
+void PutString(char *str)
+{
+	while (*str != '\0')
 	{
-		while (*str != '\0')
-		{
-			PutChar(*str++);
-		}
+		PutChar(*str++);
 	}
-#endif
+}
 
 //---------------------------------------------------------------------------
 // Minimal HardFault Handler (Space limitaions)
@@ -219,8 +227,14 @@ void Hard_Fault_Handler(uint32_t stack[])
 //---------------------------------------------------------------------------
 int main()
 {
+#if STARTUP_DELAY
+    unsigned int    outer; 	// Vars for DELAY() macro
+    unsigned char   inner;  // Vars for DELAY() macro
+    DELAY(10000);          	// Results in fraction of a second delay
+#endif
+
     SYS_UnlockReg();                   /* Unlock protected registers */
-    SYS_Init();                        /* Init System, IP clock and multi-function I/O */
+    SYS_Init();                        /* Init System, IP clock and multi-function I/O */   
 
     UART0_Init();                      /* Initialize UART0 */
 
