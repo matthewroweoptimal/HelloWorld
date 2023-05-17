@@ -832,7 +832,12 @@ void Config::HandleTestCommand(MandolinPort * srcPort, mandolin_message * pMsg)
 			srcPort->WriteMessage(GetMacAddrResponse(Region::GetSystemMAC(), pMsg->sequence));
 		    break;
 		case(TEST_CMD_GET_STATIC_ALL):
+#if MFG_TEST_MARTIN
+			srcPort->WriteMessage(GetStaticAllResponse(0,0,0, pMsg->sequence));
+#else
 			srcPort->WriteMessage(GetStaticAllResponse(m_pUpgrade->GetStaticIp(), m_pUpgrade->GetStaticGateway(), m_pUpgrade->GetStaticMask(), pMsg->sequence));
+#endif
+
 			break;
 		case(TEST_CMD_SET_IDENTITY):
 			if (uiLength>=2)
