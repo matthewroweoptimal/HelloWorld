@@ -947,7 +947,7 @@ void Config::HandleTestCommand(MandolinPort * srcPort, mandolin_message * pMsg)
 			// It sets parameters for the function generator.
 			test_value.u = pPayload[2];				// fader
 			test_value2.u = pPayload[3];			// frequency
-			test_value.f = test_value.f + 2.0;		//adjusts gain for nuvoton board so it can still use existing test app!
+			test_value.f = test_value.f + 2.5;		//adjusts gain for nuvoton board so it can still use existing test app!
 			Mfg_SetFunctionGenerator(test_value, test_value2);
 			srcPort->WriteMessage(GetAckResponse(pMsg));
 			break;
