@@ -4025,13 +4025,31 @@ void CRUglyDlg::SetProducttype(int nProduct)
 			strcat(pcBrand,"Martin");
 			switch(uiModel)
 			{
-			case MARTIN_MODEL_GENERIC: strcat(pcModel,"GENERIC"); break;
+    		case MARTIN_MODEL_GENERIC:
+			    strcat(pcModel,"GENERIC"); break;	
+			case MARTIN_MODEL_GENERIC_NU:
+			    strcat(pcModel,"GENERIC_NU"); break;
 			/*  Loudspeakers */
-			case     MARTIN_MODEL_CDDL8:			strcat(pcModel,"CDDL8"); break;
-			case     MARTIN_MODEL_CDDL12:			strcat(pcModel,"CDDL12"); break;
-			case     MARTIN_MODEL_CDDL15:			strcat(pcModel,"CDDL15"); break;
-			case     MARTIN_MODEL_CSXL118:			strcat(pcModel,"CSXL118"); break;
-			case     MARTIN_MODEL_CSXL218:			strcat(pcModel,"CSXL218"); break;
+			case MARTIN_MODEL_CDDL8:
+				strcat(pcModel, "CDDL8"); break;
+			case MARTIN_MODEL_CDDL8_NU:
+				strcat(pcModel,"CDDL8_NU"); break;
+			case MARTIN_MODEL_CDDL12:
+				strcat(pcModel, "CDDL12"); break;
+			case MARTIN_MODEL_CDDL12_NU:
+				strcat(pcModel,"CDDL12_NU"); break;
+			case MARTIN_MODEL_CDDL15:
+				strcat(pcModel, "CDDL15"); break;
+			case MARTIN_MODEL_CDDL15_NU:
+				strcat(pcModel,"CDDL15_NU"); break;
+			case MARTIN_MODEL_CSXL118:
+				strcat(pcModel, "CSXL118"); break;
+			case MARTIN_MODEL_CSXL118_NU:
+				strcat(pcModel,"CSXL118_NU"); break;
+			case MARTIN_MODEL_CSXL218:
+				strcat(pcModel, "CSXL218"); break;
+			case MARTIN_MODEL_CSXL218_NU:
+				strcat(pcModel,"CSXL218_NU"); break;
 			default:						strcat(pcModel,"UNKNOWN"); break;
 			}
 			break;
@@ -5533,7 +5551,7 @@ void CRUglyDlg::OnBnClickedSelectFwFile()
 	0,					//   DWORD        Flags;
 	0,					//   WORD         nFileOffset;
 	0,					//   WORD         nFileExtension;
-	"*.bin",			//   LPCWSTR      lpstrDefExt;
+	"*.img",			//   LPCWSTR      lpstrDefExt;
 	0,					//   LPARAM       lCustData;
 	NULL,				//   LPOFNHOOKPROC lpfnHook;
 	NULL				//   LPCWSTR      lpTemplateName;
@@ -5541,10 +5559,10 @@ void CRUglyDlg::OnBnClickedSelectFwFile()
 
 	sprintf(szSelectFileFilter,
 		"%s%c%s%c%s%c%s%c",
-		"Bin files (*.bin)", 0, "*.bin", 0,
+		"IMG files (*.img)", 0, "*.img", 0,
 		"All Files", 0, "*.*", 0, 0);
 
-	if (NULL != strstr(szInputFileName, ".bin")) {
+	if (NULL != strstr(szInputFileName, ".img")) {
 		ofnSelectFileOpen.nFilterIndex = 1;
 	}
 

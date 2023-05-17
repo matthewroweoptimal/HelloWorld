@@ -81,9 +81,9 @@ bool CFirmwareFile::FirmwareFileRead(char* strInputTextFile, CString& strErrorMs
 	{	// TODO : Check the Header looks good
 		fReadFile.Close();
 		if ((m_regionHeader.type != OLY_REGION_APPLICATION) ||
-			(m_regionHeader.address != 0) ||
+			(m_regionHeader.address != APROM_APP_LOCATION) ||
 			(m_regionHeader.length < 1024) ||
-			(m_regionHeader.vectorTable != 0) ||
+			(m_regionHeader.vectorTable != APROM_APP_LOCATION) ||
 			(m_regionHeader.stackPtr != 0x28000))
 		{
 			strErrorMsg.Format("Firmware Header Incorrect : %s", strInputTextFile);
@@ -128,7 +128,16 @@ void CFirmwareFile::OnTimer(UINT nIDEvent)
 				m_bFirmwareFileWaitingAck = false;
 			}
 			else
-				m_dlgParent->SetTimer(FIRMWAREFILE_TIMERID, 500, NULL);	// Every 0.5s process timer
+			{
+				if (m_nFirmwareFilePos == 0)
+				{	// Delay 1s after first 'OPEN FILE' message to allow time for erase
+					m_dlgParent->SetTimer(FIRMWAREFILE_TIMERID, 2000, NULL);	// Process timer after 2s
+				}
+				else
+				{	// Delay 0.1s between sending file chunks
+					m_dlgParent->SetTimer(FIRMWAREFILE_TIMERID, 200, NULL);	// Every 0.2s process timer
+				}
+			}
 		}
 		break;
 	}
@@ -187,18 +196,18 @@ bool CFirmwareFile::FirmwareSendNextChunk(char* strInputTextFile, int& nFilePos,
 			m_dlgParent->m_MandolinComm.CreateFileOpenCDDLive(&m_dlgParent->m_msgTx, m_dlgParent->m_nTxSequence, (OLY_REGION*)pcBinData);
 			m_dlgParent->TryToSendMandolinMessage(&m_dlgParent->m_msgTx, true);
 			m_bStartFwTransfer = false;
-			m_bFirmwareFileWaitingAck = true;
+//			m_bFirmwareFileWaitingAck = true;
 			fReadFile.Close();
 		}
 	}
 	else if (!m_bEndFwTransfer)
-	{	// Send ALL the FW chunks across - including the header which goes to SPI Flash FW region also
+	{	// Send ALL the FW chunks across - BUT exclude the header (already sent by POST FILE msg)
 		if (!fReadFile.Open(strInputTextFile, CFile::modeRead))
 		{
 			strErrorMsg.Format("Error Opening file: %s", strInputTextFile);
 			return false;
 		}
-		fReadFile.Seek(nFilePos, CFile::begin);
+		fReadFile.Seek(sizeof(OLY_REGION) + nFilePos, CFile::begin);
 
 		UINT readLength = fReadFile.Read(pcBinData, FW_UPGRADE_CHUNK_SIZE);
 		if (readLength > 0)
