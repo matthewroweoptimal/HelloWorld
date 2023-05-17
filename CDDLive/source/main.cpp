@@ -325,6 +325,7 @@ void prvSetupHardware( void )
     Gpio::setGpio(BTL4R_CONTROL,HIGH);
     Gpio::setGpio(AMP1_TEMP_VAC_SEL,HIGH);
     Gpio::setGpio(AMP2_TEMP_VAC_SEL,HIGH);
+    Gpio::setGpio(LOGO_LED_RED,LOW);
 
     Leds::setLed(GREEN_LED1,true);
     Leds::setLed(GREEN_LED2,true);
@@ -481,7 +482,15 @@ static void peripherals_init(void)
 
     if(g_EADC_i32ErrCode==EADC_TIMEOUT_ERR)
     {
-    	while(1);
+    	int32_t count = 0;
+		while(1)
+		{
+			if(count++ > 2500000)
+				{
+				Leds::toggleLed(GREEN_LED1);
+				count = 0;
+				}
+		}
     }
 
 }
