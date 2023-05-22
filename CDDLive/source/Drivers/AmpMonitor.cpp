@@ -20,7 +20,9 @@ static float loTempThreshold;
 
 const float celciusPerVolt = 30.303f;
 
-const float adcPerVolt = 1241.2f;
+//const float adcPerVolt = 1241.2f;
+const float adcPerVolt = 1321.29f;	//change for 3.1V rail change from 3.3V
+
 
 #if 0 //IQ comment out - not needed for Nuvoton
 const adc16_converter_config_t amp1_mon_hw_config_0 =
