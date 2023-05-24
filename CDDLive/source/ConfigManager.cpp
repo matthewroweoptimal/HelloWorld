@@ -462,7 +462,7 @@ namespace oly {
     	olyUI.UpdateInputSource(source);
     #endif
     #if USE_CDD_UI
-    	//cddlUI.UpdateInputSource(source);
+    	cddlUI.UpdateInputSource(source);
     #endif
     }
     
