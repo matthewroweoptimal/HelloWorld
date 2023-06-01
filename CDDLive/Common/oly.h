@@ -31,10 +31,10 @@
  #define MIN_FW_VERSION_SUB     43
 
 #else
- #define OLY_FW_VERSION		    FW_VERSION_CONST(1,1,16)
+ #define OLY_FW_VERSION		    FW_VERSION_CONST(1,1,23)
  #define MIN_FW_VERSION_MAJOR   1                           // Cannot upgrade FW to versions below this
  #define MIN_FW_VERSION_MINOR   1
- #define MIN_FW_VERSION_SUB     16
+ #define MIN_FW_VERSION_SUB     13
 #endif
 
 #define DANTE_OS_VERSION		FW_VERSION_CONST(2,2,3,1)

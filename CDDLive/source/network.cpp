@@ -48,8 +48,8 @@ unsigned char macAddr[6] =
         OLY_DEFAULT_MAC_ADDR4,
         OLY_DEFAULT_MAC_ADDR5
 };
-const char mdnsName[] = "cddlive";
 
+//const char mdnsName[] = "cddlive";
 
 struct netif fsl_netif0;
 NETIF_DECLARE_EXT_CALLBACK( netif_callback )
@@ -104,6 +104,7 @@ static void srv_txt(struct mdns_service *service, void *txt_userdata)
    	sprintf(szText, "Serial=%d", (int)Region::GetSerialNumber());
     res = mdns_resp_add_service_txtitem(service, szText, strlen(szText));
     LWIP_ERROR("mdns add service txt failed\n", (res == ERR_OK), return );
+
 }
 
 //-------------------------------------------------------------------------------------
@@ -374,7 +375,7 @@ void network_UseStaticIP(uint32_t *ipaddr, uint32_t *gateway, uint32_t *mask)
     gw.addr = *gateway;
     netifapi_netif_set_addr( &fsl_netif0, &ip, &subnet, &gw );
 
-    mdns_resp_rename_netif(&fsl_netif0, mdnsName);
+    mdns_resp_rename_netif(&fsl_netif0, olyConfig->GetMdnsName());
 }
 
 // Called on startup
@@ -390,7 +391,7 @@ void network_UseDHCP(void)
     printf("Starting DHCP\n");
 	dhcp_start(&fsl_netif0 );
 
-    mdns_resp_rename_netif(&fsl_netif0, mdnsName);
+    mdns_resp_rename_netif(&fsl_netif0, olyConfig->GetMdnsName());
 }
 
 void network_init(void)
@@ -420,7 +421,8 @@ void networkInitialisation(ip_addr_t *pIpAddr, ip_addr_t *pGateway, ip_addr_t *p
 	netif_add_ext_callback(&netif_callback, netifStatusCallback);
 
 	mdns_resp_init();
-	mdns_resp_add_netif(&fsl_netif0, mdnsName);
+	//mdns_resp_add_netif(&fsl_netif0, mdnsName);
+	mdns_resp_add_netif(&fsl_netif0, olyConfig->GetMdnsName());
 	mdns_resp_add_service(&fsl_netif0, olyConfig->GetDiscoServiceName(), "_mandolin", DNSSD_PROTO_TCP, 50001, srv_txt, NULL);
 }
 

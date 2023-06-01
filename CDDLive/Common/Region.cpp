@@ -297,6 +297,7 @@ Region::Region( oly::Config *pConfigOwner ) :
 			}
 			break;
 	case LOUD_BRAND_MARTIN:
+		printf("Setting Model ID using nModel = %d \n", nModel);
 		if ((nModel<MARTIN_MODEL_GENERIC) || (nModel>=0x20))
 		{
 			printf("Invalid Model, substituting default!\r\n");

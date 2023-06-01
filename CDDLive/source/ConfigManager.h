@@ -310,6 +310,7 @@ public:
 	void InitUI();	
 	void InitStatusParams();	
 	char * GetDiscoServiceName();
+	char * GetMdnsName();
 	void OnNetworkConnectionChanged(bool connected);
 	
 	void OpenNetworkPort(bool bOpen, int nPort);

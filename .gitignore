@@ -37,3 +37,8 @@
 
 
 CDDLive/.settings/language.settings.xml
+*.bin
+*.img
+*.bak
+*.hex
+*.zip

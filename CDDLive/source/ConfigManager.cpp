@@ -45,6 +45,7 @@ extern "C" {
 #include <string.h>
 
 static char g_DiscoServiceName[64] = "\x0";
+static char g_DiscoMdnsName[64] = "\x0";
 
 const char c_DefaultDeviceName[] = "Default Name";
 const char c_DefaultGroupName[] = "Default Group";
@@ -54,6 +55,8 @@ const char c_Preset2Name[] = "White";
 const char c_Preset3Name[] = "Grey";
 const char c_Preset4Name[] = "Blue";
 const char c_DefaultCustom1Name[] = "User";
+
+const char mdnsName[] = "SPEAKER";
 
 extern uint32_t g_CurrentIpAddress;
 extern const char *g_pszModelName;
@@ -2822,6 +2825,19 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     		//SetSelfTestMode(eTEST_MODE_DISABLED);
     }
     
+    char * Config::GetMdnsName()
+    {
+    	unsigned char *pSystemMAC = Region::GetSystemMAC();
+
+    	sprintf(g_DiscoMdnsName, "%s\xE2\x80\xA2\%02X%02X%02X",
+    				mdnsName,
+    				*(pSystemMAC+3),
+    				*(pSystemMAC+4),
+    				*(pSystemMAC+5));
+
+    	return g_DiscoMdnsName;
+    }
+
     char * Config::GetDiscoServiceName()
     {
     	unsigned char *pSystemMAC = Region::GetSystemMAC();
