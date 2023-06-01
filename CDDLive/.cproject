@@ -116,7 +116,7 @@
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.asmlisting.1400257857" name="Generate assembler listing (-Wa,-adhlns=&quot;$@.lst&quot;)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.asmlisting" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.2145466818" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
@@ -347,7 +347,7 @@
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_15=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.1173314075" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -575,7 +575,7 @@
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_12=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.547311486" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -803,7 +803,7 @@
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_8=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.1151941947" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -1031,7 +1031,7 @@
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CSXL_118=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.2102009001" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -1259,7 +1259,7 @@
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CSXL_218=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.831237191" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -1490,7 +1490,7 @@
 									<listOptionValue builtIn="false" value="MFG_TEST_MARTIN=1"/>
 									<listOptionValue builtIn="false" value="Martin_Generic=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.1180888569" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -1721,7 +1721,7 @@
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.asmlisting.681793829" name="Generate assembler listing (-Wa,-adhlns=&quot;$@.lst&quot;)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.asmlisting" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otheroptimizations.1905919894" name="Other optimization flags" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otheroptimizations" useByScannerDiscovery="true" value="" valueType="string"/>
@@ -1958,7 +1958,7 @@
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_15=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.1544872057" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -2188,7 +2188,7 @@
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_12=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.518564347" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -2418,7 +2418,7 @@
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_8=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.1321046788" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -2648,7 +2648,7 @@
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CSXL_118=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.1809170571" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -2878,7 +2878,7 @@
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CSXL_218=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.643914977" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>
@@ -3111,7 +3111,7 @@
 									<listOptionValue builtIn="false" value="MFG_TEST_MARTIN=1"/>
 									<listOptionValue builtIn="false" value="Martin_Generic=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.165270027" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"/>
 							</tool>

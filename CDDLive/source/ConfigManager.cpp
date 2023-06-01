@@ -3005,8 +3005,8 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     	{
     		if (strlen(friendlyName) < STRING_PARAMETER_LENGTH-1) {
     			// TODO: Is there other validation necessary here
-    			//strcpy(olyStoredParams.Stored_Labels[eLID_OLYspeaker1_DEVICE_DANTE_DISCO_NAME], friendlyName);
-    			//StoreParams();	// This might also not be necessary
+    			strcpy(olyStoredParams.Stored_Labels[eLID_OLYspeaker1_DEVICE_DANTE_DISCO_NAME], friendlyName);
+    			StoreParams();	// This might also not be necessary
     			olyNetworkPort.WriteMessage(SetApplicationString(eLID_OLYspeaker1_DEVICE_DANTE_DISCO_NAME, olyStoredParams.Stored_Labels[eLID_OLYspeaker1_DEVICE_DANTE_DISCO_NAME]), true);
     		}
     	}
