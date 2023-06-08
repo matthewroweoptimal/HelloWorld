@@ -326,6 +326,7 @@ void prvSetupHardware( void )
     Gpio::setGpio(AMP1_TEMP_VAC_SEL,HIGH);
     Gpio::setGpio(AMP2_TEMP_VAC_SEL,HIGH);
     Gpio::setGpio(LOGO_LED_RED,LOW);
+    Gpio::setGpio(FAN_CONTROL,LOW);
 
     Leds::setLed(GREEN_LED1,true);
     Leds::setLed(GREEN_LED2,true);

@@ -324,7 +324,7 @@ void Config_Task(uint32_t task_init_data)
 //	olyConfig->SetLcdBrightness(0);
 
 	/* Load stored DSP parameters */
-	olyConfig->LoadAllFromFlash();			// (Also inits codec)
+	olyConfig->LoadAllFromFlash();			// (Also inits codec)(IQ??)
 
 	//TODO - IQ - I do not think olyConfig->IsInitialized() is ever false if called after LoadAllFromFlash(). Also, holding the button at power up for CDD should go to FW update mode, not set defaults.
 	//if ((!olyConfig->IsInitialized()) || (!(g_button_state & event_SW2))) { 	// First time boot, flash not programmed or button held at boot
@@ -332,12 +332,12 @@ void Config_Task(uint32_t task_init_data)
 	//}
 
 #if USE_CDD_UI
-//	olyConfig->SetFanEnabled(true);  //IQ odd bodge to get fan off after start up.
+	olyConfig->SetFanEnabled(true);
 #else
 	olyConfig->SetFanEnabled(false);
 #endif
-	olyConfig->SetFanEnabled(true);
-	olyConfig->SetFanEnabled(false);
+//	olyConfig->SetFanEnabled(true);
+//	olyConfig->SetFanEnabled(false);
 
 	MSGQ_INIT()
 
