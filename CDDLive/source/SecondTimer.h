@@ -17,7 +17,7 @@ const uint32_t MEMORY_DISPLAY_TICKS = 5;
 
 static void printFreeRTOSHeapStats()
 {
-return;	// Whilst DEBUGGING OTHER STUFF
+//return;	// Whilst DEBUGGING OTHER STUFF
 
 	static xHeapStats stats = {0};
 	vPortGetHeapStats( &stats );

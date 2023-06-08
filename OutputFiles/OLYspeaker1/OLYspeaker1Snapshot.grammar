@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ufwb version="1.3">
+    <grammar name="OLYspeaker1Snapshot" start="id:3" author="Quentin Liedtke" fileextension="dat" complete="yes">
+        <description>Grammar for OLYspeaker1 Snapshot files</description>
+        <structure name="Snapshot" id="3" encoding="UTF-8" endian="little" signed="no">
+            <number name="uiShapshotVersion" id="4" type="integer" length="4"/>
+            <number name="uiCRC" id="5" type="integer" length="4"/>
+            <number name="uiPayloadValueWordOffset" id="6" type="integer" length="4"/>
+            <number name="uiPayloadValueWordLength" id="7" type="integer" length="4"/>
+            <number name="uiPayloadStringWordOffset" id="8" type="integer" length="4"/>
+            <number name="uiPayloadStringWordLength" id="9" type="integer" length="4"/>
+            <structref name="SnapshotFileValueData" id="11" structure="id:10"/>
+            <structref name="SnapshotFileStringData" id="13" structure="id:12"/>
+        </structure>
+        <structure name="SnapshotFileValueData" id="10" length="0" encoding="UTF-8" endian="little" signed="no">
+            <number name="NULL" id="100" type="float" length="4"/>
+        </structure>
+        <structure name="SnapshotFileStringData" id="12" encoding="UTF-8" endian="big" signed="no">
+            <string name="NULL" id="10000" type="fixed-length" length="64"/>
+        </structure>
+    </grammar>
+</ufwb>

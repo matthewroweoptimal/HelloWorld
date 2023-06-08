@@ -549,6 +549,18 @@ _mqx_uint  _timer_cancel(_timer_id id)
 	configASSERT( result != pdFALSE );
 }
 
+// deletes timer request - IQ this is part of a workaround for the one shot timers which do not delete properly!
+// Parameters
+//		id [IN] — ID of the timer to be cancelled, from calling a function from the _timer_start family of functions
+// Returns
+//		MQX_OK
+//		Errors
+_mqx_uint  _timer_reset(_timer_id id)
+{
+	BaseType_t result = xTimerReset(id, portMAX_DELAY);
+	configASSERT( result != pdFALSE );
+}
+
 // Start a timer that expires after the number of ticks
 // Parameters
 //		notification_ function [IN] — Notification function that MQX RTOS calls when the timer expires
@@ -577,6 +589,31 @@ _timer_id  _timer_start_oneshot_after_ticks(TIMER_NOTIFICATION_TICK_FPTR notific
 	return handle;
 }
 
+// Creates (but does not start!!) a timer that expires after the number of ticks
+// Parameters
+//		notification_ function [IN] — Notification function that MQX RTOS calls when the timer expires
+//		notification_ data_ptr [IN] — Data that MQX RTOS passes to the notification function
+//		mode [IN] — Time to use when calculating the time to expire; one of the following:
+//				TIMER_ELAPSED_TIME_MODE (use _time_get_elapsed() or _time_get_elapsed_ticks(), which are not affected by _time_set() or _time_set_ticks())
+//				TIMER_KERNEL_TIME_MODE (use _time_get() or _time_get_ticks())
+//		milliseconds [IN] — Milliseconds to wait before MQX RTOS calls the notification function and cancels the timer
+//		tick_time_ptr [IN] — Ticks (in tick time) to wait before MQX RTOS calls the notification function and cancels the timer
+// Returns
+//		Timer ID (success)
+//		TIMER_NULL_ID (failure)
+_timer_id  _timer_create_oneshot_after_ticks(TIMER_NOTIFICATION_TICK_FPTR notification_function, void *notification_data_ptr,
+												_mqx_uint mode, MQX_TICK_STRUCT_PTR tick_time_ptr)
+{
+	// Notes : 2 uses in code (ConfigManager.cpp) : With notification_data_ptr = NULL and mode = TIMER_ELAPSED_TIME_MODE
+	TimerCallbackFunction_t pxCallbackFunction = notification_function;	// TODO : Callback prototypes are different between MQX and FreeRTOS
+	TimerHandle_t handle = xTimerCreate( "TMR",			// Just a text name not used by kernel
+								 tick_time_ptr->ticks,
+								 pdFALSE,		// Timer will be ONE-SHOT
+								 ( void * ) 0,	// The ID is not used, so can be set to anything.
+								 pxCallbackFunction );
+	configASSERT( handle != NULL );
+	return handle;
+}
 
 // Initializes a tick time structure with the number of ticks
 // Parameters

@@ -42,7 +42,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.1274531924" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.1848831368" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.1481893746" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1918570345" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="false" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
+							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1918570345" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
@@ -158,10 +158,11 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
+									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.171425854" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.asmlisting.189434819" name="Generate assembler listing (-Wa,-adhlns=&quot;$@.lst&quot;)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.asmlisting" useByScannerDiscovery="false" value="false" valueType="boolean"/>
@@ -272,7 +273,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.163898489" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.358642011" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.1930936330" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1563395354" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
+							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1563395354" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
@@ -388,11 +389,12 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_15=1"/>
+									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.1912887943" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.57835726" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
@@ -500,7 +502,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.183741292" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.1124639751" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.2068125397" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1060080151" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
+							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1060080151" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
@@ -616,11 +618,12 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_12=1"/>
+									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.1635207361" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1244144128" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
@@ -728,7 +731,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.923381857" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.1203762214" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.1368987204" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.102038202" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
+							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.102038202" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
@@ -844,11 +847,12 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_8=1"/>
+									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.450592982" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1810215699" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
@@ -956,7 +960,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.908724568" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.77349377" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.2002205013" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1002068894" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
+							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1002068894" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
@@ -1072,11 +1076,12 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CSXL_118=1"/>
+									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.1288031303" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.178949737" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
@@ -1184,7 +1189,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.66311149" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.1098137183" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.1509472776" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1917363560" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
+							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1917363560" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
@@ -1300,11 +1305,12 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CSXL_218=1"/>
+									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.1115081330" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.585714947" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
@@ -1412,7 +1418,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.1287495176" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.805104085" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.1453083001" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1465418690" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
+							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1465418690" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
@@ -1532,13 +1538,13 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="MFG_TEST_MARTIN=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 									<listOptionValue builtIn="false" value="Martin_Generic=1"/>
+									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.854013458" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1240313917" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
@@ -1646,7 +1652,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.350769399" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.1176421561" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.49254175" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.411925096" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
+							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.411925096" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
@@ -1721,7 +1727,7 @@
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.asmlisting.681793829" name="Generate assembler listing (-Wa,-adhlns=&quot;$@.lst&quot;)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.asmlisting" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otheroptimizations.1905919894" name="Other optimization flags" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otheroptimizations" useByScannerDiscovery="true" value="" valueType="string"/>
@@ -1765,10 +1771,11 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
+									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.608969134" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.asmlisting.571513037" name="Generate assembler listing (-Wa,-adhlns=&quot;$@.lst&quot;)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.asmlisting" useByScannerDiscovery="false" value="false" valueType="boolean"/>
@@ -1882,7 +1889,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.1860824144" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.389640770" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.100368473" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1394827571" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
+							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1394827571" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
@@ -2000,11 +2007,12 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_15=1"/>
+									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.1860936091" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1721967505" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
@@ -2112,7 +2120,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.146027622" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.671235608" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.255104784" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1845116644" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
+							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1845116644" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
@@ -2230,11 +2238,12 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_12=1"/>
+									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.806703409" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1916894416" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
@@ -2342,7 +2351,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.1854363166" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.1787535462" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.1104696121" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1652937294" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
+							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1652937294" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
@@ -2460,11 +2469,12 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_8=1"/>
+									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.73783186" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1759701307" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
@@ -2572,7 +2582,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.370304785" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.379987631" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.720920808" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.418231117" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
+							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.418231117" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
@@ -2690,11 +2700,12 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CSXL_118=1"/>
+									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.1726216527" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1630094135" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
@@ -2802,7 +2813,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.209160988" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.71188748" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.1672061527" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1852035232" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
+							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1852035232" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
@@ -2920,11 +2931,12 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CSXL_218=1"/>
+									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.1453167839" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.9077958" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
@@ -3032,7 +3044,7 @@
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash.925029563" name="Create flash image" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<option id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize.283332346" name="Print size" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform archList="all" binaryParser="org.eclipse.cdt.core.ELF" id="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform.1173222395" isAbstract="false" osList="all" superClass="ilg.gnuarmeclipse.managedbuild.cross.targetPlatform"/>
-							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1776605018" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
+							<builder buildPath="${workspace_loc:/HelloWorld}/Debug" id="ilg.gnuarmeclipse.managedbuild.cross.builder.1776605018" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="ilg.gnuarmeclipse.managedbuild.cross.builder">
 								<outputEntries>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Debug"/>
 									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
@@ -3154,13 +3166,13 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=0"/>
 									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="MFG_TEST_MARTIN=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 									<listOptionValue builtIn="false" value="Martin_Generic=1"/>
+									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.2032306206" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1736213388" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>

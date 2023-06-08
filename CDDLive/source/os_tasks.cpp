@@ -912,6 +912,7 @@ void TimeKeeper_Task(uint32_t task_init_data)
 	/* Create Flash Timer */
 	_time_init_ticks(&flashWrite_ticks, 0);
 	_time_add_sec_to_ticks(&flashWrite_ticks, TIMEOUT_FLASHWRITE);
+	flashWrite_timer = _timer_create_oneshot_after_ticks(TriggerFlashWrite, 0, TIMER_ELAPSED_TIME_MODE, &flashWrite_ticks);	//IQ create the timer but do not start it. This is part of a workaround for the one-shot timers.
 
 	printf("TimeKeeper task created\n");
 
@@ -926,8 +927,10 @@ void TimeKeeper_Task(uint32_t task_init_data)
 
 		TASKDEBUG_IN(TASK_TIMER)
 		if( timer_bits & event_timer_flashwrite_start ) {
-			if( flashWrite_timer )	_timer_cancel( flashWrite_timer );
-			flashWrite_timer = _timer_start_oneshot_after_ticks(TriggerFlashWrite, 0, TIMER_ELAPSED_TIME_MODE, &flashWrite_ticks);
+			//if( flashWrite_timer )	_timer_cancel( flashWrite_timer );
+			//flashWrite_timer = _timer_start_oneshot_after_ticks(TriggerFlashWrite, 0, TIMER_ELAPSED_TIME_MODE, &flashWrite_ticks);
+			//above used in original code caused a memory leak as the timers were never deleted. attempts to delete the timer each time ended in failure! This work around seems good. TODO need to check other timers dont suffer the same issue.
+			_timer_reset( flashWrite_timer );
 			_lwevent_clear(&timer_event, event_timer_flashwrite_start);
 		}
 		else if( timer_bits & event_timer_flashwrite_expired ) {

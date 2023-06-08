@@ -263,8 +263,9 @@ typedef void (* TIMER_NOTIFICATION_TICK_FPTR)( _timer_id );
 _timer_id  _timer_start_periodic_every_ticks(TIMER_NOTIFICATION_TICK_FPTR, void *, _mqx_uint, MQX_TICK_STRUCT_PTR);
 bool retrieveNotificationParams( TIMER_NOTIFICATION_TICK_FPTR notification_function, uint32_t **notification_data_ptr );
 _mqx_uint  _timer_cancel(_timer_id);
+_mqx_uint  _timer_reset(_timer_id);
 _timer_id  _timer_start_oneshot_after_ticks(TIMER_NOTIFICATION_TICK_FPTR, void *, _mqx_uint, MQX_TICK_STRUCT_PTR);
-
+_timer_id  _timer_create_oneshot_after_ticks(TIMER_NOTIFICATION_TICK_FPTR, void *, _mqx_uint, MQX_TICK_STRUCT_PTR);
 _mqx_uint _time_init_ticks(MQX_TICK_STRUCT_PTR, _mqx_uint);
 MQX_TICK_STRUCT_PTR  _time_add_msec_to_ticks(MQX_TICK_STRUCT_PTR, _mqx_uint);
 MQX_TICK_STRUCT_PTR  _time_add_sec_to_ticks(MQX_TICK_STRUCT_PTR, _mqx_uint);

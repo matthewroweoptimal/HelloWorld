@@ -1,0 +1,1 @@
+xmlerator ..\OLY_speaker.xml ..\LOUD_enums.xml output.txt
