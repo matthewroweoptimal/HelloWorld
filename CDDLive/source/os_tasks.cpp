@@ -333,11 +333,11 @@ void Config_Task(uint32_t task_init_data)
 
 #if USE_CDD_UI
 	olyConfig->SetFanEnabled(true);
+	olyConfig->Controls_SetLogoMode(eLOGO_MODE_ON);
 #else
 	olyConfig->SetFanEnabled(false);
 #endif
-//	olyConfig->SetFanEnabled(true);
-//	olyConfig->SetFanEnabled(false);
+
 
 	MSGQ_INIT()
 
@@ -382,11 +382,12 @@ void Config_Task(uint32_t task_init_data)
 	olyConfig->InitUI();
 
 
-	/* delay then unmnute the amps! maybe fade up the DSP? The logic here is inverted by the transistors!*/
+	/* delay to aviod switch on bang, then unmute the amps! maybe fade up the DSP? The logic here is inverted by the transistors!*/
 	_time_delay(2000);
     Gpio::setGpio(AMP1_DISABLE_MUTE_CNTRL,LOW);
     Gpio::setGpio(AMP2_DISABLE_MUTE_CNTRL,LOW);
     Gpio::setGpio(AMP1_2_STANDBY_CNTRL,LOW);
+	olyConfig->Controls_SetLogoMode(eLOGO_MODE_OFF);
 
 	configtask_initialized = true;
 	 _time_get_elapsed_ticks(&startTicks);
