@@ -394,7 +394,10 @@ void MandolinPort::KillAllSubscriptions(void)
 	for(int nList=0;nList<PORT_MAX_PARAMETER_LISTS;nList++)
 	{
     	if (m_SubscriptionTimer[nList])
+    	{
 		    _timer_cancel(m_SubscriptionTimer[nList]);
+		    m_SubscriptionTimer[nList] = 0;
+	    }
     }
 }
 

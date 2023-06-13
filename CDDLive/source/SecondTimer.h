@@ -23,7 +23,7 @@ static void printFreeRTOSHeapStats()
 	vPortGetHeapStats( &stats );
 	printf("FreeRTOS heap\n  Free = %u, biggest = %u, smallest = %u\n",
 		   stats.xAvailableHeapSpaceInBytes, stats.xSizeOfLargestFreeBlockInBytes, stats.xSizeOfSmallestFreeBlockInBytes );
-	printf("  systime: %d\n", RTOS_AppGetRuntimeCounterValueFromISR());
+	printf("  systime: %lu\n", RTOS_AppGetRuntimeCounterValueFromISR());
 }
 
 

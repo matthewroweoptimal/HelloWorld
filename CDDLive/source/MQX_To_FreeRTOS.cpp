@@ -545,23 +545,27 @@ bool retrieveNotificationParams( TIMER_NOTIFICATION_TICK_FPTR notification_funct
 //		Errors
 _mqx_uint  _timer_cancel(_timer_id id)
 {
-	BaseType_t result = xTimerStop(id, portMAX_DELAY);
+	configASSERT( id != 0 );
+// Note : Below xTimerStop() replaced with xTimerDelete() to properly free up FreeRTOS resources (& avoid memory leak)
+//	BaseType_t result = xTimerStop(id, portMAX_DELAY);
+	BaseType_t result = xTimerDelete(id, portMAX_DELAY);
 	configASSERT( result != pdFALSE );
 }
 
-// deletes timer request - IQ this is part of a workaround for the one shot timers which do not delete properly!
+// Re-starts a timer  (Note : Not part of MQX interface, was introduced as workaround when investigating timer_cancel() issue)
 // Parameters
-//		id [IN] — ID of the timer to be cancelled, from calling a function from the _timer_start family of functions
+//		id [IN] — ID of the timer to be re-started
 // Returns
 //		MQX_OK
 //		Errors
 _mqx_uint  _timer_reset(_timer_id id)
 {
+	configASSERT( id != 0 );  
 	BaseType_t result = xTimerReset(id, portMAX_DELAY);
 	configASSERT( result != pdFALSE );
 }
 
-// Start a timer that expires after the number of ticks
+// Creates and Starts a timer that expires after the number of ticks
 // Parameters
 //		notification_ function [IN] — Notification function that MQX RTOS calls when the timer expires
 //		notification_ data_ptr [IN] — Data that MQX RTOS passes to the notification function

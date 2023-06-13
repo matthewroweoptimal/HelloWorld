@@ -799,7 +799,14 @@ void Config::KillAllSubscriptions(void)
 {
 	uint8_t i = 0;
 
-	for(i=0; i<ePID_OLYspeaker1_STATUS_FENCE; i++)	_timer_cancel(SubscriptionTimers[i]);
+	for (i = 0; i < ePID_OLYspeaker1_STATUS_FENCE; i++)
+	{
+    	if ( SubscriptionTimers[i] )
+    	{
+    		_timer_cancel( SubscriptionTimers[i] );
+    		SubscriptionTimers[i] = 0;
+		}
+	}
 }
 
 
