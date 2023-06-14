@@ -31,7 +31,7 @@
  #define MIN_FW_VERSION_SUB     43
 
 #else
- #define OLY_FW_VERSION		    FW_VERSION_CONST(1,1,25)
+ #define OLY_FW_VERSION		    FW_VERSION_CONST(1,1,28)
  #define MIN_FW_VERSION_MAJOR   1                           // Cannot upgrade FW to versions below this
  #define MIN_FW_VERSION_MINOR   1
  #define MIN_FW_VERSION_SUB     13
