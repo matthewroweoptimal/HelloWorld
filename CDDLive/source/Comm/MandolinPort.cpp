@@ -455,19 +455,27 @@ void MandolinPort::ReportMeters(int listId, mandolin_parameter_value * pStatusVa
 		else if (eTARGET_METERS==nTarget)
 		{
 			bool bDontSendIfSame = m_bMetersSent && m_bDontSendIfSame[nList];
+			for ( int i = 0; i <= eMID_OLYspeaker1_FENCE; i++ )
+			{
+				if ( m_MeterBuffer[i].u == FLOAT_NEG_INFINITY_AS_HEX )
+				{	// Not all meter values have been populated during the last metering time period, so skip send (can cause meter 'blips' on VU-NET)
+					// Can happen when parameter changes being saved to flash have prevented processing of DSP meters.
+					printf("Skipping Meters\n");
+					return;	// Meter data not sent this time.
+				}
+			}
 
 			WriteMessage(SetParametersList(eTARGET_METERS, 0, listId, m_bAutoMetersNoAck[nList], m_nParameterListParameterId[nList], m_MeterBuffer, m_nParameterListNum[nList]));
 
 			if (!m_bMetersSent)
 			{
-				memcpy(m_LastSentMeters, m_LastSentMeters, sizeof(m_LastSentMeters));
+				memcpy(m_LastSentMeters, m_MeterBuffer, sizeof(m_LastSentMeters));   // SC : fix this line which wasn't doing anything
 				m_bMetersSent = true;
 			}
 
 			for(int i=0; i<=eMID_OLYspeaker1_FENCE; i++ )
 				m_MeterBuffer[i].f = FLOAT_NEG_INFINITY;	// Reset local peaks
 		}
-
 	}
 }
 

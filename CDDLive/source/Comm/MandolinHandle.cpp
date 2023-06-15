@@ -205,8 +205,7 @@ void Config::HandleMetersResponse(mandolin_message * pMsg)
 	{
 		// got a valid meter, reset the DSP error timer
 		// if this timer expires, we haven't gotten a meter in 'TIMEOUT_DSP_ERROR' seconds and a DSP error is assumed
-		// IQ COMMENTED OUT - CAUSING HARD FAULT - POSSIBLY DUE TO NOT BEING S
-		//DSPErrorTimer_Reset();
+		DSPErrorTimer_Reset();
 		g_bMeterComplete = true;
 	}
 

@@ -54,6 +54,7 @@
 
 #define LIMITER_LED_THRESHOLD_DB	-12.0
 #define FLOAT_NEG_INFINITY			-3.4028235E38
+#define FLOAT_NEG_INFINITY_AS_HEX	0xFF7FFFFF		// Used for comparasin to above to avoid rounding errors
 #define METER_WORD_FOR_LED			eMID_OLYspeaker1_INPUT_IN
 #define METER_WORD_FOR_APP			eMID_OLYspeaker1_GROUP_SOFTLIMIT_OUT
 

@@ -191,7 +191,7 @@ uint32_t spi_flash_param_reinit()
 }
 
 /* Erases then writes once to single sector - why outside the function */
-uint8_t bufferFlashWrite[SPI_MEMORY_PAGE_SIZE];
+// uint8_t bufferFlashWrite[SPI_MEMORY_PAGE_SIZE]; // SC : This is not used anywhere !
 
 uint32_t spi_flash_write_oly_params(oly_flash_params_t * olyStoredParams)
 {
