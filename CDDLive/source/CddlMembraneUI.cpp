@@ -37,9 +37,9 @@ void cddlMembraneUI::SW2()
 #if MFG_TEST_MARTIN   // force UI override for manuf build
 	uint32_t valid_indicator = 	0;
 #else
-	//uint32_t valid_indicator = 	pConfig->GetUserParamsValidIndicator();
+	uint32_t valid_indicator = 	pConfig->GetUserParamsValidIndicator();
 	//IQ just checking 4th LED works!
-	uint32_t valid_indicator = 1;
+	//uint32_t valid_indicator = 1;
 #endif
 	if(cddl_get_meter_override() == BACKPANEL_LED_MODE){ //kill meter override if it is on instead of UI
 		cddl_current_preset++;
