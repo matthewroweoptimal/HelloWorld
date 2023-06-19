@@ -1030,12 +1030,16 @@ namespace oly {
     
     void Config::DSPErrorTimer_Cancel()
     {
-    	_timer_cancel( dsp_error_timer );
+        if ( dsp_error_timer )
+        {
+        	_timer_cancel( dsp_error_timer );
+        	dsp_error_timer = 0;
+    	}
     }
     
     void Config::DSPErrorTimer_Reset()
     {
-    	if( dsp_error_timer )	_timer_cancel( dsp_error_timer );
+    	DSPErrorTimer_Cancel();
     	dsp_error_timer = _timer_start_oneshot_after_ticks(TriggerDSPError, 0, TIMER_ELAPSED_TIME_MODE, &dsp_error_ticks);
     }
     
@@ -1050,7 +1054,10 @@ namespace oly {
     	RefreshLogoState();
     
     	if (identify_timer)
+    	{
     		_timer_cancel(identify_timer);
+    		identify_timer = 0;
+		}
     
     	if (ms != IDENTIFY_FOREVER)
     	{
@@ -1075,7 +1082,10 @@ namespace oly {
     
     	printf("Identify stopped\n");
     	if ( identify_timer )
+    	{
     		_timer_cancel( identify_timer );
+    		identify_timer = 0;
+		}
     
     	RefreshLogoState();
     }
@@ -1234,13 +1244,17 @@ namespace oly {
     
     void Config::ResetSelfTestTimer()
     {
-    	if(selfTest_timer)	DestroySelfTestTimer();
+    	DestroySelfTestTimer();
     	selfTest_timer = _timer_start_periodic_every_ticks(TriggerSelfTestSwitch, 0, TIMER_ELAPSED_TIME_MODE, &selfTest_ticks);
     }
     
     void Config::DestroySelfTestTimer()
     {
-    	_timer_cancel( selfTest_timer );
+        if ( selfTest_timer )
+        {
+        	_timer_cancel( selfTest_timer );
+        	selfTest_timer = 0;
+    	}
     }
     
     void Config::SelfTestSequence()

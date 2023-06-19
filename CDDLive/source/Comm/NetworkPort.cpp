@@ -109,6 +109,7 @@ void NetworkPort::ConfigureMeters(int nAutoMetersListId, int nAutoMetersRate, in
 	if (m_SubscriptionTimer[nList])
 	{
 		_timer_cancel(m_SubscriptionTimer[nList]);
+		m_SubscriptionTimer[nList] = 0;
 	}
 
 	// If period_ms is 0, don't start timer

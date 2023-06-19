@@ -31,7 +31,7 @@
  #define MIN_FW_VERSION_SUB     43
 
 #else
- #define OLY_FW_VERSION		    FW_VERSION_CONST(1,1,25)
+ #define OLY_FW_VERSION		    FW_VERSION_CONST(1,1,30)
  #define MIN_FW_VERSION_MAJOR   1                           // Cannot upgrade FW to versions below this
  #define MIN_FW_VERSION_MINOR   1
  #define MIN_FW_VERSION_SUB     13
@@ -54,6 +54,7 @@
 
 #define LIMITER_LED_THRESHOLD_DB	-12.0
 #define FLOAT_NEG_INFINITY			-3.4028235E38
+#define FLOAT_NEG_INFINITY_AS_HEX	0xFF7FFFFF		// Used for comparasin to above to avoid rounding errors
 #define METER_WORD_FOR_LED			eMID_OLYspeaker1_INPUT_IN
 #define METER_WORD_FOR_APP			eMID_OLYspeaker1_GROUP_SOFTLIMIT_OUT
 

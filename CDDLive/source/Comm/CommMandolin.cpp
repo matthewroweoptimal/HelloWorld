@@ -346,7 +346,7 @@ mandolin_message * GetSerialNumberResponse(uint32_t uiSerialNumber, uint8_t sequ
 
 mandolin_message * SetParameter(OLY_target Group, int Instance, uint32_t PID, uint32_t Value)
 {
-	printf("Setparameter- Group:%d, Instance:%d, PID:%d, Value:%d\n",Group,Instance,PID, Value);
+//	printf("Setparameter- Group:%d, Instance:%d, PID:%d, Value:%d\n",Group,Instance,PID, Value);
 
 	uint32_t * pPayload = (uint32_t*)tmpMsgPayload;
 

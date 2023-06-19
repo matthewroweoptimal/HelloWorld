@@ -17,13 +17,13 @@ const uint32_t MEMORY_DISPLAY_TICKS = 5;
 
 static void printFreeRTOSHeapStats()
 {
-//return;	// Whilst DEBUGGING OTHER STUFF
+return;	// Whilst DEBUGGING OTHER STUFF
 
 	static xHeapStats stats = {0};
 	vPortGetHeapStats( &stats );
 	printf("FreeRTOS heap\n  Free = %u, biggest = %u, smallest = %u\n",
 		   stats.xAvailableHeapSpaceInBytes, stats.xSizeOfLargestFreeBlockInBytes, stats.xSizeOfSmallestFreeBlockInBytes );
-	printf("  systime: %d\n", RTOS_AppGetRuntimeCounterValueFromISR());
+	printf("  systime: %lu\n", RTOS_AppGetRuntimeCounterValueFromISR());
 }
 
 

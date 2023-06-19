@@ -65,7 +65,6 @@
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.135102731" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.974729338" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
@@ -112,7 +111,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
@@ -158,7 +156,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
@@ -296,7 +293,6 @@
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.1291256425" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.736397172" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
@@ -343,7 +339,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_15=1"/>
@@ -389,7 +384,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_15=1"/>
@@ -525,7 +519,6 @@
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.256873936" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.1387678438" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
@@ -572,7 +565,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_12=1"/>
@@ -618,7 +610,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_12=1"/>
@@ -754,7 +745,6 @@
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.221212273" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.63336939" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
@@ -801,7 +791,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_8=1"/>
@@ -847,7 +836,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_8=1"/>
@@ -983,7 +971,6 @@
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.614196133" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.613174028" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
@@ -1030,7 +1017,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CSXL_118=1"/>
@@ -1076,7 +1062,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CSXL_118=1"/>
@@ -1212,7 +1197,6 @@
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.1746934443" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.621240160" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
@@ -1259,7 +1243,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CSXL_218=1"/>
@@ -1305,7 +1288,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CSXL_218=1"/>
@@ -1442,7 +1424,6 @@
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.1268196598" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="MFG_TEST_MARTIN=1"/>
 								</option>
@@ -1490,7 +1471,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="MFG_TEST_MARTIN=1"/>
@@ -1538,13 +1518,12 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="MFG_TEST_MARTIN=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 									<listOptionValue builtIn="false" value="Martin_Generic=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.854013458" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1240313917" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
@@ -1675,7 +1654,6 @@
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.285928613" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.1574943746" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
@@ -1723,11 +1701,10 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.asmlisting.681793829" name="Generate assembler listing (-Wa,-adhlns=&quot;$@.lst&quot;)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.asmlisting" useByScannerDiscovery="false" value="false" valueType="boolean"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otheroptimizations.1905919894" name="Other optimization flags" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otheroptimizations" useByScannerDiscovery="true" value="" valueType="string"/>
@@ -1771,11 +1748,10 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.608969134" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.asmlisting.571513037" name="Generate assembler listing (-Wa,-adhlns=&quot;$@.lst&quot;)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.asmlisting" useByScannerDiscovery="false" value="false" valueType="boolean"/>
@@ -1912,7 +1888,6 @@
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.1851952028" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.1887353732" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
@@ -1960,7 +1935,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_15=1"/>
@@ -2007,7 +1981,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_15=1"/>
@@ -2143,7 +2116,6 @@
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.1619063557" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.188876766" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
@@ -2191,7 +2163,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_12=1"/>
@@ -2238,7 +2209,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_12=1"/>
@@ -2374,7 +2344,6 @@
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.661420029" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.136475804" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
@@ -2422,7 +2391,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_8=1"/>
@@ -2469,7 +2437,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CDDL_8=1"/>
@@ -2605,7 +2572,6 @@
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.501473151" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.1247093027" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
@@ -2653,7 +2619,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CSXL_118=1"/>
@@ -2700,7 +2665,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CSXL_118=1"/>
@@ -2836,7 +2800,6 @@
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.1434077666" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 								</option>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input.1446346331" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"/>
@@ -2884,7 +2847,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CSXL_218=1"/>
@@ -2931,7 +2893,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="CSXL_218=1"/>
@@ -3068,7 +3029,6 @@
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs.1544462877" name="Defined symbols (-D)" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" useByScannerDiscovery="true" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="MFG_TEST_MARTIN=1"/>
 								</option>
@@ -3117,7 +3077,6 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=1"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="MFG_TEST_MARTIN=1"/>
@@ -3166,13 +3125,12 @@
 									<listOptionValue builtIn="false" value="USE_RTOS=1"/>
 									<listOptionValue builtIn="false" value="LWIP_SOCKET_POLL=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_DEV_ETHERNET=0"/>
-									<listOptionValue builtIn="false" value="DYNAMIC_MEMORY_ALLOCATION_AVAILABLE=0"/>
 									<listOptionValue builtIn="false" value="USE_CDD_UI=1"/>
 									<listOptionValue builtIn="false" value="SHOW_TRACE=1"/>
 									<listOptionValue builtIn="false" value="MFG_TEST_MARTIN=1"/>
-									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 									<listOptionValue builtIn="false" value="Martin_Generic=1"/>
 									<listOptionValue builtIn="false" value="USE_MARVEL_SWITCH=1"/>
+									<listOptionValue builtIn="false" value="REV004_PIN_CHANGES=0"/>
 								</option>
 								<option id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.2032306206" name="Language standard" superClass="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std" useByScannerDiscovery="true" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11" valueType="enumerated"/>
 								<inputType id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.1736213388" superClass="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"/>
