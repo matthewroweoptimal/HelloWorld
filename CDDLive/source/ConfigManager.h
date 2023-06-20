@@ -101,6 +101,7 @@ protected:
 	bool			previous_lf_test_value = false;
 	bool			previous_lf_mute_value = false;
 	bool			previous_lf_solo_value = false;
+	bool			m_bDanteRebooting = false;
 
 #ifdef	USE_DANTE_AUTO_STATIC_IP
 	bool 			m_bdante_auto_ip_address_changed = false;
