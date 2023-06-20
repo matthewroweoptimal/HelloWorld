@@ -2921,6 +2921,18 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     	}
     	olyUI.UpdateStatusLine4(tempString);
     #endif
+
+    	if ( m_bDanteRebooting )
+    	{	// linkFlag state during Dante reboot does not signify cable disconnection, so ignore
+//    		printf("DANTE REBOOTING : LFlags=%X, Mute=%X\n", linkFlags, DanteMute );
+    		if ( linkFlags & 0x001 )
+    			m_bDanteRebooting = false;
+    	}
+    	else if ( (linkFlags & 0x001) == 0 )
+    	{	// Cable Disconnected : Use this as a general cable disconnect indication to force close any Network connections.
+    		printf("CABLE DISCONNECTED : Tidy Up Connections\n");
+    		olyNetworkPort.SetForceClose();
+    	}
     }
     
     void Config::OnDanteChange_MacAddress(uint8_t * macAddress)
@@ -3108,6 +3120,7 @@ void Config::OpenNetworkPort(bool bOpen, int nPort)
     		}
     	}
     #endif
+    	m_bDanteRebooting = true;
     }
     
     void Config::OnDanteChange_Upgrade(void)
