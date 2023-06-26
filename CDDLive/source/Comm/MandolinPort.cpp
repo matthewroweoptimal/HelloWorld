@@ -15,6 +15,9 @@ extern "C" {
 }
 
 extern oly::Config *olyConfig;
+extern float32 g_InputGainMeterOffset;
+
+#define OUTPUT_GAIN_OFFSET 2.6
 
 namespace oly {
 
@@ -463,7 +466,15 @@ void MandolinPort::ReportMeters(int listId, mandolin_parameter_value * pStatusVa
 					printf("Skipping Meters\n");
 					return;	// Meter data not sent this time.
 				}
+
 			}
+
+			// IQ - The meters must be adjusted so that they make sense with VUnet. This is down to a difference analogue input gain which effects the metering value and is different depending on input source.
+			m_MeterBuffer[eMID_OLYspeaker1_INPUT_IN].f = m_MeterBuffer[eMID_OLYspeaker1_INPUT_IN].f+g_InputGainMeterOffset;
+
+			// IQ - The output meters need offsetting by a constant value the same as the difference in output gain.
+			m_MeterBuffer[eMID_OLYspeaker1_HF_OUT].f = m_MeterBuffer[eMID_OLYspeaker1_HF_OUT].f-OUTPUT_GAIN_OFFSET;
+			m_MeterBuffer[eMID_OLYspeaker1_LF_OUT].f = m_MeterBuffer[eMID_OLYspeaker1_LF_OUT].f-OUTPUT_GAIN_OFFSET;
 
 			WriteMessage(SetParametersList(eTARGET_METERS, 0, listId, m_bAutoMetersNoAck[nList], m_nParameterListParameterId[nList], m_MeterBuffer, m_nParameterListNum[nList]));
 

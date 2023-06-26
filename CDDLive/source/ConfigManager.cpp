@@ -70,6 +70,10 @@ uint8_t g_nLastMeterSeq = 0;
 extern UltimoPort * g_pUltimoPort;
 bool g_ScreenInTransition = false;
 
+#define INPUT_GAIN_OFFSET 3.7
+
+float32 g_InputGainMeterOffset = 0;
+
 namespace oly {
 
 #if 1
@@ -415,6 +419,7 @@ namespace oly {
     		else if (mode == eAUDIO_MODE_ANALOG){
     			SetAudioSource(src_analog);
     			printf("Man: Analog Source Selected\n");
+
     		}
     		else if (mode == eAUDIO_MODE_DANTE){
     			SetAudioSource(src_dante);
@@ -443,9 +448,19 @@ namespace oly {
     		switch (ActiveInputSource) {
     			case(src_analog):
     				printf("Audio: Analog Source Selected\n");
+        			// IQ - Due to changes in the analog input gain, we must change the internal gain of the DSP so that speakers using dante audio are on the same volume as previous model.
+    				ParamSetVoicing(0, ePID_OLYspeaker1_VOICING_LF_FADER, LF_FADER_VOICING_VALUE_ANALOG);
+    				ParamSetVoicing(0, ePID_OLYspeaker1_VOICING_HF_FADER, HF_FADER_VOICING_VALUE_ANALOG);
+    				g_InputGainMeterOffset = INPUT_GAIN_OFFSET;
+
     				break;
     			case(src_dante):
     				printf("Audio: Dante Source Selected\n");
+    				// IQ - Due to changes in the analog input gain, we must change the internal gain of the DSP so that speakers using dante audio are on the same volume as previous model.
+					ParamSetVoicing(0, ePID_OLYspeaker1_VOICING_LF_FADER, LF_FADER_VOICING_VALUE_DANTE);
+					ParamSetVoicing(0, ePID_OLYspeaker1_VOICING_HF_FADER, HF_FADER_VOICING_VALUE_DANTE);
+    				g_InputGainMeterOffset  = 0;
+
     				break;
     			case(src_pinknoise):
     				printf("Audio: Internal Pink Noise Source Selected\n");
@@ -454,6 +469,7 @@ namespace oly {
     				printf("Audio: Internal Sine Source Selected\n");
     				break;
     		}
+
     
     		OnDanteMuteChanged();	// Evaluate mute state
     		olyParams.User[0][ePID_OLYspeaker1_USER_INPUT_ROUTING] = routing; // force user 0 routing to selected value for backward compatibility
