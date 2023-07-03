@@ -438,3 +438,16 @@ const struct netif *network_get_netif(struct netif *p_netif)
 }
 }
 #endif
+
+
+void setNetworkLinkDown()
+{
+	printf( "Set Link DOWN\n");
+    netif_set_link_down( &fsl_netif0 );
+}
+
+void setNetworkLinkUp()
+{
+	printf( "Set Link UP\n");
+    netif_set_link_up( &fsl_netif0 );
+}
