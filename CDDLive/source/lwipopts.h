@@ -103,12 +103,12 @@
 /* MEMP_NUM_TCP_PCB: the number of simultaneously active TCP
    connections. */
 #ifndef MEMP_NUM_TCP_PCB
-#define MEMP_NUM_TCP_PCB        4 // Breeze was 11
+#define MEMP_NUM_TCP_PCB        11 // Breeze was 11
 #endif
 /* MEMP_NUM_TCP_PCB_LISTEN: the number of listening TCP
    connections. */
 #ifndef MEMP_NUM_TCP_PCB_LISTEN
-#define MEMP_NUM_TCP_PCB_LISTEN 4 // Breeze was 11
+#define MEMP_NUM_TCP_PCB_LISTEN 11 // Breeze was 11
 #endif
 /* MEMP_NUM_TCP_SEG: the number of simultaneously queued TCP
    segments. */

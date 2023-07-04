@@ -2276,7 +2276,7 @@ namespace oly {
     	uint16_t tempInt;
     
     	DanteMute = get_dante_mute_state();
-    
+
     	if (!GlobalMute)
     	{
     		if (ActiveInputSource == src_dante)
@@ -2301,10 +2301,11 @@ namespace oly {
     		}
     	}
     
-    	if (g_pUltimoPort) {
-    		g_pUltimoPort->GetLinkFlags(&tempInt);
-    		OnDanteChange_LinkFlags(tempInt);		// Update Network Indicator
-    	}
+    	//if (g_pUltimoPort) {	IQ - This was there to update the network indicator on EAW product. We do not have a network LED on CDD Live. Only the Dante LED. We use OnDanteChange_LinkFlags to check for cable disconnect. We do not want to do this on a mute change!!!
+    	//	g_pUltimoPort->GetLinkFlags(&tempInt);
+        //	printf("Calling OnDanteChange with LinkFlags %d\n", tempInt);
+    	//	OnDanteChange_LinkFlags(tempInt);		// Update Network Indicator
+    	//}
     }
     
     void Config::SetGlobalMute(bool mute)
