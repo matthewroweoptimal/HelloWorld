@@ -319,6 +319,9 @@ void Config_Task(uint32_t task_init_data)
 	olyConfig = new Config();
 
 	g_pszModelName = Region::GetMandolinModelName(Region::GetSystemBrand(), Region::GetSystemModel());
+	cddl_set_meter_override(BACKPANEL_LED_IP_RESET); //Turn on all LEDs on powerup.
+	_time_delay(50); //slight delay using cddl_set_meter_override and we want the dante led on in synch - messy!
+	cddl_show_network_LED(1);
 
 	//set brightness to zero and later turn bright. This assumes the stored value is not used for anything.
 //	olyConfig->SetLcdBrightness(0);
@@ -333,6 +336,7 @@ void Config_Task(uint32_t task_init_data)
 
 #if USE_CDD_UI
 	olyConfig->SetFanEnabled(true);
+	cddl_show_network_LED(1);
 	olyConfig->Controls_SetLogoMode(eLOGO_MODE_ON);
 #else
 	olyConfig->SetFanEnabled(false);
@@ -388,6 +392,8 @@ void Config_Task(uint32_t task_init_data)
     Gpio::setGpio(AMP2_DISABLE_MUTE_CNTRL,LOW);
     Gpio::setGpio(AMP1_2_STANDBY_CNTRL,LOW);
 	olyConfig->Controls_SetLogoMode(eLOGO_MODE_OFF);
+	cddl_set_meter_override(BACKPANEL_LED_MODE);
+	cddl_show_network_LED(0);
 
 	configtask_initialized = true;
 	 _time_get_elapsed_ticks(&startTicks);

@@ -89,7 +89,11 @@ void cddlMembraneUI::SW2_long()
 void cddlMembraneUI::SW2_long_long()
 {
 	cddl_set_meter_override(BACKPANEL_LED_IP_RESET);
+	pConfig->SetInputSelectMode(eAUDIO_MODE_AUTO); // Enforce auto mode on oly
+	//need to delay until the flash it written to as the switch to DHCP reboots the system and the new setting will not be stored.
+	_time_delay(1000);
 	pConfig->SwitchToDHCP();
+
 
 	//need to flash leds?
 	//cddlMembraneUI::SW2();  //we triggered meter mode, so now we need to go back to normal mode after extra long press
@@ -137,7 +141,7 @@ cddlMembraneUI::cddlMembraneUI(Config *config)
 	pConfig = config;
 	cddl_current_preset = 1;
 	cddl_show_LEDs(0); //turn off LEDs
-	cddl_show_network_status(1, CDDL_NETWORK_BLINK_PERIOD); //turn on blinking network led for test
+	//cddl_show_network_status(1, CDDL_NETWORK_BLINK_PERIOD); //turn on blinking network led for test
 
 }
 
