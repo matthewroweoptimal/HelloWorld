@@ -480,7 +480,7 @@ static void peripherals_init(void)
     /* Init ADC for Amp Monitoring*/
     /* EADC */
     EADC_Init();
-
+#if MFG_TEST_MARTIN
     if(g_EADC_i32ErrCode==EADC_TIMEOUT_ERR)
     {
     	int32_t count = 0;
@@ -493,5 +493,5 @@ static void peripherals_init(void)
 				}
 		}
     }
-
+#endif
 }

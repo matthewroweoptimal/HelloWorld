@@ -7,6 +7,11 @@
 
 #include "OLYspeaker1_map.h"
 
+#define HF_FADER_VOICING_VALUE_ANALOG 	0x00000000
+#define LF_FADER_VOICING_VALUE_ANALOG 	0x00000000
+#define HF_FADER_VOICING_VALUE_DANTE	0x00000000
+#define LF_FADER_VOICING_VALUE_DANTE 	0x00000000
+
 #if (OLYspeaker1_XML_VERSION != 18)
 #error xml version out of date
 #else

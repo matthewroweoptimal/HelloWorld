@@ -66,6 +66,23 @@ spi_flash_status_t spi_flash_init(oly_flash_params_t * olyStoredParams)
 
     printf("SPIM get JEDEC ID=0x%02X, 0x%02X, 0x%02X\n", idBuf[0], idBuf[1], idBuf[2]);
 
+#if MFG_TEST_MARTIN
+    if ((idBuf[0] != MFGID_WINBOND) || (idBuf[1] != 0x40) || (idBuf[2] != 0x16))
+    {
+        printf("JEDEC ID Not Correct\n");
+    	int32_t count = 0;
+    	while(1)
+    	{
+    		if(count++ > 1000000)
+				{
+    			Leds::toggleLed(GREEN_LED2);
+    			count = 0;
+				}
+    	}
+    }
+
+#endif
+
     SPIM_WinbondUnlock(1);
 
 	printf("SPiFlash check slot ");
@@ -176,6 +193,19 @@ uint32_t spi_flash_param_reinit()
 		result = spi_flash_check_block_erased((i * SPI_FLASH_SECTOR_SIZE), SPI_FLASH_SECTOR_SIZE);
 
 		if (result != 1) {
+#if MFG_TEST_MARTIN
+			printf("SPI Flash Erase Failed flash_param_reinit - Suspected hardware fault!!\n\n");
+			int32_t count = 0;
+			while(1)
+			{
+				if(count++ > 1000000)
+					{
+					Leds::toggleLed(GREEN_LED2);
+					count = 0;
+					}
+			}
+
+#endif
 			break;
 		}
 	}
@@ -211,7 +241,24 @@ uint32_t spi_flash_write_oly_params(oly_flash_params_t * olyStoredParams)
 	SPIM_EraseBlock(destination_address,USE_4_BYTE_ADDR_MODE, OPCODE_BE_32K, NBIT_ONE, IS_BLOCK);
 	result = spi_flash_check_block_erased(destination_address, SPI_FLASH_SECTOR_SIZE);
 
-	if(result != 1) fail = fail | 1;
+	if(result != 1)
+	{
+		fail = fail | 1;
+
+#if MFG_TEST_MARTIN
+		printf("SPI Flash Erase Failed (flash_write_oly_params) - Suspected hardware fault!!\n\n");
+		int32_t count = 0;
+		while(1)
+		{
+			if(count++ > 1000000)
+				{
+				Leds::toggleLed(GREEN_LED2);
+				count = 0;
+				}
+		}
+#endif
+
+	}
 	flashFileAge++;
 	crc16_init(&flash_Crc_Desc);
 
@@ -403,6 +450,21 @@ uint32_t spi_flash_fw_erase_block( uint32_t sector )
 	                 USE_4_BYTE_ADDR_MODE, OPCODE_BE_32K, NBIT_ONE, IS_BLOCK );
 	result = spi_flash_check_block_erased( SPI_FLASH_FW_BASE + sector * SPI_FLASH_FW_SECTOR_SIZE,
 		                                   SPI_FLASH_FW_SECTOR_SIZE );
+	if (result != 1) {
+#if MFG_TEST_MARTIN
+		printf("SPI Flash Erase Failed flash_fw_erase_block - Suspected hardware fault!!\n\n");
+		int32_t count = 0;
+		while(1)
+		{
+			if(count++ > 1000000)
+				{
+				Leds::toggleLed(GREEN_LED2);
+				count = 0;
+				}
+		}
+#endif
+	}
+
 	return result;  // 0 = fail, non-zero : success
 }
 
